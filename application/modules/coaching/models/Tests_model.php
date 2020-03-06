@@ -57,7 +57,7 @@ class Tests_model extends CI_Model {
 		$this->db->where ('coaching_id', $coaching_id);
 		
 		$this->db->where ('finalized', 1);
-		$this->db->order_by ('creation_date', 'ASC');
+		$this->db->order_by ('creation_date', 'DESC');
 		if ($limit > 0)	
 			$this->db->limit ($limit);
 		$query = $this->db->get ("coaching_tests");
@@ -79,6 +79,7 @@ class Tests_model extends CI_Model {
 		}
 		
 		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->order_by ('creation_date', 'DESC');
 		
 		$query = $this->db->get ("coaching_tests");
 		$results = $query->result_array();
@@ -101,7 +102,7 @@ class Tests_model extends CI_Model {
 			$this->db->where ('category_id', $category_id);
 		}
 		$this->db->where ('coaching_id', $coaching_id);
-		
+		$this->db->order_by ('creation_date', 'DESC');
 		$this->db->where ('finalized', $finalized);
 		$query = $this->db->get ("coaching_tests");
 		if ($query->num_rows() > 0)	{
@@ -318,7 +319,7 @@ class Tests_model extends CI_Model {
 	}
 	
 	// returns an array of questions added in to a test
-	public function getTestQuestions ($coaching_id, $test_id) {
+	public function getTestQuestions ($coaching_id=0, $test_id=0) {
 		$this->db->select('question_id');
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('test_id', $test_id);
@@ -564,15 +565,11 @@ class Tests_model extends CI_Model {
 	}
 	
 	// get all enroled users in a test
-	public function getMarks ($id) {
+	public function getMarks ($id=0) {
 		$this->db->select('marks');
 		$this->db->where('question_id', $id);
-		$this->db->where ('coaching_id', $coaching_id);
-		
 		$query = $this->db->get('coaching_questions');
-		if ($query->num_rows() > 0 ) {
-			return $query->row('marks');
-		}
+		return $query->row('marks');
 	}
 
 	// get all enroled users in a test
@@ -594,9 +591,9 @@ class Tests_model extends CI_Model {
 
 		$prefix = $this->db->dbprefix; 
 
-  		$query = 'SELECT M.* FROM '.$prefix.'members M, '.$prefix.'coaching_test_enrolments TE';
+  		$query = 'SELECT M.*, TE.attempts, TE.start_date, TE.end_date FROM '.$prefix.'members M, '.$prefix.'coaching_test_enrolments TE';
 		if ($batch_id > 0) {
-		    $query .= ', '.$prefix.'member_batch_users BU';
+		    $query .= ', '.$prefix.'coaching_batch_users BU';
 		}
 		$query .= ' WHERE M.coaching_id='.$coaching_id;
 		if ($batch_id > 0) {
@@ -623,7 +620,7 @@ class Tests_model extends CI_Model {
 		$prefix = $this->db->dbprefix; 
 		$query = 'SELECT M.* FROM '.$prefix.'members M ';
 		if ($batch_id > 0) {
-		    $query .= ' INNER JOIN '.$prefix.'member_batch_users BU ON M.member_id=BU.member_id';
+		    $query .= ' INNER JOIN '.$prefix.'coaching_batch_users BU ON M.member_id=BU.member_id';
 		}
 		$query .= ' WHERE M.coaching_id='.$coaching_id;
 		if ($batch_id > 0) {
@@ -652,7 +649,7 @@ class Tests_model extends CI_Model {
 		
   		$query = 'SELECT M.* FROM '.$prefix.'members M, '.$prefix.'coaching_test_enrolments TE';
 		if ($batch_id > 0) {
-		    $query .= ', '.$prefix.'member_batch_users BU';
+		    $query .= ', '.$prefix.'coaching_batch_users BU';
 		}
 		$query .= ' WHERE M.coaching_id='.$coaching_id;
 		if ($batch_id > 0) {

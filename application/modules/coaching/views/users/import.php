@@ -14,7 +14,7 @@
 						</div>
 					</div> 
 					<p><small class="text-danger">Please upload students list in prescribed csv format. Note that Email, First Name and Last Name should not be left blank.</small></p>
-					<a href="<?php echo site_url ('users/admin/download_file/users_sample')?>" class="btn btn-link">Download sample file</a>
+					<a href="<?php echo site_url ('coaching/users/download_file/users_sample')?>" class="btn btn-link">Download sample file</a>
 				</div>
 				<div class="card-footer">
 					<input type="submit" id="" class="btn btn-primary" value="Import ">

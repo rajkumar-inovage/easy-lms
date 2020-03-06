@@ -14,12 +14,12 @@
 						<div class="col-md-6">
 							<?php echo form_label('Category', '', array('class'=>'control-label')); ?>
 							<select class="form-control required " name="category">
-								<option value="0" <?php echo set_select('category', 0); ?>>Uncategorized</option>
+								<option value="0" <?php if ($category_id==0) echo 'selected="selected"'; ?>>Uncategorized</option>
 								<?php 
 								if (! empty($categories)) {
 									foreach ($categories as $cat) {
 										?>
-										<option value="<?php echo $cat['id']; ?>" <?php echo set_select('category', $cat['id']); ?> ><?php echo $cat['title']; ?></option>
+										<option value="<?php echo $cat['id']; ?>" <?php if ($category_id == $cat['id']) echo 'selected="selected"'; ?> ><?php echo $cat['title']; ?></option>
 										<?php
 									}
 								}

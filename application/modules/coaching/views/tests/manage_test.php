@@ -1,7 +1,7 @@
-<div class="row my-4">
+<div class="row ">
 	<div class="col-md-9">
-		<div class="row my-4">		
-			<div class="col-md-3 col-xs-4 px-2">
+		<div class="row ">
+			<div class="col-md-3 col-xs-4 ">
 				<div class="card my-2 border-primary">
 					<div class="card-body height-100 d-flex align-items-center justify-content-center">
 						<h4 class="card-title text-center my-3">
@@ -118,6 +118,11 @@
 				<li class="list-group-item ">
 					<a href="<?php echo site_url ('coaching/tests/preview_test/'.$coaching_id.'/'.$category_id.'/'.$test_id); ?>"  class=""> <i class="fa fa-chevron-right"></i> Questions </a>
 				</li>
+				<?php if ($row['test_type'] == TEST_TYPE_REGULAR) { ?>
+					<li class="list-group-item ">
+						<a href="<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id); ?>"  class=""> <i class="fa fa-chevron-right"></i> Enrolments </a>
+					</li>
+				<?php } ?>
 				<li class="list-group-item">
 					<a href="<?php echo site_url ('coaching/reports/submissions/'.$coaching_id.'/'.$category_id.'/'.$test_id); ?>" > <span class="badge pull-right"><?php //echo $num_questions; ?></span> <i class="fa fa-chevron-right "></i> Submissions </a>
 				</li>

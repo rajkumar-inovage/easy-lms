@@ -410,6 +410,7 @@ class User_actions extends MX_Controller {
 			$get_file = read_file ($file);
 			$i = 0;
 			$count_error = 0;
+			$data = [];
 			if (($handle = fopen (base_url($file), "r")) !== FALSE) {
 				while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
 					
@@ -429,19 +430,24 @@ class User_actions extends MX_Controller {
 					$users['mobile'] 			=  (trim($row[13]));
 					$users['fax'] 				=  (trim($row[14]));
 
-					
 					if ($i > 0) {
 						if ($users['email'] == '' || $users['first_name'] == '' || $users['last_name'] == '') {
 							$count_error++;
 						} else {
 							$this->users_model->upload_users_csv ($coaching_id, $role_id, $users);
+							$message = $i . ' users uploaded successfully. ';
+							if ($count_error > 0) {
+								$message .= $count_error. ' records were skipped due to insufficient data.';
+							}
 							$this->output->set_content_type("application/json");
-							$this->output->set_output(json_encode(array('status'=>true, 'message'=>$i . ' users uploaded successfully. '.$count_error. ' records were skipped due to insufficient data.', 'redirect'=>site_url('coaching/users/index/'.$coaching_id.'/'.$role_id) )));
+							$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('coaching/users/index/'.$coaching_id.'/'.$role_id) )));
 						}
 					}
 					$i++;
 				}
 			}
+			// Clean-up
+			$this->users_model->import_cleanup ();
 			
 		}
 		

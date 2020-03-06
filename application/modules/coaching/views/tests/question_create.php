@@ -2,6 +2,9 @@
 	
 	<div class="col-md-3">
 		<div class="card">
+		  <div class="card-header">
+		  	Questions
+		  </div>
 		  <ul class="list-group">
 			<?php 
 			if (! empty ($questions)) {
@@ -17,6 +20,12 @@
 					<?php
 				}
 				
+			} else {
+				?>
+				<li class="list-group-item ">
+					<span class="text-danger">No questions found</span>
+				</li>
+				<?php
 			}
 			?>
 		  </ul>
@@ -102,19 +111,19 @@
 						</div>
 					</div>
 					<!--== ./Feedback ==-->
-				
-					<div class="btn-toolbar"> 
-						<?php
-							echo form_button (array ('name'=>'save_new', 'value'=>'save_new', 'type'=>'submit', 'class'=>'btn btn-secondary mr-1', 'accesskey'=>'n', 'content'=>'Save As New', 'id'=>'save_new' )); 
-							echo form_button (array ('name'=>'save', 'value'=>'save', 'type'=>'submit', 'class'=>'btn btn-primary ', 'accesskey'=>'s', 'content'=>'Save', 'id'=>'save' )); 
-						?>
-						<input type="hidden" name="type_id" value="<?php echo $question_group['type']; ?>">
-						<input type="hidden" name="marks" value="<?php echo $question_group['marks']; ?>">
-						<input type="hidden" name="negmarks" value="<?php echo $question_group['negmarks']; ?>">
-						<input type="hidden" name="time" value="<?php echo $question_group['time']; ?>">
-						<input type="hidden" name="properties" value="<?php echo $question_group['properties']; ?>"> 
-						<input type="hidden" name="save_type" id="save_type" value="save" > 
-					</div>
+				</div>
+
+				<div class="card-footer"> 
+					<?php
+						echo form_button (array ('name'=>'save', 'value'=>'save', 'type'=>'submit', 'class'=>'btn btn-primary ', 'accesskey'=>'s', 'content'=>'Save', 'id'=>'save' )); 
+						echo form_button (array ('name'=>'save_new', 'value'=>'save_new', 'type'=>'submit', 'class'=>'btn btn-secondary mr-1', 'accesskey'=>'n', 'content'=>'Save As New', 'id'=>'save_new' )); 
+					?>
+					<input type="hidden" name="type_id" value="<?php echo $question_group['type']; ?>">
+					<input type="hidden" name="marks" value="<?php echo $question_group['marks']; ?>">
+					<input type="hidden" name="negmarks" value="<?php echo $question_group['negmarks']; ?>">
+					<input type="hidden" name="time" value="<?php echo $question_group['time']; ?>">
+					<input type="hidden" name="properties" value="<?php echo $question_group['properties']; ?>"> 
+					<input type="hidden" name="save_type" id="save_type" value="save" > 
 				</div>
 			<?php echo form_close (); ?> 
 		</div> <!-- /.widget .box -->

@@ -14,7 +14,7 @@
 			?>
 			<tr>
 				<td>
-					<?php echo $row["batch_name"];?><br>
+					<a href="<?php echo site_url ('coaching/users/batch_users/'.$coaching_id.'/'.$row['batch_id']); ?>"><?php echo $row["batch_name"];?></a><br>
 					<?php echo $row["batch_code"];?>
 				</td>
 				<td>

@@ -307,12 +307,8 @@ class Tests extends MX_Controller {
 		$data['test'] 	= $this->tests_model->view_tests ($test_id);
 		
 		
-		if ($coaching_id > 0) {
-			$role_lvl 		 	= USER_LEVEL_COACHING_ADMIN;			
-		} else {
-			$role_lvl 		 	= $this->session->userdata ('role_lvl');	
-		}
-		$admin 				= FALSE;
+		$role_lvl 		 		= $this->session->userdata ('role_lvl');	
+		$admin 					= FALSE;
 		$data['roles']	 		= $this->users_model->get_user_roles ($admin, $role_lvl);
 		$data['batches']	 	= $this->users_model->get_member_batches ();
 		$data['user_status']	= $this->common_model->get_sys_parameters (SYS_USER_STATUS);

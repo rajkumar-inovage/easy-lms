@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
 	<div class="col-lg-8">
 		<div class="card">
-			<div class="table-responsive">
+			<div class="table-responsives">
 				<table class="table">
 					<thead>
 						<tr>
@@ -20,7 +20,7 @@
 								<th scope="row"><?php echo $i; ?></th>
 								<td>
 								<?php 
-									echo $row['title'];
+									echo anchor ('coaching/tests/index/'.$coaching_id.'/'.$row['id'], $row['title']);
 								?>
 								</td>
 								<td>
@@ -56,7 +56,7 @@
 									$message = 'Delete this category?';
 									$url = site_url('coaching/tests_actions/remove_category/'.$coaching_id.'/'.$row['id']);
 									?>
-									<a href="#" onclick="show_confirm ('<?php echo $message; ?>', '<?php echo $url; ?>')" class="btn btn-sm " ><i class="fa fa-trash"></i> </a>
+									<a href="#" onclick="show_confirm ('<?php echo $message; ?>', '<?php echo $url; ?>')" class="btn btn-sm " ><i class="fa fa-trash"></i></a>
 									
 								</td>
 							</tr> 

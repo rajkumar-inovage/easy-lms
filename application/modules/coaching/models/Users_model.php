@@ -577,11 +577,14 @@ class Users_model extends CI_Model {
 			}
 		}
 		// Get all users not in batch
-		if (!empty($data)) {
-			$this->db->where_not_in ('member_id', $data);			
+		$this->db->select ('M.*, R.description');
+		$this->db->from ('members M');
+		$this->db->join ('sys_roles R', 'M.role_id=R.role_id');
+		if (! empty($data)) {
+			$this->db->where_not_in ('M.member_id', $data);
 		}
-		$this->db->where ('coaching_id', $coaching_id);
-		$sql = $this->db->get('members');
+		$this->db->where ('M.coaching_id', $coaching_id);
+		$sql = $this->db->get ();
 		$users = $sql->result_array ();
 		return $users;
 	}	
@@ -627,7 +630,24 @@ class Users_model extends CI_Model {
 		$data['status']  		= USER_STATUS_ENABLED;
 		$data['creation_date'] 	= time ();
 		$data['created_by'] 	= intval($this->session->userdata ('member_id'));
-		$this->create_coaching_user ($data);
+		
+		$sql = $this->db->insert ('members', $data);
+		$member_id = $this->db->insert_id ();
+
+		// Set Userid
+		$user_id = $this->generate_reference_id ($member_id);
+		$this->db->set ('login', $user_id);
+		$this->db->set ('adm_no', $user_id);
+		$this->db->where ('member_id', $member_id);
+		$this->db->update ('members');
+	}
+
+	public function  import_cleanup () {
+		$this->db->where ('login', '');
+		$this->db->where ('adm_no', '');
+		$this->db->or_where ('login', NULL);
+		$this->db->or_where ('adm_no', NULL);
+		$this->db->delete ('members');
 	}
 	
 	public function export_to_csv ($coaching_id=0, $role_id=USER_ROLE_STUDENT, $members=array()) {
@@ -682,6 +702,7 @@ class Users_model extends CI_Model {
 		}
 		return $result;
 	}
+
 	// count members of specific batch
 	public function countMemberByBatch($batch_id){
 		$this->db->where('batch_id', $batch_id);
@@ -782,7 +803,5 @@ class Users_model extends CI_Model {
 		$this->db->set ('link_send_time', $time);
 		$this->db->where ('member_id', $member_id);
 		$this->db->update ('members');
-	}
-		
-	
+	}	
 }
