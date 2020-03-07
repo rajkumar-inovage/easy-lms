@@ -38,3 +38,24 @@ define ('TREE_TYPE_TEST', 					2);
 define ('TREE_TYPE_STUDENT',			 	3);
 
 define ('RECORDS_PER_PAGE',			 		20);
+
+// Default User Roles
+define ('USER_ROLE_SUPER_ADMIN', 			1);
+define ('USER_ROLE_ADMIN', 					2);
+define ('USER_ROLE_TEACHER', 				3);
+define ('USER_ROLE_STUDENT', 				4);
+define ('USER_ROLE_COACHING_ADMIN',			5);
+define ('USER_ROLE_PENDING', 				7);
+define ('USER_ROLE_DISABLED', 				8);
+
+
+// Default User Status
+define ('USER_STATUS_DISABLED', 			0);
+define ('USER_STATUS_ENABLED', 				1);
+define ('USER_STATUS_UNCONFIRMED', 			2);
+define ('USER_STATUS_ALL', 					3);
+
+// SYS Parameters
+define ('SYS_USER_STATUS', 					'USER_STATUS');
+define ('SYS_STUDENT_LEVELS', 				'STUDENT_CATEGORY_LEVEL');
+define ('SYS_REF_ID_PREFIX', 				'REF_ID_PREFIX');

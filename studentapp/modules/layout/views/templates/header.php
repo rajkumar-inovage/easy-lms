@@ -37,6 +37,7 @@
 	
 	<header class="">
 		<nav class="navbar navbar-expand-lg bg-white  border-bottom ">
+          <div class="container">
 				
 			<!-- Sidebar Toggler -->
 			<button class="mr-2 navbar-toggle" type="button" id="toggle_sidebar">
@@ -66,12 +67,12 @@
                 <a class="dropdown-item" href="#">Logout</a>
               </div>
             </div>
-
+          </div>
 		</nav>
 	</header>
 
     <div class="bg-white half shadow-sm sticky-top ">
-        <div class="container-fluid">
+        <div class="container">
             <div class="py-2 d-flex justify-content-between">
                 <div class="">
                     <?php 
@@ -153,5 +154,5 @@
 	<!--// Sidebar -->	
 
 	<main id="content" role="main">
-		<div class="container-fluid pt-4">          
+		<div class="container pt-4">          
 	

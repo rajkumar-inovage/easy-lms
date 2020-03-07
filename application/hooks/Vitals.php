@@ -27,19 +27,19 @@ class Vitals extends MX_Controller {
 	// Load default settings
 	public function temp_login () {
 		if ( ! $this->session->has_userdata ('member_id')) {
-    		$this->session->set_userdata ('member_id', 112);
+    		$this->session->set_userdata ('member_id', 1);
 		}
 		if ( ! $this->session->has_userdata ('role_id')) {
-    		$this->session->set_userdata ('role_id', 4);
+    		$this->session->set_userdata ('role_id', 1);
 		}
 		if ( ! $this->session->has_userdata ('is_admin')) {
-    		$this->session->set_userdata ('is_admin', 0);
+    		$this->session->set_userdata ('is_admin', 1);
 		}
 		if ( ! $this->session->has_userdata ('user_name')) {
-    		$this->session->set_userdata ('user_name', 'Demo Student');
+    		$this->session->set_userdata ('user_name', 'Super Admin');
 		}
 		if ( ! $this->session->has_userdata ('coaching_id')) {
-    		$this->session->set_userdata ('coaching_id', 1);
+    		$this->session->set_userdata ('coaching_id', 0);
 		}
 	}
 	

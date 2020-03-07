@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
-class Reports extends MX_Controller {
+class Tests extends MX_Controller {
 		
 	/* Crumb Buttons */
 	var $crumb_buttons;
