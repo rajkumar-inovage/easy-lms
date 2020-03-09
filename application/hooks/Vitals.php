@@ -26,20 +26,46 @@ class Vitals extends MX_Controller {
 	
 	// Load default settings
 	public function temp_login () {
-		if ( ! $this->session->has_userdata ('member_id')) {
-    		$this->session->set_userdata ('member_id', 1);
+		$set_login = false;
+		if ($this->uri->segment (1) == 'student') {
+			$role_id = 4;
+			$member_id = 112;
+			$is_admin = false;
+			$user_name = 'Student';
+			$coaching_id = 1;
+			$set_login = true;
+		} elseif ($this->uri->segment (1) == 'admin') {
+			$role_id = 1;
+			$member_id = 1;
+			$is_admin = true;
+			$user_name = 'Super';
+			$coaching_id = 0;
+			$set_login = true;
+		} elseif ($this->uri->segment (1) == 'coaching') {
+			$role_id = 5;
+			$member_id = 1;
+			$is_admin = true;
+			$user_name = 'Super';
+			$coaching_id = 1;
+			$set_login = true;
 		}
-		if ( ! $this->session->has_userdata ('role_id')) {
-    		$this->session->set_userdata ('role_id', 1);
-		}
-		if ( ! $this->session->has_userdata ('is_admin')) {
-    		$this->session->set_userdata ('is_admin', 1);
-		}
-		if ( ! $this->session->has_userdata ('user_name')) {
-    		$this->session->set_userdata ('user_name', 'Super Admin');
-		}
-		if ( ! $this->session->has_userdata ('coaching_id')) {
-    		$this->session->set_userdata ('coaching_id', 0);
+
+		if ($set_login) {			
+			if ( ! $this->session->has_userdata ('member_id')) {
+	    		$this->session->set_userdata ('member_id', $member_id);
+			}
+			if ( ! $this->session->has_userdata ('role_id')) {
+	    		$this->session->set_userdata ('role_id', $role_id);
+			}
+			if ( ! $this->session->has_userdata ('is_admin')) {
+	    		$this->session->set_userdata ('is_admin', $is_admin);
+			}
+			if ( ! $this->session->has_userdata ('user_name')) {
+	    		$this->session->set_userdata ('user_name', $user_name);
+			}
+			if ( ! $this->session->has_userdata ('coaching_id')) {
+	    		$this->session->set_userdata ('coaching_id', $coaching_id);
+			}
 		}
 	}
 	

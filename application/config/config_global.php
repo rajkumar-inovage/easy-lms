@@ -15,9 +15,7 @@ $config['sys_dir']						= 'contents/system/';
 $config['system_logo']					= 'contents/system/system_logo.png';
 $config['profile_picture_path']			= 'contents/profile_images/';
 
-define ('INCLUDE_PATH', 			    'layout/templates/');
-define ('SCRIPT_PATH', 				    'layout/scripts/');
-define ('THEME_PATH', 					'themes/default/');
+define ('INCLUDE_PATH', 			    'layout/');
 
 define ('COMPANY_NAME', 				'Inovexia Software Services Pvt Ltd');
 define ('COMPANY_URL', 					'https://inovexiasoftware.com');
@@ -38,3 +36,21 @@ define ('TREE_TYPE_TEST', 					2);
 define ('TREE_TYPE_STUDENT',			 	3);
 
 define ('RECORDS_PER_PAGE',			 		20);
+
+// Default User Roles
+define ('USER_ROLE_SUPER_ADMIN', 			1);
+define ('USER_ROLE_ADMIN', 					2);
+define ('USER_ROLE_TEACHER', 				3);
+define ('USER_ROLE_STUDENT', 				4);
+define ('USER_ROLE_COACHING_ADMIN',			5);
+
+
+// Default User Status
+define ('USER_STATUS_DISABLED', 			0);
+define ('USER_STATUS_ENABLED', 				1);
+define ('USER_STATUS_UNCONFIRMED', 			2);
+
+// SYS Parameters
+define ('SYS_USER_STATUS', 					'USER_STATUS');
+define ('SYS_STUDENT_LEVELS', 				'STUDENT_CATEGORY_LEVEL');
+define ('SYS_REF_ID_PREFIX', 				'REF_ID_PREFIX');

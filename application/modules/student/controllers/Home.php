@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Home extends MX_Controller {
 
     public function __construct () {
-        $config = ['admin/config_admin'];
+        $config = ['config_student'];
         $models = ['admin/coachings_model'];
         $this->common_model->autoload_resources ($config, $models);
 	}	
