@@ -95,7 +95,7 @@ class Tests extends MX_Controller {
 	}
 
 	public function edit($coaching_id=0, $category_id=0, $test_id=0) {
-		$this->create ($coaching_id, $category_id, $test_id);
+		$this->create_test ($coaching_id, $category_id, $test_id);
 	}
 	/* CREATE TEST
 		Function to create new test.

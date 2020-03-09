@@ -5,7 +5,7 @@ class Tests extends MX_Controller {
 
     public function __construct () {
 		$modules = array ('tests', 'qb');
-		$config = ['coaching/config_coaching'];
+		$config = ['config_student'];
 	    $models = ['coaching/tests_model' ,'coaching/qb_model', 'coaching/tests_reports', 'coaching/users_model'];
 		$this->common_model->autoload_resources ($config, $models);
 	}	
@@ -31,7 +31,10 @@ class Tests extends MX_Controller {
 		$data['member_id'] 		= $member_id;		
 		$data['type'] 			= $type;		
 		$data['category_id'] 	= $category_id;		
-		
+		$data['ongoing_tests'] 	= $this->tests_model->get_enrolled_test($coaching_id, $member_id);
+
+		$data['upcoming_tests'] 	= $this->tests_model->get_enrolled_test($coaching_id, $member_id, TEST_TYPE_REGULAR, TEST_TYPE_UPCOMING);
+
 		$data['tests'] 	= $this->tests_model->get_all_tests ($coaching_id, $category_id, $type, 0);
 		
 		/* --==// Sidebar //==-- */ 
