@@ -2,7 +2,7 @@
 	<div class="card-body">
 		<h4>Test Name: <strong><?php echo ($test['title']); ?></strong></h4>
 		<strong>General Instructions:</strong>
-		<ol>
+		<ol class="pl-4">
 			<li>Test Duration: <strong><span class="completeDuration"><?php echo $test['time_min']; ?></span> </strong>minutes.</li>
 			<li>Timer and Test Submission: The clock with show you the remaining time to complete the examination. </li>
 			<li>The Question Palette displayed on the right side of screen will show the status of each question using one of the following symbols:
@@ -30,9 +30,9 @@
 			<li>Question Palette (not in Smart Phones): You can click on the "&gt;" arrow to collapse the question palette thereby maximizing the question window. To view the question palette again, you can click on "&lt;" which appears on the right side of question window.</li>
 		</ol>
 		<strong>Answering a Question : </strong>
-		<ol start="6">
+		<ol class="pl-4" start="6">
 			<li>Procedure for answering a multiple choice type question:
-				<ol type="a">
+				<ol class="pl-4" type="a">
 					<li>To select your answer, click on the button of one of the options</li>
 					<li>To deselect your chosen answer, click on the button of the chosen option again or click on the <strong>Clear Response</strong> button</li>
 					<li>To change your chosen answer, click on the button of another option</li>
