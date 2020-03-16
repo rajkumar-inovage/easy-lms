@@ -3,7 +3,7 @@
 class Home extends MX_Controller {
 	
 	public function __construct () { 
-	    $config = ['admin/config_admin', 'coaching/config_coaching'];
+	    $config = ['coaching/config_coaching'];
 	    $models = ['admin/coachings_model', 'coaching/users_model', 'coaching/subscription_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}

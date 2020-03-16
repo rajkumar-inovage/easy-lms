@@ -50,7 +50,7 @@
 									<?php echo $item["adm_no"]; ?>
 								</td>
 								<td>
-									<?php echo $item ["description"]; ?>
+									<?php //echo $item ["description"]; ?>
 								</td>
 								<td>
 									<?php if ($add_users == 0) { ?>

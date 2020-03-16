@@ -6,7 +6,7 @@ class User_actions extends MX_Controller {
 
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
-	    $config = ['admin/config_admin'];
+	    $config = ['config_coaching'];
 	    $models = ['admin/coachings_model', 'coaching/users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}

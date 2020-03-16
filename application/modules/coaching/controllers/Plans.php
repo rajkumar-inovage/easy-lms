@@ -5,7 +5,7 @@ class Plans extends MX_Controller {
     var $toolbar_buttons = []; 
 
     public function __construct () {
-	    $config = ['admin/config_admin'];
+	    $config = ['config_coaching'];
 	    $models = ['coaching/test_plans_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	    

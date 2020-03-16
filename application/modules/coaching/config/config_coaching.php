@@ -2,6 +2,8 @@
 
 $config['config_coachings'] = '';
 
+define ('THEME_PATH', 					'themes/admin/');
+
 define ('COACHING_ID_PREFIX1', 			'CC');
 define ('COACHING_ID_PREFIX2', 			date ('Y'));
 define ('COACHING_ID_INCREMENT', 		1);

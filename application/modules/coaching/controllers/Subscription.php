@@ -6,7 +6,7 @@ class Subscription extends MX_Controller {
 
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
-	    $config = ['admin/config_admin', 'coaching/config_coaching'];
+	    $config = ['coaching/config_coaching'];
 	    $models = ['coaching/subscription_model', 'admin/coachings_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	    

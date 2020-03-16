@@ -4,7 +4,7 @@ class Tests_actions extends MX_Controller {
 	var $coaching_id = FALSE;
 	
 	public function __construct () { 
-		$config = ['admin/config_admin', 'coaching/config_coaching'];
+		$config = ['config_student'];
 	    $models = ['coaching/tests_model', 'admin/coachings_model', 'coaching/users_model' ,'coaching/qb_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}

@@ -69,6 +69,24 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="col-md-4 col-lg-2 col-xs-12 px-2">
+		<div class="card mb-3">
+			<div class="card-body">
+				<div class="height-80 d-flex align-items-center justify-content-center">
+					<h4 class="card-title text-center text-primary my-3">
+						<a href="<?php echo site_url ('coaching/announcements/index/'.$coaching_id); ?>" class="text-decoration-none stretched-link text-reset">
+							<span class="position-relative d-inline-block">
+								<i class="fas fa-bullhorn fa-2x"></i>
+								<i class="fa fa-calendar-check position-absolute mt-2" style="right: 0;font-size: .5em;"></i>
+							</span>
+							<span class="d-block">Announcements</span>
+						</a>
+					</h4>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 	<div class="col-md-4 col-lg-2 col-xs-12 px-2">
 		<div class="card border-primary">
