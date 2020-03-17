@@ -51,6 +51,28 @@ class Users_model extends CI_Model {
 		return $sql->result_array ();
 		
 	}
+
+	public function search_batch_users ($coaching_id=0) {
+		
+		$role_id = $this->input->post ('search-role');
+		$status = $this->input->post ('search-status'); 
+		$search = $this->input->post ('search_text');
+		if ( ! empty($search)) {
+			$where = "(adm_no LIKE '%$search%' OR login LIKE '%$search%' OR first_name LIKE '%$search%' OR second_name LIKE '%$search%' OR last_name LIKE '%$search%' OR email LIKE '%$search%')";
+			$this->db->where ($where);
+		} 
+		if ($role_id > 0) {
+			$this->db->where ('role_id', $role_id); 
+		}
+		if ($status > '-1') {
+			$this->db->where ('status', $status); 
+		}
+		$this->db->where ('coaching_id', $coaching_id );
+		$sql = $this->db->get ('coaching_batch_users');
+		return $sql->result_array ();
+	}
+
+	
 	
 	public function get_user ($member_id=0) {		
 		$this->db->where ('member_id', $member_id);
