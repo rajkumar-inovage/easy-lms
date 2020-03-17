@@ -51,7 +51,29 @@ class Users_model extends CI_Model {
 		return $sql->result_array ();
 		
 	}
-	
+
+	public function search_batch_users ($coaching_id=0) {
+		$role_id = $this->input->post ('search-role');
+		$status = $this->input->post ('search-status'); 
+		$search = $this->input->post ('search_text');
+		$this->db->select ('M.*');
+		$this->db->from ('members M');
+		$this->db->join ('coaching_batch_users MB', 'MB.member_id=M.member_id');
+		$this->db->where ('M.coaching_id', $coaching_id );
+		if (!empty($search)) {
+			$where = "(M.adm_no LIKE '%$search%' OR M.login LIKE '%$search%' OR M.first_name LIKE '%$search%' OR M.second_name LIKE '%$search%' OR M.last_name LIKE '%$search%' OR M.email LIKE '%$search%')";
+			$this->db->where ($where);
+		} 
+		if ($role_id > 0) {
+			$this->db->where ('M.role_id', $role_id); 
+		}
+		if ($status > '-1') {
+			$this->db->where ('M.status', $status); 
+		}
+		$sql = $this->db->get();
+		return $sql->result_array ();
+	}
+
 	public function get_user ($member_id=0) {		
 		$this->db->where ('member_id', $member_id);
 		$sql = $this->db->get ('members');
@@ -551,8 +573,15 @@ class Users_model extends CI_Model {
 		}
 	}
 
-	public function batch_users ($batch_id=0) {
+	public function batch_users ($batch_id=0, $coaching_id=0, $status='-1', $role_id=0) {
 		$this->db->select ('M.*');
+		if($role_id > 0){
+			$this->db->where('M.role_id', $role_id);
+		}
+		if($status > '-1'){
+			$this->db->where('M.status', $status);
+		}
+		$this->db->where ('M.coaching_id', $coaching_id);
 		$this->db->where ('MB.batch_id', $batch_id);
 		$this->db->from ('coaching_batch_users MB');
 		$this->db->join ('members M', 'MB.member_id=M.member_id');
@@ -565,7 +594,7 @@ class Users_model extends CI_Model {
 		return $result;
 	}	
 
-	public function users_not_in_batch ($batch_id=0, $coaching_id=0) {
+	public function users_not_in_batch ($batch_id=0, $coaching_id=0, $status='-1', $role_id=0) {
 		// Get batch users
 		$this->db->where ('batch_id', $batch_id);
 		$sql = $this->db->get ('coaching_batch_users');
@@ -582,6 +611,12 @@ class Users_model extends CI_Model {
 		$this->db->join ('sys_roles R', 'M.role_id=R.role_id');
 		if (! empty($data)) {
 			$this->db->where_not_in ('M.member_id', $data);
+		}
+		if($role_id > 0){
+			$this->db->where('M.role_id', $role_id);
+		}
+		if($status > '-1'){
+			$this->db->where('M.status', $status);
 		}
 		$this->db->where ('M.coaching_id', $coaching_id);
 		$sql = $this->db->get ();

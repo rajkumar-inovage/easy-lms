@@ -254,8 +254,11 @@ class Users extends MX_Controller {
 	}
 	
 	
-	public function batch_users ($coaching_id=0, $batch_id=0, $add_users=0) {
-		$batch = $this->users_model->get_member_batches ($batch_id);
+	public function batch_users ($coaching_id=0, $batch_id=0, $add_users=0, $status='-1', $role_id=0) {
+		$role_lvl 		 	= $this->session->userdata ('role_lvl');	
+		$data['results'] 	= $this->users_model->get_users ($coaching_id, $role_id, $status, $batch_id);
+		$data['roles']	 	= $this->users_model->user_roles_by_level ($role_lvl);
+		$batch 				= $this->users_model->get_member_batches ($batch_id);
 		if ( ! empty ($batch)) {
 			$batch_title = $batch['batch_name'];
 		} else {
@@ -270,10 +273,12 @@ class Users extends MX_Controller {
 		$data["batch_id"] = $batch_id;
 		$data["coaching_id"] = $coaching_id;
 		$data['add_users'] = $add_users;
+		$data['role_id'] 	= $role_id;
+		$data['status'] = $status;
 		$data["bc"] = array ( 'Batches'=>'coaching/users/batches/'.$coaching_id);
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
-		$users_not_in_batch = $this->users_model->users_not_in_batch ($batch_id, $coaching_id);
+		$users_not_in_batch = $this->users_model->users_not_in_batch ($batch_id, $coaching_id, $status, $role_id);
 		if (! empty($users_not_in_batch)) {
 		    $num_users_notin = count($users_not_in_batch);
 		} else {
@@ -281,7 +286,7 @@ class Users extends MX_Controller {
 		}
 		$data['num_users_notin'] = $num_users_notin;
 		
-		$users_in_batch = $this->users_model->batch_users ($batch_id);
+		$users_in_batch = $this->users_model->batch_users ($batch_id, $coaching_id, $status, $role_id);
 		if (! empty($users_in_batch)) {
 		    $num_users_in = count($users_in_batch);
 		} else {
