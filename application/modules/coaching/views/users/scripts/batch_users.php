@@ -12,6 +12,13 @@ $(document).ready (function () {
 		echo $role_id; ?>';
 		$(location).attr('href', url);
 	});
+
+	$('#search-role').on ('change', function () {
+		var role_id = $(this).val ();
+		var url = '<?php echo site_url ('coaching/users/batch_users/'.$coaching_id.'/'. $batch_id.'/'.$add_users);?>/<?php 
+		echo $status; ?>/'+role_id;
+		$(location).attr('href', url);
+	});
 });
 </script>
 
@@ -31,7 +38,7 @@ $(document).ready (function () {
 			method : 'POST',
 			body: formData,
 		}).then (function (response) {
-			return response.json ();
+			return response.json();
 		}).then(function(result) {
 			if (result.status == true) {
 				loaderSelector.style.display = 'none';
@@ -43,11 +50,11 @@ $(document).ready (function () {
 							output += '<th width="5%">';
 								output += '<input id="checkAll" type="checkbox" >';
 							output += '</th>';
-							output += '<th width="25%">Name</th>';
-							output += '<th width="">Email</th>';
-							output += '<th width="">Role</th>';
-							output += '<th width="">Status</th>';
-							output += '<th width="">Actions</th>';
+							output += '<th>Name</th>';
+							output += '<th>Email</th>';
+							output += '<th>Role</th>';
+							output += '<th>Status</th>';
+							output += '<th>Actions</th>';
 						output += '</tr>';
 					output += '</thead>';
 					output += '<tbody>';
@@ -65,16 +72,31 @@ $(document).ready (function () {
 								output += obj[item].email;
 							output += '</td>';
 							output += '<td>';
-								output += obj[item].role_id;
-							output += '</td>';
-							output += '<td>';
-								if (obj[item].status == 1) {
-									output += '<span class="badge badge-primary">Active</span>';
-								} else {
-									output += '<span class="badge badge-light">Inactive</span>';
+								if(obj[item].role_id == 1){
+									output += '<span>Super Admin</span>';
+								}
+								if(obj[item].role_id == 2){
+									output += '<span>Admin</span>';
+								}
+								if(obj[item].role_id == 3){
+									output += '<span>Teacher</span>';
+								}
+								if(obj[item].role_id == 4){
+									output += '<span>Student</span>';
+								}
+								if(obj[item].role_id == 5){
+									output += '<span>Coaching Admin</span>';
 								}
 							output += '</td>';
 							output += '<td>';
+								if (obj[item].status == 1) {
+									output += '<span class="font-weight-bold">Enabled</span>';
+								} else {
+									output += '<span class="font-weight-bold">Disabled</span>';
+								}
+							output += '</td>';
+							output += '<td>';
+								output += '<a href="<?php echo site_url('coaching/users/create'); ?>/'+obj[item].coaching_id+'/'+obj[item].role_id+'/'+obj[item].member_id+'"><i class="fa fa-trash"></i></a>';
 							output += '</td>';
 						output += '</tr>';
 						i++;

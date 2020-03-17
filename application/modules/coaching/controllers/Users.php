@@ -278,7 +278,7 @@ class Users extends MX_Controller {
 		$data["bc"] = array ( 'Batches'=>'coaching/users/batches/'.$coaching_id);
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
-		$users_not_in_batch = $this->users_model->users_not_in_batch ($batch_id, $coaching_id);
+		$users_not_in_batch = $this->users_model->users_not_in_batch ($batch_id, $coaching_id, $status, $role_id);
 		if (! empty($users_not_in_batch)) {
 		    $num_users_notin = count($users_not_in_batch);
 		} else {
@@ -286,7 +286,7 @@ class Users extends MX_Controller {
 		}
 		$data['num_users_notin'] = $num_users_notin;
 		
-		$users_in_batch = $this->users_model->batch_users ($batch_id);
+		$users_in_batch = $this->users_model->batch_users ($batch_id, $coaching_id, $status, $role_id);
 		if (! empty($users_in_batch)) {
 		    $num_users_in = count($users_in_batch);
 		} else {

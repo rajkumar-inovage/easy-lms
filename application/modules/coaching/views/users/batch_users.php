@@ -22,10 +22,10 @@
 				</div>
 
 				<div class="col-md-3">
-					<div class="input-group ">
-						<input name="search_text" class="form-control " type="search" placeholder="Search" aria-label="Search Test" aria-describedby="search-button">
+					<div class="input-group">
+						<input name="search_text" id="search-text" class="form-control" type="search" placeholder="Search" aria-label="Search Test" aria-describedby="search-button">
 						<div class="input-group-append">
-							<button class="btn btn-sm btn-primary " type="submit" id="search-button"><i class="fa fa-search"></i></button>
+							<button class="btn btn-sm btn-primary" type="submit" id="search-button"><i class="fa fa-search"></i></button>
 						</div>
 					</div>
 				</div>
@@ -58,18 +58,18 @@
 			}
 			?>	
 			<div class="-table-responsive" id="users-list">			
-				<table class="table table-hover ">
+				<table class="table table-bordered v-middle mb-0" id="data-tables">
 					<thead>
-						<th width="5%">#
+						<th width="3%">
 							<?php //if ($add_users > 0) { ?>
 								<input type="checkbox" name="" value="" class="check" id="check-all">
 							<?php //} ?>
 						</th>
-						<th>Name</th>
-						<th>Email</th>
-						<th>Role</th>
-						<th>Status</th>
-						<th>Actions</th>
+						<th width="25%">Name</th>
+						<th width="">Email</th>
+						<th width="">Role</th>
+						<th width="">Status</th>
+						<th width="">Actions</th>
 					</thead>
 					<tbody> 
 					<?php
@@ -80,7 +80,7 @@
 							?>
 							<tr class="check">
 								<td>
-									<?php echo $i; ?>
+									<?php //echo $i; ?>
 									<?php //if ($add_users > 0) { ?>
 										<input type="checkbox" name="users[]" value="<?php echo $item['member_id']; ?>" class="check">
 									<?php //} ?>
@@ -108,25 +108,6 @@
 										<!-- DELETE LOG  -->
 										<a href="javascript:void(0);" onclick="show_confirm ('Remove this user from batch <?php echo $batch_title; ?>?', '<?php echo site_url("coaching/user_actions/remove_batch_user/".$coaching_id.'/'.$batch_id.'/'.$item['member_id'].'/'.$add_users); ?>')" class="btn btn-link" data-title="Remove User"><i class="fa fa-trash"></i></a>
 									
-
-								<td>
-									<?php 
-										$config = $this->users_model->user_role_name($item['role_id']);
-										echo $config['description']; 
-									?>
-								</td>
-								<td>
-									<?php 
-									$config = $this->common_model->sys_parameter_name ( SYS_USER_STATUS, $item['status']);
-									echo '<span class="font-weight-bold">'.$config['paramval'].'</span>'; 
-									?>
-								</td>
-								<td>
-									<?php //if ($add_users == 0) { ?>
-										<!-- DELETE LOG  -->
-										<a href="javascript:void(0);" onclick="show_confirm ('Remove this user from batch <?php echo $batch_title; ?>?', '<?php echo site_url("coaching/user_actions/remove_batch_user/".$coaching_id.'/'.$batch_id.'/'.$item['member_id'].'/'.$add_users); ?>')" class="btn btn-link" data-title="Remove User"><i class="fa fa-trash"></i></a>
-									<?php //} ?>
-
 								</td>
 							</tr>
 							<?php 

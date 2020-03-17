@@ -21,8 +21,8 @@ class User_actions extends MX_Controller {
 		$this->output->set_output(json_encode(array('status'=>true, 'data'=>$data)));	
 	}
 
-	public function search_batch_users () {
-		$data = $this->users_model->search_batch_users ();
+	public function search_batch_users ($coaching_id=0) {
+		$data = $this->users_model->search_batch_users ($coaching_id);
 		$this->output->set_content_type("application/json");
 		$this->output->set_output(json_encode(array('status'=>true, 'data'=>$data)));	
 	}
