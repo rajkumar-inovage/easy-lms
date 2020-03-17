@@ -107,7 +107,8 @@
 	
 	<!-- Sidebar -->
 	<div id="sidebar" class="sidebar left sidebar-skin-blue">
-		<div class="sidebar-block">            
+		<div class="sidebar-block">
+            <?php // print_r( $_SESSION); ?>
             <div class="profile">
     			<a class="mr-0 ml-0 " href="<?php echo $this->session->userdata ('HOME_URL'); ?>" title="<?php echo $this->session->userdata ('SITE_TITLE'); ?>">
     				<?php 

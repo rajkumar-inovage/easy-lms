@@ -1002,7 +1002,7 @@ class Tests_model extends CI_Model {
 	/*--------------========= FRONTEND MODELS ========---------------*/
 	
 	//=========== Model for list tests =======================
-	public function get_enrolled_test ($category_id=0, $test_type=TEST_TYPE_REGULAR, $filter=TEST_TYPE_ONGOING, $member_id=0) {
+	public function get_enrolled_test ($category_id=0, $member_id=0, $test_type=TEST_TYPE_REGULAR, $filter=TEST_TYPE_ONGOING) {
 		
 		if ($member_id == 0) {
 			$member_id = $this->session->userdata ('member_id');			
@@ -1021,7 +1021,7 @@ class Tests_model extends CI_Model {
 					$res = array_merge ($row, $item);
 					$results[$row['test_id']] = $res;
 				}
-				return $results;
+				return array_combine(range(0, (count($results)-1)), array_values($results));
 				exit;
 			}
 		}

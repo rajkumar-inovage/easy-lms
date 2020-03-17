@@ -6,7 +6,7 @@ class Tests extends MX_Controller {
 
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
-	    $config = ['admin/config_admin', 'coaching/config_coaching'];
+	    $config = [ 'coaching/config_coaching'];
 	    $models = ['admin/coachings_model', 'coaching/subscription_model', 'coaching/tests_model', 'coaching/test_plans_model', 'coaching/qb_model', 'coaching/users_model'];
 
 	    $this->common_model->autoload_resources ($config, $models);
@@ -95,7 +95,7 @@ class Tests extends MX_Controller {
 	}
 
 	public function edit($coaching_id=0, $category_id=0, $test_id=0) {
-		$this->create ($coaching_id, $category_id, $test_id);
+		$this->create_test ($coaching_id, $category_id, $test_id);
 	}
 	/* CREATE TEST
 		Function to create new test.

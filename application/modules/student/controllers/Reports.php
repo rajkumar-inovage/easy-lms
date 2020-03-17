@@ -2,12 +2,9 @@
 
 class Reports extends MX_Controller {
 		
-	/* Crumb Buttons */
-	var $crumb_buttons;
-	var $autoload = array ();
 
 	public function __construct () { 
-		$config = ['admin/config_admin', 'coaching/config_coaching'];
+		$config = ['config_student'];
 	    $models = ['coaching/tests_reports', 'coaching/tests_model' ,'coaching/qb_model', 'coaching/users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}

@@ -90,6 +90,7 @@
 									<?php echo $item["adm_no"]; ?>
 								</td>
 								<td><?php echo $item['email']; ?></td>
+
 								<td>
 									<?php 
 										$config = $this->users_model->user_role_name($item['role_id']);
@@ -107,6 +108,25 @@
 										<!-- DELETE LOG  -->
 										<a href="javascript:void(0);" onclick="show_confirm ('Remove this user from batch <?php echo $batch_title; ?>?', '<?php echo site_url("coaching/user_actions/remove_batch_user/".$coaching_id.'/'.$batch_id.'/'.$item['member_id'].'/'.$add_users); ?>')" class="btn btn-link" data-title="Remove User"><i class="fa fa-trash"></i></a>
 									
+
+								<td>
+									<?php 
+										$config = $this->users_model->user_role_name($item['role_id']);
+										echo $config['description']; 
+									?>
+								</td>
+								<td>
+									<?php 
+									$config = $this->common_model->sys_parameter_name ( SYS_USER_STATUS, $item['status']);
+									echo '<span class="font-weight-bold">'.$config['paramval'].'</span>'; 
+									?>
+								</td>
+								<td>
+									<?php //if ($add_users == 0) { ?>
+										<!-- DELETE LOG  -->
+										<a href="javascript:void(0);" onclick="show_confirm ('Remove this user from batch <?php echo $batch_title; ?>?', '<?php echo site_url("coaching/user_actions/remove_batch_user/".$coaching_id.'/'.$batch_id.'/'.$item['member_id'].'/'.$add_users); ?>')" class="btn btn-link" data-title="Remove User"><i class="fa fa-trash"></i></a>
+									<?php //} ?>
+
 								</td>
 							</tr>
 							<?php 
@@ -124,7 +144,7 @@
 						</tr>
 						<?php
 					} else { 
-						echo '<tr><td colspan="3">No users in this batch</td></tr>';
+						echo '<tr><td colspan="6">No users in this batch</td></tr>';
 					}
 					?>
 					</tbody>
