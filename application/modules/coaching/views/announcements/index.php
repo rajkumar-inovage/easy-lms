@@ -27,14 +27,12 @@
 						<td><?php echo $row['description']; ?></td>
 						<td><?php 
 						$original_date=$row['start_date'];
-						$timestamp=strtotime($original_date);
-						$new_date = date("d-m-Y", $timestamp);
+						$new_date = date("d-m-Y", $original_date);
 
 						echo $new_date; ?></td>
 						<td><?php 
 						$original_date=$row['end_date'];
-						$timestamp=strtotime($original_date);
-						$new_date = date("d-m-Y", $timestamp);
+						$new_date = date("d-m-Y", $original_date);
 
 						echo $new_date; ?></td>
 						<td>
@@ -51,7 +49,15 @@
 							
 						</td>
 						<td><?php echo $row['created_by']; ?></td>
-						<td><span class="px-2"><a href="#">Edit</a></span><span class="px-2"><a href="#">Delete</a></span></td>
+						<td><span class="px-2">
+							<?php echo anchor ('coaching/announcements/create_announcement/'.$coaching_id.'/'.$row['announcement_id'], '<i class="fa fa-edit"></i>'); ?>
+							</span>
+							<span class="px-2">
+								<!-- <?php //echo anchor ('coaching/announcements/delete_announcement/'.$coaching_id.'/'.$row['announcement_id'], 'Delete'); ?> -->
+								<a href="javascript:void(0)" onclick="show_confirm ('<?php echo 'Are you sure want to delete this announcement?' ; ?>','<?php echo site_url('coaching/announcements/delete_announcement/'.$coaching_id.'/'.$row['announcement_id']); ?>' )"><i class="fa fa-trash"></i></a>
+
+							</span>
+						</td>
 					</tr>
 					<?php
 					$i++; 
@@ -61,7 +67,7 @@
 				</tbody>
 			</table> 
 			<div class="create-announcement">
-				<?php echo anchor ('coaching/announcements/create_announcement/'.$coaching_id, 'Create announcements'); ?>
+				<?php echo anchor ('coaching/announcements/create_announcement/'.$coaching_id, 'Create announcements', array('class'=>'btn btn-primary')); ?>
 			</div>
 		</div>
 	</div>

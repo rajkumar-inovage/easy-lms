@@ -12,6 +12,9 @@ class Announcements extends MX_Controller {
 	    $this->common_model->autoload_resources ($config, $models);
 	    
         $cid = $this->uri->segment (4);
+         $cid = $this->uri->segment (4);
+        $this->toolbar_buttons['<i class="fa fa-puzzle-piece"></i> All Announcements']= 'coaching/announcements/index/'.$cid;
+        $this->toolbar_buttons['<i class="fa fa-plus-circle"></i> Create Announcements']= 'coaching/announcements/create_announcement/'.$cid;
         
         // Security step to prevent unauthorized access through url
         if ($this->session->userdata ('is_admin') == TRUE) {
@@ -40,27 +43,31 @@ class Announcements extends MX_Controller {
 		$this->load->view ( INCLUDE_PATH  . 'footer', $data);	
 	}
 
-	public function create_announcement () {
+	public function create_announcement ($coaching_id=0,$announcement_id=0) {
+
+		$data['page_title']  = 'Create Announcements';
+		$data['bc'] = array ('Coaching Dashboard'=>'coaching/home/dashboard/');
+		/*Check submit button */
+		$data['coaching_id']=$coaching_id;
+		$data['announcement_id']=$announcement_id;
+		$data['result']=$this->announcements_model->get_announcement($coaching_id,$announcement_id);
+		
+		/*load registration view form*/
+		$this->load->view ( INCLUDE_PATH  . 'header', $data);
+		$this->load->view ( 'announcements/create_announcement',$data);
+		$this->load->view ( INCLUDE_PATH  . 'footer', $data);
+	}
+	
+	public function delete_announcement ($coaching_id=0,$announcement_id=0) {
 
 		$data['bc'] = array ('Coaching Dashboard'=>'coaching/home/dashboard/');
 		/*Check submit button */
-		if($this->input->post('submit'))
-		{
-		$coaching_id=$this->input->post('coaching_id');
-		$title=$this->input->post('title');
-		$description=$this->input->post('description');
-		$start_date=$this->input->post('start_date');
-		$end_date=$this->input->post('end_date');
-		$status=$this->input->post('status');
-		$created_by=$this->input->post('created_by');
+		$data['coaching_id']=$coaching_id;
+		$data['announcement_id']=$announcement_id;
+		$data['result']=$this->announcements_model->delete_announcement($coaching_id,$announcement_id);
 		
-		
-		$this->announcements_model->create_announcement($coaching_id,$title,$description,$start_date,$end_date,$status,$created_by);	
-		echo "Records Saved Successfully";
-		}
 		/*load registration view form*/
 		$this->load->view ( INCLUDE_PATH  . 'header', $data);
-		$this->load->view ( 'announcements/create_announcement');
 		$this->load->view ( INCLUDE_PATH  . 'footer', $data);
 	}
 	

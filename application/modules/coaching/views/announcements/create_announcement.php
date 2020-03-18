@@ -3,42 +3,62 @@
 		<div class="card">
 			
 			<div class="card-body">
-				<?php echo form_open('coaching/announcements/create_announcement/', array('class'=>'form-horizontal row-border', 'class'=>'validate-form')); ?>		
+				<?php echo form_open('coaching/announcement_action/create/'.$coaching_id.'/'.$announcement_id, array('class'=>'form-horizontal row-border', 'class'=>'validate-form')); ?>		
 					<div class="form-group">
-						<input type="hidden" class="form-control required" name="coaching_id" value="" />
+						<input type="hidden" class="form-control" name="coaching_id" value="" />
 					</div>
 					<div class="form-group">
 						<?php echo form_label('Title<span class="required">*</span>', '', array('class'=>'control-label')); ?>
-						<input type="text" class="form-control required" name="title" />
+						<input type="text" class="form-control required" name="title" value="<?php echo set_value('title', $result['title']); ?>" />
 					</div>
 
 					<div class="form-group row">
 						<div class="col-md-12">
 							<?php echo form_label('Description', '', array('class'=>'control-label')); ?>
-							<input class="form-control required" name="description" />
+							<textarea class="form-control required" name="description" placeholder="Write your announcement..." rows="5"><?php echo set_value('description', $result['description']); ?></textarea>
 							
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<div class="col-md-6">
-							<?php echo form_label('Start Date<span class="required">*</span>', '', array('class'=>'control-label')); ?>
-							<input name="start_date" type="text" class="form-control required "/>
+							<?php echo form_label('Start Date', '', array('class'=>'control-label')); ?>
+							<input name="start_date" type="date" class="form-control required " value="<?php 
+							$original_date=$result['start_date'];
+							$new_date = date("d-m-Y", $original_date);
+							echo set_value('start_date', $new_date); ?>"/>
 						</div>
 						<div class="col-md-6">
-							<?php echo form_label('End Date<span class="required">*</span>', '', array('class'=>'control-label')); ?>
-							<input name="end_date" type="text" class="form-control required "  />
+							<?php echo form_label('End Date', '', array('class'=>'control-label')); ?>
+							<input name="end_date" type="date" class="form-control required "  value="<?php 
+							$original_date=$result['end_date'];
+							$new_date = date("d-m-Y", $original_date);
+							echo set_value('end_date', $new_date); ?>"/>
 						</div>
 					</div>
 					<div class="form-group row">
-						<div class="col-md-6">
-							<?php echo form_label('Status<span class="required">*</span>', '', array('class'=>'control-label')); ?>
-							<input name="status" type="text" class="form-control required " />
+						<div class="col-md-6 mt-3">
+							<?php echo form_label('Status', '', array('class'=>'control-label pr-5')); ?>
+
+							<input type="radio"
+				                 name="status"
+				                 id="active"
+				                 value="1"
+				                 <?php echo set_value('status', $result['status']) == 1 ? "checked" : ""; ?>
+				  
+				                 />
+				          <label for="active">Active</label>
+				          <input type="radio"
+				                 name="status"
+				                 id="inactive"
+				                 class="ml-3"
+				                 value="0"
+				                 <?php echo set_value('status', $result['status']) == 0 ? "checked" : ""; ?> 
+				  				
+				                 />
+				          <label for="inactive">Inactive</label>
 						</div>
-						<div class="col-md-6">
-							<?php echo form_label('Created By<span class="required">*</span>', '', array('class'=>'control-label')); ?>
-							<input name="created_by" type="text" class="form-control required " />
-						</div>
+						
 					</div>
 					
 					
