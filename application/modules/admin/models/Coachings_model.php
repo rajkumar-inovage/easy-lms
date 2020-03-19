@@ -87,6 +87,12 @@ class Coachings_model extends CI_Model {
 		$result = $sql->result_array ();
 		return $result;
 	}
+	public function get_coaching_announcements ($coaching_id=0) {
+		$this->db->where ('coaching_id', $coaching_id);
+		$sql = $this->db->get ('coaching_announcements');
+		$result = $sql->result_array ();
+		return $result;
+	}
 
 	public function coaching_plans ($coaching_id=0, $plan_id=0, $status='') {
 		$this->db->select ('CP.*, TP.*');

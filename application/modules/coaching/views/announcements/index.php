@@ -66,8 +66,8 @@
 	
 				</tbody>
 			</table> 
-			<div class="create-announcement">
-				<?php echo anchor ('coaching/announcements/create_announcement/'.$coaching_id, 'Create announcements', array('class'=>'btn btn-primary')); ?>
+			<div class="create-announcement mx-3 my-sm-3 my-lg-4">
+				<?php echo anchor ('coaching/announcements/create_announcement/'.$coaching_id, 'Create Announcement', array('class'=>'btn btn-primary')); ?>
 			</div>
 		</div>
 	</div>

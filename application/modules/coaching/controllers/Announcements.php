@@ -12,9 +12,8 @@ class Announcements extends MX_Controller {
 	    $this->common_model->autoload_resources ($config, $models);
 	    
         $cid = $this->uri->segment (4);
-         $cid = $this->uri->segment (4);
         $this->toolbar_buttons['<i class="fa fa-puzzle-piece"></i> All Announcements']= 'coaching/announcements/index/'.$cid;
-        $this->toolbar_buttons['<i class="fa fa-plus-circle"></i> Create Announcements']= 'coaching/announcements/create_announcement/'.$cid;
+        $this->toolbar_buttons['<i class="fa fa-plus-circle"></i> Create Announcement']= 'coaching/announcements/create_announcement/'.$cid;
         
         // Security step to prevent unauthorized access through url
         if ($this->session->userdata ('is_admin') == TRUE) {

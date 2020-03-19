@@ -15,9 +15,12 @@ class Announcement_action extends MX_Controller {
 	 	if ($this->form_validation->run () == true) {
 
 	 		$this->announcements_model->create_announcement($coaching_id,$announcement_id);
+	 		$this->output->set_content_type("application/json");
+				$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Announcement created successfully' ,'redirect'=>site_url('coaching/announcements/index/'.$coaching_id))));
 	 	}
 	 	else {
-
+	 		$this->output->set_content_type("application/json");
+				$this->output->set_output(json_encode(array('status'=>false, 'error'=> validation_errors())));
 	 	}
 
 

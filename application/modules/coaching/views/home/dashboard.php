@@ -81,6 +81,9 @@
 								<i class="fa fa-calendar-check position-absolute mt-2" style="right: 0;font-size: .5em;"></i>
 							</span>
 							<span class="d-block">Announcements</span>
+							<span class="absolute top right m-4">
+								<span class="badge bg-primary d-flex align-items-center justify-content-center rounded-circle height-30 width-30 m-n1"><?php echo count($announcements); ?></span>
+							</span>
 						</a>
 					</h4>
 				</div>

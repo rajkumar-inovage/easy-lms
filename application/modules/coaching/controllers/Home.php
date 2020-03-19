@@ -15,6 +15,7 @@ class Home extends MX_Controller {
 		$data['test_packages'] = $this->coachings_model->coaching_plans ($coaching_id);
 		$data['tests'] = $this->coachings_model->get_coaching_tests ($coaching_id);
 		$data['users'] = $this->coachings_model->get_coaching_users ($coaching_id);
+		$data['announcements'] = $this->coachings_model->get_coaching_announcements ($coaching_id);
 		$data['cats_added'] = array ();
 		
 		$data['role_id'] = $role_id = $this->session->userdata('role_id');

@@ -23,17 +23,19 @@
 					<div class="form-group row">
 						<div class="col-md-6">
 							<?php echo form_label('Start Date', '', array('class'=>'control-label')); ?>
-							<input name="start_date" type="date" class="form-control required " value="<?php 
-							$original_date=$result['start_date'];
-							$new_date = date("d-m-Y", $original_date);
-							echo set_value('start_date', $new_date); ?>"/>
+							<?php $original_date_s=$result['start_date'];
+							$new_date_s = date("Y-m-d", $original_date_s); ?>
+							<input name="start_date" type="date" class="form-control required" value="<?php 
+							
+							echo set_value('start_date', $new_date_s); ?>"/>
 						</div>
 						<div class="col-md-6">
 							<?php echo form_label('End Date', '', array('class'=>'control-label')); ?>
+							<?php $original_date_e=$result['end_date'];
+							$new_date_e = date("Y-m-d", $original_date_e); ?>
 							<input name="end_date" type="date" class="form-control required "  value="<?php 
-							$original_date=$result['end_date'];
-							$new_date = date("d-m-Y", $original_date);
-							echo set_value('end_date', $new_date); ?>"/>
+							
+							echo set_value('end_date', $new_date_e); ?>"/>
 						</div>
 					</div>
 					<div class="form-group row">

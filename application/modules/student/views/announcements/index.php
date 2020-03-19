@@ -17,8 +17,13 @@
 				<tbody>
 					 <?php 
 					 $i=1;
-					 foreach($results as $row){?>
+					 foreach($results as $row){
+					 	$original_date=$row['end_date'];
+						$startdate = date("d-m-Y", $original_date);
+					    $expire =($startdate);
+						$today = date("d-m-Y"); 
 	    
+	      			if($expire >= $today){ ?>
 	      			
 					<tr>
 						<td><?php echo $i; ?></td>
@@ -36,12 +41,14 @@
 						echo $new_date; ?></td>
 						
 						<td><?php echo $row['created_by']; ?></td>
-						
 					</tr>
-					<?php
+					 <?php }
+
 					$i++; 
 
-				}?> 
+				
+				}
+					?> 
 	
 				</tbody>
 			</table> 
