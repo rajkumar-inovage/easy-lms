@@ -1,5 +1,5 @@
 
-	<div class="card card-default">
+	<div class="card card-default my-3 my-lg-5">
 		<div class="-table-responsive" id="users-list">
 			<table class="table table-bordered v-middle mb-0" id="data-tables">
 				<thead>
@@ -26,7 +26,7 @@
 	      			if($expire >= $today){ ?>
 	      			
 					<tr>
-						<td><?php echo $i; ?></td>
+						<td class="font-weight-bold"><?php echo $i; ?></td>
 						<td><?php echo $row['title']; ?></td>
 						<td><?php echo $row['description']; ?></td>
 						<td><?php 
@@ -42,13 +42,7 @@
 						
 						<td><?php echo $row['created_by']; ?></td>
 					</tr>
-					 <?php }
-
-					$i++; 
-
-				
-				}
-					?> 
+					 <?php $i++;  } } ?> 
 	
 				</tbody>
 			</table> 
