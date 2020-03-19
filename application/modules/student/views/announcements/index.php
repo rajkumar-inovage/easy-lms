@@ -7,9 +7,9 @@
 						<th width="">SR. No</th>
 						<th width="">Title</th>
 						<th width="">Description</th>
-						<th width="">Start Date</th>
-						<th width="">End Date</th>
-						<th width="">Created By</th>
+						<th width="" class="text-center">Start Date</th>
+						<th width="" class="text-center">End Date</th>
+						<th width="" class="text-center">Created By</th>
 					
 					</tr>
 				</thead>
@@ -29,18 +29,18 @@
 						<td class="font-weight-bold"><?php echo $i; ?></td>
 						<td><?php echo $row['title']; ?></td>
 						<td><?php echo $row['description']; ?></td>
-						<td><?php 
+						<td class="text-center"><?php 
 						$original_date=$row['start_date'];
 						$new_date = date("d-m-Y", $original_date);
 
 						echo $new_date; ?></td>
-						<td><?php 
+						<td class="text-center"><?php 
 						$original_date=$row['end_date'];
 						$new_date = date("d-m-Y", $original_date);
 
 						echo $new_date; ?></td>
 						
-						<td><?php echo $row['created_by']; ?></td>
+						<td class="text-center"><?php echo $row['created_by']; ?></td>
 					</tr>
 					 <?php $i++;  } } ?> 
 	

@@ -72,6 +72,7 @@
 					
 					<p class="btn-toolbar">
 						<input type="submit" name="submit" value="<?php echo ('Save'); ?>" class="btn btn-primary " accesskey="s" />
+						<?php echo anchor ('coaching/announcements/index/'.$coaching_id, 'Cancel', array('class'=>'btn btn-danger ml-3')); ?>
 					</p>
 				</form>
 			</div>

@@ -7,11 +7,11 @@
 						<th width="">SR. No</th>
 						<th width="">Title</th>
 						<th width="">Description</th>
-						<th width="">Start Date</th>
-						<th width="">End Date</th>
-						<th width="">Status</th>
-						<th width="">Created By</th>
-						<th width="">Action</th>
+						<th width="" class="text-center">Start Date</th>
+						<th width="" class="text-center">End Date</th>
+						<th width="" class="text-center">Status</th>
+						<th width="" class="text-center">Created By</th>
+						<th width="" class="text-center">Action</th>
 					</tr>
 				</thead>
 
@@ -25,31 +25,31 @@
 						<td class="font-weight-bold"><?php echo $i; ?></td>
 						<td><?php echo $row['title']; ?></td>
 						<td><?php echo $row['description']; ?></td>
-						<td><?php 
+						<td class="text-center"><?php 
 						$original_date=$row['start_date'];
 						$new_date = date("d-m-Y", $original_date);
 
 						echo $new_date; ?></td>
-						<td><?php 
+						<td class="text-center"><?php 
 						$original_date=$row['end_date'];
 						$new_date = date("d-m-Y", $original_date);
 
 						echo $new_date; ?></td>
-						<td>
+						<td class="text-center">
 							<?php 
 							$status= $row['status'];
 							if($status==1){
-								echo "Active";
+								echo '<span class="text-success font-weight-bold">Active</span>';
 							}
 							else{
-								echo "Inactive";
+								echo '<span class="text-danger font-weight-bold">Inactive</span>';
 							}
 
 							?>
 							
 						</td>
-						<td><?php echo $row['created_by']; ?></td>
-						<td><span class="px-2">
+						<td class="text-center"><?php echo $row['created_by']; ?></td>
+						<td class="text-center"><span class="px-2">
 							<?php echo anchor ('coaching/announcements/create_announcement/'.$coaching_id.'/'.$row['announcement_id'], '<i class="fa fa-edit"></i>'); ?>
 							</span>
 							<span class="px-2">
