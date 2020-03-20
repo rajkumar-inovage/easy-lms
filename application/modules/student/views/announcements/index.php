@@ -18,12 +18,13 @@
 					 <?php 
 					 $i=1;
 					 foreach($results as $row){
-					 	$original_date=$row['end_date'];
-						$startdate = date("d-m-Y", $original_date);
-					    $expire =($startdate);
+					 	$original_start_date=$row['start_date'];
+						$start_date = date("d-m-Y", $original_start_date);
+					 	$original_end_date=$row['end_date'];
+						$end_date = date("d-m-Y", $original_end_date);
 						$today = date("d-m-Y"); 
 	    
-	      			if($expire >= $today){ ?>
+	      			if($today >=$start_date && $today <= $end_date){ ?>
 	      			
 					<tr>
 						<td class="font-weight-bold"><?php echo $i; ?></td>
