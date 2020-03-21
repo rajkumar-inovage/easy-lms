@@ -1,5 +1,5 @@
 
-	<div class="card card-default">
+	<div class="card card-default my-3 my-lg-5">
 		<div class="-table-responsive" id="users-list">
 			<table class="table table-bordered v-middle mb-0" id="data-tables">
 				<thead>
@@ -7,9 +7,9 @@
 						<th width="">SR. No</th>
 						<th width="">Title</th>
 						<th width="">Description</th>
-						<th width="">Start Date</th>
-						<th width="">End Date</th>
-						<th width="">Created By</th>
+						<th width="" class="text-center">Start Date</th>
+						<th width="" class="text-center">End Date</th>
+						<th width="" class="text-center">Created By</th>
 					
 					</tr>
 				</thead>
@@ -18,37 +18,32 @@
 					 <?php 
 					 $i=1;
 					 foreach($results as $row){
-					 	$original_date=$row['end_date'];
-						$startdate = date("d-m-Y", $original_date);
-					    $expire =($startdate);
+					 	$original_start_date=$row['start_date'];
+						$start_date = date("d-m-Y", $original_start_date);
+					 	$original_end_date=$row['end_date'];
+						$end_date = date("d-m-Y", $original_end_date);
 						$today = date("d-m-Y"); 
 	    
-	      			if($expire >= $today){ ?>
+	      			if($today >=$start_date && $today <= $end_date){ ?>
 	      			
 					<tr>
-						<td><?php echo $i; ?></td>
+						<td class="font-weight-bold"><?php echo $i; ?></td>
 						<td><?php echo $row['title']; ?></td>
 						<td><?php echo $row['description']; ?></td>
-						<td><?php 
+						<td class="text-center"><?php 
 						$original_date=$row['start_date'];
 						$new_date = date("d-m-Y", $original_date);
 
 						echo $new_date; ?></td>
-						<td><?php 
+						<td class="text-center"><?php 
 						$original_date=$row['end_date'];
 						$new_date = date("d-m-Y", $original_date);
 
 						echo $new_date; ?></td>
 						
-						<td><?php echo $row['created_by']; ?></td>
+						<td class="text-center"><?php echo $row['created_by']; ?></td>
 					</tr>
-					 <?php }
-
-					$i++; 
-
-				
-				}
-					?> 
+					 <?php $i++;  } } ?> 
 	
 				</tbody>
 			</table> 
