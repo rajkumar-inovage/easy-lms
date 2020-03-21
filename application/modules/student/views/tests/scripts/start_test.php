@@ -13,13 +13,45 @@ $(document).ready (function () {
 		var last = <?php echo $total_questions; ?>;
 		var confirm_div = <?php echo $confirm_div; ?>;
 
-		if (next > last) {
-			$(".pages").hide();
-			$("#page"+confirm_div).show();
-		} 	
 		$(".pages").hide();
 		$("#page"+next).show();
-		$('#num_question').val (next);	
+		$('#num_question').val (next);
+
+		/*Change color of progress buttons and increment values for - Answered, Not-answered and For-review*/
+		if (document.getElementById("leaveblank_"+id).checked == true ) {
+			/*Change color*/
+			document.getElementById("btn_"+id).className="btn btn-sm btn-warning";
+		} else {
+			/*Change color*/
+			document.getElementById("btn_"+id).className="btn btn-sm btn-success";
+		}
+
+		if (document.getElementById("visitlater_"+id).checked == true ) {
+			/*Change color*/
+			document.getElementById("btn_"+id).className="btn btn-sm btn-danger";
+		}	
+
+	});
+
+	
+	$(".previous").click(function() {
+		
+		/*Hide/Show question blocks*/
+		/*$(".pages:visible").hide().next(".pages").andSelf().last().show();*/
+		var id = $('#num_question').val();
+		var prev = parseInt (id) - 1 ;
+		var first = 1;
+		var confirm_div = <?php echo $confirm_div; ?>;
+
+		if (prev < first) {
+			$(".pages").hide();
+			$("#page"+first).show();
+			$('#num_question').val (first);
+		} else {
+			$(".pages").hide();
+			$("#page"+prev).show();
+			$('#num_question').val (prev);
+		}
 
 		/*Change color of progress buttons and increment values for - Answered, Not-answered and For-review*/
 		if (document.getElementById("leaveblank_"+id).checked == true ) {
@@ -35,17 +67,7 @@ $(document).ready (function () {
 			document.getElementById("btn_"+id).className="btn btn-sm btn-danger";
 		}
 	
-		if ($("#page"+next).height() > $('.test-page .st-content-inner').height()){
-			$("#page"+next).find('.card-footer').addClass('sticky');
-		}
-        else{
-            if(!$("#page"+next).hasClass('end'))
-                $("#page"+next).find('.card-footer').css('width',$("#test_form").width()+'px');
-        }
-		
-
-	});
-	
+	});	
 	
 	$('.visitlater').click (function() { 
 		var id = $(this).attr ('data-id');

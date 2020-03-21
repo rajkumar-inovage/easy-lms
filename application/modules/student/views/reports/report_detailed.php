@@ -27,7 +27,7 @@
 			</li>
 		</ul>
 	</div>
-	<div class="card-body">
+	<div class="card-bodys">
 		<div class="table-responsive">
 			<table class="table table-bordered mb-0">
 				<thead>

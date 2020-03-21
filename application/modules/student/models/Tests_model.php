@@ -78,13 +78,13 @@ class Tests_model extends CI_Model {
 			$this->db->where ('category_id', $category_id);
 		}
 		
+		$this->db->where ('finalized', 1);
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->order_by ('creation_date', 'DESC');
 		
 		$query = $this->db->get ("coaching_tests");
 		$results = $query->result_array();		
 		return $results;
-		echo $this->db->last_query ();
 	}
 
 	//=========== Model for list tests =======================
@@ -478,8 +478,8 @@ class Tests_model extends CI_Model {
 	
 	
 	// Model for get details of enrolled member (Such as Date & Time)	
-	public function getDate($member_id, $test_id) {	
-		$query = $this->db->get_where ("coaching_test_enrolments", array ('test_id'=>$test_id, 'member_id'=>$member_id));
+	public function member_enrolment ($coaching_id=0, $member_id=0, $test_id=0) {	
+		$query = $this->db->get_where ("coaching_test_enrolments", array ('coaching_id'=>$coaching_id, 'test_id'=>$test_id, 'member_id'=>$member_id));
 		if ($query->num_rows () > 0) {
 			return  $query->row_array ();			
 		} else {

@@ -32,7 +32,7 @@
 	<div class="card-footer">
 		<ul class="nav nav-pills nav-fill" id="tabs_2" role="tablist">
 			<li class="nav-item">
-				<h4 class="nav-link mb-0">
+				<p class="nav-link mb-0">
 					<?php 
 					if ($brief['ob_perc'] >= $test['pass_marks']) {
 						echo '<span class="badge badge-lg typeface-badge badge-pill bg-success text-white">Pass</span>';
@@ -41,19 +41,19 @@
 					}
 					?>
 					<span class="d-block mt-2">Result</span>
-				</h4> 
+				</p> 
 			</li>
 			<li class="nav-item">
-				<h4 class="nav-link mb-0">
+				<p class="nav-link mb-0">
 					<span class="badge badge-lg typeface-badge badge-pill bg-info text-white"><?php echo $ob_marks[$attempt_id]['obtained']; ?></span>
 					<span class="d-block mt-2">Score</span>
-				</h4>
+				</p>
 			</li>
 			<li class="nav-item">
-				<h4 class="nav-link mb-0">
+				<p class="nav-link mb-0">
 					<span class="badge badge-lg typeface-badge badge-pill bg-secondary text-white"><?php echo $brief['accuracy']; ?></span>
 					<span class="d-block mt-2">Accuracy</span>
-				</h4>
+				</p>
 			</li>
 		</ul> 
 	</div>

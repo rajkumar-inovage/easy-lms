@@ -4,7 +4,7 @@
 		  <div class="card-header">
 			<div class="media v-middle">
 			  <div class="media-body">
-				<h4 class="text-headline margin-none">Tests Taken</h4>
+				<h4 class="">Tests Taken</h4>
 				<p class="text-subhead "><?php echo $num_tests . ' Tests'; ?></p>
 			  </div>
 			  <div class="media-right">
@@ -52,11 +52,11 @@
 							  <span class="text-grey-500">Max marks:</span>
 							  <span class="text-grey-900"><?php echo $obtained_marks.'/'.$test_marks['marks']; ?></span>
 							</div>
-							<p class="btn-group">
+							<p class="_btn-group">
 								<?php 
-									echo anchor ('student/tests/take_test/'.$coaching_id.'/'.$member_id.'/'.$row['category_id'].'/'.$row['test_id'], 'Re-Take Test ', array('class'=>'btn btn-sm btn-info'));
+									echo anchor ('student/reports/test_report/'.$coaching_id.'/'.$member_id.'/'.$row['attempt_id'].'/'.$row['test_id'], 'Report', array ('class'=>'btn btn-danger btn-sm ')); 
+									echo anchor ('student/tests/take_test/'.$coaching_id.'/'.$member_id.'/'.$row['test_id'], 'Re-Take Test ', array('class'=>'btn btn-sm btn-primary ml-2'));
 									// Report
-									echo anchor ('student/reports/all_reports/'.$coaching_id.'/'.$row['attempt_id'].'/'.$member_id.'/'.$row['test_id'], 'Report', array ('class'=>'btn btn-default btn-sm ')); 
 								?>
 							</p>
 						  </div>

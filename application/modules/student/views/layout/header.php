@@ -83,7 +83,7 @@
                     ?>
                 </div>
 
-                <div class="">
+                <div class="py-2">
                     <h4 class="h4"><?php if(isset($page_title)) echo $page_title; ?> </h4>
                 </div>
 

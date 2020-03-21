@@ -48,9 +48,11 @@ class Vitals extends MX_Controller {
 			$user_name = 'Super';
 			$coaching_id = 1;
 			$set_login = true;
+		} else {
+			$set_login = false;
 		}
 
-		if ($set_login) {			
+		if ($set_login == true) {
 			if ( ! $this->session->has_userdata ('member_id')) {
 	    		$this->session->set_userdata ('member_id', $member_id);
 			}

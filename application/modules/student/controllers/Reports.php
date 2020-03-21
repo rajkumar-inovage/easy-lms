@@ -5,11 +5,11 @@ class Reports extends MX_Controller {
 
 	public function __construct () { 
 		$config = ['config_student'];
-	    $models = ['coaching/tests_reports', 'coaching/tests_model' ,'coaching/qb_model', 'coaching/users_model'];
+	    $models = ['tests_reports', 'tests_model' ,'qb_model', 'users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 	
-	public function all_reports ($coaching_id=0, $attempt_id=0, $member_id=0, $test_id=0, $type=SUMMARY_REPORT, $nav='' ) {
+	public function test_report ($coaching_id=0, $member_id=0, $attempt_id=0, $test_id=0, $type=SUMMARY_REPORT, $nav='' ) {
 		
 		// Get member_id
 		if ($member_id == 0) {
@@ -22,8 +22,7 @@ class Reports extends MX_Controller {
 		// Get latest attempt
 		if ($attempt_id == 0) {
 			$attempt_id = $this->tests_reports->last_attempt ($test_id, $member_id);
-		}
-		
+		}		
 		
 		$reports = array (
 			SUMMARY_REPORT =>array ('title'=>'Summary Report', 'report_file'=>'report_summary', 'script_file'=>'report_summary'),
@@ -151,7 +150,7 @@ class Reports extends MX_Controller {
 		$data['reports'] 			= $reports;
 		$data['num_questions'] 		= $num_questions;
 		$data['nav'] 				= $nav;
-		$data['page_title'] 		= 'Reports: '.$test['title'];
+		$data['page_title'] 		= 'Reports';
 
 		$data['bc'] = array ('Tests'=>'student/tests/tests_taken/'.$coaching_id.'/'.$member_id);
 		

@@ -1,13 +1,14 @@
 		</div>    	
 	</main>
 	
-	<footer class="light-footer mt-2">
+	<footer class="light-footer bg-white mt-4 fixed-bottom border-top shadow-sm py-2">
 		<div class="container">
-		  <div class="d-flex justify-content-center">
-			<p class="footer-info">
-			  <strong><?php echo $this->session->userdata('SITE_TITLE'); ?></strong> © <?php echo date ('Y'); ?> - All Rights Reserved.
-			</p>
-			<span class="pull-right">Product of <a href="<?php echo COMPANY_URL; ?>"><strong><?php echo COMPANY_NAME; ?></strong></a></span>
+		  <div class="d-flex justify-content-between text-center">
+		  	<span><i class="fa fa-home"></i><br> Tests </span>
+		  	<span><i class="fa fa-home"></i><br> Reports </span>
+		  	<span><i class="fa fa-home"></i><br> Account </span>
+		  	<span><i class="fa fa-home"></i><br> Tests </span>
+		  </div>
 		</div>
 	</footer>
 

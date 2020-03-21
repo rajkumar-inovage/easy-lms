@@ -2,7 +2,7 @@
 	<?php
 		if (! empty ($dashboard_menu)) {
 			foreach ($dashboard_menu as $menu) {
-				$link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'];
+				$link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id.'/'.$member_id;
 				?>
 				<div class="col-6 ">
 					<div class="card mb-2">

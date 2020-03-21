@@ -1,10 +1,14 @@
 <div class="card card-primary paper-shadow" data-z="0.5">
+	<div class="card-header">
+		<h4><?php echo ($test['title']); ?></h4>
+	</div>
 	<div class="card-body">
-		<h4>Test Name: <strong><?php echo ($test['title']); ?></strong></h4>
-		<strong>General Instructions:</strong>
 		<ol class="pl-4">
 			<li>Test Duration: <strong><span class="completeDuration"><?php echo $test['time_min']; ?></span> </strong>minutes.</li>
-			<li>Timer and Test Submission: The clock with show you the remaining time to complete the examination. </li>
+			<li>Questions: <span class="completeDuration"><?php echo $test['time_min']; ?></span> </li>
+			<li>Marks: <span class="completeDuration"><?php echo $test['time_min']; ?></span> </li>
+			<li>Pass Marks: <span class="completeDuration"><?php echo $test['time_min']; ?></span> </li>
+			<li>Timer and Test Submission: The clock will show you the remaining time to complete the examination. </li>
 			<li>The Question Palette displayed on the right side of screen will show the status of each question using one of the following symbols:
 			<table class="table">
 				<tbody>
@@ -43,14 +47,10 @@
 		</ol>
 	</div>
 	<div class="card-footer">
-		<div class="panel-footer">
-			<div class="row">
-				<div class="col-md-12"> 
-					<p class="btn-toolbar btn-toolbar-demo">
-					<a href="<?php echo site_url ('student/tests/start_test/'.$coaching_id.'/'.$member_id.'/'.$category_id.'/'.$test_id); ?>" class="btn btn-success pull-right ">Start Test <i class="fa fa-play-circle"></i> </a>
-					</p>
-				</div>
-			</div>
-		</div>
+		<p class="btn-toolbar btn-toolbar-demo">
+			<?php if ($start_test == true) { ?>
+				<a href="<?php echo site_url ('student/tests/start_test/'.$coaching_id.'/'.$member_id.'/'.$test_id); ?>" class="btn btn-success  ">Start Test <i class="fa fa-play-circle"></i> </a>
+			<?php } ?>
+		</p>
 	</div>
 </div>

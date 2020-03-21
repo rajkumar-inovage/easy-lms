@@ -31,22 +31,22 @@ if ( ! empty ($dif_response)) {
 		<div class="card-footer">
 			<ul class="nav nav-pills nav-fill" id="tabs_2" >
 				<li class="nav-item">
-					<h4 class="nav-link mb-0">
-						<span class="nav-link-icon d-block"> <?php echo $right_answers; ?></span>
+					<p class="nav-link mb-0">
+						<span class="badge bg-secondary rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"> <?php echo $right_answers; ?></span>
 						<span class="d-none d-sm-block mt-3">Correct Answers</span>
-					</h4>
+					</p>
 				</li>
 				<li class="nav-item">
-					<h4 class="nav-link mb-0">
-						<span class="nav-link-icon d-block"> <?php echo $wrong_answers; ?></span>
+					<p class="nav-link mb-0">
+						<span class="badge bg-secondary rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $wrong_answers; ?></span>
 						<span class="d-none d-sm-block mt-3">Wrong Answers</span>
-					</h4>
+					</p>
 				</li>
 				<li class="nav-item">
-					<h4 class="nav-link mb-0">
-						<span class="nav-link-icon d-block"> <?php echo $not_answered; ?></span>
+					<p class="nav-link mb-0">
+						<span class="badge bg-secondary rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $not_answered; ?></span>
 						<span class="d-none d-sm-block mt-3">Not Answered</span>
-					</h4>
+					</p>
 				</li>
 			</ul>
 		</div>

@@ -313,6 +313,7 @@ class Plans_model extends CI_Model {
 						unset ($tip['cat_id'], $tip['cat_title'], $tip['cat_parent_id']);
 						$test_data = $tip;
 						$test_data['test_id'] = NULL;
+						$test_data['test_type'] = TEST_TYPE_PRACTICE;
 						$test_data['category_id'] = $new_test_cat_id;
 						$test_data['master_id'] = $test_id;
 						$this->db->insert ('tests', $test_data);
