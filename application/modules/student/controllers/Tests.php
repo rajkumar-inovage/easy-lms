@@ -12,7 +12,7 @@ class Tests extends MX_Controller {
 
     public function index ($coaching_id=0, $member_id=0, $test_type=TEST_TYPE_REGULAR) {
 		$this->browse_tests ($coaching_id, $member_id, $test_type);
-	}
+	} 
 	
     public function browse_tests ($coaching_id=0, $member_id=0, $test_type=TEST_TYPE_REGULAR) {
 		$data['page_title'] 	= "Browse Tests";

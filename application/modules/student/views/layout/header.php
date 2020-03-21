@@ -37,7 +37,7 @@
 	
 	<header class="">
 		<nav class="navbar bg-white  border-bottom ">
-		  <div class="container-sm">
+		  <div class="container-fluid">
 			<!-- Sidebar Toggler -->
 			<button class="navbar-toggle" type="button" id="toggle_sidebar">
                 <span class="icon-bar d-block bg-grey-500"></span>
@@ -71,7 +71,7 @@
 	</header>
 
     <div class="bg-white half shadow-sm  ">
-        <div class="container-sm">
+        <div class="container-fluid">
             <div class="py-2 d-flex justify-content-between">
                 <div class="">
                     <?php 
@@ -153,5 +153,5 @@
 	<!--// Sidebar -->	
 
 	<main id="content" role="main">
-		<div class="container-sm pt-4">          
+		<div class="container-fluid">          
 	

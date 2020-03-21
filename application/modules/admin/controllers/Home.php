@@ -8,12 +8,10 @@ class Home extends MX_Controller {
         $models = [];
         $this->common_model->autoload_resources ($config);
 	}
-    
- 
+
     public function dashboard () {
 		
 		$data['page_title'] = 'Dashboard';
-		$data['sub_title']  = 'Dashboard';
 
         $this->load->view (INCLUDE_PATH . 'header', $data);
 		//echo 'Dashboard';

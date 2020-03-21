@@ -27,7 +27,7 @@
 						<?php } */ ?>
 					</select>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-3 mb-2">
 					<div class="input-group ">
 						<input name="search_text" class="form-control " type="search" placeholder="Search" aria-label="Search Test" aria-describedby="search-button">
 						<div class="input-group-append">
@@ -35,10 +35,8 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="form-group row mb-2">
 				<div class="col-md-3 mb-2">
-					<input type="date" id="date" value="<?php echo $date; ?>" class="form-control"  > 
+					<input type="date" id="date" value="<?php echo $date; ?>" max="<?php echo $date;?>" class="form-control"  > 
 				</div>
 			</div>
 		</form>				
@@ -72,7 +70,7 @@
 							<input id="" type="checkbox" name="mycheck[]" value="<?php echo $row['member_id']; ?>" class="checks">
 						</td>
 						<td>
-							<a class="" href="<?php echo site_url ('users/admin/create/'.$coaching_id.'/'.$row['role_id'].'/'.$row['member_id']); ?>"> 
+							<a class="" href="<?php echo site_url ('coaching/users/edit/'.$coaching_id.'/'.$row['role_id'].'/'.$row['member_id']); ?>"> 
 								<?php echo ($row['first_name']) .' '. ($row['second_name']) .' '. ($row['last_name']); ?>
 							</a> <br> 
 							<?php echo $row['adm_no']; ?>
@@ -81,14 +79,14 @@
 						<td><?php echo $row['role_id']; ?></td>
 						<td><?php echo $row['status']; ?></td>
 						<td> 
-							<div class="btn-group">									
-								<a href="javascript: _void()" onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_PRESENT; ?>, '<?php echo $dt_string; ?>');" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_PRESENT) echo 'btn-success'; else echo 'btn-light' ?>" id="present<?php echo $row['member_id']; ?>" >Present</a>
+							<div class="btn-group">
+								<a href="javascript: _void()" onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_PRESENT; ?>);" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_PRESENT) echo 'disabled btn-success'; else echo 'btn-light' ?>" id="present<?php echo $row['member_id']; ?>" >Present</a>
 								
-								<a href="javascript: _void()" onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_LEAVE; ?>, '<?php echo $dt_string; ?>');" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_LEAVE) echo 'btn-success'; else echo 'btn-light' ?>" id="leave<?php echo $row['member_id']; ?>" >Leave</a>
+								<a href="javascript: _void()" onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_LEAVE; ?>);" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_LEAVE) echo 'disabled btn-success'; else echo 'btn-light' ?>" id="leave<?php echo $row['member_id']; ?>" >Leave</a>
 								
-								<a href="javascript: _void()" onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_ABSENT; ?>, '<?php echo $dt_string; ?>');" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_ABSENT) echo 'btn-success'; else echo 'btn-light' ?>" id="absent<?php echo $row['member_id']; ?>" >Absent</a>
+								<a href="javascript: _void()" onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_ABSENT; ?>);" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_ABSENT) echo 'disabled btn-success'; else echo 'btn-light' ?>" id="absent<?php echo $row['member_id']; ?>" >Absent</a>
 								
-								<a href="<?php echo site_url ('attendance/reports/member_report/'.$row['member_id']); ?>" class="float-right btn btn-dark">Report</a>
+								<a href="<?php echo site_url ('attendance/reports/member_report/'.$row['member_id']); ?>" class="btn btn-dark text-white">Report</a>
 							</div>
 						</td>
 					</tr>
