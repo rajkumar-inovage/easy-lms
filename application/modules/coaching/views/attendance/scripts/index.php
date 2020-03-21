@@ -19,39 +19,62 @@ $(document).ready (function () {
 	});
 });
 
-
-function mark_attendance (btn_id, member_id, att_status, date) {
-	var formURL = '<?php echo site_url ('coaching/attendance_actions/mark_attendance'); ?>/'+member_id+'/'+att_status+'/'+date;
-	
+var dateString = '<?php echo $dt_string; ?>';
+function mark_attendance (btn_id, member_id, att_status) {
+	console.log(dateString);
+	var formURL = '<?php echo site_url ('coaching/attendance_actions/mark_attendance'); ?>/'+member_id+'/'+att_status+'/'+dateString;
+	var disabledBtn = $('#'+btn_id).parent().find('.btn.disabled');
+	disabledBtn.removeClass('disabled btn-success').addClass('btn-light');
+	$('#'+btn_id).removeClass('btn-light').addClass('disabled');
 	fetch (formURL, {
 		method : 'POST',
 	}).then (function (response) {
 		return response.json ();
 	}).then(function(result) {
 		if (result.status == true) {
-			//loaderSelector.style.display = 'none';
-			$('#present'+member_id).removeClass ('btn-success');
-			$('#present'+member_id).addClass ('btn-light');
-			
-			$('#leave'+member_id).removeClass ('btn-success');
-			$('#leave'+member_id).addClass ('btn-light');
-			
-			$('#absent'+member_id).removeClass ('btn-success');
-			$('#absent'+member_id).addClass ('btn-light');
-			
-			$('#'+btn_id).removeClass ('btn-light');
+			$('#'+btn_id);
 			$('#'+btn_id).addClass ('btn-success');
-			
-			toastr.success (result.message);
+			toastr.success(result.message);
 		}
 	});
 	
 	return true;
 }
-
 $('#date').on ('change', function () {
-	var string = $(this).val ();
-	var url = '<?php echo site_url ('coaching/attendance/index/'.$coaching_id.'/'.$role_id.'/'.$status.'/'.$batch_id); ?>/'+string;
-	$(location).attr ('href', url);
+	var string = $(this).val();
+	var attendanceDateURL = '<?php echo site_url ('coaching/attendance_actions/get_attendance/'.$coaching_id.'/'); ?>' + string;
+	$(this).trigger('blur');
+	$('body').addClass('loading');
+	$('.btn.disabled').removeClass('btn-success').addClass('btn-light');
+	$('.btn.btn-light').addClass('disabled');
+	fetch (attendanceDateURL, {
+		method : 'GET',
+	}).then (function (response) {
+		return response.json ();
+	}).then(function(result) {
+		if (result.status == true) {
+			$('body.loading').removeClass('loading');
+			$('.btn.disabled').removeClass('disabled');
+			dateString = result.date;
+			Object.keys(result.attendance).forEach((member_id) => {
+				if(result.attendance[member_id] !== null){
+					var member_attendance = parseInt(result.attendance[member_id].attendance);
+					switch(member_attendance){
+						case 1:
+							$(`#present${member_id}`).removeClass('btn-light').addClass('btn-success');
+						break;
+						case 2:
+							$(`#leave${member_id}`).removeClass('btn-light').addClass('btn-success');
+						break;
+						case 3:
+							$(`#absent${member_id}`).removeClass('btn-light').addClass('btn-success');
+						break;
+						default:
+					}
+					$('.btn.btn-success').addClass('disabled');
+				}
+		    });
+		}
+	});
 });
 </script>

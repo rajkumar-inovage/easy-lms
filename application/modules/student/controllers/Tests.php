@@ -4,10 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Tests extends MX_Controller {
 
     public function __construct () {
-<<<<<<< HEAD
-=======
 		$modules = array ('tests', 'qb');
->>>>>>> eadc9a36944e23862708622d9a6aeca402ea609b
 		$config = ['config_student'];
 	    $models = ['coaching/tests_model' ,'coaching/qb_model', 'coaching/tests_reports', 'coaching/users_model'];
 		$this->common_model->autoload_resources ($config, $models);

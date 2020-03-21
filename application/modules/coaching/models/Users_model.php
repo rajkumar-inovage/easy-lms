@@ -22,6 +22,7 @@ class Users_model extends CI_Model {
 	        $this->db->join ('coaching_batch_users BU', 'M.member_id=BU.member_id AND BU.batch_id='.$batch_id);
 	    }
 	    $this->db->where ('coaching_id', $coaching_id);
+	    $this->db->order_by ('M.member_id', 'ASC');
 	    $sql = $this->db->get ();
 	    return $sql->result_array ();
 	}

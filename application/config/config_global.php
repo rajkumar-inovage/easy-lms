@@ -49,6 +49,7 @@ define ('USER_ROLE_COACHING_ADMIN',			5);
 define ('USER_STATUS_DISABLED', 			0);
 define ('USER_STATUS_ENABLED', 				1);
 define ('USER_STATUS_UNCONFIRMED', 			2);
+define ('USER_STATUS_ALL', 					3);
 
 // SYS Parameters
 define ('SYS_USER_STATUS', 					'USER_STATUS');

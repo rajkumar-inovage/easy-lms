@@ -64,6 +64,10 @@ class Users extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'footer', $data);		
 	}
 	
+	public function edit ($coaching_id=0, $role_id=0, $member_id=0) {
+		$this->create($coaching_id, $role_id, $member_id);
+	}
+
 	/* CREATE USER
 		Function to create new user.
 	*/

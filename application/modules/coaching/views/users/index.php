@@ -104,7 +104,7 @@ echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$s
 								<div class="dropdown">
 									<a class="btn btn-outline dropdown-toggle" type="button" id="userMenu<?php echo $row['member_id'];?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Edit</a>
 									<div class="dropdown-menu " aria-labelledby="userMenu<?php echo $row['member_id'];?>">
-										<?php echo anchor('coaching/users/create/'.$coaching_id.'/'.$row['role_id'].'/'.$row['member_id'], '<i class="fa fa-edit"></i> Edit Account', array('title'=>'Edit', 'class'=>'dropdown-item')); ?>
+										<?php echo anchor('coaching/users/edit/'.$coaching_id.'/'.$row['role_id'].'/'.$row['member_id'], '<i class="fa fa-edit"></i> Edit Account', array('title'=>'Edit', 'class'=>'dropdown-item')); ?>
 										
 										<?php if ( $row['status'] == USER_STATUS_ENABLED ) { ?>
 											<a href="javascript:void(0)" onclick="javascript:show_confirm ( '<?php echo 'Do you want to disable this user?'; ?>', '<?php echo site_url('coaching/user_actions/disable_member/'.$coaching_id.'/'.$role_id.'/'.$row['member_id']); ?>' )" title="Disable" class="dropdown-item" ><i class="fa fa-times-circle"></i> Disable Account</a>
