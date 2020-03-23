@@ -30,31 +30,25 @@
 		</div>
 	</div>
 	<div class="card-footer">
-		<ul class="nav nav-pills nav-fill" id="tabs_2" role="tablist">
-			<li class="nav-item">
-				<p class="nav-link mb-0">
-					<?php 
-					if ($brief['ob_perc'] >= $test['pass_marks']) {
-						echo '<span class="badge badge-lg typeface-badge badge-pill bg-success text-white">Pass</span>';
-					} else {
-						echo '<span class="badge badge-lg typeface-badge badge-pill bg-danger text-white">Fail</span>';
-					}
-					?>
-					<span class="d-block mt-2">Result</span>
-				</p> 
-			</li>
-			<li class="nav-item">
-				<p class="nav-link mb-0">
-					<span class="badge badge-lg typeface-badge badge-pill bg-info text-white"><?php echo $ob_marks[$attempt_id]['obtained']; ?></span>
-					<span class="d-block mt-2">Score</span>
-				</p>
-			</li>
-			<li class="nav-item">
-				<p class="nav-link mb-0">
-					<span class="badge badge-lg typeface-badge badge-pill bg-secondary text-white"><?php echo $brief['accuracy']; ?></span>
-					<span class="d-block mt-2">Accuracy</span>
-				</p>
-			</li>
-		</ul> 
+		<div class="d-flex justify-content-between text-center">
+			<p class="nav-link mb-0">
+				<?php 
+				if ($brief['ob_perc'] >= $test['pass_marks']) {
+					echo '<span class="badge bg-primary rounded-circle height-30 width-30 d-flex align-items-center justify-content-center mx-auto"> Pass</span>';
+				} else {
+					echo '<span class="badge bg-danger rounded-circle height-30 width-30 d-flex align-items-center justify-content-center mx-auto text-white"> Fail</span>';
+				}
+				?>
+				<span class="d-block mt-2">Result</span>
+			</p> 
+			<p class="nav-link mb-0">
+				<span class="badge bg-info rounded-circle height-30 width-30 d-flex align-items-center justify-content-center mx-auto"> <?php echo $ob_marks[$attempt_id]['obtained']; ?></span>
+				<span class="d-block mt-2">Score</span>
+			</p>
+			<p class="nav-link mb-0">
+				<span class="badge bg-secondary rounded-circle height-30 width-30 d-flex align-items-center justify-content-center mx-auto"> <?php echo $brief['accuracy']; ?></span>
+				<span class="d-block mt-2">Accuracy</span>
+			</p>
+		</div> 
 	</div>
 </div>

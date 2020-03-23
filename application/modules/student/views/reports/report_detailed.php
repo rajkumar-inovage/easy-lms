@@ -1,31 +1,23 @@
 <div class="card card-default">
 	<div class="card-footer border-top-0 border-bottom">
-		<ul class="nav nav-pills nav-fill">
-			<li class="nav-item">
-				<h4 class="nav-link mb-0">
-					<span class="badge bg-info rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $brief['answered']; ?></span>
-					<span class="display mt-4">Answered</span>
-				</h4>
-			</li>
-			<li class="nav-item">
-				<h4 class="nav-link mb-0">
-					<span class="badge bg-success rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $brief['answered']; ?></span>
-					<span class="display mt-4">Correct</span>
-				</h4>
-			</li>
-			<li class="nav-item">
-				<h4 class="nav-link mb-0">
-					<span class="badge bg-danger rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $brief['answered']; ?></span>
-					<span class="display mt-4">Wrong</span>
-				</h4>
-			</li>
-			<li class="nav-item">
-				<h4 class="nav-link mb-0">
-					<span class="badge bg-secondary rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $brief['not_answered']; ?></span>
-					<span class="display mt-4">Not Answered</span>
-				</h4>
-			</li>
-		</ul>
+		<div class="d-flex justify-content-between text-center">			
+			<p class="nav-link mb-0">
+				<span class="badge bg-info rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $brief['answered']; ?></span>
+				<span class="display mt-4">Answered</span>
+			</p>		
+			<p class="nav-link mb-0">
+				<span class="badge bg-success rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $brief['answered']; ?></span>
+				<span class="display mt-4">Correct</span>
+			</p>		
+			<p class="nav-link mb-0">
+				<span class="badge bg-danger rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $brief['answered']; ?></span>
+				<span class="display mt-4">Wrong</span>
+			</p>		
+			<p class="nav-link mb-0">
+				<span class="badge bg-secondary rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $brief['not_answered']; ?></span>
+				<span class="display mt-4">Not Answered</span>
+			</p>		
+		</div>
 	</div>
 	<div class="card-bodys">
 		<div class="table-responsive">

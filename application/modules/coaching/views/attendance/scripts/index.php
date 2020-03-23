@@ -22,7 +22,7 @@ $(document).ready (function () {
 var dateString = '<?php echo $dt_string; ?>';
 function mark_attendance (btn_id, member_id, att_status) {
 	console.log(dateString);
-	var formURL = '<?php echo site_url ('coaching/attendance_actions/mark_attendance'); ?>/'+member_id+'/'+att_status+'/'+dateString;
+	var formURL = '<?php echo site_url ('coaching/attendance_actions/mark_attendance/'.$coaching_id); ?>/'+member_id+'/'+att_status+'/'+dateString;
 	var disabledBtn = $('#'+btn_id).parent().find('.btn.disabled');
 	disabledBtn.removeClass('disabled btn-success').addClass('btn-light');
 	$('#'+btn_id).removeClass('btn-light').addClass('disabled');

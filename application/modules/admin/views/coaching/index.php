@@ -4,7 +4,8 @@
 		<thead>
 			<tr>
 				<th width="5%">#</th>
-				<th width="60%"><?php echo 'Coaching Name'; ?></th>
+				<th width="30%"><?php echo 'Coaching Name'; ?></th>
+				<th width="30%"><?php echo 'Coaching URL'; ?></th>
 				<th><?php echo 'Subscription Plan'; ?></th>
 				<th><?php echo 'Actions'; ?></th>
 			</tr>
@@ -22,15 +23,16 @@
 						<?php echo $row['reg_no']; ?>
 					</td>
 					
+					<td><?php echo site_url('?sub='.$row['coaching_url']); ?></td>
 					<td><?php echo $row['title']; ?></td>
                     <td>
                         <?php 
                             echo anchor ('admin/coaching/edit/'.$row['id'], 'Edit', array('class'=>'btn btn-link'));
-                            echo anchor ('coaching/home/dashboard/'.$row['id'], 'Manage', array('class'=>'btn btn-primary'));
+                            echo anchor ('coaching/home/dashboard/'.$row['id'], 'Dashboard', array('class'=>'btn btn-primary'));
                         ?>
                     </td>
 				</tr>
-				<?php 
+				<?php
 				$i++;
 			} // foreach 
         } else {

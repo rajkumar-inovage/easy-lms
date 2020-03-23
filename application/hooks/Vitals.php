@@ -75,8 +75,16 @@ class Vitals extends MX_Controller {
 	public function load_acl_menu () {
 		$role_id = $this->session->userdata ('role_id');
 		if ( ! $this->session->has_userdata ('MAIN_MENU')) {
-    		$menus = $this->common_model->load_acl_menus ($role_id);
+    		$menus = $this->common_model->load_acl_menus ($role_id, 0, MENUTYPE_SIDEMENU);
     		$this->session->set_userdata ('MAIN_MENU', $menus);
+		}
+		if ( ! $this->session->has_userdata ('DASHBOARD_MENU')) {
+    		$menus = $this->common_model->load_acl_menus ($role_id, 0, MENUTYPE_DASHBOARD);
+    		$this->session->set_userdata ('DASHBOARD_MENU', $menus);
+		}
+		if ( ! $this->session->has_userdata ('FOOTER_MENU')) {
+    		$menus = $this->common_model->load_acl_menus ($role_id, 0, MENUTYPE_FOOTER);
+    		$this->session->set_userdata ('FOOTER_MENU', $menus);
 		}
 	}
 	

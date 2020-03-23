@@ -1,0 +1,32 @@
+{
+  "short_name": "easycoachingC",
+  "studentng": "en-US",
+  "start_url": "index.php",
+  "dispstudenty": "standalone",
+  "theme_color": "#FF9800",
+  "background_color": "#FF9800",
+  "icons": [
+    {
+      "src": "/easycoachingapp/themes/student/assets/img/touch/its-icon128.png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "/easycoachingapp/themes/student/assets/img/touch/its-icon192.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/easycoachingapp/themes/student/assets/img/touch/its-icon256.png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "/easycoachingapp/themes/student/assets/img/touch/its-icon384.png",
+      "sizes": "384x384"
+    },
+    {
+      "src": "/easycoachingapp/themes/student/assets/img/touch/its-icon512.png",
+      "sizes": "512x512"
+    }
+  ],
+  "name": "IndiaTests-Coachings",
+  "gcm_sender_id": "1005540839272"
+}

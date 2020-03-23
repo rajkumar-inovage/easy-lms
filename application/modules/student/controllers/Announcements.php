@@ -5,13 +5,12 @@ class Announcements extends MX_Controller {
    
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
-	    $config = [ 'student/config_student'];
+	    $config = ['config_student'];
 	    $models = ['announcements_model'];
 
 	    $this->common_model->autoload_resources ($config, $models);
 	    
-        $cid = $this->uri->segment (4);
-        
+        $cid = $this->uri->segment (4);        
         
         // Security step to prevent unauthorized access through url
         if ($this->session->userdata ('is_admin') == TRUE) {
@@ -22,6 +21,7 @@ class Announcements extends MX_Controller {
             }
         }
 	}
+
 	public function index ($coaching_id=0, $status=0) { 
 
 		$data['coaching_id'] = $coaching_id;
@@ -30,23 +30,24 @@ class Announcements extends MX_Controller {
 		
 		/*---=== Back Link ===---*/
 		$data['bc'] = array ('Student Dashboard'=>'student/home/dashboard/'.$coaching_id);
-		$data['results'] = $this->announcements_model->get_announcements($coaching_id);
-		
-		/* --==// Toolbar //==-- */
-	
+		$data['results'] = $this->announcements_model->get_announcements ($coaching_id);
+			
 		$this->load->view ( INCLUDE_PATH  . 'header', $data);
-		$this->load->view ( 'announcements/index', $data);
+		$this->load->view ( 'annc/index', $data);
 		$this->load->view ( INCLUDE_PATH  . 'footer', $data);	
 	}
 
-	
-   
+	public function view ($coaching_id=0, $annc_id=0) { 
 
-   } 
-	
-   
-	
-	
-	
-	
-	
+		$data['coaching_id'] = $coaching_id;
+		$data['page_title']  = 'Announcement';
+		
+		/*---=== Back Link ===---*/
+		$data['bc'] = array ('Announcements'=>'student/announcements/index/'.$coaching_id);
+		$data['row'] = $this->announcements_model->get_announcement ($coaching_id, $annc_id);
+			
+		$this->load->view ( INCLUDE_PATH  . 'header', $data);
+		$this->load->view ( 'annc/view', $data);
+		$this->load->view ( INCLUDE_PATH  . 'footer', $data);	
+	}
+}

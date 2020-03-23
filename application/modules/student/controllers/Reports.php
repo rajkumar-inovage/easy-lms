@@ -74,7 +74,7 @@ class Reports extends MX_Controller {
 				$question = $this->qb_model->getQuestionDetails ($question_id);
 				$cat = $this->common_model->sys_parameter_name (SYS_QUESTION_CATEGORIES, $question['category_id']); 
 				$diff = $this->common_model->sys_parameter_name (SYS_QUESTION_DIFFICULTIES, $question['clsf_id']);
-
+				
 				$check = $this->tests_reports->check_test_question ($attempt_id, $test_id, $question_id, $member_id);				
 				$question['om'] = $om;
 				if ($check['answered'] == TQ_WRONG_ANSWERED) {
@@ -132,7 +132,7 @@ class Reports extends MX_Controller {
 		$data['brief']['wrong'] 		= $wrong;
 		$data['brief']['ob_perc'] 		= $ob_perc;
 		$data['brief']['accuracy'] 		= $accuracy;
-		$data['coaching_id'] = $coaching_id;
+		$data['coaching_id'] 			= $coaching_id;
 		$category_id 				= $test['category_id'];
 		$data['test'] 				= $test;
 		$data['cat_response'] 		= $cat_response;

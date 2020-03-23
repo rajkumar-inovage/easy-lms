@@ -35,44 +35,9 @@
 </head>
 <body class="<?php if (isset($body_class)) echo $body_class; ?>">
 	
-	<header class="">
-		<nav class="navbar bg-white  border-bottom ">
-		  <div class="container-fluid">
-			<!-- Sidebar Toggler -->
-			<button class="navbar-toggle" type="button" id="toggle_sidebar">
-                <span class="icon-bar d-block bg-grey-500"></span>
-                <span class="icon-bar d-block bg-grey-500"></span>
-                <span class="icon-bar d-block bg-grey-500"></span>
-            </button>
-			<!-- /Sidebar Toggler -->
-			
-			<a class="navbar-brand" href="<?php echo $this->session->userdata ('HOME_URL'); ?>" title="<?php echo $this->session->userdata ('SITE_TITLE'); ?>">
-				<?php 
-				$logo_path = $this->config->item ('system_logo');
-				if (file_exists($logo_path)) {
-					echo '<img src="'.base_url($logo_path).'" alt="'.$this->session->userdata ('SITE_TITLE').'" class=" " width="120" height="" id="" />';
-				} else {
-					echo $this->session->userdata ('SITE_TITLE');
-				}
-				?>
-			</a>
-
-            <div class="dropdown float-right">
-              <a href="#" class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="rounded-circle img-thumbnail" width="40"> 
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Super Admin</a>
-                <a class="dropdown-item" href="#">Logout</a>
-              </div>
-            </div>
-          </div>
-		</nav>
-	</header>
-
-    <div class="bg-white half shadow-sm  ">
-        <div class="container-fluid">
-            <div class="py-2 d-flex justify-content-between">
+	<header class="sticky-top mb-2">
+        <div class="container-sm">
+    		<nav class="navbar bg-white border-bottom py-0 d-flex justify-content-between">
                 <div class="">
                     <?php 
                       if (isset ($bc)) {
@@ -83,27 +48,18 @@
                     ?>
                 </div>
 
-                <div class="py-2">
-                    <h4 class="h4"><?php if(isset($page_title)) echo $page_title; ?> </h4>
-                </div>
+                <span class="navbar-brand"><?php if(isset($page_title)) echo $page_title; ?> </span>
 
-                <div class="right-toolbar">
-                    <?php if (! empty ($toolbar_buttons)) { ?>
-                        <div class="dropdown show">
-                          <a class="btn btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-plus-circle"></i>
-                          </a>
-                          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                            <?php foreach ($toolbar_buttons as $title=>$url) { ?>
-                                <a class="dropdown-item" href="<?php echo site_url ($url); ?>"><?php echo $title; ?></a>
-                            <?php } ?>
-                          </div>
-                        </div>
-                    <?php } ?>
-                </div>
-            </div>
+                <!-- Sidebar Toggler -->
+                <button class="navbar-toggle" type="button" id="toggle_sidebar">
+                    <span class="icon-bar d-block bg-grey-500"></span>
+                    <span class="icon-bar d-block bg-grey-500"></span>
+                    <span class="icon-bar d-block bg-grey-500"></span>
+                </button>
+                <!-- /Sidebar Toggler -->
+	       	</nav>
         </div>
-    </div>
+	</header>
 	
 	<!-- Sidebar -->
 	<div id="sidebar" class="sidebar left sidebar-skin-blue">
@@ -152,6 +108,6 @@
 	</div>
 	<!--// Sidebar -->	
 
-	<main id="content" role="main">
-		<div class="container-fluid">          
+	<main id="content" role="main" class="mb-4">
+		<div class="container-sm">
 	

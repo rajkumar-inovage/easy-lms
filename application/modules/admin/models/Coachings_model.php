@@ -190,6 +190,7 @@ class Coachings_model extends CI_Model {
 
 		$data = array (
 				'coaching_name'=>	$this->input->post ('coaching_name'), 
+				'coaching_url' => 	str_replace ('-', '_', $this->input->post ('coaching_url')),
 				'address'=>			$this->input->post ('address'), 
 				'state'=>			$this->input->post ('state'), 
 				'city'=>			$this->input->post ('city'), 

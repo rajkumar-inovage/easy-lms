@@ -1,27 +1,34 @@
 <div class="card paper-shadow" data-z="0.5">
+
+    <div class="card-header ">
+		<h4 class="">Basic Details</h4>
+		<p class="text-subhead ">Add your coaching name, address and other detail</p>
+    </div>
 	<div class="card-body ">
 	    <?php echo form_open ('admin/coaching_actions/create_account/'.$coaching_id, array ('class'=>'', 'id'=>'validate-1')); ?>
-			<h6 class="">Basic Details</h6>
-			<p class="text-subhead ">Add your coaching name, address and other detail</p>
-
-			<div class="form-row">
-                <?php if ($coaching_id > 0) { ?>
-				    <div class="col-6">
-    					<label class="control-label">Registration No<span class="required">*</span></label>
-					    <input type="text" name="reg_no" class="form-control required" value = "<?php echo set_value('reg_no', $coaching['reg_no']) ; ?>" readonly>
-				    </div>
-    			<?php } ?>
-	    
+			<div class="form-group row">
     			<div class="col-6 ">
     				<label class="control-label">Joining Date<span class="required">*</span></label>
     				<input type="date" name="date" class="form-control required" value="<?php echo date('Y-m-d'); ?>">
     			</div>
     			
+                <div class="col-6">
+					<label class="control-label">Registration No<span class="required">*</span></label>
+				    <input type="text" name="reg_no" class="form-control required" value = "<?php echo set_value('reg_no', $coaching['reg_no']) ; ?>" readonly>
+			    </div>
+	    
 			</div>
 			
-			<div class="form-group">
-				<label class="control-label">Coaching Name<span class="required">*</span></label>
-				<input type="text" name="coaching_name" class="form-control required" value = "<?php echo set_value('coaching_name', $coaching['coaching_name']) ; ?>">
+			<div class="form-group row">
+                <div class="col-6">
+                    <label class="control-label">Coaching Name<span class="required">*</span></label>
+                    <input type="text" name="coaching_name" class="form-control required" value = "<?php echo set_value('coaching_name', $coaching['coaching_name']) ; ?>">
+                </div>
+                <div class="col-6">
+                    <label class="control-label">Coaching URL<span class="required">*</span></label>
+                    [<?php echo site_url (); ?>]
+                    <input type="text" name="coaching_url" class="form-control required" value = "<?php echo set_value('coaching_url', $coaching['coaching_url']) ; ?>" <?php if ($coaching_id > 0) echo 'readonly'; ?> >
+                </div>
 			</div>
 
 			<div class="form-row ">	

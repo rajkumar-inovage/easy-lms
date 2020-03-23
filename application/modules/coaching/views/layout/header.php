@@ -36,7 +36,7 @@
 <body class="<?php if (isset($body_class)) echo $body_class; ?>">
 	
 	<header class="">
-		<nav class="navbar navbar-expand-lg bg-white  border-bottom ">
+		<nav class="navbar bg-white border-bottom py-1">
 				
 			<!-- Sidebar Toggler -->
 			<button class="mr-2 navbar-toggle" type="button" id="toggle_sidebar">
@@ -59,7 +59,7 @@
 
             <div class="dropdown ml-auto">
               <a href="#" class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="rounded-circle img-thumbnail" width="40"> 
+                <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="rounded-circle img-thumbnail" width="30"> 
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="#">Super Admin</a>

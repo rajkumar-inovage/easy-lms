@@ -8,7 +8,7 @@ class Attendance extends MX_Controller
     {
         // Load Config and Model files required throughout Users sub-module
         $config = ['coaching/config_coaching'];
-        $models = ['coaching/attendance_model', 'admin/coachings_model', 'coaching/users_model'];
+        $models = ['attendance_model', 'users_model'];
         $this->common_model->autoload_resources($config, $models);
     }
 

@@ -235,6 +235,7 @@ class Common_model extends CI_Model {
 
 	/* Send Email Function */
 	public function send_email ($send_to='', $subject=SITE_TITLE, $message='', $from=CONTACT_EMAIL, $title=SITE_TITLE) {
+		/*
 		$this->load->library ('email');
 		$config['mailtype'] = 'html';
 		$this->email->initialize($config);
@@ -243,7 +244,9 @@ class Common_model extends CI_Model {
 		$this->email->subject($subject);
 		$this->email->message($message);
 		$this->email->send();
+		*/
 	}
+
 	public function categroy_parameters ($category='') {
 		switch ($category) {
 			case TREE_TYPE_TEST:

@@ -23,6 +23,7 @@ define ('COMPANY_URL', 					'https://inovexiasoftware.com');
 /* MENU TYPES */
 define ('MENUTYPE_SIDEMENU', 				1);
 define ('MENUTYPE_DASHBOARD', 				2);
+define ('MENUTYPE_FOOTER', 					3);
 
 // TREE CATEGORIES
 define ('SYS_TREE_TYPE_QB', 			'TREE_TYPE_QB');

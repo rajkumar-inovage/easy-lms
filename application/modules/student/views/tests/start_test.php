@@ -1,7 +1,47 @@
-<div class="row">
-	<div class="col-md-9">
-		<?php 
-		echo form_open_multipart('student/tests_actions/submit_test/'.$coaching_id.'/'.$member_id.'/'.$test_id, array('id'=>'test_form', 'name'=>'forms', 'enctype'=>'multipart/form-data', 'class' => 'h-100') ); 
+<div class="bg-white d-flex justify-content-between">
+	<div class="">
+	</div>
+	<div class="">
+		<script src="<?php echo base_url (THEME_PATH . 'assets/js/countdown.min.js'); ?>"></script>
+		<script language="javascript">
+			// Function for submit form when time is over.	
+			function countdownComplete() {
+				/*
+				var pageSelectors = document.getElementsByClassName ('pages');
+				var i;
+				for (i = 0; i < pageSelectors.length; i++) {
+					const pageSelector = pageSelectors[i];
+					pageSelector.style.display ('none');
+
+				}
+				*/
+				document.getElementById ('time-up').style.display = 'block';
+				document.getElementById ('quick-links').style.display = 'none';
+				document.getElementById ('question-block').style.display = 'none';
+			}
+			// === *** SHOW TIMER *** === //
+			var test2 = new Countdown( {  
+									time: 5, 
+									rangeHi : 'hour',
+									width:200, 
+									height:40,
+									hideLine	: true,
+									numbers		: 	{
+										color	: "#000000",
+										bkgd	: "#ffffff",
+										rounded	: 0.15,				// percentage of size
+									},											
+									onComplete	: countdownComplete
+								} );			
+			
+		</script>
+	</div>
+</div>
+
+<?php echo form_open_multipart('student/tests_actions/submit_test/'.$coaching_id.'/'.$member_id.'/'.$test_id, array('id'=>'test_form', 'name'=>'forms', 'enctype'=>'multipart/form-data', 'class' => 'h-100') ); ?>
+	<div class="row" id="question-block">
+		<div class="col-md-12">
+			<?php 
 			if ( ! empty ($all_questions)) {
 				$count_tabs = 1;
 				$num_question = 0;
@@ -73,43 +113,54 @@
 			<input type="hidden" id="num-for-review" value="0">
 			<input type="hidden" id="num-not-visited" value="0">
 			<input type="hidden" id="attempt_id" name="attempt_id" value="<?php echo $attempt_id; ?>">
-			<?php echo form_close(); ?>
 		</div>
 	</div>
 
-	<div class="col-md-3">
-		<div class="card mt-2">
-	        <div class="card-header">
-	            <h4 class="card-title category">Questions</h4>
-	        </div>
-	    	<div class="card-body max-height-150 height-150-lg overflow-auto">
-	    		<?php
-	    		if ( ! empty ($all_questions)) {
-	    			$count_tabs = 1;
-	    			$y = 0;
-	    			foreach ( $all_questions as $subject_id=>$question_group ) {
-	    				//echo heading ($subject_wise[$subject_id], 5);
-	    				foreach ($question_group as $group_id=>$questions) {
-	    					foreach ($questions as $question_id) {
-	    						$y++;
-	    					if (strlen ($y) < 2) {
-	    							$y_text = '0'.$y;
-	    						} else {
-	    							$y_text = $y;
-	    						}
-	    						?>
-	    						<a class="btn btn-sm btn-secondary text-white" href="javascript:void(0)" onclick="display_question (<?php echo $y; ?>)" style="margin-top:5px" id="btn_<?php echo $y; ?>"><?php echo $y_text; ?></a> 
-	    						<?php 
-	    					}
-	    				}
-	    			}
-	    		}
-	    		?>
-	    	</div>
+	<div class="row">	
+		<div class="col-md-12">
+			<div class="card mt-2" id="quick-links">
+		        <div class="card-header">
+		            <h4 class="card-title category">Questions</h4>
+		        </div>
+		    	<div class="card-body max-height-150 height-150-lg overflow-auto">
+		    		<?php
+		    		if ( ! empty ($all_questions)) {
+		    			$count_tabs = 1;
+		    			$y = 0;
+		    			foreach ( $all_questions as $subject_id=>$question_group ) {
+		    				//echo heading ($subject_wise[$subject_id], 5);
+		    				foreach ($question_group as $group_id=>$questions) {
+		    					foreach ($questions as $question_id) {
+		    						$y++;
+		    					if (strlen ($y) < 2) {
+		    							$y_text = '0'.$y;
+		    						} else {
+		    							$y_text = $y;
+		    						}
+		    						?>
+		    						<a class="btn btn-sm btn-secondary text-white" href="javascript:void(0)" onclick="display_question (<?php echo $y; ?>)" style="margin-top:5px" id="btn_<?php echo $y; ?>"><?php echo $y_text; ?></a> 
+		    						<?php 
+		    					}
+		    				}
+		    			}
+		    		}
+		    		?>
+		    	</div>
+			</div>
 		</div>
 	</div>
-</div>
 
+	<div class="card border-danger mt-2" id="time-up">
+		<div class="card-header">
+			<h4 class="text-danger">Time's Up</h4>
+		</div>
+		<div class="card-body text-center">
+			<input type="submit" name="submit" value="Submit Test" class="btn btn-success">
+		</div>
+	</div>
+
+
+<?php echo form_close(); ?>
 <?php 
 //FUNCTION FOR SHUFFLE THE OPTION OF QUESTION 
 function shuffle_assoc($list) { 

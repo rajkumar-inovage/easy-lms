@@ -20,12 +20,11 @@
 					</div>
 
 					<div class="mt-2">
-						<script src="<?php echo base_url (THEME_PATH . 'assets/js/countdown.js'); ?>"></script>
+						<script src="<?php echo base_url (THEME_PATH . 'assets/js/countdown.min.js'); ?>"></script>
 						<script language="javascript">
 							// Function for submit form when time is over.	
 							function countdownComplete(){
-								window.close ();
-								//document.location.href = '<?php echo site_url('tests/page/subscribed_tests/'.$category_id);?>';
+								document.location = '<?php echo site_url ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$test_id); ?>';
 							}
 							// === *** SHOW TIMER *** === //
 							var test2 = new Countdown( {  

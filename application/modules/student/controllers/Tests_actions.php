@@ -118,6 +118,11 @@ class Tests_actions extends MX_Controller {
 		}
 		$this->message->set ('You have successfully completed your test. Now you can review your scores', 'success', true);
 		redirect ('student/tests/test_submitted/'.$coaching_id.'/'.$member_id.'/'.$test_id.'/'.$attempt_id);
-	} 
+	}
+
+	public function request_reset ($coaching_id=0, $member_id=0, $test_id=0, $attempt_id=0) {
+		$this->message->set ('Reset request has been sent. Please wait till the test become available again', 'success', true);
+		redirect ('student/tests/index/'.$coaching_id.'/'.$member_id.'/'.$test_id);
+	}
 	
 }

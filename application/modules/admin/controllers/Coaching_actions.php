@@ -3,8 +3,8 @@
 class Coaching_actions extends MX_Controller {
 	
 	public function __construct () { 
-	    $config = ['admin/config_admin', 'coaching/config_coaching'];
-	    $models = ['admin/coachings_model', 'coaching/users_model'];
+	    $config = ['coaching/config_coaching'];
+	    $models = ['coachings_model', 'coaching/users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 
 		$this->load->dbutil ();
@@ -20,6 +20,7 @@ class Coaching_actions extends MX_Controller {
 		$this->form_validation->set_rules ('city', 'City ', 'required');
 		$this->form_validation->set_rules ('website', 'Website', 'valid_url');
         if ($coaching_id == 0) {
+			$this->form_validation->set_rules ('coaching_url', 'Coaching URL ', 'required|is_unique[coachings.coaching_url]', ['is_unique'=>'Coaching URL is already used. Try another']);
     		$this->form_validation->set_rules ('first_name', 'First Name', 'max_length[100]|trim|ucfirst');		
     		$this->form_validation->set_rules ('last_name', 'Last Name', 'max_length[100]|trim|ucfirst');
     		$this->form_validation->set_rules ('email', 'Email', 'required|valid_email');

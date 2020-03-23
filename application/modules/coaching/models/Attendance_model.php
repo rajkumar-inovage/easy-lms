@@ -32,7 +32,7 @@ class Attendance_model extends CI_Model {
 	}
 
 	
-	public function mark_attendance ($member_id=0, $status=0, $date='') {
+	public function mark_attendance ($coaching_id=0, $member_id=0, $status=0, $date='') {
 		
 		$taken_by = intval ($this->session->userdata ('member_id'));
 		
@@ -48,6 +48,7 @@ class Attendance_model extends CI_Model {
 			$this->db->where ('date', $date);
 			$this->db->update ("coaching_attendance");
 		} else {
+			$data['coaching_id'] = $coaching_id;
 			$this->db->insert ('coaching_attendance', $data);
 		}
 	}

@@ -1,15 +1,6 @@
-<div class="row justify-content-center">	
-	<div class="col-md-12">
-		<div class="card card-default paper-shadow" data-z="0.5">
+	<div class="card card-default paper-shadow" data-z="0.5">
 		  <div class="card-header">
-			<div class="media v-middle">
-			  <div class="media-body">
 				<h4 class="">Tests Taken</h4>
-				<p class="text-subhead "><?php echo $num_tests . ' Tests'; ?></p>
-			  </div>
-			  <div class="media-right">
-			  </div>
-			</div>
 		  </div>
 		  <ul class="list-group">
 			<?php

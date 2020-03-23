@@ -45,9 +45,6 @@ class Tests extends MX_Controller {
 		} else {
 			$data['tests'] = $this->tests_model->get_all_tests ($coaching_id, $category_id=0,  $test_type);
 		}
-
-
-		//$data['tests'] 	= $this->tests_model->get_all_tests ($coaching_id, $category_id, $type, 0);
 		
 		$data['bc'] 			= array ('Dashboard'=>'student/home/dashboard/'.$coaching_id.'/'.$member_id);
 
@@ -306,9 +303,6 @@ class Tests extends MX_Controller {
 		$data['data']	 = $data;
 		$data['page_title'] 			= $test['title'];
 
-		/* --==// Header Script //==-- */ 
-		$data['script_header'] = array(THEME_PATH.'assets/js/countdown.min.js');
-
 		$data['script'] = $this->load->view ('tests/scripts/start_test', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('tests/start_test', $data);
@@ -334,5 +328,5 @@ class Tests extends MX_Controller {
 		$this->load->view('tests/test_submitted', $data);
 		$this->load->view(INCLUDE_PATH  . 'footer', $data);
 	}
-	
+
 }
