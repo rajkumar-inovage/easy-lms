@@ -89,6 +89,12 @@ class Users_model extends CI_Model {
 			$date = '';
 		}
 	    
+	    if ($this->input->post ('gender')) {
+	    	$gender = $this->input->post ('gender');
+	    } else {
+	    	$gender = 'n';
+	    }
+
 		$data = array (
 			'role_id'	=>		$this->input->post ('user_role'),
 			'sr_no'		=>		$this->input->post ('sr_no'), 
@@ -98,7 +104,7 @@ class Users_model extends CI_Model {
 			'primary_contact'=> $this->input->post ('primary_contact'),
 			'email'		=>		$this->input->post ('email'),
 			'dob'		=>		$date,
-			'gender'	=>		$this->input->post ('gender'),
+			'gender'	=>		$gender,
 		);
 		if ($member_id > 0) { 
 			// update account
@@ -106,6 +112,8 @@ class Users_model extends CI_Model {
 			$this->db->update ('members', $data);			
 		} else {
 			// create profile
+			$password = $this->input->post ('password');
+			$data['password'] = password_hash ($password, PASSWORD_DEFAULT);
 			$data['coaching_id']  = $coaching_id;
 			$data['link_send_time']	= time();
 			$data['status']  = USER_STATUS_ENABLED;

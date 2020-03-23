@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Vitals extends MX_Controller {
 
+
 	// Load default settings
 	public function load_defaults () {
 		if ( ! $this->session->has_userdata('SITE_TITLE')) {			
@@ -24,53 +25,33 @@ class Vitals extends MX_Controller {
 		}
 	}
 	
-	// Load default settings
-	public function temp_login () {
-		$set_login = false;
-		if ($this->uri->segment (1) == 'student') {
-			$role_id = 4;
-			$member_id = 112;
-			$is_admin = false;
-			$user_name = 'Student';
-			$coaching_id = 1;
-			$set_login = true;
-		} elseif ($this->uri->segment (1) == 'admin') {
-			$role_id = 1;
-			$member_id = 1;
-			$is_admin = true;
-			$user_name = 'Super';
-			$coaching_id = 0;
-			$set_login = true;
-		} elseif ($this->uri->segment (1) == 'coaching') {
-			$role_id = 5;
-			$member_id = 1;
-			$is_admin = true;
-			$user_name = 'Super';
-			$coaching_id = 1;
-			$set_login = true;
-		} else {
-			$set_login = false;
-		}
-
-		if ($set_login == true) {
-			if ( ! $this->session->has_userdata ('member_id')) {
-	    		$this->session->set_userdata ('member_id', $member_id);
+	public function validate_session () {
+		
+		$module = $this->uri->segment (1, 0);
+		$controller = $this->uri->segment (2, 0);
+		$method = $this->uri->segment (3, 0);
+		
+		if ($module == 'public') {
+			// Do Nothing
+			/* 
+				For PUBLIC module login is not required, user will not be redirected to Dashboard OR Logout page
+			*/
+		} else if ($module == '' || $module === FALSE || $module == 'login') {
+			if ($method == 'logout') {
+				// Do Nothing
+			} else if ($this->session->userdata ('is_logged_in') == TRUE) {
+				// Auto login
+				$dasboard_url = $this->session->userdata ('dashboard');
+				redirect ($dasboard_url);
 			}
-			if ( ! $this->session->has_userdata ('role_id')) {
-	    		$this->session->set_userdata ('role_id', $role_id);
-			}
-			if ( ! $this->session->has_userdata ('is_admin')) {
-	    		$this->session->set_userdata ('is_admin', $is_admin);
-			}
-			if ( ! $this->session->has_userdata ('user_name')) {
-	    		$this->session->set_userdata ('user_name', $user_name);
-			}
-			if ( ! $this->session->has_userdata ('coaching_id')) {
-	    		$this->session->set_userdata ('coaching_id', $coaching_id);
+		} else if ($module != FALSE && $controller == FALSE && $method == FALSE) {
+			// This should be a coaching-login
+			if (! $this->session->userdata ('is_logged_in')) {
+				redirect ('login/page/index');
 			}
 		}
 	}
-	
+		
 	// Load default settings
 	public function load_acl_menu () {
 		$role_id = $this->session->userdata ('role_id');

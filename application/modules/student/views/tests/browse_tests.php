@@ -122,6 +122,7 @@
             </div>
         </div>
     <?php } else { ?>
+      <div class="card-body">
         <?php 
         if (! empty ($tests)) {
             echo '<ul class="list-group list-group-flush ">';
@@ -153,5 +154,6 @@
             <?php
         }
         ?>
+      </div>
     <?php } ?>
 </div>

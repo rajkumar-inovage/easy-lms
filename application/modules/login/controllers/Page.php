@@ -9,23 +9,37 @@ class Page extends MX_Controller {
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 	
-    public function index ($coaching_slug='') {
-
+    public function index () {
+    	$this->login ();
 	}
 
-    public function login ($coaching_slug='') {
+    public function login () {
 
-		$data['coaching_slug'] = $coaching_slug;
-		$coaching = $this->coachings_model->get_coaching_by_slug ($coaching_slug);
-		$data['coaching_name'] = $coaching['coaching_name'];
+    	if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
+    		$slug = $_GET['sub'];
+			$coaching = $this->coachings_model->get_coaching_by_slug ($slug);
+			if ($coaching) {
+				$coaching_dir = 'contents/coachings/' . $coaching['id'] . '/';
+				$coaching_logo = $this->config->item ('coaching_logo');
+				$logo_path =  $coaching_dir . $coaching_logo;
+				$logo = base_url ($logo_path);
+				$page_title = $coaching['coaching_name'];
+			} else {
+				$slug = '';
+	    		$logo = base_url ($this->config->item('system_logo'));
+				$page_title = SITE_TITLE;
+			}
+    	} else {
+    		$slug = '';
+    		$logo = base_url ($this->config->item('system_logo'));
+			$page_title = SITE_TITLE;
+    	}
 
-		$sys_dir = $this->config->item ('sys_dir');
-		$coaching_dir = 'coachings/' . $coaching['id'] . '/';
-		$logo = $this->config->item ('coaching_logo');
-		$logo_path = $sys_dir . $coaching_dir . $logo;
-		$data['coaching_logo'] = base_url ($logo_path);
+		$data['page_title'] = $page_title;
+		$data['slug'] = $slug;
+		$data['logo'] = $logo;
 		
-		//$data['script'] = $this->load->view ('scripts/index', $data, true); 
+		$data['script'] = $this->load->view ('scripts/login', $data, true); 
 		$this->load->view ('header', $data);
 		$this->load->view ('login', $data);
 		$this->load->view ('footer', $data);
@@ -34,14 +48,35 @@ class Page extends MX_Controller {
 		/* Register Page */
 	public function register ($coaching_id=0) {
 
-		$this->login_model->logout ();
-		$coaching = $this->login_model->get_coaching_name ($coaching_id );
-		$data['coaching_id'] = $coaching_id;
-		$data['coaching'] = $coaching;
-		$data['page_title'] = "Register";
-		$data['show_header'] = false;
-		$data['show_sidebar'] = false;
-		$data['bc'] = array ( 'Login'=>'login/page/login' );
+    	if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
+    		$slug = $_GET['sub'];
+			$coaching = $this->coachings_model->get_coaching_by_slug ($slug);
+			if ($coaching) {
+				$coaching_dir = 'contents/coachings/' . $coaching['id'] . '/';
+				$coaching_logo = $this->config->item ('coaching_logo');
+				$logo_path =  $coaching_dir . $coaching_logo;
+				$logo = base_url ($logo_path);
+				$page_title = $coaching['coaching_name'];				
+			} else {
+				$slug = '';
+	    		$logo = base_url ($this->config->item('system_logo'));
+				$page_title = SITE_TITLE;
+			}
+    	} else {    		
+    		$slug = '';    		
+    		$logo = base_url ($this->config->item('system_logo'));
+			$page_title = SITE_TITLE;
+    	}
+    	if ( empty ($slug)) {
+			$this->message->set ('Direct registration not allowed', 'danger', true);
+			redirect ('login/page/index');    		
+    	}
+
+    	$data['page_title'] = $page_title;
+		$data['slug'] = $slug;
+		$data['logo'] = $logo;
+
+		$data['bc'] = array ( 'Login'=>'login/page/login/?sub='.$slug );
 		
 		$this->load->view ( 'header', $data); 
 		$this->load->view ( 'register', $data); 

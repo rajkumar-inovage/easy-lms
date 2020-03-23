@@ -23,13 +23,14 @@ $hook['pre_controller'][] = array(
 
 $hook['pre_controller'][] = array(
         'class'    => 'Vitals',
-        'function' => 'temp_login',
+        'function' => 'validate_login',
         'filename' => 'Vitals.php',
         'filepath' => 'hooks',
         'params'   => ''
 );
 
-/* Load ACL Menu  */
+/*
+/* Load ACL Menu  * /
 $hook['pre_controller'][] = array(
         'class'    => 'Vitals',
         'function' => 'load_acl_menu',
@@ -38,7 +39,7 @@ $hook['pre_controller'][] = array(
         'params'   => ''
 );
 
-/*$hook['display_override'][] = array(
+$hook['display_override'][] = array(
   'class' => '',
   'function' => 'compress',
   'filename' => 'compress.php',

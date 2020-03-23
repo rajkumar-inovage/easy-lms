@@ -3,11 +3,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login_model extends CI_Model {
     
-    public function validate_login () {
+    public function validate_login ($login='', $password='', $slug='') {
 		// this will validate if current user authentic to use resources
 		// based on the received username and password
-		$login		 =  $this->input->post('username');
-		$password	 =  $this->input->post('password');
+		if ($login == '') {
+			$login		 =  $this->input->post('username');
+		}
+		if ($password == '') {
+			$password		 =  $this->input->post('password');
+		}
+		if ($slug != '') {
+			$coaching = $this->coachings_model->get_coaching_by_slug ($slug);
+			$coaching_id = $coaching['id'];
+			$this->db->where ('coaching_id', $coaching_id);
+		}
 		$where = "(login='$login' OR adm_no='$login' OR email='$login')"; 
 		$this->db->where ($where);
 		$query = $this->db->get ("members");
@@ -17,6 +26,7 @@ class Login_model extends CI_Model {
 			$member_id = $row['member_id'];
 			$role_id   = $row['role_id'];
 			$user_name = $row['first_name'].' '.$row['second_name'].' '.$row['last_name'];
+			$coaching_id = $row['coaching_id'];
 			
 			// This is a valid user,  check for password
 			$hashed_password = $row['password'];
@@ -25,21 +35,15 @@ class Login_model extends CI_Model {
 				$this->reset_wrong_password_attempts ($member_id);
 				// Generate token 
 				$token = $this->generate_token ($member_id);
-				if ($token) {
-					// Save Token 
-					$this->save_token ($member_id, $token);
+				// Save Token 
+				$this->save_token ($member_id, $token);
 					
-					// Save Session 
-					$session = $this->save_login_session ($member_id, $role_id, $user_name);
-					$session['token'] = $token;
-					// Load menus 
-					$menus = $this->load_menu ($role_id, 0);					
-					$return['status'] 		= LOGIN_SUCCESSFUL;
-					$return['menu'] 		= $menus;
-					$return['session'] 		= $session;
-				} else {
-					$return['status'] = LOGIN_ERROR;
-				}
+				// Save Session 
+				$session = $this->save_login_session ($member_id, $role_id, $user_name, $coaching_id);
+				$session['token'] = $token;
+				// Load menus 
+				$menus = $this->load_menu ($role_id, 0);
+				$return['status'] 		= LOGIN_SUCCESSFUL;
 			} else {
 				// User has input wrong password
 				$wrong_attempts = $this->wrong_password_attempted ($member_id);
@@ -54,7 +58,7 @@ class Login_model extends CI_Model {
 		}
 		return $return;
 	}
-	
+
 	// Reset password attepted by a user in a day
 	public function reset_wrong_password_attempts ($member_id=0) {
 		$today = mktime (0, 0, 0, date ('m'), date ('d'), date ('Y'));
@@ -102,7 +106,7 @@ class Login_model extends CI_Model {
 		$this->session->set_userdata ('token', $token);
 	}
 
-	public function save_login_session ($member_id=0, $role_id=0, $user_name="") {
+	public function save_login_session ($member_id=0, $role_id=0, $user_name="", $coaching_id=0) {
 
 		// Session
 		$login_dt   	 = time ();
@@ -126,6 +130,20 @@ class Login_model extends CI_Model {
 		// save login data to database			
 		$this->db->insert ('login_history', array ('member_id'=>$member_id, 'login_dt'=>$login_dt, 'logout_dt'=>$logout_dt, 'session_id'=>$session_id, 'last_activity'=>$last_activity, 'ip_address'=>$ip_address, 'user_agent'=>$user_agent, 'user_data'=>$user_data, 'status'=>$status, 'remarks'=>$remarks) );
 		
+		if ($coaching_id > 0) {
+		// Get coaching details
+			$coaching = $this->coachings_model->get_coaching ($coaching_id);
+			$coaching_dir = 'contents/coachings/' . $coaching_id . '/';
+			$coaching_logo = $this->config->item ('coaching_logo');
+			$logo_path =  $coaching_dir . $coaching_logo;
+			$logo = base_url ($logo_path);
+			$site_title = $coaching['coaching_name'];
+		} else {
+			$logo = base_url ($this->config->item('system_logo'));
+			$site_title = SITE_TITLE;
+		}
+		$profile_image = $this->users_model->view_profile_image ($member_id);
+	
 		// Set user's session vars 
 		$options = array(
 						'member_id'		=> $member_id,
@@ -136,49 +154,28 @@ class Login_model extends CI_Model {
 						'role_lvl'		=> $role_level,
 						'dashboard'		=> $role_home,
 						'is_logged_in'	=> true,
+						'logo'			=> $logo,
+						'site_title'	=> $site_title,
+						'coaching_id'	=> $coaching_id,
+						'profile_image'	=> $profile_image,
 						);
-		$profile_image = $this->config->item ('profile_picture_path') . '/pi_'.$member_id.'.gif';
-		if (read_file ($profile_image)) {
-			$options['profile_image'] = base_url ($profile_image);
-		} else {			
-			$options['profile_image'] = base_url ($this->config->item ('profile_picture_path') . '/default.png');
-		}
 		
 		$this->session->set_userdata ($options);
-		return $options;
-
 	}
 
 	public function load_menu ($role_id=0, $parent_id=0) {
-		$menu[MENU_TYPE_SIDE_MENU] = $this->common_model->load_acl_menus ($role_id, MENU_TYPE_SIDE_MENU, $parent_id);
-		$menu[MENU_TYPE_DASHBOARD] = $this->common_model->load_acl_menus ($role_id, MENU_TYPE_DASHBOARD, $parent_id);
-		if ( ! empty($menu)) {
-			$this->session->set_userdata ('acl_menus', $menu);
+		if ( ! $this->session->has_userdata ('MAIN_MENU')) {
+    		$menus = $this->common_model->load_acl_menus ($role_id, $parent_id, MENUTYPE_SIDEMENU);
+    		$this->session->set_userdata ('MAIN_MENU', $menus);
 		}
-		
-		return $menu;
-	}
-	
-	
-	public function new_register () {
-		
-		$this->load->model('users/users_model');
-		
-		$time = time ();
-
-		$user_data['role_id'] 		= USER_ROLE_STUDENT;
-		$user_data['password'] 		= '';
-		$user_data['first_name'] 	= $this->input->post('first_name');
-		$user_data['last_name']  	= $this->input->post('last_name');
-		$user_data['email'] 		= $this->input->post('email');
-		$user_data['primary_contact'] 	= $this->input->post('primary_contact');
-		$user_data['status']  		= USER_STATUS_UNCONFIRMED;
-		$user_data['created_by']  	= 0;
-		$user_data['creation_date'] = time ();
-
-		$member_id = $this->users_model->create_coaching_user ($user_data);
-		
-		return $member_id;
+		if ( ! $this->session->has_userdata ('DASHBOARD_MENU')) {
+    		$menus = $this->common_model->load_acl_menus ($role_id, $parent_id, MENUTYPE_DASHBOARD);
+    		$this->session->set_userdata ('DASHBOARD_MENU', $menus);
+		}
+		if ( ! $this->session->has_userdata ('FOOTER_MENU')) {
+    		$menus = $this->common_model->load_acl_menus ($role_id, $parent_id, MENUTYPE_FOOTER);
+    		$this->session->set_userdata ('FOOTER_MENU', $menus);
+		}
 	}
 	
 

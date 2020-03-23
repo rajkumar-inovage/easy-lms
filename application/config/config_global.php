@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['global'] = TRUE;
 
-$config['general']['site_title']		= 'IndiaTests Coaching';
+$config['general']['site_title']		= 'Easy Coaching';
 $config['general']['home_url']			= 'https://indiatests.in';
 $config['general']['contact_email']		= 'contact@indiatests.in';
 $config['general']['max_file_size']		= 52428800;
@@ -13,6 +13,7 @@ $config['upload_dir']					= 'contents/';
 $config['temp_dir']						= 'contents/temp/';
 $config['sys_dir']						= 'contents/system/';
 $config['system_logo']					= 'contents/system/system_logo.png';
+$config['coaching_logo']				= 'logo.png';
 $config['profile_picture_path']			= 'contents/profile_images/';
 
 define ('INCLUDE_PATH', 			    'layout/');

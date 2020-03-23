@@ -60,17 +60,16 @@ class Message {
             $output = $this->get(FALSE, $group);
             echo ($wrapper !== FALSE ? $wrapper[0] : $this->wrapper[0])."\r\n";
             foreach($output as $type => $messages){
-                echo '<div class="alert alert-'.$type.' fade in">'."\r\n";
-				echo '<i class="fa fa-remove close" data-dismiss="alert"></i>';
+                echo '<div class="alert alert-'.$type.' alert-dismissible fade show"  role="alert">'."\r\n";
                 foreach($messages as $msg){
-                    echo '<p>'.$msg.'</p>'."\r\n";
+                    echo '<p>'.$msg.'</p>'."";
                 }
+				echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>';
                 echo '</div>'."\r\n";
             }
             echo ($wrapper !== FALSE ? $wrapper[1] : $this->wrapper[1])."\r\n";
-        }        
+        }
     }
-	
-
-
-}  
+}
