@@ -3,7 +3,7 @@
 	
 	<div class="card card-default paper-shadow ">
 	  <div class="card-header bg-white text-center pb-1">
-		<img src="<?php echo $logo; ?>" height="40" title="<?php echo $page_title; ?>" class="text-center">
+		<img src="<?php echo $logo; ?>" height="50" title="<?php echo $page_title; ?>" class="text-center">
 	    <h5 class="text-center">Sign in with your credentials</h6>
 	  </div>
 	  <div class="card-body px-lg-5 py-lg-5">

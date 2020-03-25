@@ -1,4 +1,4 @@
-const appPath = 'https://indiatests.in/staging/app/';
+const appPath = 'http://localhost/repos/easycoachingapp/';
 const sidebarSection = document.getElementById("sidebar");
 const mainSection = document.getElementById("content");
 const outputDiv = document.getElementById("response"); 
@@ -8,10 +8,10 @@ window.addEventListener ('load', async e => {
 	// Register Servie-worker
 	if ('serviceWorker' in navigator) {
 		try {
-			//navigator.serviceWorker.register (appPath + 'sw.js');
-			//console.log ('ServiceWorker registered');
+			navigator.serviceWorker.register (appPath + 'sw.js');
+			console.log ('ServiceWorker registered');
 		} catch (error) {
-			//console.log ('ServiceWorker registration failed');		
+			console.log ('ServiceWorker registration failed');		
 		}
 	}
 	//validate_session ();
