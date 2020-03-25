@@ -162,7 +162,46 @@ class Login_model extends CI_Model {
 		
 		$this->session->set_userdata ($options);
 	}
-
+	public function check_registered_email ($email, $login='') {
+		$this->db->where ('email', $email);
+		if ( ! empty($login)) {
+			$this->db->where ('login', $login);			
+			$this->db->or_where ('adm_no', $login);			
+		}
+		$this->db->from ('members');
+		$query = $this->db->get ();
+		if ($query->num_rows () > 0 ) {
+			return true;
+		} else {
+			return false;
+		}		
+	}
+	public function get_member_by_login ($login) {
+		$this->db->where ('login', $login);
+		$this->db->or_where ('adm_no', $login);
+		$sql = $this->db->get ('members');
+		return $sql->row_array (); 
+	}
+	public function update_link_send_time ($login) {
+		$current_time   =   time();
+		$this->db->set('link_send_time', $current_time);
+		$this->db->where('login', $login);
+		$this->db->or_where('adm_no', $login);
+		$this->db->update('members'); 
+	}
+	public function get_member_by_md5login ($login) {
+		$sql = $this->db->get ('members');
+		if ($sql->num_rows () > 0 ) { 
+			$result = $sql->result_array ();
+			foreach ($result as $row) {
+				if (md5($row['login']) == $login) {
+					return $row; 
+				}
+			}
+		} else {
+			return false;
+		}			
+	}
 	public function load_menu ($role_id=0, $parent_id=0) {
 		if ( ! $this->session->has_userdata ('MAIN_MENU')) {
     		$menus = $this->common_model->load_acl_menus ($role_id, $parent_id, MENUTYPE_SIDEMENU);
@@ -177,8 +216,6 @@ class Login_model extends CI_Model {
     		$this->session->set_userdata ('FOOTER_MENU', $menus);
 		}
 	}
-	
-
 	public function logout () {
 		$this->session->sess_destroy ();
 		//$this->cookie->delete_cookie ();

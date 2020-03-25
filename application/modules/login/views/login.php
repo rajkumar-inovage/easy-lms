@@ -24,7 +24,7 @@
 			  <input class="form-control" placeholder="Password" type="password" name="password">
 			</div>
 		  </div>
-		  <a href="<?php echo site_url ('login/page/forgot_password/?='.$slug); ?>" class="text">Forgot password?</a>
+		  <a href="<?php echo site_url ('login/page/forgot_password/?sub='.$slug); ?>" class="text">Forgot password?</a>
 		  
 		  <div class="text-center">
 			<button type="submit" name="submit" class="btn btn-primary my-4">Sign in</button>
