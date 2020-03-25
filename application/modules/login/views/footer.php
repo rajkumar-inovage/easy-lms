@@ -1,7 +1,7 @@
 		</div>    	
 	</main>
 	
-	<footer class="light-footer mt-2">
+	<footer class="light-footer mt-4">
 		<div class="container">
 		  <div class="d-flex justify-content-center">
 			<p class="footer-info">

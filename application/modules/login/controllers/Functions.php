@@ -91,7 +91,8 @@ class Functions extends MX_Controller {
 			$this->message->set ($message, 'success', true );
 
 			// Auto Login
-			$response = $this->login_model->validate_login ($user_id, $user['password']);
+			$password = $this->input->post ('password');
+			$response = $this->login_model->validate_login ($user_id, $password);
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>true, 'message'=>_AT_TEXT ('LOGIN_SUCCESSFUL', 'msg'), 'redirect'=>site_url('student/home/dashboard/'.$coaching['id'].'/'.$member_id)) ));
 		}

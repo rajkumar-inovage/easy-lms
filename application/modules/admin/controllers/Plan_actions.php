@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Plan_actions extends MX_Controller {
 
     public function __construct () {
-	    $config = ['admin/config_admin'];
-	    $models = ['admin/plans_model'];
+	    $config = ['config_admin'];
+	    $models = ['plans_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 	
@@ -117,6 +117,6 @@ class Plan_actions extends MX_Controller {
 	public function its_import_category ($category_id=0) {
 		$this->plans_model->its_import_category ($category_id);
 		$this->message->set ('Plans imported successfully', 'success', true);
-		redirect ('admin/plans/its_test_plans');
+		redirect ('admin/plans/its_test_plan_categories');
 	}
 }

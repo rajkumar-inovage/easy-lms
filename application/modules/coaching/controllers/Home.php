@@ -10,6 +10,9 @@ class Home extends MX_Controller {
  
 	public function dashboard ($coaching_id=0) {
 		
+		if ($coaching_id == 0) {
+			$coaching_id = $this->session->userdata ('coaching_id');
+		}
 		$data['coaching'] = $this->coachings_model->get_coaching ($coaching_id);
 		$data['subscriptions'] = $this->subscription_model->get_coaching_subscription ($coaching_id);
 		$data['test_packages'] = $this->coachings_model->coaching_plans ($coaching_id);

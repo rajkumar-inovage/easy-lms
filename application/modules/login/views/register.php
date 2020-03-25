@@ -6,11 +6,11 @@
 		<img src="<?php echo $logo; ?>" height="40" title="<?php echo $page_title; ?>" class="text-center">
 	    <h5 class="text-center">Register As Student</h5>
 	  </div>
-		<?php echo form_open ('login/functions/register/'.$slug, array('class'=>'form-horizontal ', 'id'=>'validate-')); ?> 
+		<?php echo form_open ('login/functions/register/'.$slug, array('class'=>'form-horizontal ', 'id'=>'validate-1')); ?> 
 	  	  <div class="card-body px-lg-5 py-lg-5">
-	  	  	<input type="" name="user_role" value="<?php echo USER_ROLE_STUDENT; ?>">
-	  	  	<input type="" name="sr_no" value="">
-	  	  	<input type="" name="second_name" value="">
+	  	  	<input type="hidden" name="user_role" value="<?php echo USER_ROLE_STUDENT; ?>">
+	  	  	<input type="hidden" name="sr_no" value="">
+	  	  	<input type="hidden" name="second_name" value="">
 							
 			<div class="form-group">
 				<label class="control-label ">First Name<span class="text-danger">*</span></label>

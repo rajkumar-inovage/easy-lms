@@ -11,18 +11,15 @@
 		const dbVersion = 1;
 		const formURL = formSelector.getAttribute ('action');
 		var formData = new FormData(formSelector);
-		loaderSelector.style.display = 'block';
-		
-		// IndexedDB
-		if ("indexedDB" in window) {
-			idbSupported = true;
-		}
+		loaderSelector.style.display = 'block';		
+		toastr.info ('Please wait...');
 		fetch (formURL, {
 			method : 'POST',
 			body: formData,
 		}).then (function (response) {
 			return response.json ();
 		}).then(function(result) {
+			toastr.clear ();
 			if (result.status == true) {
 				/*
 				if (typeof(Storage) !== "undefined") {

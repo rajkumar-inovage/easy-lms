@@ -133,10 +133,11 @@
 		<ul class="sidebar-menu">
 			<?php
 			$main_menu = $this->session->userdata ('MAIN_MENU');
-			// Side-menu
-			if (! empty ($main_menu)) {
-				foreach ($main_menu as $menu) {
-					$link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'];
+			$coaching_id = $this->session->userdata ('coaching_id');
+            // Side-menu
+            if (! empty ($main_menu)) {
+                foreach ($main_menu as $menu) {
+                    $link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id;
 					?>
 					<li class="">
 						<a class="" href="<?php echo site_url($link); ?>">

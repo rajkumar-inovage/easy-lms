@@ -31,7 +31,6 @@ if (submitFormSelector) {
 		}).then (function (response) {
 			return response.json ();
 		}).then(function(result) {
-			console.log (result);
 			toastr.clear ();
 			if (result.status == true) {
 				toastr.success (result.message);

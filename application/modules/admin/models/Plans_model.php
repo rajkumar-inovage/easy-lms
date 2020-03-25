@@ -383,31 +383,26 @@ class Plans_model extends CI_Model {
 		}
 		return $parent_id;
 	}
-	
-	/**************************************************/
-	public function get_its_test_plans ($category_id=0) {
-		// Connect to ITS database
-		$its_db = $this->load->database ('its', true);
-		
-		// Run query
-		$its_db->select ('TP.*, TPC.title as cat_title, TPC.id AS cat_id');
-		$its_db->from ('test_plans TP');
-		$its_db->join ('test_plan_categories TPC', 'TPC.id=TP.category_id');
-		$its_db->where ('TP.status', 1);
-		if ($category_id > 0) {
-			$its_db->where ('TP.category_id', $category_id);
-		}
-		$sql = $its_db->get ();
-		return $sql->result_array ();
-	}
 
-	
 	public function its_test_plan_exists ($plan_id=0) {
 		$this->db->where ('TP.master_id', $plan_id);
 		$sql = $this->db->get ('test_plans TP');
 		return $sql->row_array ();
 	}
 	
+	public function its_test_plans_in_cat ($cat_id=0) {
+		// Connect to ITS database
+		$its_db = $this->load->database ('its', true);
+		
+		// Run query
+		$its_db->select ('TP.*');
+		$its_db->from ('test_plans TP');
+		$its_db->where ('TP.category_id', $cat_id);
+		$its_db->where ('TP.status', 1);
+		$sql = $its_db->get ();
+		return $sql->result_array ();
+	}
+
 	public function import_its_plan ($plan_id=0) {
 	    // Connect to ITS database
 		$its_db = $this->load->database ('its', true);
@@ -446,38 +441,4 @@ class Plans_model extends CI_Model {
         $this->db->insert ('test_plans', $plan);
 	}
 	
-	public function copy_parent ($id=0, $parent_id=0, $start_id=0) {
-		if ($id == 0) {
-			$this->db->where ('master_id', $start_id);
-			$query = $this->db->get ('tests_categories');
-			$row = $query->row_array ();
-			return $row['id'];
-			//exit;
-		}
-		
-	    // Connect to ITS database
-		$its_db = $this->load->database ('its', true);
-		
-		$its_db->where ('id', $id);
-		$sql = $its_db->get ('test_categories');
-		$row = $sql->row_array ();
-		$new_id = $row['parent_id'];
-		
-		$this->db->where ('master_id', $id);
-		$query = $this->db->get ('tests_categories');
-		if ($query->num_rows() == 0) {
-			$data = [];
-			$data['id'] = NULL;
-			$data['parent_id'] = $parent_id;
-			$data['master_id'] = $id;
-			$data['title'] = $row['title'];
-			$data['status'] = 1;
-			$data['level'] = $row['level']; 
-			$data['creation_date'] = time ();
-			$data['created_by'] = $this->session->userdata ('member_id');
-			$sql = $this->db->insert ('tests_categories', $data);
-			$new_parent_id = $this->db->insert_id ();
-			$this->copy_parent ($new_id, $new_parent_id, $start_id);
-		}
-	}
 }

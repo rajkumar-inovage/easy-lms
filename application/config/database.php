@@ -97,7 +97,7 @@ $db['default'] = array(
 
 $db['its'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => 'indiatests.in',
 	'username' => 'indiatests_production',
 	'password' => 'Product@1234',
 	'database' => 'indiatests_its_app',

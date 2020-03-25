@@ -44,10 +44,12 @@ class Vitals extends MX_Controller {
 				$dasboard_url = $this->session->userdata ('dashboard');
 				redirect ($dasboard_url);
 			}
-		} else if ($module != FALSE && $controller == FALSE && $method == FALSE) {
+		} else if ($module != FALSE && $controller != FALSE && $method != FALSE) {
 			// This should be a coaching-login
-			if (! $this->session->userdata ('is_logged_in')) {
-				redirect ('login/page/index');
+			if ($this->session->has_userdata ('is_logged_in')) {
+			} else {
+				$this->message->set ('Your session has expired. Login again', 'danger', true);
+				redirect ('login/page/index');				
 			}
 		}
 	}

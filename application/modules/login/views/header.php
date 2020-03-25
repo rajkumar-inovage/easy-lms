@@ -35,7 +35,7 @@
 </head>
 <body class="<?php if (isset($body_class)) echo $body_class; ?>">
 
-	<main id="content" role="main">
+	<main id="content" role="main" class="mb-4">
 		<div class="container-fluid pt-4">          
 			<div class="row justify-content-center">
 			   	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-4 ">

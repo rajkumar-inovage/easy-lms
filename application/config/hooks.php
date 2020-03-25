@@ -23,7 +23,7 @@ $hook['pre_controller'][] = array(
 
 $hook['pre_controller'][] = array(
         'class'    => 'Vitals',
-        'function' => 'validate_login',
+        'function' => 'validate_session',
         'filename' => 'Vitals.php',
         'filepath' => 'hooks',
         'params'   => ''

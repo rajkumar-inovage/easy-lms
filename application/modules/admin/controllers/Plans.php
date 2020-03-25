@@ -11,7 +11,7 @@ class Plans extends MX_Controller {
 	    $this->common_model->autoload_resources ($config, $models);
 	    
 	    // Toolbar Buttons
-        $this->toolbar_buttons['<i class="fa fa-download"></i> Import From ITS']= 'admin/plans/its_test_plans';
+        $this->toolbar_buttons['<i class="fa fa-download"></i> Import From ITS']= 'admin/plans/its_test_plan_categories';
         //$this->toolbar_buttons['<i class="fa fa-plus-circle"></i> New Plan']= 'admin/plans/create_plan';
         //$this->toolbar_buttons['<i class="fa fa-list"></i> Categories']= 'admin/plans/plan_categories';
         //$this->toolbar_buttons['<i class="fa fa-plus"></i> Create Category']= 'admin/plans/create_category';
@@ -201,7 +201,7 @@ class Plans extends MX_Controller {
 
 
 	/*-----===== Import From ITS =====-----*/
-	public function its_test_plans () {
+	public function its_test_plan_categories () {
 		/* Breadcrumbs */ 
 		$data['bc'] = array ('Test Plans'=>'admin/plans/index');
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
@@ -217,5 +217,38 @@ class Plans extends MX_Controller {
 	    
 	}
 
+
+	public function its_test_plans_in_cat ($cat_id=0) {
+		/* Breadcrumbs */ 
+		$data['bc'] = array ('Test Plans'=>'admin/plans/its_test_plan_categories');
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		$data['page_title'] = 'Tests in ITS Category';
+		$data['cat_id'] = $cat_id;
+		
+		// Get all test categories from MASTER database
+		$data['test_plans'] = $this->plans_model->its_test_plans_in_cat ($cat_id);
+
+		$this->load->view(INCLUDE_PATH  . 'header', $data);
+		$this->load->view('plans/its_test_plans_in_cat', $data);
+		$this->load->view(INCLUDE_PATH  . 'footer', $data);
+	    
+	}
+
+	public function its_tests_in_plan ($cat_id=0, $plan_id=0) {
+		/* Breadcrumbs */ 
+		$data['bc'] = array ('Test Plans'=>'admin/plans/its_test_plans_in_cat/'.$cat_id);
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		$data['page_title'] = 'Tests in ITS Plan';
+		$data['cat_id'] = $cat_id;
+		$data['plan_id'] = $plan_id;
+		
+		// Get all test categories from MASTER database
+		$data['test_plans'] = $this->plans_model->its_tests_in_plan ($cat_id, $plan_id);
+
+		$this->load->view(INCLUDE_PATH  . 'header', $data);
+		$this->load->view('plans/its_tests_in_plan', $data);
+		$this->load->view(INCLUDE_PATH  . 'footer', $data);
+	    
+	}
 
 }

@@ -70,7 +70,7 @@
 		</nav>
 	</header>
 
-    <div class="bg-white half shadow-sm sticky-top ">
+    <div class="bg-white half shadow-sm  ">
         <div class="container-fluid">
             <div class="py-2 d-flex justify-content-between">
                 <div class="">
@@ -107,37 +107,29 @@
 	
 	<!-- Sidebar -->
 	<div id="sidebar" class="sidebar left sidebar-skin-blue">
-		<div class="sidebar-block">
-          
+		<div class="sidebar-block">          
             <div class="profile">
-    			<a class="mr-0 ml-0 " href="<?php echo $this->session->userdata ('HOME_URL'); ?>" title="<?php echo $this->session->userdata ('SITE_TITLE'); ?>">
-    				<?php 
-    				$logo_path = $this->config->item ('system_logo');
-    				if (file_exists($logo_path)) {
-    					echo '<img src="'.base_url($logo_path).'" alt="'.$this->session->userdata ('SITE_TITLE').'" class=" " width="120" height="" id="" />';
-    				} else {
-    					echo $this->session->userdata ('SITE_TITLE');
-    				}
-    				?>
-    			</a>
+                <a class="" href="<?php echo site_url ($this->session->userdata ('dashboard')); ?>" title="<?php echo $this->session->userdata ('site_title'); ?>">
+                    <img src="<?php echo $this->session->userdata ('logo'); ?>" alt="<?php echo $this->session->userdata ('site_title'); ?>" class="mr-auto ml-auto" width="" height="20" >
+                </a>
             </div>
-    	</div>
+        </div>
 
         <div class="sidebar-block">            
-            <div class="profile">
-                <a class="mr-0 ml-0 " href="" title="">
-                    <?php echo $this->session->userdata ('user_name'); ?>
-                </a>
+            <div class="py-2 text-white">
+                <img src="<?php echo base_url($this->session->userdata ('profile_image')); ?>" alt="<?php echo $this->session->userdata ('user_name'); ?>" class="mr-auto ml-auto" width="" height="30" >
+                <span class="mt-3"><?php echo $this->session->userdata ('user_name'); ?></span>
             </div>
         </div>
 
 		<ul class="sidebar-menu">
 			<?php
-			$main_menu = $this->session->userdata ('MAIN_MENU');
+            $main_menu = $this->session->userdata ('MAIN_MENU');
+			$coaching_id = $this->session->userdata ('coaching_id');
 			// Side-menu
 			if (! empty ($main_menu)) {
 				foreach ($main_menu as $menu) {
-					$link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'];
+					$link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id;
 					?>
 					<li class="">
 						<a class="" href="<?php echo site_url($link); ?>">
