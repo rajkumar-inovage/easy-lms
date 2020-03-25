@@ -46,7 +46,7 @@ class Page extends MX_Controller {
     }
 	
 		/* Register Page */
-	public function register ($coaching_id=0) {
+	public function register () {
 
     	if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
     		$slug = $_GET['sub'];
@@ -109,42 +109,51 @@ class Page extends MX_Controller {
 	}
 	 
 	/* create password for new user register */
-	public function create_password ($user_id=''){
-		
+	public function create_password ($user_id='', $expiry_time=''){
 		if ($this->session->userdata('is_logged_in')) {
 			$this->login_model->logout ();
 		}
-
-		$result			=	$this->login_model->get_member_by_md5login ($user_id);
-		$coaching_id	=	$result['coaching_id'];
-		
-		$link_send_time	=	$result['link_send_time'];
-		$difference		=	time() - $link_send_time;
-		if ($difference > 3600) {		// Email link is valid only for 48 hours
-			echo 'This link has expired. Please '.anchor ('login/page/forgot_password', 'Try again');
-		} else {
-			$coaching = $this->login_model->get_coaching_name ($coaching_id );
-			$data['coaching_id'] 		= $coaching_id;
-			$data['coaching'] 			= $coaching;
-			$data['member_id'] 			= $result['member_id'];
-			$data['result'] 			= $result;
-			$data['page_title'] 		= 'Create Password';
-			$data['hide_left_sidebar'] 	= true;
+		if(time() <= $expiry_time){
+			$result			=	$this->login_model->get_member_by_md5login ($user_id);
+			$coaching_id	=	$result['coaching_id'];
 			
-			$this->load->view( 'header', $data);
-			$this->load->view( 'password', $data);
-			$this->load->view( 'footer', $data);
+			$link_send_time	=	$result['link_send_time'];
+			$difference		=	time() - $link_send_time;
+			if ($difference > 3600) {		// Email link is valid only for 48 hours
+				echo 'This link has expired. Please '.anchor ('login/page/forgot_password', 'Try again');
+			} else {
+				$coaching = $this->coachings_model->get_coaching ($coaching_id );
+				$data['coaching_id'] 		= $coaching_id;
+				$data['coaching'] 			= $coaching;
+				$data['member_id'] 			= $result['member_id'];
+				$data['result'] 			= $result;
+				$data['page_title'] 		= 'Create Password';
+				$data['hide_left_sidebar'] 	= true;
+			}
+		}else{
+			echo 'This link has expired. Please '.anchor ('login/page/forgot_password', 'Try again');
 		}
+		$slug = '';
+		$logo = base_url ($this->config->item('system_logo'));
+		$data['slug'] = $slug;
+		$data['logo'] = $logo;
+		$this->load->view( 'header', $data);
+		$this->load->view( 'password', $data);
+		$this->load->view( 'footer', $data);
 	}
 	
 	/* forget password */
-	public function forgot_password($coaching_id=0){
-		$this->login_model->logout ();
-		$coaching = $this->login_model->get_coaching_name ($coaching_id );
-		$data['coaching_id'] 		= $coaching_id;
-		$data['coaching'] 			= $coaching;
+	public function forgot_password(){
+		if ($this->session->userdata('is_logged_in')) {
+			$this->login_model->logout ();
+		}
+		if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
+			$slug = $_GET['sub'];
+			$coaching = $this->coachings_model->get_coaching_by_slug ($slug);
+			$data['coaching_id'] 		= $coaching['id'];
+			$data['coaching'] 			= $coaching;
+		}
 		$data['page_title'] 		= 'Forgot Password';
-
 		$this->load->view( 'header', $data);
 		$this->load->view('forgot_password');		
 		$this->load->view( 'footer', $data);

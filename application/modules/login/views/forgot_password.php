@@ -1,8 +1,8 @@
-
-	<div class="col-md-4 col-md-offset-4">
+<div class="row justify-content-center">
+	<div class="col-md-4">
 		<div class="card card-default paper-shadow" data-z="0.5">
 			<div class="card-header">
-				<h4 class="card-title"><i class="fa fa-refresh"></i> Reset Password</h4>
+				<h4 class="card-title text-center"><i class="fa fa-sync-alt"></i> Reset Password</h4>
 			</div>
 			<div class="card-body">
 				<div class="text-danger">We'll send you an email on your registered email-id with a link to create your new password.</div> <br>
@@ -21,17 +21,14 @@
 							<input name="email" class="form-control required" placeholder="youremail@example.com" autofocus="autofocus" id="email">
 						</div>
 					</div>
-					<button type="submit" class="btn btn-primary" >Send Email</button>
-
-					<a href="<?php echo site_url('login/page/login'); ?>" class="pull-right" ><strong>Log In!</strong></a><br>
+					<div class="text-center">
+						<button type="submit" class="btn btn-primary" >Send Email</button>
+						<a href="<?php echo site_url('login/page/login'); ?>" class="pull-right" ><strong>Log In!</strong></a>
+					</div>
 				</form>
 			</div>
 		</div>
 	</div>
-
-
-	
-
 	<script>
 	$('.login-form').validate({
 		invalidHandler: function (event, validator) { // display error alert on form submit
@@ -67,3 +64,4 @@
 		}
 	});
 	</script>
+</div>
