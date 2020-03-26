@@ -220,4 +220,32 @@ class Login_model extends CI_Model {
 		$this->session->sess_destroy ();
 		//$this->cookie->delete_cookie ();
 	}
+	public function update_password ($member_id) {
+		// get user details
+		$this->db->where ('member_id', $member_id);
+		$sql = $this->db->get('members');
+		$row = $sql->row_array ();
+		if ($row['password'] == '') {
+			// if user password is blank, then this is a first time user
+			$this->db->set('status', USER_STATUS_ENABLED );
+		}
+		$password = $this->input->post ('password');
+		$password = password_hash($password, PASSWORD_DEFAULT);
+		$this->db->set('password', $password ); 
+		$this->db->where('member_id', $member_id ); 
+		$sql = $this->db->update('members');
+		$this->db->last_query ();
+		// reset_wrong_password_attempt is temporarily blocked
+		// due to change of schema 
+		//$this->reset_wrong_password_attempt($member_id);
+	}
+	public function reset_wrong_password_attempt($member_id){
+		$this->db->where('member_id',$member_id);
+		$data 	=	array(
+						'wrong_password_attempts' => 0,
+						'attempt_status'		  => 0,	
+						'attempt_time'			  => time()		
+					);
+		$this->db->update('login_attempts',$data);
+	}
 }

@@ -109,37 +109,33 @@ class Page extends MX_Controller {
 	}
 	 
 	/* create password for new user register */
-	public function create_password ($user_id='', $expiry_time=''){
+	public function create_password ($user_id=''){
 		if ($this->session->userdata('is_logged_in')) {
 			$this->login_model->logout ();
 		}
-		if(time() <= $expiry_time){
-			$result			=	$this->login_model->get_member_by_md5login ($user_id);
-			$coaching_id	=	$result['coaching_id'];
-			
-			$link_send_time	=	$result['link_send_time'];
-			$difference		=	time() - $link_send_time;
-			if ($difference > 3600) {		// Email link is valid only for 48 hours
-				echo 'This link has expired. Please '.anchor ('login/page/forgot_password', 'Try again');
-			} else {
-				$coaching = $this->coachings_model->get_coaching ($coaching_id );
-				$data['coaching_id'] 		= $coaching_id;
-				$data['coaching'] 			= $coaching;
-				$data['member_id'] 			= $result['member_id'];
-				$data['result'] 			= $result;
-				$data['page_title'] 		= 'Create Password';
-				$data['hide_left_sidebar'] 	= true;
-			}
-		}else{
+		$result			=	$this->login_model->get_member_by_md5login ($user_id);
+		$coaching_id	=	$result['coaching_id'];
+		
+		$link_send_time	=	$result['link_send_time'];
+		$difference		=	time() - $link_send_time;
+		if ($difference > 3600*48) {		// Email link is valid only for 48 hours
 			echo 'This link has expired. Please '.anchor ('login/page/forgot_password', 'Try again');
+		} else {
+			$coaching = $this->coachings_model->get_coaching($coaching_id );
+			$data['coaching_id'] 		= $coaching_id;
+			$data['coaching'] 			= $coaching;
+			$data['member_id'] 			= $result['member_id'];
+			$data['result'] 			= $result;
+			$data['page_title'] 		= 'Create Password';
+			$data['hide_left_sidebar'] 	= true;
+			$slug = '';
+			$logo = base_url ($this->config->item('system_logo'));
+			$data['slug'] = $slug;
+			$data['logo'] = $logo;
+			$this->load->view( 'header', $data);
+			$this->load->view( 'password', $data);
+			$this->load->view( 'footer', $data);
 		}
-		$slug = '';
-		$logo = base_url ($this->config->item('system_logo'));
-		$data['slug'] = $slug;
-		$data['logo'] = $logo;
-		$this->load->view( 'header', $data);
-		$this->load->view( 'password', $data);
-		$this->load->view( 'footer', $data);
 	}
 	
 	/* forget password */

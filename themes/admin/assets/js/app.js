@@ -292,15 +292,15 @@ $(document).ready(function() {
         if (strength < 2 )
 		{
             $('#password-strength').removeClass();
-            $('#password-strength').addClass('progress-bar progress-bar-danger');            
-            $('#password-strength').css('width', '20%');
+            $('#password-strength').addClass('progress-bar bg-danger');            
+            $('#password-strength').css('width', '30%');
             $('#password-strength').html('Very Weak');
             $("input[type=submit]").attr("disabled",true);
         }
         else if (strength == 2 )
         {
             $('#password-strength').removeClass();
-            $('#password-strength').addClass('progress-bar progress-bar-warning');                                    
+            $('#password-strength').addClass('progress-bar bg-warning');                                    
             $('#password-strength').css('width', '60%');
             $('#password-strength').html('Week');
 			$("input[type=submit]").attr("disabled",true);
@@ -308,7 +308,7 @@ $(document).ready(function() {
         else if (strength == 4)
         {
             $('#password-strength').removeClass();
-            $('#password-strength').addClass('progress-bar progress-bar-success');
+            $('#password-strength').addClass('progress-bar bg-success');
             $('#password-strength').css('width', '100%');
             $('#password-strength').html('Strong');
             $("input[type=submit]").attr("disabled",false);            
