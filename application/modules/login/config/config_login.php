@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['login'] = '';
 
-define('THEME_PATH',   						'themes/admin/');
+define('THEME_PATH',   						'themes/student/');
 
 // Maximum wrong password attempts allowed (default 5)
 define('MAX_WRONG_PASSWORD_ATTEMPTS',   	5);

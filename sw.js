@@ -8,37 +8,15 @@
 
 'use strict';
 
-const appPath = '/staging/its/';
+const appPath = '/repos/easycoachingapp/';
 
 const staticAssets = [
 	appPath,
-	appPath + 'index.php',
-	appPath + 'login/page/index', 
-	appPath + 'themes/la/assets/css/style.css',
-	appPath + 'themes/la/assets/css/bootstrap.min.css',
-	appPath + 'themes/la/assets/css/chart.min.css',
-	appPath + 'themes/la/assets/css/colors-alert.css',
-	appPath + 'themes/la/assets/css/colors-background.css',
-	appPath + 'themes/la/assets/css/colors-text.css',
-	appPath + 'themes/la/assets/css/colors-buttons.css',
-	appPath + 'themes/la/assets/css/colors-calendar.css',
-	appPath + 'themes/la/assets/css/colors-progress-bars.css',
-	appPath + 'themes/la/assets/css/essentials.css',
-	appPath + 'themes/la/assets/css/fontawesome.css',
-	appPath + 'themes/la/assets/css/toastr.min.css',
-	appPath + 'themes/la/assets/css/sidebar-skins.css',
-	appPath + 'themes/la/assets/js/app.js',
-	appPath + 'themes/la/assets/js/bootstrap.bundle.min.js',
-	appPath + 'themes/la/assets/js/chart.bundle.min.js',
-	appPath + 'themes/la/assets/js/countdown.min.js',
-	appPath + 'themes/la/assets/js/jquery.min.js',
-	appPath + 'themes/la/assets/js/jquery.validate.min.js',
-	appPath + 'themes/la/assets/img/favicon.png',
-	appPath + 'themes/la/assets/img/loader.gif',
+	appPath + 'index.html',
 ];
 
 self.addEventListener ('install', async event => {
-	const cache = await caches.open ('IndiaTests-V1');
+	const cache = await caches.open ('EasyCoaching-V1');
 	cache.addAll (staticAssets);
 	console.log ('ServiceWorker Installed');
 });
