@@ -93,24 +93,26 @@ class Functions extends MX_Controller {
 		}
 	}
 	public function reset_link () {
-		$this->form_validation->set_rules('userid', 'User Id', 'required|trim');
 		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim');
 		if ($this->form_validation->run () == true) {			
 			// check if email exists
 			$send_to = $this->input->post ('email');
-			$login = $this->input->post ('userid');
-			$email_exists = $this->login_model->check_registered_email ($send_to, $login);
+			$coaching_id = $this->input->post ('coaching_id');
+			$email_exists = $this->login_model->check_registered_email ($send_to, $coaching_id);
 			// $email_exists_status = $this->login_model->check_registered_email_status ($send_to);
 			if ($email_exists == false) {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'Cannot find that User-id/Login and Email' )));  
 			} else {
-				$member_details  =  $this->login_model->get_member_by_login ($login);
+				$member_details  =  $this->login_model->get_member_by_email_coaching_id ($send_to, $coaching_id);
+				$coaching = $this->coachings_model->get_coaching($coaching_id );
+				$slug = $coaching['coaching_url'];
+				$login = $member_details['login'];
 				$this->login_model->update_link_send_time($login);
 				$subject = 'Change Password';
 				$md5_login = md5 ($login);
-				$reset_url = site_url('login/page/create_password/'.$md5_login);
-				$message = 'You have requested to reset your password for <b>'.SITE_TITLE.'</b> account.</p> <p>Click the button below to change it now</p> <br>'.anchor ('login/page/create_password/'.$md5_login, 'Change Password', array('class'=>'btn btn-primary')).'<p>If you did not request a password reset, please ignore this email </p><br> If you are having any trouble clicking the password reset button copy-paste the url <br>'. site_url ('login/page/create_password/'.$md5_login) .'<br>in your browser. </p><br><p><strong>Note: This link will expire in 48 hours.</strong></p>' ;
+				$reset_url = site_url('login/page/create_password/'.$md5_login.'/?sub='.$slug);
+				$message = 'You have requested to reset your password for <b>'.SITE_TITLE.'</b> account.</p> <p>Click the button below to change it now</p> <br>'.anchor ('login/page/create_password/'.$md5_login.'/?sub='.$slug, 'Change Password', array('class'=>'btn btn-primary')).'<p>If you did not request a password reset, please ignore this email </p><br> If you are having any trouble clicking the password reset button copy-paste the url <br>'. site_url ('login/page/create_password/'.$md5_login.'/?sub='.$slug) .'<br>in your browser. </p><br><p><strong>Note: This link will expire in 48 hours.</strong></p>' ;
 				
 				$this->common_model->send_email ($send_to, $subject, $message);	
 				
@@ -119,7 +121,7 @@ class Functions extends MX_Controller {
 				$this->message->set ($msg, 'success', true);
 				
 				$this->output->set_content_type("application/json");
-				$this->output->set_output(json_encode(array('status'=>true, 'message'=>$reset_url, 'redirect'=>site_url('login/page/login') )));
+				$this->output->set_output(json_encode(array('status'=>true, 'message'=>$msg, 'redirect'=>site_url('login/page/login'.'/?sub='.$slug) )));
 			}
 		} else {
 			$this->output->set_content_type("application/json");

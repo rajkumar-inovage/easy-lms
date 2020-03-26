@@ -113,6 +113,29 @@ class Page extends MX_Controller {
 		if ($this->session->userdata('is_logged_in')) {
 			$this->login_model->logout ();
 		}
+		if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
+    		$slug = $_GET['sub'];
+			$coaching = $this->coachings_model->get_coaching_by_slug ($slug);
+			if ($coaching) {
+				$coaching_dir = 'contents/coachings/' . $coaching['id'] . '/';
+				$coaching_logo = $this->config->item ('coaching_logo');
+				$logo_path =  $coaching_dir . $coaching_logo;
+				$logo = base_url ($logo_path);
+				$page_title = 'Create Password ' . $coaching['coaching_name'];				
+			} else {
+				$slug = '';
+	    		$logo = base_url ($this->config->item('system_logo'));
+				$page_title = 'Create Password ' . SITE_TITLE;
+			}
+    	} else {    		
+    		$slug = '';    		
+    		$logo = base_url ($this->config->item('system_logo'));
+			$page_title = 'Create Password ' . SITE_TITLE;
+    	}
+    	if ( empty ($slug)) {
+			$this->message->set ('Direct registration not allowed', 'danger', true);
+			redirect ('login/page/index');    		
+    	}
 		$result			=	$this->login_model->get_member_by_md5login ($user_id);
 		$coaching_id	=	$result['coaching_id'];
 		
@@ -126,10 +149,8 @@ class Page extends MX_Controller {
 			$data['coaching'] 			= $coaching;
 			$data['member_id'] 			= $result['member_id'];
 			$data['result'] 			= $result;
-			$data['page_title'] 		= 'Create Password';
 			$data['hide_left_sidebar'] 	= true;
-			$slug = '';
-			$logo = base_url ($this->config->item('system_logo'));
+			$data['page_title'] = $page_title;
 			$data['slug'] = $slug;
 			$data['logo'] = $logo;
 			$this->load->view( 'header', $data);
@@ -144,12 +165,30 @@ class Page extends MX_Controller {
 			$this->login_model->logout ();
 		}
 		if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
-			$slug = $_GET['sub'];
+    		$slug = $_GET['sub'];
 			$coaching = $this->coachings_model->get_coaching_by_slug ($slug);
-			$data['coaching_id'] 		= $coaching['id'];
-			$data['coaching'] 			= $coaching;
-		}
-		$data['page_title'] 		= 'Forgot Password';
+			if ($coaching) {
+				$coaching_dir = 'contents/coachings/' . $coaching['id'] . '/';
+				$coaching_logo = $this->config->item ('coaching_logo');
+				$logo_path =  $coaching_dir . $coaching_logo;
+				$logo = base_url ($logo_path);
+				$page_title = 'Forgot Password ' . $coaching['coaching_name'];
+				$coaching_id = $coaching['id'];
+				$data['coaching_id'] = $coaching_id;
+				$data['coaching'] 			= $coaching;
+			} else {
+				$slug = '';
+	    		$logo = base_url ($this->config->item('system_logo'));
+				$page_title = 'Forgot Password ' . SITE_TITLE;
+			}
+    	} else {
+    		$slug = '';
+    		$logo = base_url ($this->config->item('system_logo'));
+			$page_title = 'Forgot Password ' . SITE_TITLE;
+    	}
+		$data['page_title'] 		= $page_title;
+		$data['slug'] = $slug;
+		$data['logo'] = $logo;
 		$this->load->view( 'header', $data);
 		$this->load->view('forgot_password');		
 		$this->load->view( 'footer', $data);

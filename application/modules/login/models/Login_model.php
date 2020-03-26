@@ -162,11 +162,10 @@ class Login_model extends CI_Model {
 		
 		$this->session->set_userdata ($options);
 	}
-	public function check_registered_email ($email, $login='') {
+	public function check_registered_email ($email, $coaching_id='') {
 		$this->db->where ('email', $email);
 		if ( ! empty($login)) {
-			$this->db->where ('login', $login);			
-			$this->db->or_where ('adm_no', $login);			
+			$this->db->where ('coaching_id', $coaching_id);		
 		}
 		$this->db->from ('members');
 		$query = $this->db->get ();
@@ -179,6 +178,12 @@ class Login_model extends CI_Model {
 	public function get_member_by_login ($login) {
 		$this->db->where ('login', $login);
 		$this->db->or_where ('adm_no', $login);
+		$sql = $this->db->get ('members');
+		return $sql->row_array (); 
+	}
+	public function get_member_by_email_coaching_id ($email, $coaching_id) {
+		$this->db->where ('email', $email);
+		$this->db->or_where ('coaching_id', $coaching_id);
 		$sql = $this->db->get ('members');
 		return $sql->row_array (); 
 	}

@@ -4,7 +4,7 @@
 	<div class="card card-default paper-shadow ">
 	  <div class="card-header bg-white text-center">
 		<img src="<?php echo $logo; ?>" height="40" title="<?php echo $page_title; ?>" class="text-center">
-	    <h5 class="text-center">Register As Student</h6>
+	    <h5 class="text-center">Create New Password</h6>
 	  </div>
 	  <div class="card-body px-lg-5 py-lg-5">
 		<?php echo form_open ('login/functions/update_password/'.$slug.'/'.$member_id, array('class'=>'form-horizontal','role'=>'form', 'id'=>'validate-1')); ?>

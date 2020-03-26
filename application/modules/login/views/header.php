@@ -30,7 +30,6 @@
 	}
 	?>
 	<link rel="icon" href="<?php echo base_url(THEME_PATH . 'assets/img/fav-icon.png'); ?>" type="image/png" sizes="512x512">
-	<link rel="apple-touch-icon" href="<?php echo base_url(THEME_PATH . 'assets/img/app-icon192.png'); ?>" type="image/png" sizes="192x192">
 	<link rel="manifest" href="<?php echo base_url ('manifest.json'); ?>">
 
 </head>

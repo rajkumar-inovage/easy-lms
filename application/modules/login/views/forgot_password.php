@@ -1,13 +1,15 @@
 <div class="row justify-content-center">
 	<div class="col-md-4">
 		<div class="card card-default paper-shadow" data-z="0.5">
-			<div class="card-header">
-				<h4 class="card-title text-center"><i class="fa fa-sync-alt"></i> Reset Password</h4>
+			<div class="card-header bg-white text-center pb-1">
+				<img src="<?php echo $logo; ?>" height="50" title="<?php echo $page_title; ?>" class="text-center">
+			    <h4 class="card-title text-center"><i class="fa fa-sync-alt"></i> Reset Password</h4>
 			</div>
 			<div class="card-body px-lg-5 py-lg-5">
 				<div class="text-danger">We'll send you an email on your registered email-id with a link to create your new password.</div> <br>
 				<!-- Login Formular -->  
 				<?php echo form_open ('login/functions/reset_link', array ('class'=>'form-vertical', 'id'=>'validate-1') ); ?>
+					<?php if($slug===''): ?>
 					<div class="form-group">
 						<div class="">
 							<label for="userid">User-id/Login<span class="required">*</span></label>
@@ -19,7 +21,7 @@
 							</div>
 						</div>
 					</div>
-
+					<?php endif; ?>
 					<div class="form-group">
 						<div class="">
 							<label for="email">Email<span class="required">*</span></label>
@@ -32,6 +34,9 @@
 						</div>
 					</div>
 					<div class="text-center">
+						<?php if($slug!==''): ?>
+						<input type="hidden" name="coaching_id" value="<?php echo $coaching_id; ?>">
+						<?php endif; ?>
 						<button type="submit" class="btn btn-primary" >Send Email</button>
 						<a href="<?php echo site_url('login/page/login'); ?>" class="pull-right" ><strong>Log In!</strong></a>
 					</div>
