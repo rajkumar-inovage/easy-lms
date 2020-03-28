@@ -107,6 +107,7 @@ class Users_model extends CI_Model {
 			// create profile
 			$data['coaching_id']  = $coaching_id;
 			$data['link_send_time']	= time();
+			$data['user_token'] = $this->encryption->encrypt ($login);
 			$data['status']  = USER_STATUS_ENABLED;
 			$data['creation_date'] = time ();
 			$data['created_by'] = $this->session->userdata ('member_id');

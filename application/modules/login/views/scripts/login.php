@@ -21,27 +21,22 @@
 		}).then(function(result) {
 			toastr.clear ();
 			if (result.status == true) {
-				/*
 				if (typeof(Storage) !== "undefined") {
-				   if (!localStorage.getItem ('token')) {					   
-					   localStorage.setItem('is_logged_in', <?php echo $this->session->userdata('is_logged_in'); ?> );
-					   localStorage.setItem('member_id', <?php echo $this->session->userdata('member_id'); ?> );
-					   localStorage.setItem('is_admin', <?php echo $this->session->userdata('is_admin'); ?> );
-					   localStorage.setItem('token', '<?php echo $this->session->userdata('token'); ?>' );
-					   localStorage.setItem('user_name', '<?php echo $this->session->userdata('user_name'); ?>' );
-					   localStorage.setItem('role_id', <?php echo $this->session->userdata('member_id'); ?> );
-					   localStorage.setItem('role_lvl', <?php echo $this->session->userdata('role_lvl'); ?> );
-					   localStorage.setItem('dashboard', '<?php echo $this->session->userdata('dashboard'); ?>' );
-					   var json = JSON.stringify (result.menu);
-					   localStorage.setItem('menus', json );
-				   }
-					
+				    if (!localStorage.getItem ('user_token')) {
+					   localStorage.setItem('is_logged_in', result.is_logged_in );
+					   localStorage.setItem('member_id', result.member_id );
+					   localStorage.setItem('is_admin', result.is_admin );
+					   localStorage.setItem('user_token', result.user_token );
+					   localStorage.setItem('user_name', result.user_name );
+					   localStorage.setItem('role_id', result.member_id );
+					   localStorage.setItem('role_lvl', result.role_lvl );
+					   localStorage.setItem('dashboard', result.dashboard );
+					   localStorage.setItem('slug', result.slug );
+				    }
 				}
 				else {
 				  // Too bad, no localStorage for us
-				}
-				
-				*/
+				}				
 				toastr.success (result.message);
 				document.location = result.redirect;
 			} else {
@@ -50,6 +45,8 @@
 			loaderSelector.style.display = 'none';
 		});
 	});
+	
+
 	
 	// Function to add role-based user menu to IndexedDB
 	function addUserMenu(db, data) { 

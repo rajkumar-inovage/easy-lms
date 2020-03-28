@@ -31,25 +31,20 @@ class Vitals extends MX_Controller {
 		$controller = $this->uri->segment (2, 0);
 		$method = $this->uri->segment (3, 0);
 		
+		/* 
+			For PUBLIC module login is not required, user will not be redirected to Dashboard OR Logout page
+		*/
 		if ($module == 'public') {
 			// Do Nothing
-			/* 
-				For PUBLIC module login is not required, user will not be redirected to Dashboard OR Logout page
-			*/
-		} else if ($module == '' || $module === FALSE || $module == 'login') {
-			if ($method == 'logout') {
-				// Do Nothing
-			} else if ($this->session->userdata ('is_logged_in') == TRUE) {
-				// Auto login
-				$dasboard_url = $this->session->userdata ('dashboard');
-				redirect ($dasboard_url);
-			}
-		} else if ($module != FALSE && $controller != FALSE && $method != FALSE) {
-			// This should be a coaching-login
+		} else if ($module == 'login' || $module == '') {
 			if ($this->session->has_userdata ('is_logged_in')) {
-			} else {
+				$redirect = $this->session->userdata ('dashboard');
+				redirect ($redirect);
+			}
+		} else {
+			if (! $this->session->has_userdata ('is_logged_in') && ($module != '' || $module != 'login' || $module != FALSE)) {	
 				$this->message->set ('Your session has expired. Login again', 'danger', true);
-				redirect ('login/page/index');				
+				redirect ('login/page/validate_session');
 			}
 		}
 	}

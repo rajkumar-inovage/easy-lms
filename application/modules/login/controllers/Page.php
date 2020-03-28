@@ -168,4 +168,12 @@ class Page extends MX_Controller {
 		$this->login_model->logout ();
 		redirect ('login/page/index');
 	}
+
+	public function validate_session () {
+		$data = [];
+		$data['script'] = $this->load->view ('scripts/validate', $data, true);
+		$this->load->view ('header', $data);
+		$this->load->view ('validate', $data);
+		$this->load->view ('footer', $data);
+	}
 }

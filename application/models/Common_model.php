@@ -145,6 +145,7 @@ class Common_model extends CI_Model {
 			}
 		}
 	}
+
     /* Dynamically load default resources */
 	public function autoload_resources ($config=[], $models=[]) {
 		if ( ! empty ($config)) {
@@ -161,6 +162,7 @@ class Common_model extends CI_Model {
 			}
 		}
 	}
+
 	public function get_child_levels ($id="", $table="", $status='') {
 		if ( $table != "" ) {
 			if ($status != '') {
@@ -187,6 +189,7 @@ class Common_model extends CI_Model {
 			return false;
 		}
 	}
+
 	public function node_details ($id="", $type="") {
 		if ($type != "" && $id != "") {
 			$tree_param = $this->get_tree_parameters ($type);
@@ -203,6 +206,7 @@ class Common_model extends CI_Model {
 			return false;
 		}
 	}
+
 	/*
 		GET SYSTEM PARAMETERS
 		-------============-------
@@ -233,6 +237,32 @@ class Common_model extends CI_Model {
 		return $result; 
 	}
 
+	public function generate_token ($member_id=0) {
+
+		$this->load->library('encryption');
+
+		$this->db->select ('login');
+		$this->db->where ('member_id', $member_id);
+		$sql = $this->db->get ('members');
+		if ($sql->num_rows() > 0 ) {
+			$row = $sql->row_array ();
+			$login = $row['login']; 
+			$cipher_token = $this->encryption->encrypt ($login);
+			return $cipher_token; 
+		} else {
+			return false;
+		}
+	}
+	
+	public function get_token ($member_id=0) {
+		$this->db->select ('token');
+		$this->db->where ('member_id', $member_id);
+		$sql = $this->db->get ('members');
+		$row = $sql->row_array ();
+		$token = $row['token']; 
+		return $token; 
+	}
+	
 	/* Send Email Function */
 	public function send_email ($send_to='', $subject=SITE_TITLE, $message='', $from=CONTACT_EMAIL, $title=SITE_TITLE) {
 		/*

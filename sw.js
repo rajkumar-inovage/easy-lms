@@ -12,7 +12,7 @@ const appPath = '/repos/easycoachingapp/';
 
 const staticAssets = [
 	appPath,
-	appPath + 'index.html',
+	appPath + 'student/home/dashboard/',
 ];
 
 self.addEventListener ('install', async event => {

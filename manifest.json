@@ -1,10 +1,9 @@
 {
   "short_name": "EasyCoaching",
   "lang": "en-US",
-  "start_url": "/repos/easycoachingapp/index.php",
+  "start_url": "/repos/easycoachingapp/student/home/dashboard",
   "display": "standalone",
   "theme_color": "#FF9800",
-  "scope": "/",
   "background_color": "#FF9800",
   "icons": [
     {
