@@ -139,12 +139,10 @@ class Login_model extends CI_Model {
 		
 		$this->session->set_userdata ($options);
 	}
-
-	public function check_registered_email ($email, $login='') {
+	public function check_registered_email ($email, $coaching_id='') {
 		$this->db->where ('email', $email);
 		if ( ! empty($login)) {
-			$this->db->where ('login', $login);			
-			$this->db->or_where ('adm_no', $login);			
+			$this->db->where ('coaching_id', $coaching_id);		
 		}
 		$this->db->from ('members');
 		$query = $this->db->get ();
@@ -157,6 +155,12 @@ class Login_model extends CI_Model {
 	public function get_member_by_login ($login) {
 		$this->db->where ('login', $login);
 		$this->db->or_where ('adm_no', $login);
+		$sql = $this->db->get ('members');
+		return $sql->row_array (); 
+	}
+	public function get_member_by_email_coaching_id ($email, $coaching_id) {
+		$this->db->where ('email', $email);
+		$this->db->or_where ('coaching_id', $coaching_id);
 		$sql = $this->db->get ('members');
 		return $sql->row_array (); 
 	}
@@ -197,5 +201,33 @@ class Login_model extends CI_Model {
 	public function logout () {
 		$this->session->sess_destroy ();
 		//$this->cookie->delete_cookie ();
+	}
+	public function update_password ($member_id) {
+		// get user details
+		$this->db->where ('member_id', $member_id);
+		$sql = $this->db->get('members');
+		$row = $sql->row_array ();
+		if ($row['password'] == '') {
+			// if user password is blank, then this is a first time user
+			$this->db->set('status', USER_STATUS_ENABLED );
+		}
+		$password = $this->input->post ('password');
+		$password = password_hash($password, PASSWORD_DEFAULT);
+		$this->db->set('password', $password ); 
+		$this->db->where('member_id', $member_id ); 
+		$sql = $this->db->update('members');
+		$this->db->last_query ();
+		// reset_wrong_password_attempt is temporarily blocked
+		// due to change of schema 
+		//$this->reset_wrong_password_attempt($member_id);
+	}
+	public function reset_wrong_password_attempt($member_id){
+		$this->db->where('member_id',$member_id);
+		$data 	=	array(
+						'wrong_password_attempts' => 0,
+						'attempt_status'		  => 0,	
+						'attempt_time'			  => time()		
+					);
+		$this->db->update('login_attempts',$data);
 	}
 }
