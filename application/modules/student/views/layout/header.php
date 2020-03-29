@@ -40,6 +40,7 @@
     <link type="text/css" href="<?php echo base_url(THEME_PATH . 'assets/css/toastr.min.css'); ?>" rel="stylesheet">
 	<!--  Custom stylesheet -->
     <link type="text/css" href="<?php echo base_url(THEME_PATH . 'assets/css/essentials.min.css'); ?>" rel="stylesheet">
+    <link type="text/css" href="<?php echo base_url(THEME_PATH . 'assets/css/dropzone.min.css'); ?>" rel="stylesheet">
     <link type="text/css" href="<?php echo base_url(THEME_PATH . 'assets/css/style.css'); ?>" rel="stylesheet">
     <!-- Custom JS (Dynamically included) -->
 	<?php
@@ -121,7 +122,7 @@
 			?>
             <li class="">
                 <a class="" href="#" onclick="logout ()">
-                    <i class="fa fa-sign-out">
+                    <i class="fa fa-sign-out-alt"></i>
                     Logout
                 </a>
             </li>

@@ -36,7 +36,7 @@ class Vitals extends MX_Controller {
 		*/
 		if ($module == 'public') {
 			// Do Nothing
-		} else if ($module == 'login' || $module == '') {
+		} else if (($module == 'login' || $module == '') && $method != 'logout') {
 			if ($this->session->has_userdata ('is_logged_in')) {
 				$redirect = $this->session->userdata ('dashboard');
 				redirect ($redirect);
