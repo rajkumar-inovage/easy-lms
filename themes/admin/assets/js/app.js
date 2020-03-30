@@ -216,10 +216,23 @@ $('#toggle_sidebar').on ('click', function (e) {
     e.stopPropagation ();
 	$('#sidebar').toggleClass ('sidebar-open');
 });
-
+$('#toggle_sidebar_left').on ('click', function (e) {
+    e.stopPropagation ();
+	$('#sidebar-left').toggleClass ('sidebar-open');
+});
+$('#toggle_sidebar_right').on ('click', function (e) {
+    e.stopPropagation ();
+	$('#sidebar-right').toggleClass ('sidebar-open');
+});
 $('html, body').click(function(e) {
    if ($('#sidebar').hasClass ('sidebar-open')) {
      $('#sidebar').removeClass('sidebar-open');
+   }
+   if ($('#sidebar-left').hasClass ('sidebar-open')) {
+     $('#sidebar-left').removeClass('sidebar-open');
+   }
+   if ($('#sidebar-right').hasClass ('sidebar-open')) {
+     $('#sidebar-right').removeClass('sidebar-open');
    }
 });
 

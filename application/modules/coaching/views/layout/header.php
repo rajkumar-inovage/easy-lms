@@ -37,36 +37,35 @@
 	
 	<header class="">
 		<nav class="navbar bg-white border-bottom py-1">
-				
-			<!-- Sidebar Toggler -->
-			<button class="mr-2 navbar-toggle" type="button" id="toggle_sidebar">
-                <span class="icon-bar d-block bg-grey-500"></span>
-                <span class="icon-bar d-block bg-grey-500"></span>
-                <span class="icon-bar d-block bg-grey-500"></span>
+            <button type="button" class="navbar-toggle mr-2 p-1 rounded-circle" id="toggle_sidebar_right">
+                <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="p-1" width="30"> 
             </button>
-			<!-- /Sidebar Toggler -->
-			
-			<a class="navbar-brand" href="<?php echo $this->session->userdata ('HOME_URL'); ?>" title="<?php echo $this->session->userdata ('SITE_TITLE'); ?>">
-				<?php 
-				$logo_path = $this->config->item ('system_logo');
-				if (file_exists($logo_path)) {
-					echo '<img src="'.base_url($logo_path).'" alt="'.$this->session->userdata ('SITE_TITLE').'" class=" " width="120" height="" id="" />';
-				} else {
-					echo $this->session->userdata ('SITE_TITLE');
-				}
-				?>
-			</a>
-
-            <div class="dropdown ml-auto">
+            <div class="dropdown d-none">
               <a href="#" class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="rounded-circle img-thumbnail" width="30"> 
               </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+              <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="#">Super Admin</a>
                 <a class="dropdown-item" href="#">Logout</a>
               </div>
             </div>
-
+            <a class="navbar-brand mx-auto ml-md-0" href="<?php echo $this->session->userdata ('HOME_URL'); ?>" title="<?php echo $this->session->userdata ('SITE_TITLE'); ?>">
+                <?php 
+                $logo_path = $this->config->item ('system_logo');
+                if (file_exists($logo_path)) {
+                    echo '<img src="'.base_url($logo_path).'" alt="'.$this->session->userdata ('SITE_TITLE').'" class=" " width="120" height="" id="" />';
+                } else {
+                    echo $this->session->userdata ('SITE_TITLE');
+                }
+                ?>
+            </a>
+            <!-- Sidebar Toggler -->
+            <button class="navbar-toggle" type="button" id="toggle_sidebar_left">
+                <span class="icon-bar d-block bg-grey-500"></span>
+                <span class="icon-bar d-block bg-grey-500"></span>
+                <span class="icon-bar d-block bg-grey-500"></span>
+            </button>
+            <!-- /Sidebar Toggler -->
 		</nav>
 	</header>
 
@@ -105,8 +104,8 @@
         </div>
     </div>
 	
-	<!-- Sidebar -->
-	<div id="sidebar" class="sidebar left sidebar-skin-blue">
+	<!-- Sidebar left -->
+	<div id="sidebar-left" class="sidebar left sidebar-skin-blue">
 		<div class="sidebar-block">            
             <div class="profile">
     			<a class="mr-0 ml-0 " href="<?php echo $this->session->userdata ('HOME_URL'); ?>" title="<?php echo $this->session->userdata ('SITE_TITLE'); ?>">
@@ -151,7 +150,40 @@
 			?>
 		</ul>
 	</div>
-	<!--// Sidebar -->	
+	<!--// Sidebar left -->
+    <!-- Sidebar right -->
+    <div id="sidebar-right" class="sidebar right sidebar-skin-blue">
+        <div class="sidebar-block">            
+            <div class="profile text-center">
+                <a class="mx-auto" href="#">
+                    <?php
+                        echo '<img src="'.base_url ('contents/profile_images/default.png').'" class=" " width="120" height="" />';
+                    ?>
+                </a>
+            </div>
+        </div>
+
+        <div class="sidebar-block">            
+            <div class="profile text-white text-center">
+                <a class="mr-0 ml-0 " href="" title="">
+                    <?php echo $this->session->userdata ('user_name'); ?>
+                </a>
+            </div>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="">
+                <a class="" href="#">My Account</a>
+            </li>
+            <li class="">
+                <a class="" href="#">Notifications</a>
+            </li>
+            <li>
+                <a class="" href="#">Logout</a>
+            </li>
+        </ul>
+    </div>
+    <!--// Sidebar right -->  
 
 	<main id="content" role="main">
 		<div class="container-fluid pt-4">          
