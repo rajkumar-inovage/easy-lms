@@ -23,9 +23,10 @@ class Login_model extends CI_Model {
 		$row	=	$query->row_array();
 		$return = array ();
 		if ($query->num_rows() > 0) {
-			$member_id = $row['member_id'];
-			$role_id   = $row['role_id'];
-			$user_name = $row['first_name'].' '.$row['second_name'].' '.$row['last_name'];
+			$member_id 	= $row['member_id'];
+			$role_id   	= $row['role_id'];
+			$user_token = $row['user_token'];
+			$user_name 	= $row['first_name'].' '.$row['second_name'].' '.$row['last_name'];
 			$coaching_id = $row['coaching_id'];
 			
 			// This is a valid user,  check for password
@@ -33,14 +34,8 @@ class Login_model extends CI_Model {
 			if (password_verify($password, $hashed_password)) {
 				// Reset wrong passwords attempted, if any
 				$this->reset_wrong_password_attempts ($member_id);
-				// Generate token 
-				$token = $this->generate_token ($member_id);
-				// Save Token 
-				$this->save_token ($member_id, $token);
-					
 				// Save Session 
-				$session = $this->save_login_session ($member_id, $role_id, $user_name, $coaching_id);
-				$session['token'] = $token;
+				$this->save_login_session ($member_id, $role_id, $user_name, $coaching_id, $user_token, $slug);
 				// Load menus 
 				$menus = $this->load_menu ($role_id, 0);
 				$return['status'] 		= LOGIN_SUCCESSFUL;
@@ -85,28 +80,8 @@ class Login_model extends CI_Model {
 		}
 	}
 	
-	public function generate_token ($member_id=0) {
 
-		$this->load->library('encryption');
-
-		$this->db->select ('member_id, login, role_id, first_name, last_name');
-		$this->db->where ('member_id', $member_id);
-		$sql = $this->db->get ('members');
-		if ($sql->num_rows() > 0 ) {
-			$row = $sql->row_array ();
-			$login = $row['login']; 
-			$cipher_token = $this->encryption->encrypt($login);			
-			return $cipher_token; 
-		} else {
-			return false;
-		}
-	}
-	
-	public function save_token ($member_id=0, $token='') {
-		$this->session->set_userdata ('token', $token);
-	}
-
-	public function save_login_session ($member_id=0, $role_id=0, $user_name="", $coaching_id=0) {
+	public function save_login_session ($member_id=0, $role_id=0, $user_name="", $coaching_id=0, $user_token='', $slug='') {
 
 		// Session
 		$login_dt   	 = time ();
@@ -152,12 +127,14 @@ class Login_model extends CI_Model {
 						'status'		=> $status,
 						'role_id'		=> $role_id,
 						'role_lvl'		=> $role_level,
+						'user_token'	=> $user_token,
 						'dashboard'		=> $role_home,
 						'is_logged_in'	=> true,
 						'logo'			=> $logo,
 						'site_title'	=> $site_title,
 						'coaching_id'	=> $coaching_id,
 						'profile_image'	=> $profile_image,
+						'slug'			=> $slug,
 						);
 		
 		$this->session->set_userdata ($options);

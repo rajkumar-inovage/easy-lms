@@ -14,7 +14,7 @@ window.addEventListener ('load', async e => {
 			console.log ('ServiceWorker registration failed');		
 		}
 	}
-	//validate_session ();
+	// validate_session ();
 });
 
 
@@ -147,15 +147,23 @@ function show_confirm_ajax (msg, url, redirect) {
 
 
 function validate_session () {
-	var url = appPath + 'login/page/login';
-    var is_logged_in = localStorage.getItem ('is_logged_in');
-	if (is_logged_in == 1) {
-		// Check session
-		
-	} else {
-		document.location = url;
+	const appPath 		= 'http://localhost/repos/easycoachingapp/'
+	const loginURL 		= 'login/page/index';
+	const autoLoginURL 	= 'login/page/auto_login';
+	var currentURL		= document.location.href;
+	if (typeof(Storage) !== "undefined") {
+		const userToken = localStorage.getItem ('user_token');
+	    if ((userToken == 'null' || userToken == null || userToken == '' || userToken == 'undefined') 
+	    	&& currentURL != appPath + loginURL) {
+	   		document.location = appPath + loginURL;
+	    }
 	}
+
 	/*
+	     else {
+	   		const dashboardURL = localStorage.getItem ('dashboard');
+	   		document.location = appPath + dashboardURL;
+	    }
 	//alert (url);
 	fetch (url, {
 		method : 'POST',
@@ -199,9 +207,9 @@ function set_login_session (session) {
 }
 
 /*----==== Logout User ====----*/
-function logout_user () {
+function logout () {
 	window.localStorage.clear ();
-	document.location = appPath + 'login/page/logout';
+	document.location = appPath + 'login/functions/logout';
 }
 
 /* ===== Populate Menu ===== */

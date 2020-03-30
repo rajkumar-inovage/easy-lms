@@ -2,12 +2,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Functions extends MX_Controller {
-    var $autoload = array ();
+
+
 	public function __construct () {
 		$config = ['config_login'];
 	    $models = ['login_model', 'admin/coachings_model', 'coaching/users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
+
     public function validate_login ($slug='') {		
 	
 		$this->form_validation->set_rules ('username', 'Username', 'required|trim');
@@ -17,10 +19,24 @@ class Functions extends MX_Controller {
 			$user_name = $this->input->post ('username');
 			$password = $this->input->post ('password');
 			$response = $this->login_model->validate_login ($user_name, $password, $slug);
+
 			if ($response['status'] == LOGIN_SUCCESSFUL) {
 				$redirect = $this->session->userdata ('dashboard');
 				$this->output->set_content_type("application/json");
-				$this->output->set_output(json_encode(array('status'=>true, 'message'=>_AT_TEXT ('LOGIN_SUCCESSFUL', 'msg'), 'redirect'=>site_url($redirect)) ));
+				$this->output->set_output(json_encode(array(
+					'status'=>true, 
+					'message'=>_AT_TEXT ('LOGIN_SUCCESSFUL', 'msg'), 
+					'user_token'=>$this->session->userdata ('user_token'),
+					'member_id'=>$this->session->userdata ('member_id'),
+					'is_logged_in'=>$this->session->userdata ('is_logged_in'),
+					'is_admin'=>$this->session->userdata ('is_admin'),
+					'role_id'=>$this->session->userdata ('role_id'),
+					'role_lvl'=>$this->session->userdata ('role_lvl'),
+					'dashboard'=>$this->session->userdata ('dashboard'),
+					'user_name'=>$this->session->userdata ('user_name'),
+					'slug'=>$this->session->userdata ('slug'),
+					'redirect'=>site_url($redirect),
+				)));
 			} else if ($response['status'] == INVALID_CREDENTIALS) {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>_AT_TEXT ('INVALID_CREDENTIALS', 'msg'))));
@@ -48,6 +64,7 @@ class Functions extends MX_Controller {
 			*/
 		}
 	}
+
 	public function register ($slug='') {
 		$this->form_validation->set_rules('first_name', 'First Name', 'required|trim'); 
 		$this->form_validation->set_rules('last_name', 'Last Name', 'trim'); 
@@ -92,6 +109,7 @@ class Functions extends MX_Controller {
 			$this->output->set_output(json_encode(array('status'=>true, 'message'=>_AT_TEXT ('LOGIN_SUCCESSFUL', 'msg'), 'redirect'=>site_url('student/home/dashboard/'.$coaching['id'].'/'.$member_id)) ));
 		}
 	}
+
 	public function reset_link () {
 		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim');
 		if ($this->form_validation->run () == true) {			
@@ -161,5 +179,25 @@ class Functions extends MX_Controller {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
 		}
+	}
+
+	public function update_session ($member_id=0, $role_id=0, $role_lvl=0, $is_logged_in=0, $is_admin=0, $user_name='', $user_token='', $dashboard='') {
+		$this->session->set_userdata ('member_id', $member_id);
+		$this->session->set_userdata ('role_id', $role_id);
+		$this->session->set_userdata ('role_lvl', $role_lvl);
+		$this->session->set_userdata ('is_admin', $is_admin);
+		$this->session->set_userdata ('is_logged_in', $is_logged_in);
+		$this->session->set_userdata ('user_name', $user_name);
+		$this->session->set_userdata ('user_token', $user_token);
+		$this->session->set_userdata ('dashboard', $dashboard);
+
+		$this->output->set_content_type("application/json");
+		$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Session updated', 'redirect'=>site_url($dashboard) )));
+
+	}
+
+	public function logout () {
+		$this->session->sess_destroy();
+		redirect ('login/page/index');
 	}
 }

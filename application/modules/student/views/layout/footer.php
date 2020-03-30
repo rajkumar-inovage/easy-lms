@@ -50,5 +50,10 @@
 		echo $script;	
 	}
 	?>	
+
+	<script type="text/javascript">
+		<?php //if ($this->session->has_userdata ('is_logged_in'))
+		?>
+	</script>
   </body>
 </html>
