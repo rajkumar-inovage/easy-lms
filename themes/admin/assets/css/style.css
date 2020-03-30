@@ -1,11 +1,10 @@
 /*
  * Sidebar
  */
-#sidebar{
+.sidebar{
     position:fixed;
     top:0px;
     bottom:0;
-    left:-260px;
     width:250px;
     z-index:1040;/* On top of the navbar (1030) */
     /*box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);*/
@@ -18,8 +17,17 @@
     -webkit-transition:all 0.3s;/* For Safari 3.1 to 6.0 */
     transition:all 0.3s
 }
-#sidebar.sidebar-open{
+#sidebar, #sidebar-left{
+    left:-260px;
+}
+#sidebar-right{
+    right:-260px;
+}
+#sidebar.sidebar-open, #sidebar-left.sidebar-open{
     margin-left:250px
+}
+#sidebar-right.sidebar-open{
+    margin-right:250px
 }
 .navbar-toggle{
     position:relative;

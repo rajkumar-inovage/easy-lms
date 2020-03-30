@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
 	<div class="col-md-10">
 		<?php
-		echo form_open ('coaching/cart/checkout/'.$coaching_id.'/'.$plan_id, array ('class'=>''));
+		echo form_open ('payment/page/checkout/', array ('class'=>''));
 		echo form_hidden ('owner_name', $user['first_name'] . " " . $user['last_name']);
 		echo form_hidden ('email', $user['email']);
 		echo form_hidden ('contact', $user['primary_contact']);
