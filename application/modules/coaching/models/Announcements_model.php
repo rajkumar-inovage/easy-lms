@@ -1,9 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Announcements_model extends CI_Model {
- public function __construct() {
-		parent::__construct();
-	} 
 
 	public function get_announcement ($coaching_id=0,$announcement_id=0) {
 		$this->db->where ('announcement_id', $announcement_id);

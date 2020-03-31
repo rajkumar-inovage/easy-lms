@@ -227,12 +227,15 @@ class Users_model extends CI_Model {
 		}		
 	}	
 	
-	public function get_user_roles ($admin_user=0, $level=0) {
+	public function get_user_roles ($admin_user=0, $level=0, $roles=[]) {
 		if ($admin_user > 0) {
-			$this->db->where ('admin_user', $admin_user);			
+			$this->db->where ('admin_user', $admin_user);
 		}
 		if ($level > 0) {
-			$this->db->where ('role_lvl >=', $level);			
+			$this->db->where ('role_lvl >=', $level);
+		}
+		if (! empty ($roles)) {
+			$this->db->where_in ('role_id', $roles);
 		}
 		$this->db->where ('status', 1);
 		$this->db->order_by ('role_lvl', 'ASC');

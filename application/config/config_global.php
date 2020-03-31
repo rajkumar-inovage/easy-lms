@@ -53,6 +53,12 @@ define ('USER_STATUS_ENABLED', 				1);
 define ('USER_STATUS_UNCONFIRMED', 			2);
 define ('USER_STATUS_ALL', 					3);
 
+define ('USER_LEVEL_SUPER_ADMIN', 			1);
+define ('USER_LEVEL_ADMIN', 				2);
+define ('USER_LEVEL_COACHING_ADMIN', 		3);
+define ('USER_LEVEL_COACHING_STAFF', 		4);
+define ('USER_LEVEL_COACHING_STUDENT', 		5);
+
 // SYS Parameters
 define ('SYS_USER_STATUS', 					'USER_STATUS');
 define ('SYS_STUDENT_LEVELS', 				'STUDENT_CATEGORY_LEVEL');

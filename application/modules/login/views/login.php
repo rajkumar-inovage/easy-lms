@@ -7,7 +7,7 @@
 	    <h5 class="text-center">Sign in with your credentials</h6>
 	  </div>
 	  <div class="card-body px-lg-5 py-lg-5">
-		<?php echo form_open ('login/functions/validate_login/'.$slug, array('id'=>'login-form')); ?>
+		<?php echo form_open ('login/functions/validate_login/'.$slug, array('id'=>'login-forms')); ?>
 		  <div class="form-group mb-3">
 			<div class="input-group input-group-alternative">
 			  <div class="input-group-prepend">

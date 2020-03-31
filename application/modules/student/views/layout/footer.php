@@ -1,6 +1,21 @@
 		</div>    	
 	</main>
 	
+	<footer class="light-footer mt-4 ">
+		<div class="container">
+		  <div class="d-flex justify-content-center">
+			<div class="" id="installBanner" >
+				<button class="bg-green-600 p-2 text-white " id="installBtn"><i class="fab fa-android"></i> Install App</button> 
+			</div>
+		  	<!--
+			<p class="footer-info">
+			  <strong><?php echo $this->session->userdata('SITE_TITLE'); ?></strong> © <?php echo date ('Y'); ?> - All Rights Reserved.
+			</p>
+			<span class="pull-right">Product of <a href="<?php echo COMPANY_URL; ?>"><strong><?php echo COMPANY_NAME; ?></strong></a></span>
+			-->
+		</div>
+	</footer>
+
 	<footer class="mt-4 fixed-bottom d-none">
 		<div class="container-sm">
 		  <div class="bg-white d-flex justify-content-between text-center border-top shadow-sm py-2 px-1">
