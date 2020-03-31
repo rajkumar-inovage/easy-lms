@@ -127,6 +127,13 @@
                 </a>
             </li>
 		</ul>
+
+        <div class="sidebar-block"> 
+            <div class="" id="installBanner" >
+                <button class="bg-green-600 p-2 text-white " id="installBtn"><i class="fab fa-android"></i> Install App</button> 
+            </div>
+        </div>
+        
 	</div>
 	<!--// Sidebar -->	
 

@@ -4,10 +4,7 @@
 
 	<footer class="light-footer mt-4 ">
 		<div class="container">
-		  <div class="d-flex justify-content-center">
-			<div class="" id="installBanner" >
-				<button class="bg-green-600 p-2 text-white " id="installBtn"><i class="fab fa-android"></i> Install App</button> 
-			</div>
+		  <div class="d-flex justify-content-center">			
 		  	<!--
 			<p class="footer-info">
 			  <strong><?php echo $this->session->userdata('SITE_TITLE'); ?></strong> © <?php echo date ('Y'); ?> - All Rights Reserved.
