@@ -61,10 +61,8 @@ echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$s
 						<th width="3%">
 							<input id="checkAll" type="checkbox" >
 						</th>
-						<th width="25%"><?php echo 'Name'; ?></th>
-						<th width=""><?php echo 'Email'; ?></th>
-						<th width=""><?php echo 'Role'; ?></th>
-						<th width=""><?php echo 'Status'; ?></th>
+						<th ><?php echo 'Name'; ?></th>
+						<th class="d-none d-sm-table-cell"><?php echo 'Email'; ?></th>
 						<th width=""><?php echo 'Actions'; ?></th>
 					</tr>
 				</thead>
@@ -81,30 +79,18 @@ echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$s
 							</td>
 
 							<td>
-								<a class="" href="<?php echo site_url ('student/home/dashboard/'.$coaching_id.'/'.$row['member_id']); ?>"> 
+								<a class="" href="<?php echo site_url ('coaching/users/create/'.$coaching_id.'/'.$row['role_id'].'/'.$row['member_id']); ?>"> 
 									<?php echo ($row['first_name']) .' '. ($row['second_name']) .' '. ($row['last_name']); ?>
 
 								</a> <br> 
 								<?php echo $row['adm_no']; ?>
 							</td>
-							<td><?php echo $row['email']; ?></td>
-							<td>
-								<?php 
-								$config = $this->users_model->user_role_name ( $row['role_id']);
-								echo $config['description']; 
-								?>
-							</td>
-							<td>
-								<?php 
-								$config = $this->common_model->sys_parameter_name ( SYS_USER_STATUS, $row['status']);
-								echo '<span class="font-weight-bold">'.$config['paramval'].'</span>'; 
-								?>
-							</td>
+							<td class="d-none d-sm-table-cell"><?php echo $row['email']; ?></td>
 							<td> 
 								<div class="dropdown">
 									<a class="btn btn-outline dropdown-toggle" type="button" id="userMenu<?php echo $row['member_id'];?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Edit</a>
-									<div class="dropdown-menu " aria-labelledby="userMenu<?php echo $row['member_id'];?>">
-										<?php echo anchor('coaching/users/edit/'.$coaching_id.'/'.$row['role_id'].'/'.$row['member_id'], '<i class="fa fa-edit"></i> Edit Account', array('title'=>'Edit', 'class'=>'dropdown-item')); ?>
+									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu<?php echo $row['member_id'];?>">
+										<?php echo anchor('coaching/users/edit/'.$coaching_id.'/'.$row['role_id'].'/'.$row['member_id'], '<i class="fa fa-edit"></i> Profile', array('title'=>'Edit', 'class'=>'dropdown-item')); ?>
 										
 										<?php if ( $row['status'] == USER_STATUS_ENABLED ) { ?>
 											<a href="javascript:void(0)" onclick="javascript:show_confirm ( '<?php echo 'Do you want to disable this user?'; ?>', '<?php echo site_url('coaching/user_actions/disable_member/'.$coaching_id.'/'.$role_id.'/'.$row['member_id']); ?>' )" title="Disable" class="dropdown-item" ><i class="fa fa-times-circle"></i> Disable Account</a>

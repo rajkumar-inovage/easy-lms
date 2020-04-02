@@ -18,7 +18,7 @@
 			<a class="link-text-color" href="<?php echo site_url ($url); ?>">Change Password</a>
 		</li>
 		
-		<li class="list-group-item">
+		<li class="list-group-item d-none">
 			<?php 
 				$url = 'coaching/users/reports/'.$coaching_id.'/'.$member_id;
 			?>

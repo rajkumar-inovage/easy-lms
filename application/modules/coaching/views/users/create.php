@@ -4,7 +4,7 @@
 <?php } else { ?>
 	<div class="col-md-12">
 <?php } ?>
-		<div class="card">
+		<div class="card mb-4">
 			<div class="card-body">
 				<?php echo form_open ('coaching/user_actions/create_account/'.$coaching_id.'/'.$role_id.'/'.$member_id, array ('class'=>'form-horizontal', 'id'=>'validate-1')); ?>
 					

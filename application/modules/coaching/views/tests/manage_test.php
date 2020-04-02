@@ -1,6 +1,7 @@
 <div class="row ">
 	<div class="col-md-9">
 		<div class="row ">
+
 			<div class="col-md-3 col-xs-4 ">
 				<div class="card my-2 border-primary">
 					<div class="card-body height-100 d-flex align-items-center justify-content-center">
@@ -16,7 +17,7 @@
 			</div>
             
             <?php if ($row['test_type'] == TEST_TYPE_REGULAR) { ?>
-			<div class="col-md-3 col-xs-4 px-2">
+			<div class="col-md-3 col-xs-4 ">
 				<div class="card my-2 border-primary">
 					<div class="card-body height-100 d-flex align-items-center justify-content-center">
 						<h4 class="card-title text-center my-3">
@@ -27,7 +28,7 @@
 			</div>
 			<?php } ?>
 			
-			<div class="col-md-3 col-xs-4 px-2">
+			<div class="col-md-3 col-xs-4 ">
 				<div class="card my-2 border-primary">
 					<div class="card-body height-100 d-flex align-items-center justify-content-center">
 						<h4 class="card-title text-center my-3">
@@ -38,7 +39,7 @@
 			</div>
 			
 			<?php if ($row['finalized'] == 1) { ?>
-			<div class="col-md-3 col-xs-4 px-2">
+			<div class="col-md-3 col-xs-4">
 				<div class="card my-2 bg-purple-500">
 					<div class="card-body height-100 d-flex align-items-center justify-content-center">
 						<h4 class="card-title text-center my-3">
@@ -48,7 +49,7 @@
 				</div>
 			</div>
 			<?php } else { ?>
-			<div class="col-md-3 col-xs-4 px-2">
+			<div class="col-md-3 col-xs-4 ">
 				<div class="card my-2 bg-success">
 					<div class="card-body height-100 d-flex align-items-center justify-content-center">
 						<h4 class="card-title text-center my-3">
@@ -61,7 +62,7 @@
 		</div>
 		
 		<div class="row d-none">
-			<div class="col-md-3 col-xs-4 px-2">
+			<div class="col-md-3 col-xs-4 ">
 				<div class="card my-2 bg-primary">
 					<div class="card-body height-100 d-flex align-items-center justify-content-center">
 						<h4 class="card-title text-center my-3">
@@ -70,7 +71,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3 col-xs-4 px-2">
+			<div class="col-md-3 col-xs-4 ">
 				<div class="card my-2 bg-primary">
 					<div class="card-body height-100 d-flex align-items-center justify-content-center">
 						<h4 class="card-title text-center my-3">
@@ -79,7 +80,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3 col-xs-4 px-2">
+			<div class="col-md-3 col-xs-4 ">
 				<div class="card my-2 bg-orange-500">
 					<div class="card-body height-100 d-flex align-items-center justify-content-center">
 						<h4 class="card-title text-center my-3">
@@ -88,7 +89,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3 col-xs-4 px-2">
+			<div class="col-md-3 col-xs-4 ">
 				<div class="card my-2 bg-red-500">
 					<div class="card-body height-100 d-flex align-items-center justify-content-center">
 						<h4 class="card-title text-center my-3">

@@ -2,11 +2,31 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="author" content="Inovexia Software Services">    
+    <meta name="description" content="<?php echo SITE_TITLE; ?> ">
+    <meta name="theme-color" content="#FF9800">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Easy Coaching App">
+    <meta name="apple-mobile-web-app-title" content="Easy Coaching App">
+    <meta name="theme-color" content="#FF9800">
+    <meta name="msapplication-navbutton-color" content="#FF9800">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-starturl" content="/index.html">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="author" content="Inovexia Software Services">
-	<meta name="description" content="<?php //echo SITE_TITLE; ?> ">
-	<meta name="theme-color" content="#FF9800">
-	<title><?php if (isset($page_title)) echo $page_title . ': '; echo $this->session->userdata ('SITE_TITLE'); ?></title>
+
+    <link rel="icon" sizes="128x128" href="<?php echo base_url(THEME_PATH . 'assets/img/touch/app-icon128.png'); ?>">
+    <link rel="apple-touch-icon" sizes="128x128" href="<?php echo base_url(THEME_PATH . 'assets/img/touch/app-icon128.png'); ?>">
+    <link rel="icon" sizes="192x192" href="<?php echo base_url(THEME_PATH . 'assets/img/touch/app-icon192.png'); ?>">
+    <link rel="apple-touch-icon" sizes="192x192" href="<?php echo base_url(THEME_PATH . 'assets/img/touch/app-icon192.png'); ?>">
+    <link rel="icon" sizes="256x256" href="<?php echo base_url(THEME_PATH . 'assets/img/touch/app-icon256.png'); ?>">
+    <link rel="apple-touch-icon" sizes="256x256" href="<?php echo base_url(THEME_PATH . 'assets/img/touch/app-icon256.png'); ?>">
+    <link rel="icon" sizes="384x384" href="<?php echo base_url(THEME_PATH . 'assets/img/touch/app-icon384.png'); ?>">
+    <link rel="apple-touch-icon" sizes="384x384" href="<?php echo base_url(THEME_PATH . 'assets/img/touch/app-icon384.png'); ?>">
+    <link rel="icon" sizes="512x512" href="<?php echo base_url(THEME_PATH . 'assets/img/touch/app-icon512.png'); ?>">
+    <link rel="apple-touch-icon" sizes="512x512" href="<?php echo base_url(THEME_PATH . 'assets/img/touch/app-icon512.png'); ?>">
+
+	<title><?php if (isset($page_title)) echo $page_title . ': '; echo $this->session->userdata ('site_title'); ?></title>
     
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 
@@ -29,8 +49,8 @@
 		}
 	}
 	?>
-	<link rel="icon" href="<?php echo base_url(THEME_PATH . 'assets/img/favico.png'); ?>" type="image/gif" sizes="512x512">
-	<link rel="manifest" href="<?php //echo base_url ('manifest.json'); ?>">
+    <link rel="icon" href="<?php echo base_url(THEME_PATH . 'assets/img/fav-icon.png'); ?>" type="image/png" sizes="512x512">
+	<link rel="manifest" href="<?php echo base_url ('manifest.json'); ?>">
 
 </head>
 <body class="<?php if (isset($body_class)) echo $body_class; ?>">
@@ -44,23 +64,28 @@
                 <span class="icon-bar d-block bg-grey-500"></span>
                 <span class="icon-bar d-block bg-grey-500"></span>
             </button>
-
             <!-- /Sidebar Toggler -->
-            <a class="navbar-brand mx-auto ml-md-0" href="<?php echo $this->session->userdata ('HOME_URL'); ?>" title="<?php echo $this->session->userdata ('SITE_TITLE'); ?>">
+
+            <a class="navbar-brand text-link-color" href="<?php echo $this->session->userdata ('dashboard'); ?>" title="<?php echo $this->session->userdata ('site_title'); ?>">
                 <?php 
-                $logo_path = $this->config->item ('system_logo');
-                if (file_exists($logo_path)) {
-                    echo '<img src="'.base_url($logo_path).'" alt="'.$this->session->userdata ('SITE_TITLE').'" class=" " width="120" height="" id="" />';
-                } else {
-                    echo $this->session->userdata ('SITE_TITLE');
-                }
-                ?>
+                    $logo_path = $this->session->userdata ('logo');
+                    if (is_file($logo_path)) {
+                        echo '<img src="'.$logo_path.'" alt="'.$this->session->userdata ('site_title').'" class=" " width="120" height="" id="" />';
+                    } else {
+                        ?>
+                        <h4 class="sidebar-heading"><?php echo $this->session->userdata ('site_title'); ?></h4>
+                        <?php
+                    }
+                ?>                
             </a>
 
+            <div></div>
+
+            <!--
             <button type="button" class="navbar-toggle mr-2 p-1 rounded-circle" id="toggle_sidebar_right">
                 <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="p-1" width="30"> 
             </button>
-            
+
             <div class="dropdown d-none">
               <a href="#" class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="rounded-circle img-thumbnail" width="30"> 
@@ -70,6 +95,7 @@
                 <a class="dropdown-item" href="#">Logout</a>
               </div>
             </div>
+            -->
 		</nav>
 	</header>
 
@@ -109,30 +135,25 @@
     </div>
 	
 	<!-- Sidebar left -->
-	<div id="sidebar-left" class="sidebar left sidebar-skin-blue">
-		<div class="sidebar-block">            
-            <div class="profile">
-    			<a class="mr-0 ml-0 " href="<?php echo $this->session->userdata ('HOME_URL'); ?>" title="<?php echo $this->session->userdata ('SITE_TITLE'); ?>">
-    				<?php 
-    				$logo_path = $this->config->item ('system_logo');
-    				if (file_exists($logo_path)) {
-    					echo '<img src="'.base_url($logo_path).'" alt="'.$this->session->userdata ('SITE_TITLE').'" class=" " width="120" height="" id="" />';
-    				} else {
-    					echo $this->session->userdata ('SITE_TITLE');
-    				}
-    				?>
-    			</a>
+	<div id="sidebar-left" class="sidebar left sidebar-skin-white-blue">
+		<div class="sidebar-block">
+            <div class="">
+				<?php 
+				$logo_path = $this->session->userdata ('logo');
+				if (is_file($logo_path)) {
+					echo '<img src="'.$logo_path.'" alt="'.$this->session->userdata ('site_title').'" class=" " width="120" height="" id="" />';
+				} else {
+                    ?>
+					<h4 class="sidebar-heading"><?php echo $this->session->userdata ('site_title'); ?></h4>
+                    <?php
+				}
+				?>
+                <div class="sidebar-text">
+                    <?php echo $this->session->userdata ('user_name'); ?>
+                </div>
             </div>
     	</div>
-
-        <div class="sidebar-block">            
-            <div class="profile">
-                <a class="mr-0 ml-0 " href="" title="">
-                    <?php echo $this->session->userdata ('user_name'); ?>
-                </a>
-            </div>
-        </div>
-
+        
 		<ul class="sidebar-menu">
 			<?php
 			$main_menu = $this->session->userdata ('MAIN_MENU');
@@ -153,6 +174,18 @@
 			}
 			?>
 		</ul>
+
+        <div class="sidebar-blocks">
+            <ul class="list-group-menu">
+                <li class="list-group-item">
+                    <a class="" onclick="logout_user ()">
+                        <i class="fa fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+
 	</div>
 	<!--// Sidebar left -->
 
@@ -160,33 +193,9 @@
     <div id="sidebar-right" class="sidebar right sidebar-skin-blue">
         <div class="sidebar-block">            
             <div class="profile text-center">
-                <a class="mx-auto" href="#">
-                    <?php
-                        echo '<img src="'.base_url ('contents/profile_images/default.png').'" class=" " width="120" height="" />';
-                    ?>
-                </a>
+                
             </div>
-        </div>
-
-        <div class="sidebar-block">            
-            <div class="profile text-white text-center">
-                <a class="mr-0 ml-0 " href="" title="">
-                    <?php echo $this->session->userdata ('user_name'); ?>
-                </a>
-            </div>
-        </div>
-
-        <ul class="sidebar-menu">
-            <li class="">
-                <a class="" href="#">My Account</a>
-            </li>
-            <li class="">
-                <a class="" href="#">Notifications</a>
-            </li>
-            <li>
-                <a class="" href="#">Logout</a>
-            </li>
-        </ul>
+        </div>        
     </div>
     <!--// Sidebar right -->  
 

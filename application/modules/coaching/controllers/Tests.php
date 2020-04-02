@@ -44,13 +44,14 @@ class Tests extends MX_Controller {
 	}
 	
 	// Create/Edit Category
-	public function add_category ($category_id=0) {
+	public function add_category ($coaching_id=0, $category_id=0) {
 		/* Breadcrumbs */ 
-		$data['bc'] = array ('Categories'=>'coaching/tests/categories');
+		$data['bc'] = array ('Categories'=>'coaching/tests/categories/'.$coaching_id);
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		$data['page_title'] = 'Tests';
 		$data['page_title'] = 'Test Categories';
 		$data['category_id'] = $category_id;
+		$data['coaching_id'] = $coaching_id;
 		$data['category'] = $this->tests_model->get_category ($category_id);
 
 		//$data['script'] = $this->load->view(SCRIPT_PATH  . 'plans/create_category', $data, true);

@@ -66,9 +66,8 @@
 					<thead>
 						<tr>
 							<th width="10"><input id="checkAll" type="checkbox" ></th>
-							<th>User ID</th>
-							<th>User Name</th>
-							<th>Email</th>
+							<th>User Name/ID</th>
+							<th class="d-none d-sm-table-cell">Email</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -81,10 +80,13 @@
 								?>
 								<tr>
 									<td>
-										<input type="checkbox" name="users[<?php echo $user['member_id']; ?>]" value="<?php echo $full_name; ?>" class="checks"></td>
-									<td><?php echo $user['adm_no']; ?></td>
-									<td><?php echo $user['first_name'].' '.$user['last_name']; ?></td>
-									<td><?php echo $user['email']; ?></td>
+										<input type="checkbox" name="users[<?php echo $user['member_id']; ?>]" value="<?php echo $full_name; ?>" class="checks">
+									</td>
+									<td>
+										<?php echo $user['first_name'].' '.$user['last_name']; ?><br>
+										<?php echo $user['adm_no']; ?>
+									</td>
+									<td class="d-none d-sm-table-cell"><?php echo $user['email']; ?></td>
 								</tr>
 								<?php
 							}
