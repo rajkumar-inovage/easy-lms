@@ -628,7 +628,7 @@ class Coachings_model extends CI_Model {
 		$options['overwrite']	= true;
 		
 		// load upload library
-		$this->load->library ('upload', $options); 		
+		$this->load->library ('upload', $options);
 		
 		if ( ! $this->upload->do_upload ('userfile') ) {
 			$response = $this->upload->display_errors ();

@@ -38,7 +38,7 @@
     border:1px solid #ddd;
     border-radius:2px
 }
-.navbar-toggle:hover,.navbar-toggle:focus{
+.navbar-toggle.active{
     background-color:#ddd
 }
 .navbar-toggle .icon-bar{
@@ -50,14 +50,14 @@
 .navbar-toggle .icon-bar+.icon-bar{
     margin-top:4px
 }
-.navbar .navbar-toggle:focus .icon-bar:first-child{
+.navbar .navbar-toggle.active .icon-bar:first-child{
     transform:rotate(-45deg) translateY(4px) translateX(-4px)
 }
-.navbar .navbar-toggle:focus .icon-bar:nth-child(2){
+.navbar .navbar-toggle.active .icon-bar:nth-child(2){
     visibility:hidden;
     opacity:0
 }
-.navbar .navbar-toggle:focus .icon-bar:last-child{
+.navbar .navbar-toggle.active .icon-bar:last-child{
     transform:rotate(45deg) translateY(-4px) translateX(-4px)
 }
 header {
@@ -287,6 +287,28 @@ span.required{
     height:70px;
     line-height:70px;
     font-size:1.3rem
+}
+.outline-none{
+    outline:none !important;
+}
+.box-shadow-none{
+    box-shadow:none !important;
+}
+.dropzone {
+  border: 2px dashed #dedede;
+  border-radius: 5px;
+  background: #f5f5f5;
+}
+
+.dropzone i{
+  font-size: 5rem;
+}
+
+.dropzone .dz-message {
+  color: rgba(0,0,0,.54);
+  font-weight: 500;
+  font-size: initial;
+  text-transform: uppercase;
 }
 table td p {
     margin: 0;

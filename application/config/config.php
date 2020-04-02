@@ -23,7 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/repos/easycoachingapp/';
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https" : "http";
+$config['base_url'] = "$protocol://{$_SERVER['HTTP_HOST']}/repos/easycoachingapp/";
+//$config['base_url'] = 'http://localhost/repos/easycoachingapp/';
 
 /*
 |--------------------------------------------------------------------------
