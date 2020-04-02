@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login_actions extends MX_Controller {
+class Functions extends MX_Controller {
 
 
 	public function __construct () {
-		$config = ['config_login', 'config_coaching'];
-	    $models = ['login_model', 'users_model', 'coaching_model'];
+		$config = ['config_login'];
+	    $models = ['login_model', 'admin/coachings_model', 'coaching/users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 
@@ -16,8 +16,9 @@ class Login_actions extends MX_Controller {
 		$this->form_validation->set_rules ('password', 'Password', 'required|trim');		
 		
 		if ($this->form_validation->run () == true) {
-			
-			$response = $this->login_model->validate_login ($slug);
+			$user_name = $this->input->post ('username');
+			$password = $this->input->post ('password');
+			$response = $this->login_model->validate_login ($user_name, $password, $slug);
 
 			if ($response['status'] == LOGIN_SUCCESSFUL) {
 				$redirect = $this->session->userdata ('dashboard');
@@ -34,10 +35,6 @@ class Login_actions extends MX_Controller {
 					'dashboard'=>$this->session->userdata ('dashboard'),
 					'user_name'=>$this->session->userdata ('user_name'),
 					'slug'=>$this->session->userdata ('slug'),
-					'logo'=>$this->session->userdata ('logo'),
-					'profile_image'=>$this->session->userdata ('profile_image'),
-					'site_title'=>$this->session->userdata ('site_title'),
-					'coaching_id'=>$this->session->userdata ('coaching_id'),
 					'redirect'=>site_url($redirect),
 				)));
 			} else if ($response['status'] == INVALID_CREDENTIALS) {
@@ -67,7 +64,6 @@ class Login_actions extends MX_Controller {
 			*/
 		}
 	}
-	
 
 	public function register ($slug='') {
 		$this->form_validation->set_rules('first_name', 'First Name', 'required|trim'); 
@@ -77,40 +73,40 @@ class Login_actions extends MX_Controller {
 		$this->form_validation->set_rules ('password', 'Password', 'required|min_length[8]');
 		$this->form_validation->set_rules ('confirm_password', 'Confirm Password', 'required|matches[password]');
 		 
-		if ( $this->form_validation->run() == true) {
+		if ( $this->form_validation->run() == false) {
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));			
+	    } else {			
+			$coaching = $this->coachings_model->get_coaching_by_slug ($slug);
+			$member_id = $this->users_model->save_account ($coaching['id']);
+			$user = $this->users_model->get_user ($member_id);
 			
-			$coaching_id = $this->input->post ('coaching_id');
-
-			// Save user details
-			$member_id = $this->users_model->save_account ($coaching_id);
-			
-			// Get coachiiiing details
-			$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
 			$coaching_name = $coaching['coaching_name'];
-			$user_name = $this->input->post ('first_name') . ' ' .$this->input->post ('last_name');
+			$user_name = $this->input->post ('first_name');
 			
 			// Notification Email to coaching admin
 			$to = $coaching['email'];
 			$subject = 'New User Registration';
-			$email_message = 'A new user <strong>'.$user_name.'</strong> has registered in your coaching <strong>'.$coaching_name. '</strong>. Account is pending for approval.';
+			$email_message = 'A new user <strong>'.$user['first_name'].'</strong> has registered in your coaching <strong>'.$coaching_name. '</strong>. Please approve the account.';
 			$this->common_model->send_email ($to, $subject, $email_message);
 		
 			// Notification email to user
+			$user_id = $user['adm_no'];
 			$to = $this->input->post('email');
 			$subject = 'Account Created';
-			$email_message = '<strong> Hi '.$user_name.',</strong><br>
-			<p>You have created an account in <strong>'.$coaching_name.'</strong>. You can login with your registered email and password once your account is approved. You will receive another email regarding account approval.</p>';
+			$email_message = '<strong> Hi '.$user['first_name'].',</strong><br>
+			<p>You have created an account in <strong>'.$coaching_name.'</strong>. Your Login-Id is <strong>'.$user_id.'</strong><br>. You will need both Login-id and password to login.</p>';
 			$this->common_model->send_email ($to, $subject, $email_message);
 			
 			// Message for user
-			$message = 'Your account has been created but pending for admin approval';
+			$message = 'Your account has been created successfully';
 			$this->message->set ($message, 'success', true );
 
+			// Auto Login
+			$password = $this->input->post ('password');
+			$response = $this->login_model->validate_login ($user_id, $password);
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('student/login/index/?sub='.$slug)) ));
-	    } else {			
-			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));			
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>_AT_TEXT ('LOGIN_SUCCESSFUL', 'msg'), 'redirect'=>site_url('student/home/dashboard/'.$coaching['id'].'/'.$member_id)) ));
 		}
 	}
 
@@ -150,8 +146,6 @@ class Login_actions extends MX_Controller {
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
 		}
 	}
-
-
 	public function update_password ($member_id=0) {
 		$this->form_validation->set_rules ('password', 'New Password', 'required|min_length[8]trim');
 		$this->form_validation->set_rules ('confirm_password', 'Confirm Password', 'required|matches[password]trim');
@@ -187,7 +181,7 @@ class Login_actions extends MX_Controller {
 		}
 	}
 
-	public function update_session ($member_id=0, $role_id=0, $role_lvl=0, $is_logged_in=0, $is_admin=0, $user_name='', $user_token='', $site_title=SITE_TITLE, $slug='', $coaching_id=0, $logo='', $profile_image='', $dashboard='') {
+	public function update_session ($member_id=0, $role_id=0, $role_lvl=0, $is_logged_in=0, $is_admin=0, $user_name='', $user_token='', $dashboard='') {
 		$this->session->set_userdata ('member_id', $member_id);
 		$this->session->set_userdata ('role_id', $role_id);
 		$this->session->set_userdata ('role_lvl', $role_lvl);
@@ -196,41 +190,11 @@ class Login_actions extends MX_Controller {
 		$this->session->set_userdata ('user_name', $user_name);
 		$this->session->set_userdata ('user_token', $user_token);
 		$this->session->set_userdata ('dashboard', $dashboard);
-		$this->session->set_userdata ('slug', $slug);
-		$this->session->set_userdata ('logo', $logo);
-		$this->session->set_userdata ('coaching_id', $coaching_id);
-		$this->session->set_userdata ('profile_image', $profile_image);
-		$this->session->set_userdata ('site_title', $site_title);
 
 		$this->output->set_content_type("application/json");
 		$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Session updated', 'redirect'=>site_url($dashboard) )));
-	}
-
-	public function create_coaching () {
-
-		$this->form_validation->set_rules ('coaching_name', 'Coaching Name', 'required|alpha_numeric_spaces|trim');
-		$this->form_validation->set_rules ('coaching_url', 'Coaching Identifier', 'required|alpha_numeric|is_unique[coachings.coaching_url]|trim', ['is_unique'=>'This %s is already in use by someone. Try a different one']);
-		$this->form_validation->set_rules ('city', 'City', 'required|trim');
-		$this->form_validation->set_rules ('website', 'Website', 'valid_url|trim');
-		$this->form_validation->set_rules ('first_name', 'Admin First Name', 'required|trim');
-		$this->form_validation->set_rules ('last_name', 'Admin Last Name', 'required|trim');
-		$this->form_validation->set_rules ('primary_contact', 'Admin Contact', 'required|numeric|trim');
-		$this->form_validation->set_rules ('email', 'Admin Email', 'required|valid_email|trim');
-		$this->form_validation->set_rules ('password', 'Password', 'required|min_length[8]|trim');
-		$this->form_validation->set_rules ('confirm_password', 'Confirm Password', 'required|matches[password]|trim');
-
-		if ($this->form_validation->run () == true) {
-			$slug = $this->coaching_model->create_coaching ();
-			$this->message->set ('Your coaching account has been set-up succesfully. Login with your credentials provided on previous page', 'success', true);
-			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Coaching account created', 'redirect'=>site_url('coaching/login/index/?sub='.$slug) )));
-		} else {
-			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors () )));
-		}
 
 	}
-
 
 	public function logout () {
 		$this->session->sess_destroy();

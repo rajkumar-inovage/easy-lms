@@ -1,15 +1,13 @@
- <script type="text/javascript">
-	const loginURL 		= 'student/login/index';
+<script type="text/javascript">
+	//const appPath 		= 'http://localhost/repos/easycoachingapp/'
+	const loginURL 		= 'login/page/index';
 	const loaderSelector = document.getElementById('loader');
 	
 	loaderSelector.style.display = 'block';
 
 	<?php if ( ! $this->session->has_userdata ('is_logged_in')) { ?>
 		if (typeof(Storage) !== "undefined") {
-			
 			const userToken = localStorage.getItem ('user_token');
-			const slug = localStorage.getItem ('slug');
-
 		    if (userToken == 'null' || userToken == null || userToken == '' || userToken == 'undefined') {
 		   		document.location = appPath + loginURL;
 		    } else {
@@ -21,13 +19,7 @@
 		    	const user_token = localStorage.getItem ('user_token');
 		    	const user_name = localStorage.getItem ('user_name');
 		    	const role_lvl = localStorage.getItem ('role_lvl');
-		    	const slug = localStorage.getItem ('slug');
-		    	const coaching_id = localStorage.getItem ('coaching_id');
-		    	const profile_image = localStorage.getItem ('profile_image');
-		    	const logo = localStorage.getItem ('logo');
-		    	const site_title = localStorage.getItem ('site_title');
-
-		    	const set_session = '<?php echo site_url ('student/login_actions/update_session'); ?>/'+member_id+'/'+role_id+'/'+role_lvl+'/'+is_logged_in+'/'+is_admin+'/'+user_name+'/'+user_token+'/'+site_title+'/'+logo+'/'+profile_image+'/'+slug+'/'+coaching_id+'/'+dashboard;
+		    	const set_session = '<?php echo site_url ('login/functions/update_session'); ?>/'+member_id+'/'+role_id+'/'+role_lvl+'/'+is_logged_in+'/'+is_admin+'/'+user_name+'/'+user_token+'/'+dashboard;
 		    	fetch (set_session, { 
 					method : 'POST',
 				}).then (function (response) {
@@ -40,15 +32,5 @@
 				});
 		    }
 		}
-	<?php } else { ?>	
-		if (typeof(Storage) !== "undefined") {
-
-			const userToken = localStorage.getItem ('user_token');
-			const slug = localStorage.getItem ('slug');
-
-		    if (userToken == 'null' || userToken == null || userToken == '' || userToken == 'undefined') {
-		   		document.location = appPath + loginURL + '?sub='+slug;
-		    }
-		}
-	<?php } ?>
+	<?php } ?>	
 </script>

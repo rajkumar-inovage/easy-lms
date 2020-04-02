@@ -31,11 +31,6 @@
 				   localStorage.setItem('role_id', result.member_id );
 				   localStorage.setItem('role_lvl', result.role_lvl );
 				   localStorage.setItem('dashboard', result.dashboard );
-				   localStorage.setItem('slug', result.slug );
-				   localStorage.setItem('logo', result.logo );
-				   localStorage.setItem('profile_image', result.profile_image );
-				   localStorage.setItem('coaching_id', result.coaching_id );
-				   localStorage.setItem('site_title', result.site_title );
 				   localStorage.setItem('slug', result.slug );				    
 				}
 				else {

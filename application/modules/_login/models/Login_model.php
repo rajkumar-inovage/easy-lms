@@ -3,16 +3,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login_model extends CI_Model {
     
-    public function validate_login ($slug='') {
+    public function validate_login ($login='', $password='', $slug='') {
 		// this will validate if current user authentic to use resources
 		// based on the received username and password
-		$login		 	=  $this->input->post('username');
-		$password		=  $this->input->post('password');
-		$coaching_id	=  $this->input->post('coaching_id');
+		if ($login == '') {
+			$login		 =  $this->input->post('username');
+		}
+		if ($password == '') {
+			$password		 =  $this->input->post('password');
+		}
+		if ($slug != '') {
+			$coaching = $this->coachings_model->get_coaching_by_slug ($slug);
+			$coaching_id = $coaching['id'];
+			$this->db->where ('coaching_id', $coaching_id);
+		}
 		$where = "(login='$login' OR adm_no='$login' OR email='$login')"; 
-
 		$this->db->where ($where);
-		$this->db->where ('coaching_id', $coaching_id);
 		$query = $this->db->get ("members");
 		$row	=	$query->row_array();
 		$return = array ();
@@ -101,7 +107,7 @@ class Login_model extends CI_Model {
 		
 		if ($coaching_id > 0) {
 		// Get coaching details
-			$coaching = $this->coaching_model->get_coaching ($coaching_id);
+			$coaching = $this->coachings_model->get_coaching ($coaching_id);
 			$coaching_dir = 'contents/coachings/' . $coaching_id . '/';
 			$coaching_logo = $this->config->item ('coaching_logo');
 			$logo_path =  $coaching_dir . $coaching_logo;
@@ -224,5 +230,4 @@ class Login_model extends CI_Model {
 					);
 		$this->db->update('login_attempts',$data);
 	}
-
 }

@@ -1,4 +1,4 @@
- <script>
+<script>
 	const loaderSelector = document.getElementById('loader');
 	const formSelector = document.getElementById('login-form');
 	const errorDiv = document.getElementById('error');
