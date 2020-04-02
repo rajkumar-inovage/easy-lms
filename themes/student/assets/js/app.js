@@ -145,7 +145,11 @@ function show_confirm_ajax (msg, url, redirect) {
 	}
 }
 
-
+/*
+ * Validate session 
+ * Logout user if user_token is not set
+ *
+ */
 function validate_session () {
 	const appPath 		= 'http://localhost/repos/easycoachingapp/'
 	const loginURL 		= 'login/page/index';
@@ -157,54 +161,10 @@ function validate_session () {
 	    	&& currentURL != appPath + loginURL) {
 	   		document.location = appPath + loginURL;
 	    }
-	}
-
-	/*
-	     else {
-	   		const dashboardURL = localStorage.getItem ('dashboard');
-	   		document.location = appPath + dashboardURL;
-	    }
-	//alert (url);
-	fetch (url, {
-		method : 'POST',
-	}).then (function (response) {
-		toastr.info ('Validating session...');
-		return response.json ();
-	}).then(function(result) {
-		if (result.status == 1) {
-			toastr.success (result.message);
-			document.location = result.redirect;
-			//alert ('logged in');
-		} else if (result.status == '-1') {
-			//alert ('Not logged in');
-			toastr.error (result.error);
-			document.location = result.redirect;
-		}
-		alert (result.module);
-	});
-	if (is_logged_in == 1) {
-	}
-	/*
-	*/
+	}	
 }
 
 
-/*----==== Aotu Login User ====----*/
-function set_login_session (session) {
-	if (! localStorage.getItem ('is_logged_in') || localStorage.getItem ('is_logged_in') == false) {	
-	   localStorage.setItem('is_logged_in', session.is_logged_in );
-	   localStorage.setItem('member_id', session.member_id );
-	   localStorage.setItem('is_admin', session.is_admin );
-	   localStorage.setItem('token', session.token );
-	   localStorage.setItem('user_name', session.user_name);
-	   localStorage.setItem('role_id', session.role_id);
-	   localStorage.setItem('role_lvl', session.role_lvl);
-	   localStorage.setItem('profile_image', session.profile_image);
-	   localStorage.setItem('dashboard_url', session.dashboard_url);
-	   localStorage.setItem('myaccount_url', session.my_account_url);
-	   localStorage.setItem('logout_url', session.logout_url );
-	}
-}
 
 /*----==== Logout User ====----*/
 function logout () {
@@ -212,9 +172,49 @@ function logout () {
 	document.location = appPath + 'login/functions/logout';
 }
 
-/* ===== Populate Menu ===== */
-function create_menus () {
-}
+/*
+ * Interactive App install button
+*/
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', event => {
+
+	// Prevent Chrome 67 and earlier from automatically showing the prompt
+	event.preventDefault();
+
+	// Stash the event so it can be triggered later.
+	deferredPrompt = event;
+
+	// Update UI notify the user they can add to home screen
+	document.querySelector('#installBanner').style.visibility = 'visible';
+
+	// Attach the install prompt to a user gesture
+	document.querySelector('#installBtn').addEventListener('click', event => {
+
+		// Show the prompt
+		deferredPrompt.prompt();
+
+		// Wait for the user to respond to the prompt
+		deferredPrompt.userChoice
+		  .then((choiceResult) => {
+		    if (choiceResult.outcome === 'accepted') {
+				// Update UI notify the user they can add to home screen
+				document.querySelector('#installBanner').style.visibility = 'hidden';
+		    } else {
+		      console.log('User dismissed the A2HS prompt');
+		    }
+		    deferredPrompt = null;
+		});
+	});
+
+
+});
+
+// Check if app was successfully installed
+window.addEventListener('appinstalled', (evt) => {
+	alert ('installed');
+	app.logEvent ('a2hs', 'installed');
+	document.querySelector('#installBanner').style.display = 'none';
+});
 
 function _void () {
 	return false;
@@ -324,6 +324,7 @@ $(document).ready(function() {
         }
     }	
 });
+
 /*
  * Cookie Functions
  *
@@ -338,6 +339,7 @@ function setCookie(cname, cvalue, exdays) {
   var expires = "expires="+ d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
+
 function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);

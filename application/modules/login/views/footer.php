@@ -1,13 +1,16 @@
 		</div>    	
 	</main>
-	
-	<footer class="light-footer mt-4 d-none">
+		
+
+	<footer class="light-footer mt-4 ">
 		<div class="container">
-		  <div class="d-flex justify-content-center">
+		  <div class="d-flex justify-content-center">			
+		  	<!--
 			<p class="footer-info">
 			  <strong><?php echo $this->session->userdata('SITE_TITLE'); ?></strong> © <?php echo date ('Y'); ?> - All Rights Reserved.
 			</p>
 			<span class="pull-right">Product of <a href="<?php echo COMPANY_URL; ?>"><strong><?php echo COMPANY_NAME; ?></strong></a></span>
+			-->
 		</div>
 	</footer>
 

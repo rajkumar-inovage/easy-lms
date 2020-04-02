@@ -80,3 +80,6 @@ $config['calendar']['template'] = '
         {cal_row_end}</tr>{/cal_row_end}
         {table_close}</table>{/table_close}
 ';
+
+define ('VM_PARTICIPANT_ATTENDEE',                              1);
+define ('VM_PARTICIPANT_MODERATOR',                     2);

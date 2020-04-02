@@ -38,18 +38,15 @@
 	
 	<header class="">
 		<nav class="navbar bg-white border-bottom py-1">
-            <button type="button" class="navbar-toggle mr-2 p-1 rounded-circle" id="toggle_sidebar_right">
-                <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="p-1" width="30"> 
+
+            <!-- Sidebar Toggler -->
+            <button class="navbar-toggle" type="button" id="toggle_sidebar_left">
+                <span class="icon-bar d-block bg-grey-500"></span>
+                <span class="icon-bar d-block bg-grey-500"></span>
+                <span class="icon-bar d-block bg-grey-500"></span>
             </button>
-            <div class="dropdown d-none">
-              <a href="#" class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="rounded-circle img-thumbnail" width="30"> 
-              </a>
-              <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Super Admin</a>
-                <a class="dropdown-item" href="#">Logout</a>
-              </div>
-            </div>
+
+            <!-- /Sidebar Toggler -->
             <a class="navbar-brand mx-auto ml-md-0" href="<?php echo $this->session->userdata ('HOME_URL'); ?>" title="<?php echo $this->session->userdata ('SITE_TITLE'); ?>">
                 <?php 
                 $logo_path = $this->config->item ('system_logo');
@@ -60,13 +57,20 @@
                 }
                 ?>
             </a>
-            <!-- Sidebar Toggler -->
-            <button class="navbar-toggle" type="button" id="toggle_sidebar_left">
-                <span class="icon-bar d-block bg-grey-500"></span>
-                <span class="icon-bar d-block bg-grey-500"></span>
-                <span class="icon-bar d-block bg-grey-500"></span>
+
+            <button type="button" class="navbar-toggle mr-2 p-1 rounded-circle" id="toggle_sidebar_right">
+                <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="p-1" width="30"> 
             </button>
-            <!-- /Sidebar Toggler -->
+            
+            <div class="dropdown d-none">
+              <a href="#" class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="rounded-circle img-thumbnail" width="30"> 
+              </a>
+              <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Super Admin</a>
+                <a class="dropdown-item" href="#">Logout</a>
+              </div>
+            </div>
 		</nav>
 	</header>
 
@@ -152,6 +156,7 @@
 		</ul>
 	</div>
 	<!--// Sidebar left -->
+
     <!-- Sidebar right -->
     <div id="sidebar-right" class="sidebar right sidebar-skin-blue">
         <div class="sidebar-block">            
@@ -188,4 +193,8 @@
 
 	<main id="content" role="main">
 		<div class="container-fluid pt-4">          
-	
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-4 col-sm-8">
+                  <?php $this->message->display (); ?>
+                </div>
+            </div>
