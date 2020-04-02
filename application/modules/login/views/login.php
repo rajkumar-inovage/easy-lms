@@ -1,6 +1,6 @@
 <?php 
 $str = "createname=Test+Meeting&meetingID=abc123&attendeePW=111222&moderatorPW=333444LF41LYJm5X0p4PlzPl8LK34gckQu9LUhHs5pURP2cc";
-echo sha1($str); 
+//echo sha1($str); 
 ?>
 <div class="row justify-content-center align-middle v-middle mt-4">
   <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">

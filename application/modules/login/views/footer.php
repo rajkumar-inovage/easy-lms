@@ -11,6 +11,13 @@
 		</div>
 	</footer>
 
+	<!-- Install button, hidden by default -->
+    <div id="installContainer" class="d-none">
+      <button id="butInstall" type="button">
+        Install
+      </button>
+    </div>
+
 	<div id="loader">
 		<img src="<?php echo base_url (THEME_PATH . 'assets/img/loader.gif'); ?>" width="30" height="30">
 	</div>

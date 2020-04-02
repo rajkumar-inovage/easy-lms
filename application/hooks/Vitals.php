@@ -22,6 +22,7 @@ class Vitals extends MX_Controller {
 		    define ('CONTACT_EMAIL', $this->session->userdata ('CONTACT_EMAIL'));
 		    define ('HOME_URL', $this->session->userdata ('HOME_URL'));
 		    define ('MAX_FILE_SIZE', $this->session->userdata ('MAX_FILE_SIZE'));
+		    define ('MAX_STORAGE', $this->session->userdata ('MAX_STORAGE'));
 		}
 	}
 	

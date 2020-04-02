@@ -6,7 +6,9 @@ $config['global'] = TRUE;
 $config['general']['site_title']		= 'Easy Coaching';
 $config['general']['home_url']			= 'https://indiatests.in';
 $config['general']['contact_email']		= 'contact@indiatests.in';
-$config['general']['max_file_size']		= 52428800;
+$config['general']['max_storage']		= 52428800;
+$config['general']['max_file_size']		= 20971520;
+
 $config['general']['gst_slab']		    = 18;
 
 $config['upload_dir']					= 'contents/';
