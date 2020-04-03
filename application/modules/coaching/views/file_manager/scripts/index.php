@@ -1,5 +1,11 @@
 <script type="text/javascript">
 $(function() {
+	function bytesToSize(bytes) {
+	   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+	   if (bytes == 0) return '0 Byte';
+	   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+	   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+	}
 	$('.file').on( "contextmenu", function(event){
 		event.preventDefault();
 		$(this).find('.options').trigger('click');
@@ -64,6 +70,39 @@ $(function() {
 						$(`#file_id_${file_id}`).html(new_fileName);
 						toastr.success(response.message);
 					}
+				}
+			});
+		}
+	});
+	$('.select-file').on('change', function(event) {
+		var thisChecked = $(this).is(":checked" );
+		var fileData = $(this).parents('.file').data();
+		$('.select-file').prop('checked', false);
+		$('.card').removeClass('shadow bg-dark text-white');
+		$('.info-box').removeClass('in').addClass('d-none');
+		if(thisChecked){
+			$(this).prop('checked', thisChecked);
+			$(this).next('.card').addClass('shadow bg-dark text-white');
+			$('.info-box').removeClass('d-none').addClass('in');
+			if($(this).parents('.tab-pane').hasClass('my-files')){
+				$('.info-box').find('.share_count').parents('.col').removeClass('d-none');
+			}else if($(this).parents('.tab-pane').hasClass('shared-files')){
+				$('.info-box').find('.share_count').parents('.col').addClass('d-none');
+			}
+			console.log($(this).parents('.tab-pane').hasClass('my-files'), fileData);
+			Object.keys(fileData).forEach(function(selector){
+				var mySelector = $('.info-box').find(`.${selector}`);
+				mySelector.html('');
+				if(selector=='icon'){
+					console.log(selector)
+					$('<i/>', {"class": fileData[selector]+' fa-4x d-block'}).appendTo(mySelector);
+				}else if(selector=='size'){
+					$('.info-box').find(`.${selector}`).html(bytesToSize(fileData[selector]));
+				}else if(selector=='view_file'){
+					var view_link = $('<a/>', {'class': 'btn btn-success', 'target':'_blank','href': fileData[selector], 'html': 'View '}).appendTo(mySelector);
+					var link_icon = $('<i/>', {'class': 'fa fa-eye'}).appendTo(view_link);
+				}else{
+					$('.info-box').find(`.${selector}`).html(fileData[selector]);
 				}
 			});
 		}

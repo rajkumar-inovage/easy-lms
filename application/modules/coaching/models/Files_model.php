@@ -111,7 +111,13 @@ class Files_model extends CI_Model {
 		$this->db->where ("id", $this->input->post('file_id'));
 		$this->db->delete ('file_manager');
 		if($this->db->affected_rows() > 0){
-			return true;
+			$this->db->where ("file_id", $this->input->post('file_id'));
+			$this->db->delete ('file_sharing');
+			if($this->db->affected_rows() > 0){
+				return true;
+			}else{
+				return false;
+			}
 		}else{
 			return false;
 		}
@@ -140,6 +146,50 @@ class Files_model extends CI_Model {
 		$sql = $this->db->get();
 		return $sql->row_array();
 	}
+	public function get_file_path($file_id){
+		$this->db->select ('`path`, `filename`');
+		$this->db->from ('file_manager');
+		$this->db->where("id=$file_id");
+		$sql = $this->db->get();
+		$result = $sql->row_array();
+		return implode('', $result);
+	}
+	public function get_file_name($file_id){
+		$this->db->select ('`filename`');
+		$this->db->from ('file_manager');
+		$this->db->where("id=$file_id");
+		$sql = $this->db->get();
+		$result = $sql->row_array();
+		return $result['filename'];
+	}
+	public function is_owner($member_id, $file_id){
+		$this->db->select ('id');
+		$this->db->from ('file_manager');
+		$this->db->where("id=$file_id");
+		$this->db->where("uploaded_by=$member_id");
+		$sql = $this->db->get();
+		if ($sql->num_rows () > 0){
+			return true;
+		} else { 
+			return false;
+		}
+	}
+	public function has_access($member_id, $file_id){
+		if($this->is_owner($member_id, $file_id)){
+			return true;
+		}else{
+			$this->db->select ('`shared_with`');
+			$this->db->from ('file_sharing');
+			$this->db->where("file_id=$file_id");
+			$this->db->where("shared_with=$member_id");
+			$sql = $this->db->get();
+			if ($sql->num_rows () > 0){
+				return true;
+			} else { 
+				return false;
+			}
+		}
+	}
 	public function get_uploaded_files($coaching_id, $member_id){
 		$this->db->select ('*');
 		$this->db->from ('file_manager');
@@ -147,8 +197,12 @@ class Files_model extends CI_Model {
 		$this->db->where("uploaded_by=$member_id");
 		$sql = $this->db->get ();
 		if  ($sql->num_rows () > 0 ) {
+			$result = $sql->result_array ();
+			foreach ($result as $i => $row) {
+				$result[$i]['share_count'] = $this->share_count($row['id']);
+			}
 			$files_data = array(
-				'result' => $sql->result_array (),
+				'result' => $result,
 				'total' => $sql->num_rows()
 			);
 			return $files_data;
@@ -165,10 +219,11 @@ class Files_model extends CI_Model {
 
 		$sharedFiles = array();
 		$result = $sql->result_array();
-		foreach ($result as $row) {
+		foreach ($result as $i => $row) {
 			$row_file_id = $row['file_id'];
 			unset($row['file_id']);
-			$sharedFiles[] = array_merge($row, $this->get_file($row_file_id));
+			$sharedFiles[$i] = array_merge($row, $this->get_file($row_file_id));
+			//$sharedFiles[$i]['share_count'] = $this->share_count($row_file_id);
 		}
 		return $sharedFiles;
 	}

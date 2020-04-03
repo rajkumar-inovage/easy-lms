@@ -9,6 +9,7 @@ class File_actions extends MX_Controller
         $config = [ 'coaching/config_coaching'];
         $models = ['coaching/attendance_model', 'admin/coachings_model', 'coaching/users_model', 'coaching/files_model'];
         $this->common_model->autoload_resources($config, $models);
+        $this->load->helper('download');
     }
     public function do_file_upload($coaching_id, $member_id){
         $this->load->helper('directory');
@@ -17,7 +18,7 @@ class File_actions extends MX_Controller
             $coaching_id = intval($this->session->userdata('coaching_id'));
         }
 
-        $upload_dir = $this->config->item ('upload_dir').'sharing/'.$coaching_id.'/'.$member_id.'/';
+        $upload_dir = $this->config->item ('upload_dir').'filemanager/'.$coaching_id.'/'.$member_id.'/';
         $file_name = $this->config->item ('coaching_logo');
         $file_path = $upload_dir . $file_name;
         
@@ -88,6 +89,28 @@ class File_actions extends MX_Controller
             }
         }else{
             $this->output->set_output(json_encode(array('status'=>false, 'error'=>"Request Method is not valid." )));
+        }
+    }
+    public function donwload_file($member_id, $file_id){
+        if($this->files_model->has_access($member_id, $file_id)){
+            $file_path = $this->files_model->get_file_path($file_id);
+            $file_name = $this->files_model->get_file_name($file_id);
+            $data = file_get_contents($file_path); // Read the file's contents
+            force_download($file_name, $data);
+        }else{
+            exit('Sorry your are not allowed access this File.');
+        }
+    }
+    public function view_file($member_id, $file_id){
+        if($this->files_model->has_access($member_id, $file_id)){
+            $file_info = new finfo(FILEINFO_MIME_TYPE);
+            $file_path = $this->files_model->get_file_path($file_id);
+            $file_contents = file_get_contents($file_path);
+            $file_type = $file_info->buffer($file_contents);
+            header("content-type: $file_type");
+            echo $file_contents;
+        }else{
+            exit('Sorry your are not allowed access this File.');
         }
     }
 }

@@ -3,15 +3,11 @@
 }
 
 class File_manager extends MX_Controller{
-    var $toolbar_buttons = [];
     public function __construct(){
         // Load Config and Model files required throughout Users sub-module
         $config = ['coaching/config_coaching'];
         $models = ['attendance_model', 'files_model', 'users_model'];
         $this->common_model->autoload_resources($config, $models);
-        $cid = $this->uri->segment (4);
-        $this->toolbar_buttons['']= 'coaching/users/index/'.$cid;
-        $this->toolbar_buttons['']= 'coaching/users/create/'.$cid;
     }
     public function index($coaching_id=0){
         $data['bc'] = array ('Browse Plans'=>($coaching_id == 0)?'coaching/home/dashboard/':'coaching/home/dashboard/'.$coaching_id);
@@ -45,7 +41,7 @@ class File_manager extends MX_Controller{
         $files_data = $this->files_model->get_uploaded_files($coaching_id, $member_id);
         $data['results'] = $files_data['result'];
         $data['total_files'] = ($files_data['total'])?$files_data['total']:0;
-        $upload_dir = $this->config->item ('upload_dir').'sharing/'.$coaching_id.'/'.$member_id.'/';
+        $upload_dir = $this->config->item ('upload_dir').'filemanager/'.$coaching_id.'/'.$member_id.'/';
         if (!is_dir($upload_dir)) {
             @mkdir ($upload_dir, 0755, true);
         }

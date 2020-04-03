@@ -27,7 +27,7 @@
 								<label class="mb-0" title="Share Count"><i class="fa fa-share-alt"></i><span class="d-block"><?php echo $share_count; ?></span></label>
 							</div>
 							<div class="col text-center align-self-center">
-								<a class="btn btn-success" download href="<?php echo site_url( $path.$filename)?>">Download <i class="fa fa-download"></i></a>
+								<a class="btn btn-success" download href="<?php echo site_url('coaching/file_actions/donwload_file/'.$member_id.'/'.$id)?>">Download <i class="fa fa-download"></i></a>
 							</div>
 						</div>
 					</div>
