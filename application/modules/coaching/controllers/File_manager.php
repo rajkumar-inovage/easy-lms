@@ -6,7 +6,7 @@ class File_manager extends MX_Controller{
     public function __construct(){
         // Load Config and Model files required throughout Users sub-module
         $config = ['coaching/config_coaching'];
-        $models = ['attendance_model', 'files_model', 'users_model'];
+        $models = ['files_model'];
         $this->common_model->autoload_resources($config, $models);
     }
     public function index($coaching_id=0){
@@ -15,8 +15,7 @@ class File_manager extends MX_Controller{
         $upload_url = ($coaching_id == 0)?'coaching/file_manager/upload/':'coaching/file_manager/upload/'.$coaching_id.'/'.$member_id;
         $share_url = ($coaching_id == 0)?'coaching/file_manager/share/':'coaching/file_manager/share/'.$coaching_id.'/'.$member_id;
         $data['toolbar_buttons'] = array(
-            '<i class="fa fa-upload"></i> Upload New File' => $upload_url,
-            //'<i class="fa fa-share-alt"></i> Share Uploaded File'=> $share_url
+            '<i class="fa fa-upload"></i> Upload New File' => $upload_url
         );
         if($coaching_id == 0){
             $coaching_id = intval($this->session->userdata('coaching_id'));
@@ -68,8 +67,7 @@ class File_manager extends MX_Controller{
         $upload_url = ($coaching_id == 0)?'coaching/file_manager/upload/':'coaching/file_manager/upload/'.$coaching_id;
         $share_url = ($coaching_id == 0)?'coaching/file_manager/share/':'coaching/file_manager/share/'.$coaching_id;
         $data['toolbar_buttons'] = array(
-            '<i class="fa fa-upload"></i> Upload New File' => $upload_url,
-            '<i class="fa fa-share-alt"></i> Share Uploaded File'=> $share_url
+            '<i class="fa fa-upload"></i> Upload New File' => $upload_url
         );
         $member_id = $this->session->userdata('member_id');
 

@@ -20,7 +20,7 @@
 							foreach($results as $i => $file):
 								extract($file);
 							?>
-							<label class="col-md-2 col-sm-4 col-6 px-2 px-md-1 mb-3 file" data-upload_on="<?php echo date("d-m-Y", $upload_on); ?>" data-filename="<?php echo $filename; ?>" data-file_id="<?php echo $id; ?>" data-path="<?php echo $path; ?>" data-view_file="<?php echo site_url('coaching/file_actions/view_file/'.$member_id.'/'.$id)?>" data-size="<?php echo $size; ?>" data-icon="<?php echo $icon; ?>" data-share_count="<?php echo $share_count; ?>" for="<?php echo "file-$id"; ?>">
+							<label class="col-xl-2 col-lg-3 col-sm-4 col-6 px-2 px-md-1 mb-3 file" data-upload_on="<?php echo date("d-m-Y", $upload_on); ?>" data-filename="<?php echo $filename; ?>" data-file_id="<?php echo $id; ?>" data-path="<?php echo $path; ?>" data-view_file="<?php echo site_url('coaching/file_actions/view_file/'.$id)?>" data-size="<?php echo $size; ?>" data-icon="<?php echo $icon; ?>" data-share_count="<?php echo $share_count; ?>" for="<?php echo "file-$id"; ?>">
 								<input type="checkbox" class="form-check-input invisible select-file" id="<?php echo "file-$id"; ?>" />
 								<div class="card relative">
 									<div class="dropdown">
@@ -28,8 +28,8 @@
 											<i class="fas fa-ellipsis-v"></i>
 										</button>
 										<div class="dropdown-menu dropdown-menu-right" style="min-width: auto">
-											<a class="dropdown-item px-2" target="_blank" href="<?php echo site_url('coaching/file_actions/view_file/'.$member_id.'/'.$id)?>"><i class="fa fa-eye"></i> View File</a>
-											<a class="dropdown-item px-2" href="<?php echo site_url('coaching/file_actions/donwload_file/'.$member_id.'/'.$id)?>"><i class="fa fa-download"></i> Download</a>
+											<a class="dropdown-item px-2" target="_blank" href="<?php echo site_url('coaching/file_actions/view_file/'.$id)?>"><i class="fa fa-eye"></i> View File</a>
+											<a class="dropdown-item px-2" href="<?php echo site_url('coaching/file_actions/donwload_file/'.$id)?>"><i class="fa fa-download"></i> Download</a>
 											<a class="dropdown-item px-2" href="<?php echo site_url('coaching/file_manager/share/'.$coaching_id.'/'.$member_id.'/'.$id)?>" target="_blank"><i class="fa fa-share-alt"></i> Share</a>
 											<a class="dropdown-item px-2 rename-file" href="javascript:void(0);"><i class="far fa-keyboard"></i> Rename</a>
 											<a class="dropdown-item px-2 delete-file" href="javascript:void(0);"><i class="fa fa-trash"></i> Delete</a>
@@ -56,7 +56,7 @@
 							foreach($shared_files as $i => $shared_file):
 								extract($shared_file);
 							?>
-							<label class="col-md-2 col-sm-4 col-6 px-2 px-md-1 mb-3 file" data-upload_on="<?php echo date("d-m-Y", $upload_on); ?>" data-size="<?php echo $size; ?>" data-mime="<?php echo $mime_type; ?>" data-icon="<?php echo $icon; ?>" data-filename="<?php echo $filename; ?>" data-view_file="<?php echo site_url('coaching/file_actions/view_file/'.$member_id.'/'.$id)?>" data-share_id="<?php echo $id; ?>" data-file_id="<?php echo $id; ?>" data-path="<?php echo $path; ?>" for="<?php echo "file-$id"; ?>" title="Shared On: <?php echo date("d-m-Y", $shared_on); ?>">
+							<label class="col-xl-2 col-lg-3 col-sm-4 col-6 px-2 px-md-1 mb-3 file" data-upload_on="<?php echo date("d-m-Y", $upload_on); ?>" data-size="<?php echo $size; ?>" data-mime="<?php echo $mime_type; ?>" data-icon="<?php echo $icon; ?>" data-filename="<?php echo $filename; ?>" data-view_file="<?php echo site_url('coaching/file_actions/view_file/'.$id)?>" data-share_id="<?php echo $id; ?>" data-file_id="<?php echo $id; ?>" data-path="<?php echo $path; ?>" for="<?php echo "file-$id"; ?>" title="Shared On: <?php echo date("d-m-Y", $shared_on); ?>">
 								<input type="checkbox" class="form-check-input invisible select-file" id="<?php echo "file-$id"; ?>" />
 								<div class="card relative">
 									<div class="dropdown">
@@ -64,8 +64,8 @@
 											<i class="fas fa-ellipsis-v"></i>
 										</button>
 										<div class="dropdown-menu dropdown-menu-right" style="min-width: auto">
-											<a class="dropdown-item px-2" target="_blank" href="<?php echo site_url('coaching/file_actions/view_file/'.$member_id.'/'.$id)?>"><i class="fa fa-eye"></i> View File</a>
-											<a class="dropdown-item px-2" download href="<?php echo site_url('coaching/file_actions/donwload_file/'.$member_id.'/'.$id)?>"><i class="fa fa-download"></i> Download</a>
+											<a class="dropdown-item px-2" target="_blank" href="<?php echo site_url('coaching/file_actions/view_file/'.$id)?>"><i class="fa fa-eye"></i> View File</a>
+											<a class="dropdown-item px-2" download href="<?php echo site_url('coaching/file_actions/donwload_file/'.$id)?>"><i class="fa fa-download"></i> Download</a>
 										</div>
 									</div>
 									<div class="card-body text-center">
@@ -89,7 +89,7 @@
 					<div class="card-body text-center">
 						<div class="d-flex h-100 flex-column align-items-center justify-content-center">
 							<h2 class="icon"></h2>
-							<h3 id="<?php echo "file_id_$id"; ?>" class="filename"></h3>
+							<h3 class="filename"></h3>
 						</div>
 					</div>
 					<div class="card-footer">

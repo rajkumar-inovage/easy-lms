@@ -6,14 +6,14 @@ class File_actions extends MX_Controller
 {
     public function __construct(){
         // Load Config and Model files required throughout Users sub-module
-        $config = [ 'coaching/config_coaching'];
+        $config = ['student/config_student'];
         $models = ['files_model'];
         $this->common_model->autoload_resources($config, $models);
         $this->load->helper('download');
-    }
-    public function do_file_upload($coaching_id, $member_id){
         $this->load->helper('directory');
         $this->load->helper('file');
+    }
+    public function do_file_upload($coaching_id, $member_id){
         if($coaching_id == 0){
             $coaching_id = intval($this->session->userdata('coaching_id'));
         }
