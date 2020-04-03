@@ -82,8 +82,11 @@
 						<a onclick="" href="<?php echo $meeting_url; ?>" target="_blank" class="btn btn-secondary">Join Classroom</a>
 					</div>
 
-				</div>		
-				
+				</div>	
+
+				<div class="card-footer">	
+					<?php echo anchor ('coaching/virtual_class/participants/'.$coaching_id.'/'.$class_id, 'Participants', ['class'=>'btn btn-primary']); ?>
+				</div>
 		</div>
 	</div>
 </div>

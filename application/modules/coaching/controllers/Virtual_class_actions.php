@@ -24,7 +24,7 @@ class Virtual_class_actions extends MX_Controller {
 			if ($id > 0) {
 				$this->message->set ('Classroom created successfully', 'success', true);
 				$this->output->set_content_type("application/json");
-		        $this->output->set_output(json_encode(array('status'=>true, 'message'=>'Virtual classroom created successfully', 'redirect'=>site_url ('coaching/virtual_class/add_participants/'.$coaching_id.'/'.$id ) )));
+		        $this->output->set_output(json_encode(array('status'=>true, 'message'=>'Virtual classroom created successfully. Now add participants to this classroom', 'redirect'=>site_url ('coaching/virtual_class/add_participants/'.$coaching_id.'/'.$id ) )));
 			} else {
 				$this->output->set_content_type("application/json");
 		        $this->output->set_output(json_encode(array('status'=>false, 'error'=>'Error creating classroom.' )));

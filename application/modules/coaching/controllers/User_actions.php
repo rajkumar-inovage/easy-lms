@@ -7,7 +7,7 @@ class User_actions extends MX_Controller {
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
 	    $config = ['config_coaching'];
-	    $models = ['admin/coachings_model', 'coaching/users_model'];
+	    $models = ['coaching_model', 'users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 	
@@ -34,44 +34,26 @@ class User_actions extends MX_Controller {
 		$this->form_validation->set_rules ('gender', 'Gender', '');	
 		
 		if ($this->form_validation->run () == true) {
-			$coaching = $this->coachings_model->get_coaching_subscription ($coaching_id);
+			$coaching = $this->coaching_model->get_coaching_subscription ($coaching_id);			
 			$free_users = $coaching['max_users'];
-			$num_users = $this->users_model->count_users (USER_STATUS_ALL, 0, 0, $coaching_id);
-			if ($num_users > $free_users && $member_id == 0) {
+			$num_users = $this->users_model->count_all_users ($coaching_id);
+			
+			if ( ($num_users > $free_users) && $member_id == 0) {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'User limit reached. You can create a maximum of '.$free_users.' user accounts in Free Subscription plan. Upgrade your plan to create more users' )));
-			} else {
-				
-				/* Check Unique Admission No */
-				$adm_no = $this->input->post ('adm_no');
-				$email  = $this->input->post ('email');
-				//echo $adm_no.'<br>'.$email.'<br>'.$member_id.'<br>';				
-				$adm_unique		=	$this->users_model->check_unique ($adm_no, 'adm_no', $member_id);
-				$email_unique	=	$this->users_model->check_unique ($email, 'email', $member_id);
-				if ($adm_unique) {
-					// if userid is registered with other user, show error 
-					$this->output->set_content_type("application/json");
-					$this->output->set_output(json_encode(array('status'=>false, 'error'=>'The user-id <strong>'.$adm_no.'</strong> is registered with another user.' )));
-				/*
-				} else if ($email_unique) {
-					// if email is registered with other user, show error 
-					$this->output->set_content_type("application/json");
-					$this->output->set_output(json_encode(array('status'=>false, 'error'=>'The email <strong>'.$email.'</strong> is registered with another user' )));
-				*/
-				} else  {
-					$id = $this->users_model->save_account($coaching_id, $member_id);
-					if ($member_id > 0) {
-						$message = 'Account updated successfully';
-						$redirect = 'coaching/users/index/'.$coaching_id.'/'.$role_id;
-					} else {
-						$this->users_model->send_confirmation_email ($id);
-						$message = 'Account created successfully';
-						$redirect = 'coaching/users/create/'.$coaching_id.'/'.$role_id;
-					}
-					$this->message->set ($message, 'success', true) ;
-					$this->output->set_content_type("application/json");
-					$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url ($redirect))));
+			} else {				
+				$id = $this->users_model->save_account($coaching_id, $member_id);
+				if ($member_id > 0) {
+					$message = 'Account updated successfully';
+					$redirect = 'coaching/users/index/'.$coaching_id.'/'.$role_id;
+				} else {
+					$this->users_model->send_confirmation_email ($id);
+					$message = 'Account created successfully';
+					$redirect = 'coaching/users/create/'.$coaching_id.'/'.$role_id;
 				}
+				$this->message->set ($message, 'success', true) ;
+				$this->output->set_content_type("application/json");
+				$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url ($redirect))));
 			}
 		} else {
 			$this->output->set_content_type("application/json");

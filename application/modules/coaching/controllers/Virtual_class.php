@@ -13,7 +13,7 @@ class Virtual_class extends MX_Controller {
 	    $this->load->helper ('string');
 
 	    $cid = $this->uri->segment (4);
-        $this->toolbar_buttons['<i class="fa fa-puzzle-piece"></i> Home']= 'coaching/virtual_class/index/'.$cid;
+        $this->toolbar_buttons['<i class="fa fa-list"></i> All Classes']= 'coaching/virtual_class/index/'.$cid;
         $this->toolbar_buttons['<i class="fa fa-plus-circle"></i> Create Class']= 'coaching/virtual_class/create_class/'.$cid;
         
         // Security step to prevent unauthorized access through url
@@ -43,6 +43,7 @@ class Virtual_class extends MX_Controller {
 		
 		$data['coaching_id'] = $coaching_id;
 		$data['class_id'] = $class_id;
+		$data['page_title'] = 'Create Virtual Classroom';
 
 		$data['bc'] = array('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
 		$data['class'] = $this->virtual_class_model->get_class ($coaching_id, $class_id);
@@ -74,6 +75,7 @@ class Virtual_class extends MX_Controller {
 		$data['class_id'] = $class_id;
 		$data['role_id'] = $role_id;
 		$data['batch_id'] = $batch_id;
+		$data['page_title'] = 'Add Participants';
 		$data['bc'] = array('Dashboard'=>'coaching/virtual_class/index/'.$coaching_id);
 
         //$data['script'] = $this->load->view('attendance/scripts/index', $data, true);
@@ -90,6 +92,7 @@ class Virtual_class extends MX_Controller {
 
 		$data['coaching_id'] = $coaching_id;
 		$data['class_id'] = $class_id;
+		$data['page_title'] = 'Participants';
 		$data['bc'] = array('Dashboard'=>'coaching/virtual_class/index/'.$coaching_id);
 
         //$data['script'] = $this->load->view('attendance/scripts/index', $data, true);
@@ -103,6 +106,7 @@ class Virtual_class extends MX_Controller {
 
 		$data['coaching_id'] = $coaching_id;
 		$data['class_id'] = $class_id;
+		$data['page_title'] = 'Virtual Classroom';
 		$data['bc'] = array('Dashboard'=>'coaching/virtual_class/index/'.$coaching_id);
 
 		$member_id = $this->session->userdata ('member_id');

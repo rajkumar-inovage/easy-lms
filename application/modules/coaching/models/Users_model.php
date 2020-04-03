@@ -103,6 +103,7 @@ class Users_model extends CI_Model {
 			'last_name'	=>		$this->input->post ('last_name'), 
 			'primary_contact'=> $this->input->post ('primary_contact'),
 			'email'		=>		$this->input->post ('email'),
+			'login'		=>		$this->input->post ('email'),
 			'dob'		=>		$date,
 			'gender'	=>		$gender,
 		);
@@ -115,6 +116,7 @@ class Users_model extends CI_Model {
 			$password = $this->input->post ('password');
 			$data['password'] = password_hash ($password, PASSWORD_DEFAULT);
 			$data['coaching_id']  = $coaching_id;
+			$data['user_token'] = md5($this->input->post ('email'));
 			$data['link_send_time']	= time();
 			$data['status']  = USER_STATUS_ENABLED;
 			$data['creation_date'] = time ();
@@ -124,13 +126,12 @@ class Users_model extends CI_Model {
 
 			// Set Userid
 			$user_id = $this->generate_reference_id ($member_id);
-			$this->db->set ('login', $user_id);
 			$this->db->set ('adm_no', $user_id);
 			$this->db->where ('member_id', $member_id);
-			$this->db->update ('members');			
+			$this->db->update ('members');
+
+			
 		}
-		//$this->save_member_batch ($member_id);
-		//$this->save_class ($member_id, $coaching_id);
 		return $member_id;
 	}
 	
@@ -434,10 +435,8 @@ class Users_model extends CI_Model {
 	
 	/* Reporting Functions */
 	public function count_all_users ($coaching_id=0) {
-		if ($coaching_id > 0) {
-			$this->db->where ('coaching_id', $coaching_id);
-		}
-		return $this->db->count_all ('members');
+		$this->db->where ('coaching_id', $coaching_id);
+		return $this->db->count_all_results ('members');
 	}
 	
 	public function count_users ($status=USER_STATUS_ALL, $role_id=0, $coaching_id=0) {
@@ -788,7 +787,7 @@ class Users_model extends CI_Model {
 	public function send_confirmation_email ($member_id=0, $coaching_id=0) {
 		if ($this->session->userdata ('coaching_id')) {
 			$coaching_id = $this->session->userdata ('coaching_id');
-			$coaching 		= $this->coachings_model->get_coaching ($coaching_id);		
+			$coaching 		= $this->coaching_model->get_coaching ($coaching_id);		
 			$coaching_name  = $coaching['coaching_name'];
 		} else {
 			$coaching_name = SITE_TITLE;

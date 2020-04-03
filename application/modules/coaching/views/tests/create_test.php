@@ -60,11 +60,11 @@
                             <input type="radio" class="form-check-input" id="test_practice" name="test_type" value="<?php echo TEST_TYPE_PRACTICE; ?>" <?php echo set_radio('test_type', TEST_TYPE_PRACTICE); ?>> 
                             <label class="form-check-label" for="test_practice">
                                 Protected<br>
-					        	<small>Available to your coaching students</small>
+					        	<small>Available to all your coaching students</small>
                             </label>
                         </div>
                         
-                        <div class="form-check">
+                        <div class="form-check d-none">
                             <input type="radio" class="form-check-input" id="test_public" name="test_type" value="<?php echo TEST_TYPE_PUBLIC; ?>" <?php echo set_radio('test_type', TEST_TYPE_PUBLIC); ?>> 
                             <label class="form-check-label" for="test_public">
                                 Public<br>

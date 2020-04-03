@@ -167,9 +167,12 @@ function validate_session () {
 
 
 /*----==== Logout User ====----*/
-function logout () {
+/*----==== Logout User ====----*/
+function logout_user () {
+	const slug = localStorage.getItem ('slug');
 	window.localStorage.clear ();
-	document.location = appPath + 'login/functions/logout';
+	localStorage.setItem ('slug', slug);
+	document.location = appPath + 'student/login/index/?sub='+slug;
 }
 
 /*

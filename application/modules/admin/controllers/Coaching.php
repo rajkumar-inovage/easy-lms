@@ -29,6 +29,7 @@ class Coaching extends MX_Controller {
 	public function edit ($coaching_id=0){
 		$this->create($coaching_id);
 	}
+	
 	public function create ($coaching_id=0) {	    
 		
 		$data['coaching'] = $coaching = $this->coachings_model->get_coaching ($coaching_id);

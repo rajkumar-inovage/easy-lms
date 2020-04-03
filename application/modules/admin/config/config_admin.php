@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['admin'] = TRUE;
 
-define ('THEME_PATH', 					'themes/admin/');
+define ('THEME_PATH', 						'themes/admin/');
 
 define ('SYS_TEST_TYPE', 					'TEST_TYPE');
 define ('SYS_TEST_MODE', 					'TEST_MODE');

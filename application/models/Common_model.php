@@ -302,4 +302,28 @@ class Common_model extends CI_Model {
 						); 
 		return $result ;
 	}
+
+	public function generate_coaching_id ($coaching_id=0) {
+		
+		$id = 0;
+		if ($coaching_id > 0) {
+			// This means coaching record is already inserted and the primary key is passed as coaching_id
+			$num = $coaching_id;
+		} else {
+			// Coaching record is not yet inserted, show a 
+			$this->db->select_max ('id');
+			$sql = $this->db->get ('coachings');
+			if ($sql->num_rows () > 0) {
+				$row = $sql->row_array ();
+				$id = $row['id'];
+			} else { 
+				$id = 0;
+			}
+			$num = $id + COACHING_ID_INCREMENT;
+		}
+		$suffix = str_pad ($num, 5, "0", STR_PAD_LEFT);
+		$ref_id = COACHING_ID_PREFIX1 . COACHING_ID_PREFIX2 . $suffix;
+		return $ref_id;
+	}
+
 }

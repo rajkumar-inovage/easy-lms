@@ -121,7 +121,7 @@
 			}
 			?>
             <li class="">
-                <a class="" href="#" onclick="logout ()">
+                <a class="" href="#" onclick="logout_user ()">
                     <i class="fa fa-sign-out-alt"></i>
                     Logout
                 </a>

@@ -128,54 +128,8 @@ class Coachings_model extends CI_Model {
 		} else {
 			return false;
 		}		
-	}		
-	
-	
-	// Save account
-	public function coaching_signup ($coaching_id=0) {
-		$coaching = [];
-		
-		$coaching['coaching_name'] = $this->input->post ('coaching_name');
-		$coaching['coaching_url'] = str_replace ('-', '_', $this->input->post ('coaching_url'));
-		$first_name = $this->input->post ('first_name');
-		$last_name  = $this->input->post ('last_name');
-		$coaching['owner_name'] 		= $first_name . ' ' . $last_name;
-		$coaching['contact']	= $this->input->post ('primary_contact');
-		$coaching['email'] 		= $this->input->post ('email');
-		$coaching['doj']		= time ();
-		$coaching['doe']		= time () + (30 * 24 * 3600);		// 30 days from now
-		$coaching['subscription_type'] = FREE_SUBSCRIPTION_PLAN_ID;
-		$coaching['subscription_status'] = SUBSCRIPTION_STATUS_ACTIVE;
-		$coaching['status']   	= COACHING_ACCOUNT_ACTIVE;
-		$coaching['creation_date'] = time ();
-		$coaching['created_by'] = 0;
-		
-		$this->db->insert ('coachings', $coaching);
-		$coaching_id = $this->db->insert_id ();
-			
-		// Set Reference-id
-		$reg_no = $this->generate_coaching_id ($coaching_id);
-		$this->db->set ('reg_no', $reg_no);
-		$this->db->where ('id', $coaching_id);
-		$this->db->update ('coachings'); 
-
-		$user = [];
-		
-		$user['login'] 		= $this->input->post ('username');
-		$password 			= $this->input->post ('password');
-		$user['password'] 	= password_hash($password, PASSWORD_DEFAULT);
-		$user['first_name'] = $first_name;
-		$user['last_name']  = $last_name;
-		$user['role_id'] 	= USER_ROLE_COACHING_ADMIN;
-		$user['coaching_id']= $coaching_id;
-		$user['email'] 		= $this->input->post ('email');
-		$user['primary_contact'] 	= $this->input->post ('primary_contact');
-		$user['status']  		= USER_STATUS_ENABLED;
-		$user['created_by']  	= 0;
-		$user['creation_date'] 	= time ();			
-		$this->create_user ($user);
-
 	}
+	
 	
 	public function create_coaching_account ($coaching_id=0) {
 		
@@ -207,8 +161,6 @@ class Coachings_model extends CI_Model {
 		} else {
 			// Create Coaching Account
 			$data['sr_no']		=	0;
-    		//$data['subscription_type'] = 0;
-    		//$data['subscription_status'] = 0;
 		    $data['status']   	= COACHING_ACCOUNT_ACTIVE;
 		    $data['creation_date'] = time ();
 			$data['created_by'] = intval ($this->session->userdata ('member_id'));
@@ -224,7 +176,7 @@ class Coachings_model extends CI_Model {
 			$this->db->insert ('coaching_subscriptions', $plan);
 
 			// Set Reference-id
-			$reg_no = $this->generate_coaching_id ($coaching_id);
+			$reg_no = $this->common_model->generate_coaching_id ($coaching_id);
 			$this->db->set ('reg_no', $reg_no);
 			$this->db->where ('id', $coaching_id);
 			$this->db->update ('coachings');
@@ -627,29 +579,6 @@ class Coachings_model extends CI_Model {
 
 	/*=====================================================================*/
 	
-	public function generate_coaching_id ($coaching_id=0) {
-		
-		$id = 0;
-		if ($coaching_id > 0) {
-			// This means coaching record is already inserted and the primary key is passed as coaching_id
-			$num = $coaching_id;
-		} else {
-			// Coaching record is not yet inserted, show a 
-			$this->db->select_max ('id');
-			$sql = $this->db->get ('coachings');
-			if ($sql->num_rows () > 0) {
-				$row = $sql->row_array ();
-				$id = $row['id'];
-			} else { 
-				$id = 0;
-			}
-			$num = $id + COACHING_ID_INCREMENT;
-		}
-		$suffix = str_pad ($num, 5, "0", STR_PAD_LEFT);
-		$ref_id = COACHING_ID_PREFIX1 . COACHING_ID_PREFIX2 . $suffix;
-		return $ref_id;
-	}
-
 	
 	public function coaching_users ($coaching_id=0, $role=0, $status='') {
 		$this->db->where ('coaching_id', $coaching_id);

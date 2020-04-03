@@ -1,6 +1,6 @@
 <div class="row ">
 	<div class="col-md-9"> 
-		<div class="card card-default">						
+		<div class="card card-default mb-4">						
 			<div class="card-body">
 				<?php echo form_open( 'coaching/user_actions/change_password/'.$coaching_id.'/'.$role_id.'/'.$member_id, array('class'=>'form-horizontal ', 'id'=>'validate-1')); ?>
 					<div class="form-group">

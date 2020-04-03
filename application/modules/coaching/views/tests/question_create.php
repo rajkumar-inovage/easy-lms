@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
 	
 	<div class="col-md-3">
-		<div class="card">
+		<div class="card mb-2">
 		  <div class="card-header">
 		  	Questions
 		  </div>
@@ -92,7 +92,7 @@
 					
 					<h3 class="h6 display ml-1">Answer Choices</h3>
 					
-					<?php $this->load->view (INCLUDE_PATH . 'add_answer_choices'); ?>
+					<?php $this->load->view ('tests/inc/add_answer_choices'); ?>
 					<!--== Feedback ==-->
 					<hr class="my-4">
 					
