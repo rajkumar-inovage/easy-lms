@@ -6,7 +6,7 @@ class Virtual_class_actions extends MX_Controller {
 
 	public function __construct () {		
 	    // Load Config and Model files required throughout Users sub-module
-	    $config = ['config_coaching'];
+	    $config = ['config_coaching', 'config_virtual_class'];
 	    $models = ['virtual_class_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	    $this->load->helper ('string');
@@ -18,13 +18,16 @@ class Virtual_class_actions extends MX_Controller {
 		$this->form_validation->set_rules ('class_name', 'Virtual Classroom Name', 'required|alpha_numeric|trim');
 		$this->form_validation->set_rules ('moderator_pwd', 'Moderator Password', 'required|numeric|trim');
 		$this->form_validation->set_rules ('attendee_pwd', 'Attendee Password', 'required|numeric|trim');
+		$this->form_validation->set_rules ('welcome_message', 'Welcome Message', 'max_length[100]|trim');
+		$this->form_validation->set_rules ('max_participants', 'Max Participants', 'greater_than_equal_to[1]|less_than_equal_to['.VC_MAX_PARTICIPANTS.']');
+		$this->form_validation->set_rules ('duration', 'Class Duration', 'greater_than_equal_to[1]|less_than_equal_to['.VC_DURATION.']');
 
 		if ($this->form_validation->run () == true) {
 			$id = $this->virtual_class_model->create_classroom ($coaching_id, $class_id);
 			if ($id > 0) {
 				$this->message->set ('Classroom created successfully', 'success', true);
 				$this->output->set_content_type("application/json");
-		        $this->output->set_output(json_encode(array('status'=>true, 'message'=>'Virtual classroom created successfully. Now add participants to this classroom', 'redirect'=>site_url ('coaching/virtual_class/add_participants/'.$coaching_id.'/'.$id ) )));
+		        $this->output->set_output(json_encode(array('status'=>true, 'message'=>'Virtual classroom created successfully. Now add participants to this classroom', 'redirect'=>site_url ('coaching/virtual_class/index/'.$coaching_id.'/'.$id ) )));
 			} else {
 				$this->output->set_content_type("application/json");
 		        $this->output->set_output(json_encode(array('status'=>false, 'error'=>'Error creating classroom.' )));

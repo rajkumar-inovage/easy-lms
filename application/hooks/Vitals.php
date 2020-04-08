@@ -37,14 +37,11 @@ class Vitals extends MX_Controller {
 		*/
 		if ($module == 'public' ) {
 			// Do Nothing
-		} else if (($module != '' && $controller == 'login') || ($module == '' && $controller == '')) {
-			// Do Nothing
-			if ($this->session->has_userdata ('is_logged_in')) {
-				//$redirect = $this->session->userdata ('dashboard');
-				//redirect ($redirect);
-			}
-		} else if ($module != '' && ($controller != 'login' && $controller != 'login_actions') && (! $this->session->has_userdata ('is_logged_in'))) {
-			$this->message->set ('Your session has expired. Trying auto renew...', 'danger', true);
+		} else if (($module != '' && $controller == 'login' && ($method == 'index' || $method == 'login')) &&
+					$this->session->has_userdata ('is_logged_in')) {
+			$redirect = $module . '/login/validate_session';
+			redirect ($redirect);
+		} else if ($module != '' && $controller != 'login' && $controller != 'login_actions' && $method != 'logout' && (! $this->session->has_userdata ('is_logged_in'))) {
 			$redirect = $module . '/login/validate_session';
 			redirect ($redirect);
 		}

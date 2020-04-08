@@ -73,6 +73,7 @@
 			console.log('Unable to create user-menu.');
 		}		
 	}
+
 	// Function to add user session data to IndexedDB
 	function addUserData(db, data) { 
 		var request = db.transaction(['userSession'], 'readwrite')
@@ -93,5 +94,10 @@
 		request.onerror = function (event) {
 			console.log('Unable to write IndexedDB session ');
 		}
-	}	
+	}
+
+	if (typeof(Storage) !== "undefined") {
+	   localStorage.clear ();
+	   localStorage.setItem('slug', '<?php echo $slug; ?>' );
+	}
 </script>

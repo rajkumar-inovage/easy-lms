@@ -17,11 +17,22 @@ class Virtual_class_model extends CI_Model {
 
 	public function create_classroom ($coaching_id=0, $class_id=0) {
 		
+		if ($this->session->userdata ('site_title')) {
+			$site_title = $this->session->userdata ('site_title');
+		} else {
+			$site_title = 'Live Classroom';
+		}
+
 		$class_name = $this->input->post ('class_name');
-		$welcome_message = $this->input->post ('welcome_message');
 		$attendee_pwd = $this->input->post ('attendee_pwd');
 		$moderator_pwd = $this->input->post ('moderator_pwd');
 		$wait_for_moderator = $this->input->post ('wait_for_moderator');
+		if ($this->input->post ('welcome_message')) {
+			$welcome_message = $this->input->post ('welcome_message');
+		} else {
+			$welcome_message = VC_WELCOME_MESSAGE . $site_title;			
+		}
+		$welcome_message = str_replace(' ', '+', $welcome_message);
 
 		$start_date = $this->input->post ('start_date');
 		list ($sy, $sm, $sd) = explode ("-", $start_date);
@@ -35,8 +46,32 @@ class Virtual_class_model extends CI_Model {
 		$emm = $this->input->post ('end_time_mm');
 		$end_date = mktime ($ehh, $emm, 0, $em, $ed, $ey);
 		
-		$record_class = $this->input->post ('record_class');
+		if ($this->input->post ('record_class')) {
+			$record_class = $this->input->post ('record_class');
+		} else {
+			$record_class = false;			
+		}
 		$record_description = $this->input->post ('record_description');
+		if ($this->input->post ('max_participants')) {
+			$max_participants = $this->input->post ('max_participants');
+		} else {
+			$max_participants = VC_MAX_PARTICIPANTS;
+		}
+
+		if ($this->input->post ('duration')) {
+			$duration = $this->input->post ('duration');
+		} else {
+			$duration = VC_DURATION;
+		}
+
+		if ($this->session->userdata ('site_title')) {
+			$bannerText = $this->session->userdata ('site_title');
+		} else {
+			$bannerText = VC_BANNER_TEXT;			
+		}
+		$bannerText = str_replace(' ', '+', $bannerText);
+
+		$logoutURL = VC_LOGOUT_URL . '/' . $coaching_id;
 
 		$meeting_id = $this->get_meeting_id ($coaching_id, $class_id);
 
@@ -50,7 +85,12 @@ class Virtual_class_model extends CI_Model {
 		$query_string .= '&moderatorPW='.$moderator_pwd;
 		$query_string .= '&attendeePW='.$attendee_pwd;
 		$query_string .= '&welcome='.$welcome_message;
-		$query_string .= '&record='.$record_class;
+		$query_string .= '&record=true';
+		$query_string .= '&duration='.$duration;
+		$query_string .= '&maxParticipants='.$max_participants;
+		$query_string .= '&logoutURL='.urlencode($logoutURL);
+		$query_string .= '&bannerText='.$bannerText;
+		//$query_string .= '&logo='.VC_LOGO;
 
 		$final_string = $call_name . $query_string . $shared_secret;
 
@@ -67,22 +107,11 @@ class Virtual_class_model extends CI_Model {
 		$data['record_description'] = $record_description;
 		$data['start_date'] 		= $start_date;
 		$data['end_date'] 			= $end_date;
+		$data['max_participants'] 	= $max_participants;
+		$data['duration'] 			= $duration;
 		$data['call_name'] 			= $call_name;
 		$data['query_string'] 		= $query_string;
-		$data['checksum'] 			= $checksum;	
-
-		/*
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $meeting_url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$xml_response = curl_exec($ch);
-		curl_close($ch);
-
-		$xml = simplexml_load_string($xml_response);
-
-		$returncode = $xml->returncode;
-		*/
+		$data['checksum'] 			= $checksum;		
 
 		$data['coaching_id'] 		= $coaching_id;
 		$data['created_by'] 		= $this->session->userdata ('member_id');
@@ -91,11 +120,56 @@ class Virtual_class_model extends CI_Model {
 		if ($class_id == 0) {
 			$sql = $this->db->insert ('virtual_classroom', $data);
 			$class_id = $this->db->insert_id ();
+			$member_id = $this->session->userdata ('member_id');
+			$this->add_moderator ($coaching_id, $class_id, $member_id);
+		}
+		return $class_id;
+	}
 
-			$this->add_participants ($coaching_id, $class_id);
+
+	public function add_moderator ($coaching_id=0, $class_id=0, $member_id=0) {
+		
+		$class = $this->get_class ($coaching_id, $class_id);
+
+		$api_setting = $this->get_api_settings ();
+		$shared_secret = $api_setting['shared_secret'];
+		$password = $class['moderator_pwd'];
+	
+		$call_name = 'join';
+
+		$participant_role = VM_PARTICIPANT_MODERATOR;
+
+		$fullName = 'Classroom+Admin';
+
+		$query_string = '';
+		$query_string .= 'fullName='.$fullName;
+		$query_string .= '&meetingID='.$class['meeting_id'];
+		$query_string .= '&password='.$password;
+		$query_string .= '&userID='.$member_id;
+
+		$final_string = $call_name . $query_string . $shared_secret;
+		$checksum = sha1 ($final_string);
+
+		$meeting_url = '';
+		$meeting_url .= $api_setting['api_url'];
+		$meeting_url .= $call_name;
+		$meeting_url .= '?';
+		$meeting_url .= $query_string;
+		$meeting_url .= '&checksum='.$checksum;
+
+		$data = [];
+		$data['coaching_id'] = $coaching_id;
+		$data['class_id'] = $class_id;
+		$data['member_id'] = $member_id;
+		$data['role'] = $participant_role;
+		$data['meeting_url'] = $meeting_url;
+		// Insert only when not already inserted
+		$this->db->where ($data);
+		$sql = $this->db->get ('virtual_classroom_participants');
+		if ($sql->num_rows () == 0) {
+			$this->db->insert ('virtual_classroom_participants', $data);
 		}
 
-		return $class_id;
 	}
 
 	public function add_participants ($coaching_id=0, $class_id=0) {

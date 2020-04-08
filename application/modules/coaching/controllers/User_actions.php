@@ -24,12 +24,12 @@ class User_actions extends MX_Controller {
 	
 	// CREATE NEW ACCOUNT
 	public function create_account ($coaching_id=0, $role_id=0, $member_id=0) {
-		$this->form_validation->set_rules ('email', 'Email', 'required|valid_email');
 		$this->form_validation->set_rules ('user_role', 'User Role', 'required');
 		$this->form_validation->set_rules ('first_name', 'First Name', 'required|max_length[50]|trim|ucfirst');
 		$this->form_validation->set_rules ('second_name', 'Second Name', 'max_length[50]|trim');
 		$this->form_validation->set_rules ('last_name', 'Last Name', 'required|max_length[50]|trim');
-		$this->form_validation->set_rules ('primary_contact', 'Primary Contact', 'is_natural|trim');
+		$this->form_validation->set_rules ('email', 'Email', 'required|valid_email');
+		$this->form_validation->set_rules ('primary_contact', 'Primary Contact', 'required|is_natural|max_length[10]|trim');
 		$this->form_validation->set_rules ('batch', 'Batch Name', '');
 		$this->form_validation->set_rules ('gender', 'Gender', '');	
 		
@@ -41,19 +41,35 @@ class User_actions extends MX_Controller {
 			if ( ($num_users > $free_users) && $member_id == 0) {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'User limit reached. You can create a maximum of '.$free_users.' user accounts in Free Subscription plan. Upgrade your plan to create more users' )));
-			} else {				
-				$id = $this->users_model->save_account($coaching_id, $member_id);
+			} else {
+				$status = $this->input->post ('status');
+				// Save user details
+				$id = $this->users_model->save_account ($coaching_id, $member_id, $status);
+				
+				// Get coaching details
+				$coaching_name = $coaching['coaching_name'];
+				$user_name = $this->input->post ('first_name') . ' ' .$this->input->post ('last_name');
+			
+				// Notification email to user
 				if ($member_id > 0) {
-					$message = 'Account updated successfully';
-					$redirect = 'coaching/users/index/'.$coaching_id.'/'.$role_id;
+					// Display message for user
+					$message = 'Account updated successfully.';
+					$this->message->set ($message, 'success', true );
 				} else {
-					$this->users_model->send_confirmation_email ($id);
-					$message = 'Account created successfully';
-					$redirect = 'coaching/users/create/'.$coaching_id.'/'.$role_id;
+					// Email message for user
+					$to = $this->input->post('email');
+					$subject = 'Account Created';
+					$email_message = '<strong> Hi '.$user_name.',</strong><br>
+					<p>Your account is created in <strong>'.$coaching_name.'</strong>. You can create your password using the link below.</p>';
+					$this->common_model->send_email ($to, $subject, $email_message);
+					
+					// Display message for user
+					$message = 'Your account has been created. You can log-in to your account';
+					$this->message->set ($message, 'success', true );
 				}
-				$this->message->set ($message, 'success', true) ;
+
 				$this->output->set_content_type("application/json");
-				$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url ($redirect))));
+				$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url ('coaching/users/create/'.$coaching_id))));
 			}
 		} else {
 			$this->output->set_content_type("application/json");

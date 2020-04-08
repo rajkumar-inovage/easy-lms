@@ -8,6 +8,7 @@ class Login_actions extends MX_Controller {
 	    $config = ['config_student', 'config_login'];
 	    $models = ['coaching_model', 'login_model', 'users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
+	    $this->load->helper ('string');
 	}
 
     public function validate_login ($slug='') {		
@@ -81,8 +82,11 @@ class Login_actions extends MX_Controller {
 			
 			$coaching_id = $this->input->post ('coaching_id');
 
+			$status = USER_STATUS_ENABLED;
+			//$status = USER_STATUS_UNCONFIRMED;
+
 			// Save user details
-			$member_id = $this->users_model->save_account ($coaching_id);
+			$member_id = $this->users_model->save_account ($coaching_id, 0, $status);
 			
 			// Get coachiiiing details
 			$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
@@ -98,16 +102,30 @@ class Login_actions extends MX_Controller {
 			// Notification email to user
 			$to = $this->input->post('email');
 			$subject = 'Account Created';
-			$email_message = '<strong> Hi '.$user_name.',</strong><br>
-			<p>You have created an account in <strong>'.$coaching_name.'</strong>. You can login with your registered email and password once your account is approved. You will receive another email regarding account approval.</p>';
+			if ($status == USER_STATUS_UNCONFIRMED) {				
+				// Email message for user
+				$email_message = '<strong> Hi '.$user_name.',</strong><br>
+				<p>You have created an account in <strong>'.$coaching_name.'</strong>. You can login with your registered email and password once your account is approved. You will receive another email regarding account approval.</p>';
+				// Display message for user
+				$message = 'Your account has been created but pending for admin approval';
+				$this->message->set ($message, 'warning', true );
+			} else {
+				// Email message for user
+				$email_message = '<strong> Hi '.$user_name.',</strong><br>
+				<p>You have created an account in <strong>'.$coaching_name.'</strong>. Your account is active now. You can login with your registered email and password.</p>';
+				// Display message for user
+				$message = 'Your account has been created. You can log-in to your account';
+				$this->message->set ($message, 'success', true );
+			}
 			$this->common_model->send_email ($to, $subject, $email_message);
 			
 			// Message for user
-			$message = 'Your account has been created but pending for admin approval';
+			// $message = 'Your account has been created but pending for admin approval';
+			// $message = 'Your account has been created successfully. You can login with your email and password';
 			$this->message->set ($message, 'success', true );
 
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('student/login/index/?sub='.$slug)) ));
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('student/login/login/?sub='.$slug)) ));
 	    } else {			
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));			
@@ -127,7 +145,7 @@ class Login_actions extends MX_Controller {
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'Cannot find that User-id/Login and Email' )));  
 			} else {
 				$member_details  =  $this->login_model->get_member_by_email_coaching_id ($send_to, $coaching_id);
-				$coaching = $this->coachings_model->get_coaching($coaching_id );
+				$coaching = $this->coachings_model->get_coaching ($coaching_id );
 				$slug = $coaching['coaching_url'];
 				$login = $member_details['login'];
 				$this->login_model->update_link_send_time($login);
@@ -231,9 +249,34 @@ class Login_actions extends MX_Controller {
 
 	}
 
+	public function validate_session () {
+		
+		$module = $this->uri->segment (1, 0);
+		$controller = $this->uri->segment (2, 0);
+		$method = $this->uri->segment (3, 0);
+		
+		
+		if ($module == 'public') {
+			// Do Nothing
+		} else if ($module == 'student' && ($controller == 'login' || $controller == 'login_actions')) {
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(json_encode(array('status'=>'login')));
+		} else if ($this->session->has_userdata ('is_logged_in')) {
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(json_encode(array('status'=>'loggedin')));
+		} else {
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(json_encode(array('status'=>false, 'error'=>'You are not '.$controller.' logged-in. Please start over', 'redirect'=>site_url('student/login/index/') )));
+		}
+	}
 
-	public function logout () {
+	public function logout () {		
+		$slug = '';
+		if (isset($_GET['sub'])) {
+			$slug = $_GET['sub'];
+		}
+		$this->login_model->logout ();
 		$this->session->sess_destroy();
-		redirect ('login/page/index');
+		redirect ('student/login/index/?sub='.$slug);
 	}
 }

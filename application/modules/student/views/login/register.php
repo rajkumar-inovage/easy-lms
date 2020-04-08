@@ -10,13 +10,14 @@
 		<?php } ?>
 	    <h5 class="text-center">Join as <?php if ($role_id == USER_ROLE_TEACHER) echo 'employee'; else echo 'student'; ?></h5>
 	  </div>
-		<?php echo form_open ('coaching/login_actions/register/'.$slug, array('class'=>'form-horizontal ', 'id'=>'validate-1')); ?> 
-	  	  <div class="card-body px-lg-5 py-lg-5">
+		<?php echo form_open ('student/login_actions/register/'.$slug, array('class'=>'form-horizontal ', 'id'=>'validate-')); ?> 
+	  	  <div class="card-body ">
+			
 	  	  	<input type="hidden" name="coaching_id" value="<?php echo $coaching_id; ?>">
 	  	  	<input type="hidden" name="user_role" value="<?php echo $role_id; ?>">
 	  	  	<input type="hidden" name="sr_no" value="">
-	  	  	<input type="hidden" name="second_name" value="">
-							
+	  	  	<input type="hidden" name="second_name" value="">			
+			
 			<div class="form-group">
 				<label class="control-label ">First Name<span class="text-danger">*</span></label>
 				<input type="text" name="first_name" class="form-control required"  value="<?php echo set_value ('first_name'); ?>">
@@ -67,7 +68,7 @@
 				
 				<p class="mt-4 text-danger font-weight-bold">Note: Joining depends on admin approval ie, you will not be able to login until an admin approves your joining</p>
 
-				<a href="<?php echo site_url ('student/login/index/?sub='.$slug); ?>" class="mt-4">Already have an account? <strong>Sign In</strong></a>
+				<a href="<?php echo site_url ('student/login/index/?sub='.$slug); ?>" class="mt-4"> <strong>Sign In</strong></a>
 			</div>
 	  	  </div>
 	  	</form>

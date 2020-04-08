@@ -13,11 +13,9 @@ class Login extends MX_Controller {
     public function index ($slug='') {
     	if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
     		$slug = $_GET['sub'];
-    	}
-    	if ($slug == '') {
-    		$this->find_coaching ();
-    	} else {
 	    	$this->login ($slug);
+    	} else {
+    		$this->find_coaching ();
     	}
 	}
 
@@ -190,9 +188,13 @@ class Login extends MX_Controller {
 		$this->load->view( 'footer', $data);
 	} 
 
-	public function logout () {		
+	public function logout () {
+		$slug = '';
+		if (isset($_GET['sub'])) {
+			$slug = $_GET['sub'];
+		}
 		$this->login_model->logout ();
-		redirect ('login/page/index');
+		redirect ('student/login/index/?sub='.$slug);
 	}
 
 	public function validate_session () {
@@ -213,9 +215,10 @@ class Login extends MX_Controller {
 	}
 
 	public function find_coaching () {
-		$data['page_title'] = 'Coaching not found';
+		$data['page_title'] = 'Find your coaching';
 		$data['logo'] = base_url ($this->config->item('system_logo'));
 		$data['coaching'] = false;
+		$data['script'] = $this->load->view ('login/scripts/find_coachings', $data, true);
 		$this->load->view('login/header', $data);
 		$this->load->view('login/find_coaching', $data);
 		$this->load->view('login/footer', $data);

@@ -39,16 +39,28 @@
 	  </div>
 
 	  <div class="card-footer">
-	  	<h5 class="text-center">Don't have an account with <?php echo $page_title;?>? </h5>
-		<a href="<?php echo site_url ('student/login/register/?sub='.$slug.'&role='.USER_ROLE_STUDENT); ?>" class="btn btn-block btn-primary">Join as student</a>
-		<a href="<?php echo site_url ('coaching/login/register/?sub='.$slug.'&role='.USER_ROLE_TEACHER); ?>" class="btn btn-block btn-secondary">Join as employee</a>
-		<p class="mt-4 text-info font-weight-bold">Note: Joining depends on admin approval ie, you will not be able to login until an admin approves your joining</p>
+	  	<h5 class="text-center">If you are a teacher of <?php echo $page_title;?></h5>
+		<a href="<?php echo site_url ('coaching/login/register/?sub='.$slug.'&role='.USER_ROLE_TEACHER); ?>" class="btn btn-block btn-secondary">Create Teacher Account</a>
+	  </div>
 
-		<p>
+	  <div class="card-footer">
+	  	<h5 class="text-center">If you are a student of <?php echo $page_title;?></h5>
+		<a href="<?php echo site_url ('student/login/register/?sub='.$slug.'&role='.USER_ROLE_STUDENT); ?>" class="btn btn-block btn-primary">Create Student Account</a>
+		<a href="<?php echo site_url ('student/login/login/?sub='.$slug.'&role='.USER_ROLE_STUDENT); ?>" class="btn btn-block btn-info">Login As Student</a>
+		<p class="mt-4 text-info font-weight-bold d-none">Note: Joining depends on admin approval ie, you will not be able to login until an admin approves your joining</p>
+
+		<p class="">
+			<h5 class="text-center"></h5>
+			<?php echo anchor('student/login/install_app/?sub='.$slug, '<i class="fab fa-android"></i> Install Student App', ['class'=>'btn btn-success btn-block']); ?>
+		</p>
+
+		<!--
+		<p class="d-none">
 			<h5 class="text-center">---- OR ----</h5>
 			<?php echo anchor('coaching/login/create_coaching', 'Set-up a new coaching account', ['class'=>'btn btn-success btn-block']); ?>
 				
 		</p>
+		-->
 	  </div>
   </div>
 </div>

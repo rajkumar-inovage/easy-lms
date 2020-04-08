@@ -33,9 +33,9 @@
 										echo 'Attendee';
 									?>
 
-									<?php if ($user['member_id'] == $this->session->userdata ('member_id')) { ?>
+									<?php /*if ($user['member_id'] == $this->session->userdata ('member_id')) { ?>
 										<a href="<?php echo site_url ('coaching/virtual_class/join_class/'.$coaching_id.'/'.$class_id.'/'.$user['member_id']); ?>" class='btn btn-primary mr-1' target="_blank"><i class="fa fa-plus"></i> Join</a>
-									<?php } ?>
+									<?php } */ ?>
 								</td>
 							</tr>
 							<?php

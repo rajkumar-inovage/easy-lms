@@ -8,7 +8,7 @@
 		<?php } else { ?>
 		    <h4 class="text-center"><?php echo $page_title; ?></h4>
 		<?php } ?>
-	    <h5 class="text-center">Join as <?php if ($role_id == USER_ROLE_TEACHER) echo 'employee'; else echo 'student'; ?></h5>
+	    <h5 class="text-center">Join as <?php if ($role_id == USER_ROLE_TEACHER) echo 'teacher'; else echo 'student'; ?></h5>
 	  </div>
 		<?php echo form_open ('coaching/login_actions/register/'.$slug, array('class'=>'form-horizontal ', 'id'=>'validate-')); ?> 
 	  	  <div class="card-body px-lg-5 py-lg-5">
@@ -67,7 +67,7 @@
 				
 				<p class="mt-4 text-danger font-weight-bold">Note: Joining depends on admin approval ie, you will not be able to login until an admin approves your joining</p>
 
-				<a href="<?php echo site_url ('coching/login/index/?sub='.$slug); ?>" class="mt-4">Already have an account? <strong>Sign In</strong></a>
+				<a href="<?php echo site_url ('coaching/login/index/?sub='.$slug); ?>" class="mt-4">Already have an account? <strong>Sign In</strong></a>
 			</div>
 	  	  </div>
 	  	</form>

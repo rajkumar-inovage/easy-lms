@@ -79,7 +79,7 @@ class Users_model extends CI_Model {
 	}	
 
 	// Save account
-	public function save_account ($coaching_id=0, $member_id=0) {
+	public function save_account ($coaching_id=0, $member_id=0, $status=USER_STATUS_ENABLED) {
 	    
 	    if ($this->input->post ('dob')) {				
 			$dob = $this->input->post ('dob');
@@ -106,7 +106,9 @@ class Users_model extends CI_Model {
 			'login'		=>		$this->input->post ('email'),
 			'dob'		=>		$date,
 			'gender'	=>		$gender,
+			'status'  	=> 		$status,
 		);
+		
 		if ($member_id > 0) { 
 			// update account
 			$this->db->where ('member_id', $member_id);
@@ -118,7 +120,6 @@ class Users_model extends CI_Model {
 			$data['coaching_id']  = $coaching_id;
 			$data['user_token'] = md5($this->input->post ('email'));
 			$data['link_send_time']	= time();
-			$data['status']  = USER_STATUS_ENABLED;
 			$data['creation_date'] = time ();
 			$data['created_by'] = $this->session->userdata ('member_id');
 			$sql = $this->db->insert ('members', $data);
@@ -129,8 +130,6 @@ class Users_model extends CI_Model {
 			$this->db->set ('adm_no', $user_id);
 			$this->db->where ('member_id', $member_id);
 			$this->db->update ('members');
-
-			
 		}
 		return $member_id;
 	}
@@ -785,18 +784,13 @@ class Users_model extends CI_Model {
 	}
 	
 	public function send_confirmation_email ($member_id=0, $coaching_id=0) {
-		if ($this->session->userdata ('coaching_id')) {
-			$coaching_id = $this->session->userdata ('coaching_id');
-			$coaching 		= $this->coaching_model->get_coaching ($coaching_id);		
-			$coaching_name  = $coaching['coaching_name'];
-		} else {
-			$coaching_name = SITE_TITLE;
-		}
-		$user_details	=	$this->get_user($member_id);
+		$coaching 		= $this->coaching_model->get_coaching ($coaching_id);
+		$coaching_name  = $coaching['coaching_name'];
+		$user_details	=	$this->get_user ($member_id);
 		$email 	= $user_details['email'];
 		$userid = $user_details['login'];
 		$crypt 	= md5 ($userid);
-		$url	=	'login/page/create_password/'.$crypt;
+		$url	=	'student/login/create_password/?sub='.$crypt;
 		$link	=	anchor($url, 'Click here to create your password');
 		$name 	= $user_details['first_name'].' '.$user_details['last_name'];
 		$to 	= $email;

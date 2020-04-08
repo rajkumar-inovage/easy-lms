@@ -92,5 +92,10 @@
 		request.onerror = function (event) {
 			console.log('Unable to write IndexedDB session ');
 		}
-	}	
+	}
+
+	if (typeof(Storage) !== "undefined") {
+	   localStorage.clear ();
+	   localStorage.setItem('slug', '<?php echo $slug; ?>' );
+	}
 </script>

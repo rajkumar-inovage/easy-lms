@@ -8,13 +8,13 @@ window.addEventListener ('load', async e => {
 	// Register Servie-worker
 	if ('serviceWorker' in navigator) {
 		try {
-			navigator.serviceWorker.register (appPath + 'sw.js');
+			navigator.serviceWorker.register (appPath + 'sw-student.js');
 			console.log ('ServiceWorker registered');
 		} catch (error) {
 			console.log ('ServiceWorker registration failed');		
 		}
 	}
-	// validate_session ();
+	///validate_session ();
 });
 
 
@@ -151,22 +151,37 @@ function show_confirm_ajax (msg, url, redirect) {
  *
  */
 function validate_session () {
-	const appPath 		= 'http://localhost/repos/easycoachingapp/'
-	const loginURL 		= 'login/page/index';
-	const autoLoginURL 	= 'login/page/auto_login';
+	const validateURL = appPath + 'student/login_actions/validate_session';
+	fetch ( validateURL, {
+		method : 'POST',
+	}).then (function (response) {
+		return response.json ();
+	}).then(function(result) {
+		if (result.status == true) {
+			// Do nothing
+			//alert (result.status)
+		} else {
+			alert (result.error);
+			document.location = result.redirect;
+		}
+	});
+	/*
+	const loginURL 		= 'student/login/index?sub=';
 	var currentURL		= document.location.href;
 	if (typeof(Storage) !== "undefined") {
+		const slug = localStorage.getItem ('slug');
 		const userToken = localStorage.getItem ('user_token');
+		const redirectURL = appPath + loginURL + slug;
 	    if ((userToken == 'null' || userToken == null || userToken == '' || userToken == 'undefined') 
-	    	&& currentURL != appPath + loginURL) {
-	   		document.location = appPath + loginURL;
+	    	&& currentURL != redirectURL) {	    	
+	   		
 	    }
-	}	
+	}
+	*/
 }
 
 
 
-/*----==== Logout User ====----*/
 /*----==== Logout User ====----*/
 function logout_user () {
 	const slug = localStorage.getItem ('slug');
@@ -202,6 +217,8 @@ window.addEventListener('beforeinstallprompt', event => {
 		    if (choiceResult.outcome === 'accepted') {
 				// Update UI notify the user they can add to home screen
 				document.querySelector('#installBanner').style.visibility = 'hidden';
+				const slug = localStorage.getItem ('slug');
+				document.location.href = appPath + 'student/login/index/?sub='+slug;
 		    } else {
 		      console.log('User dismissed the A2HS prompt');
 		    }
@@ -214,9 +231,10 @@ window.addEventListener('beforeinstallprompt', event => {
 
 // Check if app was successfully installed
 window.addEventListener('appinstalled', (evt) => {
-	alert ('installed');
 	app.logEvent ('a2hs', 'installed');
 	document.querySelector('#installBanner').style.display = 'none';
+	document.querySelector('#installBanner').style.visibility = 'hidden';
+	$('#installBanner').hide ();
 });
 
 function _void () {

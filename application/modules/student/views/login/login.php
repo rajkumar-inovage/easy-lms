@@ -40,9 +40,14 @@
 
 	<?php if (! empty ($slug)) { ?>
 	  <div class="card-footer">
-	  	<h5 class="text-center">Dont have an account? </h5>
+	  	<h5 class="text-center">Don't have an account? </h5>
 		<a href="<?php echo site_url ('student/login/register/?sub='.$slug.'&role='.USER_ROLE_STUDENT); ?>" class="btn btn-block btn-primary">Join as student</a>
-		<p class="mt-4 text-info font-weight-bold">Note: Joining depends on admin approval ie, you will not be able to login until an admin approves your joining</p>
+
+		<div id="installBanner">
+			<a href="<?php echo site_url ('student/login/install_app/?sub='.$slug.'&role='.USER_ROLE_STUDENT); ?>" class="btn btn-block btn-success mt-3"><i class="fab fa-android"></i> Install App</a>
+		</div>
+
+		<p class="mt-4 text-info font-weight-bold d-none">Note: Joining depends on admin approval ie, you will not be able to login until an admin approves your joining</p>
 	  </div>
 	<?php } ?>	
   </div>
