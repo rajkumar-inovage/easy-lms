@@ -1,3 +1,11 @@
+<style type="text/css">
+.file.grid .filename::before {
+    content: attr(data-short_name);
+}
+.file.list .filename::before {
+    content: attr(data-full_name);
+}
+</style>
 <div class="card bg-transparent">
 	<div class="card-body p-0">
 		<div class="row no-gutters bg-white px-2">
@@ -26,14 +34,14 @@
 		<div class="row no-gutters">
 			<div class="col-12 py-4 relative">
 				<div class="tab-content bg-transparent p-0">
-					<div class="tab-pane my-files fade show active" id="my-files" role="tabpanel" aria-labelledby="my-files-tab">
+					<div class="tab-pane grid my-files fade show active" id="my-files" role="tabpanel" aria-labelledby="my-files-tab">
 						<div class="row no-gutters justify-content-start height-360 max-height-360 height-auto-xs max-height-300-xs overflow-auto">
 							<?php if(!empty($results)): ?>
 							<?php
 							foreach($results as $i => $file):
 								extract($file);
 							?>
-							<label class="col-4 col-sm-3 px-1 mb-3 file" data-upload_on="<?php echo date("d-m-Y", $upload_on); ?>" data-filename="<?php echo $filename; ?>" data-file_id="<?php echo $id; ?>" data-path="<?php echo $path; ?>" data-view_file="<?php echo site_url('student/file_actions/view_file/'.$id)?>" data-size="<?php echo $size; ?>" data-icon="<?php echo $icon; ?>" data-share_count="<?php echo $share_count; ?>" for="<?php echo "file-$id"; ?>">
+							<label class="col-4 col-sm-3 px-1 mb-2 file grid" data-upload_on="<?php echo date("d-m-Y", $upload_on); ?>" data-filename="<?php echo $filename; ?>" data-file_id="<?php echo $id; ?>" data-path="<?php echo $path; ?>" data-view_file="<?php echo site_url('student/file_actions/view_file/'.$id)?>" data-size="<?php echo $size; ?>" data-icon="<?php echo $icon; ?>" data-share_count="<?php echo $share_count; ?>" for="<?php echo "file-$id"; ?>">
 								<input type="checkbox" class="form-check-input invisible select-file" id="<?php echo "file-$id"; ?>" />
 								<div class="card h-100 relative">
 									<div class="dropdown">
@@ -48,10 +56,10 @@
 											<a class="dropdown-item px-2 delete-file" href="javascript:void(0);"><i class="fa fa-trash"></i> Delete</a>
 										</div>
 									</div>
-									<div class="card-body text-center">
-										<div class="file-data d-flex h-100 flex-column justify-content-center align-items-center">
+									<div class="card-body">
+										<div class="file-data text-center d-flex h-100 flex-column justify-content-center align-items-center">
 											<i class="<?php echo $icon; ?> fa-3x d-block"></i>
-											<h6 id="<?php echo "file_id_$id"; ?>" class="filename text-break"><?php echo $filename; ?></h6>
+											<h6 id="<?php echo "file_id_$id"; ?>" class="filename text-break" data-short_name="<?php echo (strlen($filename)>30)? substr($filename,0,27)."&hellip;":$filename;?>" data-full_name="<?php echo $filename; ?>"></h6>
 										</div>
 									</div>
 								</div>
@@ -73,7 +81,7 @@
 							foreach($shared_files as $i => $shared_file):
 								extract($shared_file);
 							?>
-							<label class="col-4 col-sm-3 px-1 mb-3 file" data-upload_on="<?php echo date("d-m-Y", $upload_on); ?>" data-size="<?php echo $size; ?>" data-mime="<?php echo $mime_type; ?>" data-icon="<?php echo $icon; ?>" data-filename="<?php echo $filename; ?>" data-view_file="<?php echo site_url('student/file_actions/view_file/'.$id)?>" data-share_id="<?php echo $id; ?>" data-file_id="<?php echo $id; ?>" data-path="<?php echo $path; ?>" for="<?php echo "file-$id"; ?>" title="Shared On: <?php echo date("d-m-Y", $shared_on); ?>">
+							<label class="col-4 col-sm-3 px-1 mb-2 file grid" data-upload_on="<?php echo date("d-m-Y", $upload_on); ?>" data-size="<?php echo $size; ?>" data-mime="<?php echo $mime_type; ?>" data-icon="<?php echo $icon; ?>" data-filename="<?php echo $filename; ?>" data-view_file="<?php echo site_url('student/file_actions/view_file/'.$id)?>" data-share_id="<?php echo $id; ?>" data-file_id="<?php echo $id; ?>" data-path="<?php echo $path; ?>" for="<?php echo "file-$id"; ?>" title="Shared On: <?php echo date("d-m-Y", $shared_on); ?>">
 								<input type="checkbox" class="form-check-input invisible select-file" id="<?php echo "file-$id"; ?>" />
 								<div class="card h-100 relative">
 									<div class="dropdown">
@@ -85,10 +93,10 @@
 											<a class="dropdown-item px-2" download href="<?php echo site_url('student/file_actions/donwload_file/'.$id)?>"><i class="fa fa-download"></i> Download</a>
 										</div>
 									</div>
-									<div class="card-body text-center">
-										<div class="file-data d-flex h-100 flex-column justify-content-center align-items-center">
+									<div class="card-body">
+										<div class="file-data text-center d-flex h-100 flex-column justify-content-center align-items-center">
 											<i class="<?php echo $icon; ?> fa-3x d-block"></i>
-											<h6 id="<?php echo "file_id_$id"; ?>" class="filename text-break"><?php echo $filename; ?></h6>
+											<h6 id="<?php echo "file_id_$id"; ?>" class="filename text-break" data-short_name="<?php echo (strlen($filename)>30)? substr($filename,0,27)."&hellip;":$filename;?>" data-full_name="<?php echo $filename; ?>"></h6>
 										</div>
 									</div>
 								</div>
