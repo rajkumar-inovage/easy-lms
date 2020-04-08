@@ -38,7 +38,7 @@
 						</p>
 					</div>
 
-					<div class="form-group row">
+					<div class="form-group row d-none">
 						<?php
 							$start_date = date ('d-m-Y', $class['start_date']);
 							$start_time = date ('h:i a', $class['start_date']);
@@ -50,7 +50,7 @@
 						<p class="form-control-static font-weight-bold"><?php echo $start_time; ?></p>
 					</div>
 
-					<div class="form-group row">
+					<div class="form-group row d-none">
 						<?php
 							$end_date = date ('d-m-Y', $class['end_date']);
 							$end_time = date ('h:i a', $class['end_date']);
@@ -60,6 +60,20 @@
 
 						<?php echo form_label('at ', '', array('class'=>'col-md-1 control-label')); ?>
 						<p class="form-control-static font-weight-bold"><?php echo $end_time; ?></p>
+					</div>
+
+					<div class="form-group ">
+						<?php echo form_label('Max Participants', '', array('class'=>'control-label')); ?>
+						<p class="form-control-static font-weight-bold">
+							<?php echo $class['max_participants']; ?>
+						</p>
+					</div>
+
+					<div class="form-group ">
+						<?php echo form_label('Class Duration', '', array('class'=>'control-label')); ?>
+						<p class="form-control-static font-weight-bold">
+							<?php echo $class['duration']; ?>
+						</p>
 					</div>
 
 					<div class="form-group ">
@@ -85,7 +99,10 @@
 				</div>	
 
 				<div class="card-footer">	
-					<?php echo anchor ('coaching/virtual_class/participants/'.$coaching_id.'/'.$class_id, 'Participants', ['class'=>'btn btn-primary']); ?>
+					<?php 
+					echo anchor ('coaching/virtual_class/join_class/'.$coaching_id.'/'.$class_id, '<i class="fa fa-plus"></i> Create and Join', ['class'=>'btn btn-primary mr-1']); 
+					echo anchor ('coaching/virtual_class/participants/'.$coaching_id.'/'.$class_id, 'Participants', ['class'=>'btn btn-info']);
+					?>
 				</div>
 		</div>
 	</div>

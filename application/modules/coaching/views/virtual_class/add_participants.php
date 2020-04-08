@@ -52,6 +52,10 @@
 						}
 						echo anchor ('coaching/virtual_class/add_participants/'.$coaching_id.'/'.$class_id.'/'.$role_id.'/'.$batch['batch_id'], $batch['batch_name'], ['class'=>'list-group-item '.$class]);
 					}
+				} else {
+					?>
+					<li class="list-group-item text-danger">No groups created</li>
+					<?php
 				}
 				?>
 			</div>

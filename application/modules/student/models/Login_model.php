@@ -9,8 +9,7 @@ class Login_model extends CI_Model {
 		$login		 	=  $this->input->post('username');
 		$password		=  $this->input->post('password');
 		$coaching_id	=  $this->input->post('coaching_id');
-		$where = "(login='$login' OR adm_no='$login' OR email='$login')"; 
-
+		$where = "(login='$login' OR adm_no='$login' OR email='$login' )"; 
 		$this->db->where ($where);
 		$this->db->where ('coaching_id', $coaching_id);
 		$query = $this->db->get ("members");
@@ -96,8 +95,6 @@ class Login_model extends CI_Model {
 		$role_home  	 = $roles['dashboard'];
 		$is_admin		 = $roles['admin_user'];
 		
-		// save login data to database			
-		$this->db->insert ('login_history', array ('member_id'=>$member_id, 'login_dt'=>$login_dt, 'logout_dt'=>$logout_dt, 'session_id'=>$session_id, 'last_activity'=>$last_activity, 'ip_address'=>$ip_address, 'user_agent'=>$user_agent, 'user_data'=>$user_data, 'status'=>$status, 'remarks'=>$remarks) );
 		
 		if ($coaching_id > 0) {
 		// Get coaching details
@@ -132,7 +129,13 @@ class Login_model extends CI_Model {
 						);
 		
 		$this->session->set_userdata ($options);
+
+		// save login data to database
+		$session_data = ['login_dt'=>$login_dt, 'logout_dt'=>$logout_dt, 'session_id'=>$session_id, 'last_activity'=>$last_activity, 'ip_address'=>$ip_address, 'user_agent'=>$user_agent, 'user_data'=>$user_data, 'status'=>$status, 'remarks'=>$remarks];
+		$data = array_merge($options, $session_data);
+		$this->db->insert ('login_history', $data);
 	}
+
 	public function check_registered_email ($email, $coaching_id='') {
 		$this->db->where ('email', $email);
 		if ( ! empty($login)) {
@@ -194,8 +197,8 @@ class Login_model extends CI_Model {
 	}
 	public function logout () {
 		$this->session->sess_destroy ();
-		//$this->cookie->delete_cookie ();
 	}
+	
 	public function update_password ($member_id) {
 		// get user details
 		$this->db->where ('member_id', $member_id);

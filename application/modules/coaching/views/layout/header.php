@@ -136,7 +136,7 @@
     </div>
 	
 	<!-- Sidebar left -->
-	<div id="sidebar-left" class="sidebar left sidebar-skin-white-blue">
+	<div id="sidebar-left" class="sidebar sidebar-skin-white-blue left">
 		<div class="sidebar-block">
             <div class="">
 				<?php 
@@ -174,18 +174,7 @@
 				}
 			}
 			?>
-		</ul>
-
-        <div class="sidebar-blocks">
-            <ul class="list-group-menu">
-                <li class="list-group-item">
-                    <a class="" onclick="logout_user ()">
-                        <i class="fa fa-sign-out-alt"></i>
-                        Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
+		</ul>        
 
 	</div>
 	<!--// Sidebar left -->

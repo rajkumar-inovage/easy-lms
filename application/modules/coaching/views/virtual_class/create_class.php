@@ -11,7 +11,8 @@
 					
 					<div class="form-group ">
 						<?php echo form_label('Welcome Message', '', array('class'=>'control-label')); ?>
-						<textarea name="welcome_message" class="form-control" rows="3"><?php echo set_value('welcome_message', $class['welcome_message']); ?></textarea>
+						<textarea name="welcome_message" class="form-control" rows="3" max_length="100"><?php echo set_value('welcome_message', $class['welcome_message']); ?></textarea>
+						<div class="text-muted">Maximum length can be 100 characters, including SPACES</div>
 					</div>
 
 					<div class="form-group row">
@@ -39,7 +40,7 @@
 					<div class="form-group ">
 						<?php echo form_label('Student must wait for moderator to join', '', array('class'=>'control-label')); ?>
 						<label for="checkbox1">
-							<input name="wait_for_moderator" id="checkbox1" type="checkbox" value="1" <?php echo set_checkbox('wait_for_moderator', $class['wait_for_moderator']); ?> > Yes
+							<input name="wait_for_moderator" id="checkbox1" type="checkbox" value="1" <?php echo set_checkbox('wait_for_moderator', $class['wait_for_moderator']); ?> checked="checked" > Yes
 						</label>
 					</div>
 
@@ -101,11 +102,27 @@
 					</div>
 
 
+					<div class="form-group row ">
+						<div class="col-md-6"> 
+							<?php echo form_label('Max Participant', '', array('class'=>'control-label')); ?>
+							<input type="number" class="form-control required" name="max_participants" value="<?php echo set_value('max_participants', $class['max_participants']); ?>" placeholder="<?php echo VC_MAX_PARTICIPANTS; ?>" />
+							<div class="text-muted">Between 1 and <?php echo VC_MAX_PARTICIPANTS; ?></div>
+						</div>
+					</div>
+
+					<div class="form-group row ">
+						<div class="col-md-6"> 
+							<?php echo form_label('Duration', '', array('class'=>'control-label')); ?>
+							<input type="number" class="form-control required" name="duration" value="<?php echo set_value('duration', $class['duration']); ?>" placeholder="<?php echo VC_DURATION; ?>" />
+							<div class="text-muted">Between 1 and <?php echo VC_DURATION; ?></div>
+						</div>
+					</div>
+
 					<div class="form-group row d-none">
 						<div class="col-md-6"> 
 							<?php echo form_label('Record classroom', '', array('class'=>'control-label')); ?>
 							<label for="checkbox2">
-								<input name="record" id="checkbox2" type="checkbox" value="1" <?php echo set_checkbox('record', $class['record']); ?> > Yes
+								<input name="record_class" id="checkbox2" type="checkbox" value="1" <?php echo set_checkbox('record', $class['record']); ?> > Yes
 							</label>
 						</div>
 					</div>

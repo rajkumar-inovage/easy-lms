@@ -81,8 +81,10 @@ class Login_actions extends MX_Controller {
 			
 			$coaching_id = $this->input->post ('coaching_id');
 
+			//$status = USER_STATUS_ENABLED;
+			$status = USER_STATUS_UNCONFIRMED;
 			// Save user details
-			$member_id = $this->users_model->save_account ($coaching_id);
+			$member_id = $this->users_model->save_account ($coaching_id, 0, $status);
 			
 			// Get coachiiiing details
 			$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
@@ -98,13 +100,23 @@ class Login_actions extends MX_Controller {
 			// Notification email to user
 			$to = $this->input->post('email');
 			$subject = 'Account Created';
-			$email_message = '<strong> Hi '.$user_name.',</strong><br>
-			<p>You have created an account in <strong>'.$coaching_name.'</strong>. You can login with your registered email and password once your account is approved. You will receive another email regarding account approval.</p>';
+			if ($status == USER_STATUS_UNCONFIRMED) {				
+				// Email message for user
+				$email_message = '<strong> Hi '.$user_name.',</strong><br>
+				<p>You have created an account in <strong>'.$coaching_name.'</strong>. You can login with your registered email and password once your account is approved. You will receive another email regarding account approval.</p>';
+				// Display message for user
+				$message = 'Your account has been created but pending for admin approval';
+				$this->message->set ($message, 'warning', true );
+			} else {
+				// Email message for user
+				$email_message = '<strong> Hi '.$user_name.',</strong><br>
+				<p>You have created an account in <strong>'.$coaching_name.'</strong>. Your account is active now. You can login with your registered email and password.</p>';
+				// Display message for user
+				$message = 'Your account has been created. You can log-in to your account';
+				$this->message->set ($message, 'success', true );
+			}
 			$this->common_model->send_email ($to, $subject, $email_message);
 			
-			// Message for user
-			$message = 'Your account has been created but pending for admin approval';
-			$this->message->set ($message, 'success', true );
 
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('student/login/index/?sub='.$slug)) ));
@@ -228,7 +240,25 @@ class Login_actions extends MX_Controller {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors () )));
 		}
+	}
 
+	public function find_coaching () {
+
+		$this->form_validation->set_rules ('search', 'Coaching Name', 'required|min_length[3]|trim', ['required'=>'Type in a few letters to search', 'min_length'=>'Type at-least first three letters of your coaching ']);
+
+		if ($this->form_validation->run () == true) {
+			$result = $this->coaching_model->find_coaching ();
+			if (! empty($result)) {
+				$this->output->set_content_type("application/json");
+				$this->output->set_output(json_encode(array('status'=>true, 'message'=>'We have found following coachings matching your search. Click on your coaching to enter', 'result'=>($result) )));
+			} else {
+				$this->output->set_content_type("application/json");
+				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'We have not found any coachings matching your search' )));
+			}
+		} else {
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
+		}
 	}
 
 

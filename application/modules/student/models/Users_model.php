@@ -78,9 +78,9 @@ class Users_model extends CI_Model {
 	}	
 
 	// Save account
-	public function save_account ($coaching_id=0, $member_id=0) {
+	public function save_account ($coaching_id=0, $member_id=0, $status=USER_STATUS_ENABLED) {
 	    
-	    if ($this->input->post ('dob')) {				
+	    if ($this->input->post ('dob')) {
 			$dob = $this->input->post ('dob');
 			list ($y, $m, $d) = explode ('-', $dob);
 			$date = $m.'/'.$d.'/'.$y;
@@ -105,10 +105,14 @@ class Users_model extends CI_Model {
 			$this->db->update ('members', $data);			
 		} else {
 			// create profile
+			$password = $this->input->post ('password');			
+
+			$password_hash = password_hash($password, PASSWORD_DEFAULT);
 			$data['coaching_id']  = $coaching_id;
+			$data['password']	= $password_hash;
+			$data['status']  = $status;
+			$data['gender'] = 'n';
 			$data['link_send_time']	= time();
-			$data['user_token'] = $this->encryption->encrypt ($login);
-			$data['status']  = USER_STATUS_ENABLED;
 			$data['creation_date'] = time ();
 			$data['created_by'] = $this->session->userdata ('member_id');
 			$sql = $this->db->insert ('members', $data);
@@ -116,10 +120,14 @@ class Users_model extends CI_Model {
 
 			// Set Userid
 			$user_id = $this->generate_reference_id ($member_id);
+			$user_token = md5 ($user_id);
+			$this->db->set ('user_token', $user_token);
 			$this->db->set ('login', $user_id);
 			$this->db->set ('adm_no', $user_id);
 			$this->db->where ('member_id', $member_id);
-			$this->db->update ('members');			
+			$this->db->update ('members');
+
+
 		}
 		//$this->save_member_batch ($member_id);
 		//$this->save_class ($member_id, $coaching_id);

@@ -37,7 +37,7 @@ class Home extends MX_Controller {
 		$data['announcements'] = $this->coachings_model->get_coaching_announcements ($coaching_id);
 		$data['cats_added'] = array ();		
 
-		$data['page_title'] = $data['coaching']['coaching_name'];
+		$data['page_title'] = 'Dashboard';
 
         //$data['bc'] = array ('Coachings'=>'admin/coaching/index');
 		

@@ -108,5 +108,3 @@ define ('QUESTION_BLANK',	  				6);
 define ('QUESTION_MCMC',		  			7); 
 define ('QB_NUM_ANSWER_CHOICES',		  	6);
 
-define ('VM_PARTICIPANT_ATTENDEE', 				1);
-define ('VM_PARTICIPANT_MODERATOR', 			2);
