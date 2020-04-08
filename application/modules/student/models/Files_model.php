@@ -111,12 +111,16 @@ class Files_model extends CI_Model {
 		$this->db->where ("id", $this->input->post('file_id'));
 		$this->db->delete ('file_manager');
 		if($this->db->affected_rows() > 0){
-			$this->db->where ("file_id", $this->input->post('file_id'));
-			$this->db->delete ('file_sharing');
-			if($this->db->affected_rows() > 0){
+			if ($this->share_count($this->input->post('file_id')) > 0){
+				$this->db->where ("file_id", $this->input->post('file_id'));
+				$this->db->delete ('file_sharing');
+				if($this->db->affected_rows() > 0){
+					return true;
+				}else{
+					return false;
+				}
+			} else { 
 				return true;
-			}else{
-				return false;
 			}
 		}else{
 			return false;

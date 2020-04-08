@@ -1,11 +1,10 @@
 /*
  * Sidebar
  */
-#sidebar{
+.sidebar{
     position:fixed;
     top:0px;
     bottom:0;
-    left:-260px;
     width:250px;
     z-index:1040;/* On top of the navbar (1030) */
     /*box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);*/
@@ -18,8 +17,17 @@
     -webkit-transition:all 0.3s;/* For Safari 3.1 to 6.0 */
     transition:all 0.3s
 }
-#sidebar.sidebar-open{
+#sidebar, #sidebar-left{
+    left:-260px;
+}
+#sidebar-right{
+    right:-260px;
+}
+#sidebar.sidebar-open, #sidebar-left.sidebar-open{
     margin-left:250px
+}
+#sidebar-right.sidebar-open{
+    margin-right:250px
 }
 .navbar-toggle{
     position:relative;
@@ -30,7 +38,7 @@
     border:1px solid #ddd;
     border-radius:2px
 }
-.navbar-toggle:hover,.navbar-toggle:focus{
+.navbar-toggle.active{
     background-color:#ddd
 }
 .navbar-toggle .icon-bar{
@@ -42,14 +50,14 @@
 .navbar-toggle .icon-bar+.icon-bar{
     margin-top:4px
 }
-.navbar .navbar-toggle:focus .icon-bar:first-child{
+.navbar .navbar-toggle.active .icon-bar:first-child{
     transform:rotate(-45deg) translateY(4px) translateX(-4px)
 }
-.navbar .navbar-toggle:focus .icon-bar:nth-child(2){
+.navbar .navbar-toggle.active .icon-bar:nth-child(2){
     visibility:hidden;
     opacity:0
 }
-.navbar .navbar-toggle:focus .icon-bar:last-child{
+.navbar .navbar-toggle.active .icon-bar:last-child{
     transform:rotate(45deg) translateY(-4px) translateX(-4px)
 }
 header {}
@@ -208,7 +216,6 @@ span.required{
     line-height:150px;
     font-size:45px
 }
-
 .container-sm {
     width:100%;
     padding-right:15px;
@@ -216,7 +223,27 @@ span.required{
     margin-right:auto;
     margin-left:auto;
 }
+.outline-none{
+    outline:none !important;
+}
+.box-shadow-none{
+    box-shadow:none !important;
+}
+.dropzone {
+  border: 2px dashed #dedede;
+  border-radius: 5px;
+  background: #f5f5f5;
+}
 
+.dropzone i{
+  font-size: 5rem;
+}
+.dropzone .dz-message {
+  color: rgba(0,0,0,.54);
+  font-weight: 500;
+  font-size: initial;
+  text-transform: uppercase;
+}
 @media only screen and (min-width: 768px) {
     .container-sm {
         width:100%;

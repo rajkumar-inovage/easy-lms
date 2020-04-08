@@ -6,6 +6,7 @@ $(function() {
 	   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 	   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 	}
+	var total_files = <?php echo $total_files;?>;
 	$('.file').on( "contextmenu", function(event){
 		event.preventDefault();
 		$(this).find('.options').trigger('click');
@@ -25,7 +26,7 @@ $(function() {
 					'file_id': file_id,
 					'file_path': file_path
 				},
-				url: `<?php echo site_url('coaching/file_actions/delete_file/'); ?>`,
+				url: `<?php echo site_url('student/file_actions/delete_file/'); ?>`,
 				beforeSend: function(){
 				},
 				complete: function(){
@@ -34,6 +35,7 @@ $(function() {
 					console.log(response);
 					if(response.status){
 						file.remove();
+						$('.total_files').html(total_files--);
 						toastr.success(response.message);
 					}
 				}
@@ -59,7 +61,7 @@ $(function() {
 					'new_path': new_file_path,
 					'new_file_name': new_fileName
 				},
-				url: `<?php echo site_url('coaching/file_actions/rename_file/'); ?>`,
+				url: `<?php echo site_url('student/file_actions/rename_file/'); ?>`,
 				beforeSend: function(){
 				},
 				complete: function(){
@@ -89,13 +91,15 @@ $(function() {
 			}else if($(this).parents('.tab-pane').hasClass('shared-files')){
 				$('.info-box').find('.share_count').parents('.col').addClass('d-none');
 			}
-			console.log($(this).parents('.tab-pane').hasClass('my-files'), fileData);
 			Object.keys(fileData).forEach(function(selector){
 				var mySelector = $('.info-box').find(`.${selector}`);
 				mySelector.html('');
 				if(selector=='icon'){
-					console.log(selector)
-					$('<i/>', {"class": fileData[selector]+' fa-4x d-block'}).appendTo(mySelector);
+					if(fileData[selector]=='far fa-file-image'){
+						$('<img/>', {"class":'width-100 img-fluid', 'src':fileData['view_file']}).appendTo(mySelector);
+					}else{
+						$('<i/>', {"class": fileData[selector]+' fa-4x d-block'}).appendTo(mySelector);
+					}
 				}else if(selector=='size'){
 					$('.info-box').find(`.${selector}`).html(bytesToSize(fileData[selector]));
 				}else if(selector=='view_file'){
@@ -105,6 +109,19 @@ $(function() {
 					$('.info-box').find(`.${selector}`).html(fileData[selector]);
 				}
 			});
+		}
+	});
+	$('.view').on('change', function(event) {
+		if($(this).hasClass('grid')){
+			console.log('here');
+			$('.file').addClass('col-4 col-sm-3 grid').removeClass('col-12 list');
+			$('.file-data').addClass('flex-column justify-content-center').removeClass('justify-content-start');
+			$('.filename').removeClass('ml-4 mb-0s');
+		}else if($(this).hasClass('list')){
+			console.log('there');
+			$('.file').removeClass('col-4 col-sm-3 grid').addClass('col-12 list');
+			$('.file-data').removeClass('flex-column justify-content-center').addClass('justify-content-start') ;
+			$('.filename').addClass('ml-4 mb-0s');
 		}
 	});
 });
