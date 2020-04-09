@@ -5,16 +5,16 @@ class Tests extends MX_Controller {
 
     public function __construct () {
 		$config = ['config_student'];
-	    $models = ['tests_model' ,'qb_model', 'tests_reports', 'users_model'];
+	    $models = ['tests_model' ,'qb_model', 'tests_reports', 'coaching/test_plans_model', 'users_model'];
 		$this->common_model->autoload_resources ($config, $models);
 	}
     
 
-    public function index ($coaching_id=0, $member_id=0, $test_type=TEST_TYPE_REGULAR) {
-		$this->browse_tests ($coaching_id, $member_id, $test_type);
+    public function index ($coaching_id=0, $member_id=0, $test_type=TEST_TYPE_REGULAR, $category_id=0) {
+		$this->browse_tests ($coaching_id, $member_id, $test_type, $category_id);
 	} 
 	
-    public function browse_tests ($coaching_id=0, $member_id=0, $test_type=TEST_TYPE_REGULAR) {
+    public function browse_tests ($coaching_id=0, $member_id=0, $test_type=TEST_TYPE_REGULAR, $category_id) {
 		$data['page_title'] 	= "Browse Tests";
 		
         $data['coaching_id'] 	= $coaching_id;
@@ -43,10 +43,24 @@ class Tests extends MX_Controller {
 			}
 			$data['tests'] = $enroled;
 		} else {
-			$data['tests'] = $this->tests_model->get_all_tests ($coaching_id, $category_id=0,  $test_type);
+			$data['category_id'] = $category_id;
+			$data['plans'] = $plans = $this->test_plans_model->coaching_test_plans ($coaching_id);
+			$categories = array();
+			foreach ($plans as $plan) {
+				$cats = array(
+					'title' => $plan['title'],
+					'categories' => $this->test_plans_model->categories_in_plan ($coaching_id, $plan['plan_id'])
+				);
+				array_push($categories, $cats);
+			}
+			$data['categories'] = $categories;
+			$data['test_type'] = $test_type;
+			$data['tests'] = $this->tests_model->get_all_paged_tests ($coaching_id, $category_id, $test_type);
 		}
 		
 		$data['bc'] 			= array ('Dashboard'=>'student/home/dashboard/'.$coaching_id.'/'.$member_id);
+
+		$data['script'] = $this->load->view ('tests/scripts/browse_tests', $data, true);
 
 		$this->load->view ( INCLUDE_PATH . 'header', $data); 
 		$this->load->view ( 'tests/browse_tests', $data);

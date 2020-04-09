@@ -8,7 +8,7 @@
 					?>
 						<div class="card mb-2">
 							<div class="card-body">
-								<h4 class="text-center h-100">
+								<h4 class="text-center d-flex justify-content-center align-items-center h-100">
 									<a href="<?php echo site_url ($link); ?>" class="text-decoration-none stretched-link link-text-color">
 										<span class="d-block"><?php echo $menu['icon_img']; ?></span>
 										<span><?php echo $menu['menu_desc']; ?></span>

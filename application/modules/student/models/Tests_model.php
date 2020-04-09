@@ -87,6 +87,27 @@ class Tests_model extends CI_Model {
 		return $results;
 	}
 
+	//=========== Model for list tests paged =======================
+	public function get_all_paged_tests ($coaching_id=0, $category_id=0, $type=0, $offset=0, $limit	=10) {
+		
+		if ( $type > 0 ) {
+			$this->db->where ('test_type', $type);			
+		}
+		if ( $category_id > 0 ) {
+			$this->db->where ('category_id', $category_id);
+		}
+		
+		$this->db->where ('finalized', 1);
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->order_by ('creation_date', 'DESC');
+		$this->db->offset($offset);
+		$this->db->limit($limit);
+		$query = $this->db->get ("coaching_tests");
+		//print_r($this->db->last_query());
+		$results = $query->result_array();		
+		return $results;
+	}
+
 	//=========== Model for list tests =======================
 	public function get_test ($test_id=0) {
 		$this->db->where ('test_id', $test_id);

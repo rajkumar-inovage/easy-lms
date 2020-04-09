@@ -115,12 +115,12 @@ $(function() {
 		if($(this).hasClass('grid')){
 			console.log('here');
 			$('.file').addClass('col-4 col-sm-3 grid').removeClass('col-12 list');
-			$('.file-data').addClass('flex-column justify-content-center').removeClass('justify-content-start');
+			$('.file-data').addClass('flex-column text-center justify-content-center').removeClass('text-left justify-content-start');
 			$('.filename').removeClass('ml-4 mb-0s');
 		}else if($(this).hasClass('list')){
 			console.log('there');
 			$('.file').removeClass('col-4 col-sm-3 grid').addClass('col-12 list');
-			$('.file-data').removeClass('flex-column justify-content-center').addClass('justify-content-start') ;
+			$('.file-data').removeClass('flex-column text-center justify-content-center').addClass('text-left justify-content-start') ;
 			$('.filename').addClass('ml-4 mb-0s');
 		}
 	});
