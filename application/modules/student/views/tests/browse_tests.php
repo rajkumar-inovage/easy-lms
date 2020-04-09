@@ -123,20 +123,37 @@
         </div>
     <?php } else { ?>
       <div class="card-body">
-        <?php 
+        <?php
+        echo '<div id="filter" class="row">';
+        echo '<div class="col mb-3">';
+        echo '<strong>Filter</strong>';
+        echo '<select id="change-cat" class="custom-select">';
+        $ifAll = ($category_id==0)?' selected':'';
+        echo '<option value="0"'.$ifAll.'>All</option>';
+        foreach ($categories as $plan) {
+          echo '<optgroup label="'.$plan['title'].'">';
+          foreach ($plan['categories'] as $category) {
+            $ifCurrent = ($category_id==$category['id'])?' selected':'';
+            echo '<option value="'.$category['id'].'"'.$ifCurrent.'>'.$category['title'].'</option>';
+          }
+          echo '</optgroup>';
+        }
+        echo '</select>';
+        echo '</div>';
+        echo '</div>';
         if (! empty ($tests)) {
-            echo '<ul class="list-group list-group-flush ">';
+            echo '<ul id="tests-list" class="list-group list-group-flush ">';
                 foreach ($tests as $row) {
                     ?>
                     <li class="list-group-item">
-                        <div class="media v-middle">
-                          <div class="media-left">
+                        <div class="media">
+                          <div class="media-left my-auto">
                             <div class="icon-block s30 bg-red-400 text-white" title="Report">
                               <i class="fa fa-file"></i>
                             </div>
                           </div>
-                          <div class="media-body">
-                            <?php echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$row['test_id'], $row['title'], ['class'=>'link-text-color']); ?>
+                          <div class="media-body my-auto">
+                            <?php echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$row['test_id'], $row['title'], ['class'=>'link-text-color stretched-link']); ?>
                             <div class="text-light">
                               
                             </div>
@@ -146,6 +163,13 @@
                     <?php
                 }
             echo '</ul>';
+            ?>
+            <div class="loader d-flex justify-content-center my-3 invisible">
+              <div class="spinner-border text-red-400 d-none" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <?php
         } else {
             ?>
             <div class="text-danger my-4">

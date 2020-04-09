@@ -5,7 +5,7 @@ class Tests_actions extends MX_Controller {
 	
 	public function __construct () { 
 		$config = ['config_student'];
-	    $models = ['coaching/tests_model', 'admin/coachings_model', 'coaching/users_model' ,'coaching/qb_model'];
+	    $models = ['student/tests_model', 'admin/coachings_model', 'coaching/users_model' ,'coaching/qb_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 	
@@ -124,5 +124,15 @@ class Tests_actions extends MX_Controller {
 		$this->message->set ('Reset request has been sent. Please wait till the test become available again', 'success', true);
 		redirect ('student/tests/index/'.$coaching_id.'/'.$member_id.'/'.$test_id);
 	}
-	
+	public function get_all_tests_next($coaching_id, $category_id, $test_type, $page_no=2){
+		$this->output->set_content_type("application/json");
+		$offset = ($page_no - 1) * 10;
+		$results = $this->tests_model->get_all_paged_tests($coaching_id, $category_id, $test_type, $offset);
+		if(!empty($results)){
+			$next_page = $page_no + 1;
+			$this->output->set_output(json_encode(array('status'=>true, 'data'=> $results, 'next_page' => $next_page)));
+		}else{
+			$this->output->set_output(json_encode(array('status'=>false, 'error'=> "Nothing more to show.")));
+        }
+	}
 }

@@ -17,7 +17,6 @@ class File_manager extends MX_Controller{
             $coaching_id = intval($this->session->userdata('coaching_id'));
         }
         $data['bc'] = array ('Browse Plans'=>'student/home/dashboard/');
-        //echo MAX_STORAGE; echo MAX_FILE_SIZE;
         $used_storage = $this->files_model->get_used_storage($coaching_id, $member_id);
         $fromat_max = $this->files_model->formatSizeUnits(MAX_STORAGE);
         $fromat_used = $this->files_model->formatSizeUnits($used_storage);
