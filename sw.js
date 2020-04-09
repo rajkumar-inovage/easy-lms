@@ -8,7 +8,7 @@
 
 'use strict';
 
-const appPath = '/repos/easycoachingapp/';
+const appPath = '/repos/easy/';
 
 const staticAssets = [
 	appPath,

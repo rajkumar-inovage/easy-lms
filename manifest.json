@@ -1,29 +1,29 @@
 {
   "short_name": "EasyCoaching",
   "lang": "en-US",
-  "start_url": "/repos/easycoachingapp/student/home/dashboard",
+  "start_url": "/repos/easy/",
   "display": "standalone",
   "theme_color": "#FF9800",
   "background_color": "#FF9800",
   "icons": [
     {
-      "src": "/repos/easycoachingapp/themes/student/assets/img/touch/app-icon128.png",
+      "src": "/repos/easy/themes/student/assets/img/touch/app-icon128.png",
       "sizes": "128x128"
     },
     {
-      "src": "/repos/easycoachingapp/themes/student/assets/img/touch/app-icon192.png",
+      "src": "/repos/easy/themes/student/assets/img/touch/app-icon192.png",
       "sizes": "192x192"
     },
     {
-      "src": "/repos/easycoachingapp/themes/student/assets/img/touch/app-icon256.png",
+      "src": "/repos/easy/themes/student/assets/img/touch/app-icon256.png",
       "sizes": "256x256"
     },
     {
-      "src": "/repos/easycoachingapp/themes/student/assets/img/touch/app-icon384.png",
+      "src": "/repos/easy/themes/student/assets/img/touch/app-icon384.png",
       "sizes": "384x384"
     },
     {
-      "src": "/repos/easycoachingapp/themes/student/assets/img/touch/app-icon512.png",
+      "src": "/repos/easy/themes/student/assets/img/touch/app-icon512.png",
       "sizes": "512x512"
     }
   ],

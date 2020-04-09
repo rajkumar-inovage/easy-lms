@@ -19,9 +19,11 @@ $config['coaching_logo']				= 'logo.png';
 $config['profile_picture_path']			= 'contents/profile_images/';
 
 define ('INCLUDE_PATH', 			    'layout/');
+define ('THEME_PATH', 			    	'themes/default/');
 
-define ('COMPANY_NAME', 				'Inovexia Software Services Pvt Ltd');
-define ('COMPANY_URL', 					'https://inovexiasoftware.com');
+define ('APP_NAME', 					'Easy Coaching');
+define ('BRANDING_TEXT', 				'Powered by Easy Coaching');
+define ('BRANDING_URL', 				'https://easycoachingapp.com');
 
 /* MENU TYPES */
 define ('MENUTYPE_SIDEMENU', 				1);

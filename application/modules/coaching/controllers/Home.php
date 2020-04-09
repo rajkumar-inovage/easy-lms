@@ -3,8 +3,8 @@
 class Home extends MX_Controller {
 	
 	public function __construct () { 
-	    $config = ['coaching/config_coaching'];
-	    $models = ['admin/coachings_model', 'coaching/users_model', 'coaching/subscription_model'];
+	    $config = ['config_coaching'];
+	    $models = ['coaching_model', 'users_model', 'subscription_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
  
@@ -29,12 +29,12 @@ class Home extends MX_Controller {
 
 		$data['dashboard_menu'] = $this->common_model->load_acl_menus ($role, 0, MENUTYPE_DASHBOARD);
 
-		$data['coaching'] = $this->coachings_model->get_coaching ($coaching_id);
+		$data['coaching'] = $this->coaching_model->get_coaching ($coaching_id);
 		$data['subscriptions'] = $this->subscription_model->get_coaching_subscription ($coaching_id);
-		$data['test_packages'] = $this->coachings_model->coaching_plans ($coaching_id);
-		$data['tests'] = $this->coachings_model->get_coaching_tests ($coaching_id);
-		$data['users'] = $this->coachings_model->get_coaching_users ($coaching_id);
-		$data['announcements'] = $this->coachings_model->get_coaching_announcements ($coaching_id);
+		$data['test_packages'] = $this->coaching_model->coaching_plans ($coaching_id);
+		$data['tests'] = $this->coaching_model->get_coaching_tests ($coaching_id);
+		$data['users'] = $this->coaching_model->get_coaching_users ($coaching_id);
+		$data['announcements'] = $this->coaching_model->get_coaching_announcements ($coaching_id);
 		$data['cats_added'] = array ();		
 
 		$data['page_title'] = 'Dashboard';

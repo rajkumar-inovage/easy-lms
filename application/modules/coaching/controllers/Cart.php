@@ -4,8 +4,8 @@ class Cart extends MX_Controller {
 
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
-	    $config = ['coaching/config_coaching'];
-	    $models = ['coaching/subscription_model', 'admin/coachings_model', 'coaching/users_model'];
+	    $config = ['config_coaching'];
+	    $models = ['subscription_model', 'coaching_model', 'users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 

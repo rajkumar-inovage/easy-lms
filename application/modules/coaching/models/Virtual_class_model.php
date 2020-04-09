@@ -185,7 +185,7 @@ class Virtual_class_model extends CI_Model {
 		if ($participant_role == VM_PARTICIPANT_MODERATOR) {
 			$password = $class['moderator_pwd'];
 		} else {
-			$password = $class['attendee_pwd'];			
+			$password = $class['attendee_pwd'];
 		}
 
 		$users = $this->input->post ('users');

@@ -45,7 +45,7 @@ class Virtual_class extends MX_Controller {
 		$data['class_id'] = $class_id;
 		$data['page_title'] = 'Create Virtual Classroom';
 
-		$data['bc'] = array('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
+		$data['bc'] = array('Dashboard'=>'coaching/home/index/'.$coaching_id);
 		$data['class'] = $this->virtual_class_model->get_class ($coaching_id, $class_id);
 		$data['attendee_pwd'] = random_string ('numeric', 4);
 		$data['moderator_pwd'] = random_string ('numeric', 4);
@@ -138,7 +138,6 @@ class Virtual_class extends MX_Controller {
 		$data['meeting_url'] = $meeting_url;
 		$data['api_setting'] = $api_setting;
 
-        $data['script'] = $this->load->view('virtual_class/scripts/create_class', $data, true);
         $this->load->view(INCLUDE_PATH . 'header', $data);
         $this->load->view('virtual_class/class_details', $data);
         $this->load->view(INCLUDE_PATH . 'footer', $data);		

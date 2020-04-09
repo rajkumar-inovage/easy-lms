@@ -6,7 +6,7 @@ class Announcements extends MX_Controller {
 
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
-	    $config = [ 'coaching/config_coaching'];
+	    $config = [ 'config_coaching'];
 	    $models = ['announcements_model'];
 
 	    $this->common_model->autoload_resources ($config, $models);

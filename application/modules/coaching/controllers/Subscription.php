@@ -7,7 +7,7 @@ class Subscription extends MX_Controller {
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
 	    $config = ['coaching/config_coaching'];
-	    $models = ['coaching/subscription_model', 'admin/coachings_model'];
+	    $models = ['subscription_model', 'coaching_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	    
         $cid = $this->uri->segment (4);
@@ -65,7 +65,7 @@ class Subscription extends MX_Controller {
 		$data['bc'] = array ('Coachings'=>'coaching/home/dashboard/'.$coaching_id);
 		$data["toolbar_buttons"] = array ();
 		
-		$data['coaching'] = $this->coachings_model->get_coaching ($coaching_id);
+		$data['coaching'] = $this->coaching_model->get_coaching ($coaching_id);
 		
 		$data['sys_dir'] = $this->config->item ('sys_dir') . 'coachings/' . $coaching_id . '/';
 		$data['logo'] 	 = $this->config->item ('logo_file');

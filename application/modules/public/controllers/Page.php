@@ -1,9 +1,32 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Page extends MX_Controller {
     
-    public function index () {
-        echo 'Yes';
-    }
-} 
+    public function __construct () {
+		$config = [];
+	    $models = ['coaching/coaching_model'];	    
+	    $this->common_model->autoload_resources ($config, $models);
+	    $this->load->helper ('file');
+	}
+	
+    public function index ($slug='') {
+    	if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
+    		$slug = $_GET['sub'];
+	    	redirect ('login/login/index/?sub='.$slug);
+    	} else {
+    		$this->find_coaching ();
+    	}
+	}	
+	 
 
+	public function find_coaching () {
+		$data['page_title'] = 'Find your coaching';
+		$data['logo'] = base_url ($this->config->item('system_logo'));
+		$data['coaching'] = false;
+		$data['script'] = $this->load->view ('scripts/find_coachings', $data, true);
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('find_coaching', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
+	}
+}

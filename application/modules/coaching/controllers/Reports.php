@@ -7,8 +7,8 @@ class Reports extends MX_Controller {
 	var $autoload = array ();
 
 	public function __construct () { 
-		$config = ['coaching/config_coaching'];
-	    $models = ['coaching/tests_reports', 'coaching/tests_model' ,'coaching/qb_model', 'coaching/users_model'];
+		$config = ['config_coaching'];
+	    $models = ['tests_reports', 'tests_model' ,'qb_model', 'users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 	

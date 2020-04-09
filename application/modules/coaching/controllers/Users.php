@@ -7,7 +7,7 @@ class Users extends MX_Controller {
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
 	    $config = ['config_coaching'];
-	    $models = ['coaching/users_model'];
+	    $models = ['users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	    
         $cid = $this->uri->segment (4);

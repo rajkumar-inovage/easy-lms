@@ -51,4 +51,32 @@ class Coaching_model extends CI_Model {
 			return false;
 		}
 	}
+
+	public function find_coaching () {
+		$result = [];
+		$search = $this->input->post ('search');
+		if (! empty ($search)) {
+			$this->db->select ('id, coaching_name, coaching_url');
+			$this->db->like ('coaching_name', $search, 'both');
+			$sql = $this->db->get ('coachings');
+			//echo $this->db->last_query ();
+			if (! empty ($sql->result_array ()))  {
+				foreach ($sql->result_array () as $row) {
+					$coaching_id = $row['id'];
+					$upload_dir = $this->config->item ('sys_dir') . 'coachings/' .$coaching_id .'/';
+					$file_name = $this->config->item ('coaching_logo');
+					$file_path = base_url($upload_dir . $file_name);
+					if (is_file ($file_path)) {
+						$logo = $file_path;
+					} else {
+						$logo = '';
+					}
+					$row['logo'] = $logo;
+					$result[] = $row;
+				}
+			}			
+		}
+		return $result;
+	}
+	
 }

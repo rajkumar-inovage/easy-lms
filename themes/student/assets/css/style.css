@@ -17,18 +17,14 @@
     -webkit-transition:all 0.3s;/* For Safari 3.1 to 6.0 */
     transition:all 0.3s
 }
-#sidebar, #sidebar-left{
+#sidebar{
     left:-260px;
 }
-#sidebar-right{
-    right:-260px;
-}
-#sidebar.sidebar-open, #sidebar-left.sidebar-open{
+
+#sidebar.sidebar-open {
     margin-left:250px
 }
-#sidebar-right.sidebar-open{
-    margin-right:250px
-}
+
 .navbar-toggle{
     position:relative;
     /*float:right;*/

@@ -14,7 +14,7 @@ window.addEventListener ('load', async e => {
 			console.log ('ServiceWorker registration failed');		
 		}
 	}
-	///validate_session ();
+	// validate_session ();
 });
 
 
@@ -151,17 +151,21 @@ function show_confirm_ajax (msg, url, redirect) {
  *
  */
 function validate_session () {
-	const validateURL = appPath + 'student/login_actions/validate_session';
+	const slug = localStorage.getItem ('slug');
+	const user_token = localStorage.getItem ('user_token');
+	if (slug == null) {
+		slug = '';
+	}
+	if (user_token == null) {
+		user_token = '';
+	}
+	const validateURL = appPath + 'student/login_actions/validate_session/'+slug+'/'+user_token;
 	fetch ( validateURL, {
 		method : 'POST',
 	}).then (function (response) {
 		return response.json ();
 	}).then(function(result) {
-		if (result.status == true) {
-			// Do nothing
-			//alert (result.status)
-		} else {
-			alert (result.error);
+		if (result.redirect) {
 			document.location = result.redirect;
 		}
 	});
@@ -252,37 +256,10 @@ $('#toggle_sidebar').on ('click', function (e) {
 		$('#sidebar').toggleClass ('sidebar-open');
     }
 });
-$('#toggle_sidebar_left').on ('click', function (e) {
-    e.stopPropagation ();
-    if ($('#sidebar-left').hasClass ('sidebar-open')){
-    	$(this).removeClass('active');
-		$('#sidebar-left').removeClass('sidebar-open');
-    }else{
-	    $(this).addClass('active');
-		$('#sidebar-left').toggleClass ('sidebar-open');
-    }
-});
-$('#toggle_sidebar_right').on ('click', function (e) {
-    e.stopPropagation ();
-    if ($('#sidebar-right').hasClass ('sidebar-open')){
-    	$(this).removeClass('active');
-	    $('#sidebar-right').removeClass('sidebar-open');
-    }else{
-	    $(this).addClass('active');
-	    $('#sidebar-right').toggleClass ('sidebar-open');
-    }
-});
+
 $('html, body').click(function(e) {
    if ($('#sidebar').hasClass ('sidebar-open')) {
      $('#sidebar').removeClass('sidebar-open');
-     $('.navbar-toggle').removeClass('active');
-   }
-   if ($('#sidebar-left').hasClass ('sidebar-open')) {
-     $('#sidebar-left').removeClass('sidebar-open');
-     $('.navbar-toggle').removeClass('active');
-   }
-   if ($('#sidebar-right').hasClass ('sidebar-open')) {
-     $('#sidebar-right').removeClass('sidebar-open');
      $('.navbar-toggle').removeClass('active');
    }
 });

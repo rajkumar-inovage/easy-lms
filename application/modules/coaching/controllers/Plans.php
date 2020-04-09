@@ -6,7 +6,7 @@ class Plans extends MX_Controller {
 
     public function __construct () {
 	    $config = ['config_coaching'];
-	    $models = ['coaching/test_plans_model'];
+	    $models = ['test_plans_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	    
 		$this->load->model ('admin/plans_model');
