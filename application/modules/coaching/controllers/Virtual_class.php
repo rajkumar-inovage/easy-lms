@@ -158,13 +158,13 @@ class Virtual_class extends MX_Controller {
 		$final_string = $api_url . $call_name .'?'.  $query_string . '&checksum='.$checksum;
 		
 		// Upload whiteboard slide
-		$post_slide = '<xml version="1.0" encoding="UTF-8">
+		$post_slide = '
 						<modules>
 					     <module name="presentation">
 					      <document url="https://easycoachingapp.com/apps/whiteboard.pdf"/>
 					   </module>
 					</modules>
-					</xml>';
+					';
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $final_string);
@@ -186,9 +186,39 @@ class Virtual_class extends MX_Controller {
 	public function join_class ($coaching_id=0, $class_id=0, $member_id=0) {
 		
 		$api_setting = $this->virtual_class_model->get_api_settings ();
-
 		$class = $this->virtual_class_model->get_class ($coaching_id, $class_id);
 		$join = $this->virtual_class_model->join_class ($coaching_id, $class_id, $member_id);
+		$join['meeting_url'];
+		
+		$api_url = $api_setting['api_url'];
+		
+		$is_running = $this->is_meeting_running ($coaching_id, $class_id);
+
+		if ( $is_running == true) {
+			redirect ($join['meeting_url']);
+		} else {
+			if ($join['role'] == VM_PARTICIPANT_MODERATOR)  {
+				$response = $this->create_meeting ($coaching_id, $class_id);
+				if ($response == 'SUCCESS') {
+					redirect ($join['meeting_url']);
+				}
+			}
+		}
+		
+		$data['coaching_id'] = $coaching_id;
+		$data['class_id'] = $class_id;
+		$data['page_title'] = 'Classroom not found';
+		$data['bc'] = array('Virtual Classroom'=>'student/virtual_class/index/'.$coaching_id.'/'.$member_id);
+
+        $this->load->view(INCLUDE_PATH . 'header', $data);
+        $this->load->view('virtual_class/error', $data);
+        $this->load->view(INCLUDE_PATH . 'footer', $data);		
+	}
+
+	public function is_meeting_running ($coaching_id=0, $class_id=0) {
+
+		$api_setting = $this->virtual_class_model->get_api_settings ();
+		$class = $this->virtual_class_model->get_class ($coaching_id, $class_id);
 		
 		$api_url = $api_setting['api_url'];
 		$call_name = 'isMeetingRunning';
@@ -205,26 +235,9 @@ class Virtual_class extends MX_Controller {
 		$xml_response = curl_exec($ch);
 		curl_close($ch);
 		$xml = simplexml_load_string($xml_response);
-
-		$join['meeting_url'];
 		$running = $xml->running;
-		if ( $running == true) {
-			redirect ($join['meeting_url']);
-		} else {			
-			$response = $this->create_meeting ($coaching_id, $class_id);
-			if ($response == 'SUCCESS') {
-				redirect ($join['meeting_url']);
-			}
-		}
-		
-		$data['coaching_id'] = $coaching_id;
-		$data['class_id'] = $class_id;
-		$data['page_title'] = 'Classroom not found';
-		$data['bc'] = array('Dashboard'=>'coaching/virtual_class/index/'.$coaching_id);
 
-        $this->load->view(INCLUDE_PATH . 'header', $data);
-        $this->load->view('virtual_class/error', $data);
-        $this->load->view(INCLUDE_PATH . 'footer', $data);		
+		return $running;
 	}
 
 }

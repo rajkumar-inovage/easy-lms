@@ -268,8 +268,8 @@ class Tests extends MX_Controller {
 		
 		// save current attempt log
 		$now = time ();
-		$attempt_id = 0;
-		//$attempt_id = $this->tests_model->save_attempt ($coaching_id, $test_id, $member_id, $now);
+		//$attempt_id = 0;
+		$attempt_id = $this->tests_model->save_attempt ($coaching_id, $test_id, $member_id, $now);
 		
 		$prepare_questions = array ();			
 		$subject_wise = array ();

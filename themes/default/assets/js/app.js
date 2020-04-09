@@ -1,4 +1,4 @@
-const appPath = 'http://localhost/repos/easy/';
+const appPath = 'http://localhost/repos/easycoachingapp/';
 const sidebarSection = document.getElementById("sidebar");
 const mainSection = document.getElementById("content");
 const outputDiv = document.getElementById("response"); 
@@ -144,26 +144,61 @@ function show_confirm_ajax (msg, url, redirect) {
 }
 
 
-function validate_session () {
-
-	var url = appPath + 'coaching/login/index';
-    var is_logged_in = localStorage.getItem ('is_logged_in');
-	if (is_logged_in == 1) {
-		// Check session
-		
-	} else {
-		document.location = url;
-	}	
-}
 
 /*----==== Logout User ====----*/
 function logout_user () {
 	const slug = localStorage.getItem ('slug');
 	window.localStorage.clear ();
 	localStorage.setItem ('slug', slug);
-	document.location = appPath + 'coaching/login/index/?sub='+slug;
+	document.location = appPath + 'student/login/index/?sub='+slug;
 }
 
+/*
+ * Interactive App install button
+*/
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', event => {
+
+	// Prevent Chrome 67 and earlier from automatically showing the prompt
+	event.preventDefault();
+
+	// Stash the event so it can be triggered later.
+	deferredPrompt = event;
+
+	// Update UI notify the user they can add to home screen
+	document.querySelector('#installBanner').style.visibility = 'visible';
+
+	// Attach the install prompt to a user gesture
+	document.querySelector('#installBtn').addEventListener('click', event => {
+
+		// Show the prompt
+		deferredPrompt.prompt();
+
+		// Wait for the user to respond to the prompt
+		deferredPrompt.userChoice
+		  .then((choiceResult) => {
+		    if (choiceResult.outcome === 'accepted') {
+				// Update UI notify the user they can add to home screen
+				document.querySelector('#installBanner').style.visibility = 'hidden';
+				const slug = localStorage.getItem ('slug');
+				document.location.href = appPath + 'student/login/index/?sub='+slug;
+		    } else {
+		      console.log('User dismissed the A2HS prompt');
+		    }
+		    deferredPrompt = null;
+		});
+	});
+
+
+});
+
+// Check if app was successfully installed
+window.addEventListener('appinstalled', (evt) => {
+	app.logEvent ('a2hs', 'installed');
+	document.querySelector('#installBanner').style.display = 'none';
+	document.querySelector('#installBanner').style.visibility = 'hidden';
+	$('#installBanner').hide ();
+});
 
 /* ===== Side Menu Toggler ===== */ 
 $('#toggle_sidebar').on ('click', function (e) {

@@ -21,7 +21,7 @@
 			}
 			// === *** SHOW TIMER *** === //
 			var test2 = new Countdown( {  
-									time: 5, 
+									time: '<?php echo $test_duration; ?>', 
 									rangeHi : 'hour',
 									width:200, 
 									height:40,
@@ -150,7 +150,7 @@
 		</div>
 	</div>
 
-	<div class="card border-danger mt-2" id="time-up">
+	<div class="card border-danger mt-2" id="time-up" style="visibility:hidden">
 		<div class="card-header">
 			<h4 class="text-danger">Time's Up</h4>
 		</div>

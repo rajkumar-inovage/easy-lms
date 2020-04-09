@@ -21,7 +21,7 @@
 							<td><?php echo $row['class_name']; ?></td>
 							<td><?php echo $row['meeting_id']; ?></td>
 							<td class="text-center">
-								<a href="<?php echo site_url ('student/virtual_class/join_class/'.$coaching_id.'/'.$row['class_id'].'/'.$member_id); ?>" class='btn btn-primary mr-1' target="_blank"><i class="fa fa-plus"></i> Join</a>
+								<a href="<?php echo site_url ('student/virtual_class/join_class/'.$coaching_id.'/'.$row['class_id'].'/'.$member_id); ?>" class='btn btn-primary mr-1' ><i class="fa fa-plus"></i> Join</a>
 
 							</td>
 						</tr>

@@ -5,7 +5,7 @@ class Tests_actions extends MX_Controller {
 	
 	public function __construct () { 
 		$config = ['config_student'];
-	    $models = ['coaching/tests_model', 'admin/coachings_model', 'coaching/users_model' ,'coaching/qb_model'];
+	    $models = ['tests_model', 'coaching_model', 'users_model' ,'qb_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 	
@@ -19,7 +19,7 @@ class Tests_actions extends MX_Controller {
 	public function export_pdf ($category_id=0, $test_id=0) {
 
 		$test = $this->tests_model->view_tests ($test_id);
-		$coaching = $this->coachings_model->get_coaching ($this->session->userdata('coaching_id'));
+		$coaching = $this->coaching_model->get_coaching ($this->session->userdata('coaching_id'));
 		$coaching_name = $coaching['coaching_name'];
 		$title = $test['title'];		
 		

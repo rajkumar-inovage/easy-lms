@@ -10,7 +10,7 @@
 		<?php } ?>
 	    <h5 class="text-center">Create a new <?php if ($role_id == USER_ROLE_TEACHER) echo 'teacher'; else echo 'student'; ?> account</h5>
 	  </div>
-		<?php echo form_open ('login/login_actions/register/'.$slug, array('class'=>'form-horizontal ', 'id'=>'validate-')); ?> 
+		<?php echo form_open ('login/login_actions/register/'.$slug, array('class'=>'form-horizontal ', 'id'=>'validate-1')); ?> 
 	  	  <div class="card-body px-lg-5 py-lg-5">
 	  	  	<input type="hidden" name="coaching_id" value="<?php echo $coaching_id; ?>">
 	  	  	<input type="hidden" name="user_role" value="<?php echo $role_id; ?>">

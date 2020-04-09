@@ -21,7 +21,6 @@ $hook['pre_controller'][] = array(
         'params'   => ''
 );
 
-/*
 $hook['pre_controller'][] = array(
         'class'    => 'Vitals',
         'function' => 'validate_session',
@@ -30,6 +29,7 @@ $hook['pre_controller'][] = array(
         'params'   => ''
 );
 
+/*
 /* Load ACL Menu  * /
 $hook['pre_controller'][] = array(
         'class'    => 'Vitals',

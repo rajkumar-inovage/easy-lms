@@ -8,11 +8,13 @@
 
 'use strict';
 
-const appPath = '/repos/easy/';
+const appPath = '/repos/easycoachingapp/';
 
 const staticAssets = [
 	appPath,
-	appPath + 'student/home/dashboard/',
+	appPath + 'themes/default/assests/css/',
+	appPath + 'themes/default/assests/js/',
+	appPath + 'themes/default/assests/img/',
 ];
 
 self.addEventListener ('install', async event => {

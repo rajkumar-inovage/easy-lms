@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#FF9800">
     <meta name="msapplication-navbutton-color" content="#FF9800">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="msapplication-starturl" content="/index.html">
+    <meta name="msapplication-starturl" content="<?php echo site_url (); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="icon" sizes="128x128" href="<?php echo base_url(THEME_PATH . 'assets/img/touch/app-icon128.png'); ?>">
@@ -76,7 +76,7 @@
                     $title = APP_NAME;
                 }
                 ?>
-                <a class="navbar-brand text-link-color" href="<?php echo $this->session->userdata ('dashboard'); ?>" title="<?php echo $title; ?>">
+                <a class="navbar-brand text-link-color" href="<?php echo site_url($this->session->userdata ('dashboard')); ?>" title="<?php echo $title; ?>">
                     <?php 
                         $logo_path = $this->session->userdata ('logo');
                         if (is_file($logo_path)) {
@@ -123,8 +123,8 @@
                     ?>
                 </div>
 
-                <div class="">
-                    <h4 class="h4"><?php if(isset($page_title)) echo $page_title; ?> </h4>
+                <div class="py-2 font-weight-bold">
+                    <strong><?php if(isset($page_title)) echo $page_title; ?> </strong>
                 </div>
 
                 <div class="right-toolbar">
@@ -184,7 +184,13 @@
 				}
 			}
 			?>
-		</ul>        
+		</ul>
+
+        <div class="sidebar-block"> 
+            <div class="" id="installBanner" >
+                <button class="bg-green-600 p-2 text-white " id="installBtn"><i class="fab fa-android"></i> Install App</button> 
+            </div>
+        </div>
 
 	</div>
 	<!--// Sidebar left -->

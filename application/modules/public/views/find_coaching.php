@@ -12,6 +12,12 @@
 	  	<h4 class="text-center">Find your coaching</h4>
 		<h6 class="text-center"></h6>
 	  </div>
+
+	  <div class="card-body ">
+	  	<div id="message-div" class="mb-1"></div>
+	  	<div id="result-div"></div>
+	  </div>
+	  
 	  <div class="card-body ">
 	  	<?php echo form_open ('public/page_actions/find_coaching', ['id'=>'find-coaching']); ?>
 	  	<div class="form-group">
@@ -25,11 +31,6 @@
 	  </div>
 	  
 
-	  <div class="card-body ">
-	  	<div id="message-div" class="mb-1"></div>
-	  	<div id="result-div"></div>
-	  </div>
-	  
 	  <hr>
 
 	  <div class="card-body ">
