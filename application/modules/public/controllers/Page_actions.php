@@ -5,8 +5,8 @@ class Page_actions extends MX_Controller {
 
 
 	public function __construct () {
-		$config = [];
-	    $models = ['coaching/coaching_model'];
+		$config = ['coaching/config_coaching'];
+	    $models = ['coaching/coaching_model', 'coaching/users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 
@@ -28,7 +28,7 @@ class Page_actions extends MX_Controller {
 			$slug = $this->coaching_model->create_coaching ();
 			$this->message->set ('Your coaching account has been set-up succesfully. Login with your credentials provided on previous page', 'success', true);
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Coaching account created', 'redirect'=>site_url('coaching/login/index/?sub='.$slug) )));
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Coaching account created', 'redirect'=>site_url('login/login/index/?sub='.$slug) )));
 		} else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors () )));

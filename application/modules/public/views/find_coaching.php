@@ -35,7 +35,7 @@
 
 	  <div class="card-body ">
 	  	<p>If you want to set-up account for your own coaching or institution, please click the button below</p>
-	  	<?php echo anchor('public/login/create_coaching', 'Set-up a new coaching account', ['class'=>'btn btn-info btn-block']); ?>
+	  	<?php echo anchor('public/page/create_coaching', 'Set-up a new coaching account', ['class'=>'btn btn-info btn-block']); ?>
 	  	<p><small>You can set-up account for your institute, coaching or organisation using the above button</small></p>
 	  </div>
 

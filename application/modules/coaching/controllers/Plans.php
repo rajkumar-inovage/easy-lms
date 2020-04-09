@@ -6,10 +6,8 @@ class Plans extends MX_Controller {
 
     public function __construct () {
 	    $config = ['config_coaching'];
-	    $models = ['test_plans_model'];
-	    $this->common_model->autoload_resources ($config, $models);
-	    
-		$this->load->model ('admin/plans_model');
+	    $models = ['test_plans_model', 'plans_model'];
+	    $this->common_model->autoload_resources ($config, $models);	    
 	}	
 	
 	
@@ -17,7 +15,12 @@ class Plans extends MX_Controller {
 	public function index ($coaching_id=0, $category_id=0) {
 		
 		/* Breadcrumbs */ 
-		$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
+		if ($category_id > 0) {
+			$data['bc'] = array ('Dashboard'=>'coaching/plans/index/'.$coaching_id);
+		} else {
+			$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
+		}
+
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		$data['page_title'] = 'Test Plans';
 		$data['sub_title'] = 'All Test Plans';

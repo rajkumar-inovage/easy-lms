@@ -43,9 +43,9 @@ class Virtual_class extends MX_Controller {
 		
 		$data['coaching_id'] = $coaching_id;
 		$data['class_id'] = $class_id;
-		$data['page_title'] = 'Create Virtual Classroom';
+		$data['page_title'] = 'Create Classroom';
 
-		$data['bc'] = array('Dashboard'=>'coaching/home/index/'.$coaching_id);
+		$data['bc'] = array('Dashboard'=>'coaching/virtual_class/index/'.$coaching_id);
 		$data['class'] = $this->virtual_class_model->get_class ($coaching_id, $class_id);
 		$data['attendee_pwd'] = random_string ('numeric', 4);
 		$data['moderator_pwd'] = random_string ('numeric', 4);
@@ -158,21 +158,21 @@ class Virtual_class extends MX_Controller {
 		$final_string = $api_url . $call_name .'?'.  $query_string . '&checksum='.$checksum;
 		
 		// Upload whiteboard slide
-		$post_slide = '
+		$post_slide = '<xml>
 						<modules>
-					     <module name="presentation">
-					      <document url="https://easycoachingapp.com/apps/whiteboard.pdf"/>
-					   </module>
-					</modules>
-					';
+						     <module name="presentation">
+						      <document url="https://easycoachingapp.com/apps/whiteboard.pdf"/>
+						   </module>
+						</modules>
+					  </xml>';
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $final_string);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, "xmlRequest=" . $post_slide);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 300);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_slide);
 		$xml_response = curl_exec($ch);
 		curl_close($ch);
 

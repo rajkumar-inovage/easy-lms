@@ -58,7 +58,7 @@
 	
 	<header class="bg-white border-bottom ">
         <div class="container">
-	       	<nav class="navbar ">
+            <nav class="navbar ">
                 <!-- Sidebar Toggler -->
                 <button class="navbar-toggle" type="button" id="toggle_sidebar_left">
                     <span class="icon-bar d-block bg-grey-500"></span>
@@ -76,41 +76,37 @@
                     $title = APP_NAME;
                 }
                 ?>
-                <a class="navbar-brand text-link-color" href="<?php echo site_url($this->session->userdata ('dashboard')); ?>" title="<?php echo $title; ?>">
+                <a class="navbar-brand link-text-color" href="<?php echo site_url($this->session->userdata ('dashboard')); ?>" title="<?php echo $title; ?>" >
                     <?php 
                         $logo_path = $this->session->userdata ('logo');
                         if (is_file($logo_path)) {
                             echo '<img src="'.$logo_path.'" alt="'.$title.'" class=" " width="120" height="" id="" />';
                         } else {
                             ?>
-                            <h4 class=""><?php echo $title; ?></h4>
+                            <h5 class=""><?php echo $title; ?></h5>
                             <?php
                         }
                     ?>                
                 </a>
 
-                <div></div>
-
-                <!--
-                <button type="button" class="navbar-toggle mr-2 p-1 rounded-circle" id="toggle_sidebar_right">
-                    <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="p-1" width="30"> 
-                </button>
-
-                <div class="dropdown d-none">
+                <div class="dropdown ">
                   <a href="#" class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?php echo base_url ('contents/profile_images/default.png'); ?>" class="rounded-circle img-thumbnail" width="30"> 
+                    <img src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" class="rounded-circle img-thumbnail" width="30"> 
                   </a>
-                  <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Super Admin</a>
-                    <a class="dropdown-item" href="#">Logout</a>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                    <p class="text-center">
+                        <img src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" class="rounded-circle img-thumbnail" width="80"> 
+                        <div class="text-center" href="#"><?php echo $this->session->userdata ('user_name'); ?></div>
+                    </p>
+                    <hr>
+                    <a class="dropdown-item" href="#" onclick="logout ()"><i class="fa fa-sign-out-alt"></i> Logout</a>
                   </div>
                 </div>
-                -->
-    		</nav>
+            </nav>
         </div>
-	</header>
+    </header>
 
-    <div class="bg-white shadow-sm sticky-top ">
+    <div class="bg-white shadow-sm  ">
         <div class="container">
             <div class="d-flex justify-content-between">
                 <div class="">
@@ -118,7 +114,7 @@
                       if (isset ($bc)) {
                           $bc_link = current ($bc);
                           $bc_title  = key ($bc);
-                          echo anchor ($bc_link, '<i class="fa fa-arrow-left"></i> Back ', array('class'=>'btn btn-link', 'title'=>'Back To '.$bc_title)); 
+                          echo anchor ($bc_link, '<i class="fa fa-long-arrow-alt-left link-text-color"></i> ', array('class'=>'btn btn-link', 'title'=>'Back To '.$bc_title)); 
                       }
                     ?>
                 </div>

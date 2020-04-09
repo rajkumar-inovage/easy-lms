@@ -29,4 +29,13 @@ class Page extends MX_Controller {
 		$this->load->view('find_coaching', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
+
+	public function create_coaching () {
+		$data['page_title'] = 'Create A New Coaching';
+		$data['logo'] = base_url ($this->config->item('system_logo'));
+		$data['coaching'] = false;
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('create_coaching', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
+	}
 }
