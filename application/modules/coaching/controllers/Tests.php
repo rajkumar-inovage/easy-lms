@@ -73,7 +73,7 @@ class Tests extends MX_Controller {
 
 		
 		/*---=== Back Link ===---*/
-		$data['bc'] = array ('Coaching Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
+		$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
 
 		/*---=== Coaching Tests ===---*/
 		$data['tests'] = $tests = $this->tests_model->get_all_tests ($coaching_id, $category_id, $type);
@@ -169,7 +169,11 @@ class Tests extends MX_Controller {
 		$data['test_id'] = $test_id;
 		
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
-		$num_questions = count($questions);
+		if (!empty ($questions)) {
+			$num_questions = count($questions);
+		} else {
+			$num_questions = 0;			
+		}
 
 		$questionTime = $this->tests_model->getTestQuestionTime ($coaching_id, $questions);
 		$result = array ();

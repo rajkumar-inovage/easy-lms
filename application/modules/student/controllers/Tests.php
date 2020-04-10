@@ -182,6 +182,7 @@ class Tests extends MX_Controller {
 		
 		// Recently Taken?
 		// Check if this test has been recently taken (within test duration time)
+		/*
 		$last_attempt = $this->tests_model->check_session ($coaching_id, $test_id, $member_id);
 		$now = time ();
 		$test_duration = ($test['time_hour'] * 60 * 60) + ($test['time_min'] * 60);
@@ -190,6 +191,7 @@ class Tests extends MX_Controller {
 			$time_remaining = $next_attempt - $now;
 			redirect ('student/tests/test_error/'.$coaching_id.'/'.$member_id.'/'.$test_id.'/'.TEST_ERROR_RECENTLY_TAKEN.'/'.$time_remaining);
 		}
+		*/
 		
 		return false;
 	}
@@ -243,7 +245,11 @@ class Tests extends MX_Controller {
 		}
 		
 		*/
-		$data['total_questions'] = count ($all_questions);
+		if (! empty ($all_questions)) {
+			$data['total_questions'] = count ($all_questions);
+		} else {
+			$data['total_questions'] = 0;			
+		}
 		$confirm_div = $data['total_questions'] + 1;
 		$data['confirm_div'] = count ($confirm_div);
 		/* Perpare an array in form of subject->question_group->question */

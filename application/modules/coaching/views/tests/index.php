@@ -13,7 +13,7 @@
 				<?php echo form_open('coaching/tests_actions/search_tests', array('class'=>"", 'id'=>'search-form')); ?>
 					<div class="form-group row mb-2">
 						<div class="col-md-6 mb-2">						
-							<select name="search_status" class="form-control" >
+							<select name="search_status" class="form-control" id="search-status" >
 								<option value="-1">All Status</option>
 								<option value="<?php echo TEST_STATUS_PUBLISHED; ?>">Published</option>
 								<option value="<?php echo TEST_STATUS_UNPUBLISHED; ?>">Unpublished</option>
@@ -131,7 +131,7 @@
 									if ($row['finalized'] == 1) {
 										echo '<span class="badge badge-primary">Published</span>';
 									} else {
-										echo '<span class="badge badge-light">Draft</span>';
+										echo '<span class="badge badge-light">Un-published</span>';
 									}
 									?>
 								</td>

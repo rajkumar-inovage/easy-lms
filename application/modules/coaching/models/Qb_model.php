@@ -1183,8 +1183,8 @@ class Qb_model extends CI_Model {
 				for ($i=1; $i <= QB_NUM_ANSWER_CHOICES; $i++) {
 					$choice = html_entity_decode ($row['choice_'.$i]);
 					if ($choice != '') {
-						if ($row['answer_'.$i] == $i && !isset ($hide_correct_answer) ) {
-							$class = "text-correct-answer";
+						if ($row['answer_'.$i] == $i && ! isset ($hide_correct_answer) ) {
+							$class = "text-success";
 						} else {
 							$class= "";
 						}
@@ -1199,7 +1199,7 @@ class Qb_model extends CI_Model {
 			case QUESTION_TF: 
 				$output .= '<ol type="a">';
 					if ($row['answer_1'] == 1 && !isset ($hide_correct_answer) ) {
-						$class = "text-correct-answer";
+						$class = "text-success";
 					} else {
 						$class= "";
 					}
@@ -1219,7 +1219,7 @@ class Qb_model extends CI_Model {
 					$choice = html_entity_decode ($row['choice_'.$i]);
 					if ($choice != '') {
 						if ($row['answer_'.$i] == $i && !isset ($hide_correct_answer) ) {
-							$class = "text-correct-answer";
+							$class = "text-success";
 						} else {
 							$class= "";
 						}
@@ -1249,21 +1249,32 @@ class Qb_model extends CI_Model {
 				for ($i=1; $i <= QB_NUM_ANSWER_CHOICES; $i++) {
 					$choice = html_entity_decode ($row['choice_'.$i]);
 					if ($choice != '') {
-						$output .= '<table width="100%">';
+						$output .= '<ul class="list-unstyled">';
 							if ( ($row['answer_'.$i] == $i) &&
 								 ((isset ($format) && $format == 'import') ||
 								 (isset ($print_opt['ca']) && $print_opt['ca'] == 'ca'))) {
-								$output .= "*";								
+								$output .= "*";
 							}
-							$output .= '<tr>';
-								$output .= '<td width="5%">'.$a++ .".</td> ";
-								$output .= '<td>'.$choice."</td> ";
-							$output .= '</tr>';
+							if ($row['answer_'.$i] == $i && ! isset ($hide_correct_answer) ) {
+								$class = "text-success";
+							} else {
+								$class= "";
+							}
+							$output .= '<li class="'.$class.'">';
+								$output .= '<div class="media">';
+									$output .= '<div class="media-left">';
+										$output .=  $a++ . '.';
+									$output .= '</div>';
+									$output .= '<div class="media-body">';
+										$output .= $choice;
+									$output .= '</div>';
+								$output .= '</div>';
+							$output .= '</li>';
 							
 							if ($file_type == 'txt') {
 								$output .= "\r\n";
 							}
-						$output .= '</table>';
+						$output .= '</ul>';
 					}
 				}
 			break;
@@ -1286,7 +1297,7 @@ class Qb_model extends CI_Model {
 					$choice = html_entity_decode ($row['choice_'.$i]);
 					if ($choice != '') {
 						if ($row['answer_'.$i] == $i && !isset ($hide_correct_answer) ) {
-							$class = "text-correct-answer";
+							$class = "text-success";
 						} else {
 							$class= "";
 						}
@@ -1301,7 +1312,7 @@ class Qb_model extends CI_Model {
 			case QUESTION_TF: 
 				$output .= '<ol type="a">';
 					if ($row['answer_1'] == 1 && !isset ($hide_correct_answer) ) {
-						$class = "text-correct-answer";
+						$class = "text-success";
 					} else {
 						$class= "";
 					}
@@ -1321,7 +1332,7 @@ class Qb_model extends CI_Model {
 					$choice = html_entity_decode ($row['choice_'.$i]);
 					if ($choice != '') {
 						if ($row['answer_'.$i] == $i && !isset ($hide_correct_answer) ) {
-							$class = "text-correct-answer";
+							$class = "text-success";
 						} else {
 							$class= "";
 						}
@@ -1352,7 +1363,7 @@ class Qb_model extends CI_Model {
 					$choice = html_entity_decode ($row['choice_'.$i]);
 					if ($choice != '') {
 						if ($row['answer_'.$i] == $i && ! isset ($hide_correct_answer) ) {
-							$class = "text-correct-answer";
+							$class = "text-success";
 						} else {
 							$class= "";
 						}

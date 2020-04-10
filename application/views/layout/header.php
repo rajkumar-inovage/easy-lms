@@ -173,6 +173,9 @@
             if (! empty ($main_menu)) {
                 foreach ($main_menu as $menu) {
                     $link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id;
+                    if ($this->session->userdata ('role_id') == USER_ROLE_STUDENT) {
+                        $link .= '/'.$this->sesson->userdata ('member_id');
+                    }
 					?>
 					<li class="">
 						<a class="" href="<?php echo site_url($link); ?>">
