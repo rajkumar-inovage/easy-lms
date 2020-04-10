@@ -3,8 +3,8 @@
   "lang": "en-US",
   "start_url": "/repos/easycoachingapp/",
   "display": "standalone",
-  "theme_color": "#FF9800",
-  "background_color": "#FF9800",
+  "theme_color": "#4285F4",
+  "background_color": "#4285F4",
   "icons": [
     {
       "src": "/repos/easycoachingapp/themes/student/assets/img/touch/app-icon128.png",

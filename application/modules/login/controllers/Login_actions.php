@@ -80,47 +80,54 @@ class Login_actions extends MX_Controller {
 		if ( $this->form_validation->run() == true) {
 			
 			$coaching_id = $this->input->post ('coaching_id');
+			$email 	= $this->input->post ('email');
 
-			$status = USER_STATUS_ENABLED;
-			//$status = USER_STATUS_UNCONFIRMED;
-			// Save user details
-			$member_id = $this->users_model->save_account ($coaching_id, 0, $status);
-			
-			// Get coachiiiing details
-			$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
-			$coaching_name = $coaching['coaching_name'];
-			$user_name = $this->input->post ('first_name') . ' ' .$this->input->post ('last_name');
-			
-			// Notification Email to coaching admin
-			$to = $coaching['email'];
-			$subject = 'New User Registration';
-			$email_message = 'A new user <strong>'.$user_name.'</strong> has registered in your coaching <strong>'.$coaching_name. '</strong>. Account is pending for approval.';
-			$this->common_model->send_email ($to, $subject, $email_message);
-		
-			// Notification email to user
-			$to = $this->input->post('email');
-			$subject = 'Account Created';
-			if ($status == USER_STATUS_UNCONFIRMED) {				
-				// Email message for user
-				$email_message = '<strong> Hi '.$user_name.',</strong><br>
-				<p>You have created an account in <strong>'.$coaching_name.'</strong>. You can login with your registered email and password once your account is approved. You will receive another email regarding account approval.</p>';
-				// Display message for user
-				$message = 'Your account has been created but pending for admin approval';
-				$this->message->set ($message, 'warning', true );
+			// Check if already exists
+			if ($this->users_model->email_exists ($email, $coaching_id) == true) {
+				$this->output->set_content_type("application/json");
+				$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
 			} else {
-				// Email message for user
-				$email_message = '<strong> Hi '.$user_name.',</strong><br>
-				<p>You have created an account in <strong>'.$coaching_name.'</strong>. Your account is active now. You can login with your registered email and password.</p>';
-				// Display message for user
-				$message = 'Your account has been created. You can log-in to your account';
-				$this->message->set ($message, 'success', true );
-			}
-			$this->common_model->send_email ($to, $subject, $email_message);
-			
 
-			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('login/login/index/?sub='.$slug)) ));
-	    } else {			
+				$status = USER_STATUS_ENABLED;
+				//$status = USER_STATUS_UNCONFIRMED;
+				// Save user details
+				$member_id = $this->users_model->save_account ($coaching_id, 0, $status);
+				
+				// Get coachiiiing details
+				$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
+				$coaching_name = $coaching['coaching_name'];
+				$user_name = $this->input->post ('first_name') . ' ' .$this->input->post ('last_name');
+				
+				// Notification Email to coaching admin
+				$to = $coaching['email'];
+				$subject = 'New User Registration';
+				$email_message = 'A new user <strong>'.$user_name.'</strong> has registered in your coaching <strong>'.$coaching_name. '</strong>. Account is pending for approval.';
+				$this->common_model->send_email ($to, $subject, $email_message);
+			
+				// Notification email to user
+				$to = $this->input->post('email');
+				$subject = 'Account Created';
+				if ($status == USER_STATUS_UNCONFIRMED) {				
+					// Email message for user
+					$email_message = '<strong> Hi '.$user_name.',</strong><br>
+					<p>You have created an account in <strong>'.$coaching_name.'</strong>. You can login with your registered email and password once your account is approved. You will receive another email regarding account approval.</p>';
+					// Display message for user
+					$message = 'Your account has been created but pending for admin approval';
+					$this->message->set ($message, 'warning', true );
+				} else {
+					// Email message for user
+					$email_message = '<strong> Hi '.$user_name.',</strong><br>
+					<p>You have created an account in <strong>'.$coaching_name.'</strong>. Your account is active now. You can login with your registered email and password.</p>';
+					// Display message for user
+					$message = 'Your account has been created. You can log-in to your account';
+					$this->message->set ($message, 'success', true );
+				}
+				$this->common_model->send_email ($to, $subject, $email_message);				
+
+				$this->output->set_content_type("application/json");
+				$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('login/login/index/?sub='.$slug)) ));
+			}
+	    } else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));			
 		}

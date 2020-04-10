@@ -756,6 +756,18 @@ class Users_model extends CI_Model {
 		return $ref_id;
 	}
 	
+	public function email_exists ($email='', $coaching_id=0) {
+		
+		$this->db->where ('email', $email);
+		$this->db->where ('coaching_id', $coaching_id);
+		$sql = $this->db->get ('members');
+		if ($sql->num_rows () > 0 ) {
+			return true;
+		} else {
+			return false;
+		}
+	}	
+
 	public function check_unique ($str='', $type='adm_no', $member_id=0) {
 		
 		$this->db->where ($type, $str);

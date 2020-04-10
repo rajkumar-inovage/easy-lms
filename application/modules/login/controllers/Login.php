@@ -186,11 +186,7 @@ class Login extends MX_Controller {
 		$this->load->view (INCLUDE_PATH . 'footer', $data);
 	} 
 
-	public function logout () {
-		$slug = '';
-		if (isset($_GET['sub'])) {
-			$slug = $_GET['sub'];
-		}
+	public function logout ($slug='') {
 		$this->login_model->logout ();
 		redirect ('login/login/index/?sub='.$slug);
 	}

@@ -42,6 +42,11 @@
 	  	<h5 class="text-center">Don't have an account with <?php echo $page_title;?></h5>
 		<a href="<?php echo site_url ('login/login/register/?sub='.$slug.'&role='.USER_ROLE_TEACHER); ?>" class="btn btn-block btn-primary">Create Teacher Account</a>
 		<a href="<?php echo site_url ('login/login/register/?sub='.$slug.'&role='.USER_ROLE_STUDENT); ?>" class="btn btn-block btn-info">Create Student Account</a>
+
+        <div class="mt-4 text-center" id="installBanner" >
+            <button class="btn btn-success " id="installBtn"><i class="fab fa-android"></i> Install App</button> 
+        </div>
+
 	  </div>
 
 	  <div class="card-footer d-none">

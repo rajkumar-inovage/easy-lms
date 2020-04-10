@@ -41,7 +41,7 @@ async function cacheFirst (request) {
 }
 
 async function networkFirst (request) {
-	const cache = await caches.open ('IndiaTests-V1-dynamic');
+	const cache = await caches.open ('EasyCoaching-V1-dynamic');
 	try {
 		const response = await fetch(request);
 		cache.put (request, response.clone());

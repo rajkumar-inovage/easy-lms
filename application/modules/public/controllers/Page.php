@@ -38,4 +38,12 @@ class Page extends MX_Controller {
 		$this->load->view('create_coaching', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
+
+	public function reset () {
+		$this->session->sess_destroy ();
+		$data['script'] = $this->load->view ('scripts/reset', [], true);
+		$this->load->view (INCLUDE_PATH . 'header', $data);
+		$this->load->view ('reset', $data);
+		$this->load->view (INCLUDE_PATH . 'footer', $data);
+	}
 }

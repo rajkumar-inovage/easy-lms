@@ -4,13 +4,12 @@
     <meta charset="utf-8">
     <meta name="author" content="Inovexia Software Services">    
     <meta name="description" content="<?php echo SITE_TITLE; ?> ">
-    <meta name="theme-color" content="#FF9800">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Easy Coaching App">
     <meta name="apple-mobile-web-app-title" content="Easy Coaching App">
-    <meta name="theme-color" content="#FF9800">
-    <meta name="msapplication-navbutton-color" content="#FF9800">
+    <meta name="theme-color" content="#4285F4">
+    <meta name="msapplication-navbutton-color" content="#4285F4">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="msapplication-starturl" content="<?php echo site_url (); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -89,19 +88,24 @@
                     ?>                
                 </a>
 
-                <div class="dropdown ">
-                  <a href="#" class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" class="rounded-circle img-thumbnail" width="30"> 
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                    <p class="text-center">
-                        <img src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" class="rounded-circle img-thumbnail" width="80"> 
-                        <div class="text-center" href="#"><?php echo $this->session->userdata ('user_name'); ?></div>
-                    </p>
-                    <hr>
-                    <a class="dropdown-item" href="#" onclick="logout ()"><i class="fa fa-sign-out-alt"></i> Logout</a>
-                  </div>
+                <div class="profile-button">
+                  <?php if ($this->session->userdata ('profile_image')) { ?>
+                    <div class="dropdown ">
+                      <a href="#" class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" class="rounded-circle img-thumbnail" width="30"> 
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                        <p class="text-center">
+                            <img src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" class="rounded-circle img-thumbnail" width="80"> 
+                            <div class="text-center" href="#"><?php echo $this->session->userdata ('user_name'); ?></div>
+                        </p>
+                        <hr>
+                        <a class="dropdown-item" href="#" onclick="logout_user ()"><i class="fa fa-sign-out-alt"></i> Logout</a>
+                      </div>
+                    </div>
+                  <?php } ?>
                 </div>
+
             </nav>
         </div>
     </header>
@@ -182,11 +186,13 @@
 			?>
 		</ul>
 
-        <div class="sidebar-block"> 
-            <div class="" id="installBanner" >
-                <button class="bg-green-600 p-2 text-white " id="installBtn"><i class="fab fa-android"></i> Install App</button> 
+        <?php if ($this->session->userdata ('is_logged_in')) { ?>
+            <div class="sidebar-block"> 
+                <div class="" id="installBanner" >
+                    <button class="btn btn-success " id="installBtn"><i class="fab fa-android"></i> Install App</button> 
+                </div>
             </div>
-        </div>
+        <?php } ?>
 
 	</div>
 	<!--// Sidebar left -->

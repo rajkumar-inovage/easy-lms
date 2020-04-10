@@ -3,9 +3,13 @@
 	
 	<footer class="light-footer mt-4">
 		<div class="container">
+			<p class="text-center">
+				Having trouble logging-in? <br>
+			  <a class="link-text" href="<?php echo site_url ('public/page/reset'); ?>"> Click Here To Reset and Start Over</a>
+			</p>
 		  <div class="d-flex justify-content-center">
 			<p class="footer-info">
-			  <a href="<?php echo BRANDING_URL; ?>"><?php echo BRANDING_TEXT; ?></a>
+			  <a class="link-text-color" href="<?php echo BRANDING_URL; ?>"><?php echo BRANDING_TEXT; ?></a>
 			</p>
 		</div>
 	</footer>

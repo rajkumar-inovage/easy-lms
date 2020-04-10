@@ -192,10 +192,11 @@ class Login_model extends CI_Model {
     		$this->session->set_userdata ('FOOTER_MENU', $menus);
 		}
 	}
+	
 	public function logout () {
 		$this->session->sess_destroy ();
-		//$this->cookie->delete_cookie ();
 	}
+
 	public function update_password ($member_id) {
 		// get user details
 		$this->db->where ('member_id', $member_id);
