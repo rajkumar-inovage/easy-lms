@@ -85,7 +85,7 @@ class Login_actions extends MX_Controller {
 			// Check if already exists
 			if ($this->users_model->email_exists ($email, $coaching_id) == true) {
 				$this->output->set_content_type("application/json");
-				$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
+				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'You already have an account with this email' )));
 			} else {
 
 				$status = USER_STATUS_ENABLED;

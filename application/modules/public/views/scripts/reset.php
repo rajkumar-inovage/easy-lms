@@ -1,4 +1,5 @@
 <script type="text/javascript">
+
 	localStorage.clear ();
 
 	setCookie ('easy_coaching_app', '', '-200');

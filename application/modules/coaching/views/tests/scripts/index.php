@@ -2,7 +2,7 @@
 $(document).ready (function () {
 	$('#search-status').on ('change', function () {
 		var status = $(this).val ();
-		var url = '<?php echo site_url ('tests/admin/index/'.$category_id.'/'.$type); ?>/'+status;
+		var url = '<?php echo site_url ('coaching/tests/index/'.$category_id.'/'.$type); ?>/'+status;
 		$(location).attr('href', url);
 	});
 });
@@ -36,7 +36,7 @@ $(document).ready (function () {
 							output += i;
 						output += '</td>';
 						output += '<td>';
-							output += '<a href="<?php echo site_url('tests/admin/manage'); ?>/'+obj[item].test_id+'">'+obj[item].title+'</a><br>';
+							output += '<a href="<?php echo site_url('coaching/tests/manage'); ?>/'+obj[item].test_id+'">'+obj[item].title+'</a><br>';
 							output += obj[item].unique_test_id;
 						output += '</td>';
 						output += '<td>';
@@ -46,7 +46,7 @@ $(document).ready (function () {
 							if (obj[item].finalized == 1) {
 								output += '<span class="badge badge-primary">Published</span>';
 							} else {
-								output += '<span class="badge badge-light">Draft</span>';
+								output += '<span class="badge badge-light">Upbublished</span>';
 							}
 						output += '</td>';
 					output += '</tr>';

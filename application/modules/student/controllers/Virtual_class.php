@@ -106,12 +106,13 @@ class Virtual_class extends MX_Controller {
 		$class = $this->virtual_class_model->get_class ($coaching_id, $class_id);
 		
 		$api_url = $api_setting['api_url'];
+		$shared_secret = $api_setting['shared_secret'];
 		$call_name = 'isMeetingRunning';
 		$query_string = 'meetingID='.$class['meeting_id'];
 
-		$final_string = $api_url . $call_name .'?'.  $query_string;
-		$checksum = sha1 ($final_string);
-		$url = $final_string . '&checksum='.$checksum;
+		$checksum_string = $call_name . $query_string . $shared_secret;
+		$checksum = sha1 ($checksum_string);
+		$url = $api_url . $call_name . '?'. $query_string . '&checksum='.$checksum;
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
