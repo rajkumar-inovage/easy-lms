@@ -29,9 +29,14 @@
 			  <input class="form-control" placeholder="Password" type="password" name="password">
 			</div>
 		  </div>
-
-		  <a href="<?php echo site_url ('login/login/forgot_password/?sub='.$slug); ?>" class="text">Forgot password?</a>
-		  
+		  <div class="media">
+		  	<div class="media-body">
+		  		<a href="<?php echo site_url ('login/login/forgot_password/?sub='.$slug); ?>" class="text">Forgot password?</a>
+		  	</div>
+		  	<div class="media-right">
+		  		<a href="<?php echo site_url ('login/login/otp_request/?sub='.$slug); ?>" class="text">Sign in with OTP</a>
+		  	</div>
+		  </div>
 		  <div class="text-center">
 			<button type="submit" name="submit" class="btn btn-success my-4">Sign in</button>
 		  </div>

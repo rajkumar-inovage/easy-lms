@@ -215,10 +215,21 @@ class Users_model extends CI_Model {
 		}
 	}
 	
-	
 	public function get_user_by_login ($login_id=0) {
-		$this->db->where ('login_id', $login_id);
-		$sql = $this->db->get ('users');
+		$this->db->where ('login', $login_id);
+		$sql = $this->db->get ('members');
+		if  ($sql->num_rows () > 0 ) {
+			$result = $sql->row_array ();
+			return $result;
+		} else {
+			return false;
+		}		
+	}
+
+	public function get_user_by_coaching_n_login ($coaching_id, $login_id) {
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('login', $login_id);
+		$sql = $this->db->get ('members');
 		if  ($sql->num_rows () > 0 ) {
 			$result = $sql->row_array ();
 			return $result;

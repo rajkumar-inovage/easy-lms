@@ -20,9 +20,7 @@ class Login extends MX_Controller {
 	}
 
     public function login ($slug='') {
-
     	$not_found = false;
-
     	if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
     		$slug = $_GET['sub'];
 			$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
@@ -39,9 +37,9 @@ class Login extends MX_Controller {
 				$data['coaching_id'] = $coaching['id'];
 				
 				$data['script'] = $this->load->view ('scripts/login', $data, true); 
-				$this->load->view (INCLUDE_PATH . 'header', $data);
+				$this->load->view ('header', $data);
 				$this->load->view ('login', $data);
-				$this->load->view (INCLUDE_PATH . 'footer', $data);
+				$this->load->view ('footer', $data);
 			} else {
 				$not_found = true;
 			}
@@ -83,9 +81,9 @@ class Login extends MX_Controller {
 				$data['coaching_id'] = $coaching['id'];
 				$data['role_id'] = $role_id;
 								
-				$this->load->view (INCLUDE_PATH . 'header', $data);
+				$this->load->view ('header', $data);
 				$this->load->view ( 'register', $data); 
-				$this->load->view (INCLUDE_PATH . 'footer', $data);
+				$this->load->view ('footer', $data);
 			} else {
 				$not_found = true;
 			}
@@ -158,15 +156,15 @@ class Login extends MX_Controller {
 		}
 		if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
     		$slug = $_GET['sub'];
-			$coaching = $this->coachings_model->get_coaching_by_slug ($slug);
+			$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
 			if ($coaching) {
 				$coaching_dir = 'contents/coachings/' . $coaching['id'] . '/';
 				$coaching_logo = $this->config->item ('coaching_logo');
-				$logo_path =  $coaching_dir . $coaching_logo;
+				$logo_path =  $coaching_dir . $coaching_logo;				
 				$logo = base_url ($logo_path);
+
 				$page_title = 'Forgot Password ' . $coaching['coaching_name'];
-				$coaching_id = $coaching['id'];
-				$data['coaching_id'] = $coaching_id;
+				$data['coaching_id'] = $coaching['id'];
 				$data['coaching'] 			= $coaching;
 			} else {
 				$slug = '';
@@ -181,11 +179,76 @@ class Login extends MX_Controller {
 		$data['page_title'] 		= $page_title;
 		$data['slug'] = $slug;
 		$data['logo'] = $logo;
-		$this->load->view (INCLUDE_PATH . 'header', $data);
+		$this->load->view ('header', $data);
 		$this->load->view('forgot_password');		
-		$this->load->view (INCLUDE_PATH . 'footer', $data);
-	} 
+		$this->load->view ('footer', $data);
+	}
 
+	public function otp_request($slug='') {
+    	$not_found = false;
+    	if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
+    		$slug = $_GET['sub'];
+	    	$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
+	    	if ($coaching) {
+	    		$coaching_dir = 'contents/coachings/' . $coaching['id'] . '/';
+				$coaching_logo = $this->config->item ('coaching_logo');
+				$logo_path =  $coaching_dir . $coaching_logo;				
+				$logo = base_url ($logo_path);
+
+				$page_title = $coaching['coaching_name'];
+				$data['slug'] = $slug;
+				$data['logo'] = $logo;
+				$data['coaching_id'] = $coaching['id'];
+				$data['page_title'] = $page_title;
+
+				$data['script'] = $this->load->view ('scripts/otp_request', $data, true); 
+				$this->load->view ('header', $data);
+				$this->load->view ('otp_request', $data);
+				$this->load->view ('footer', $data);
+
+	    	} else {
+				$not_found = true;
+			}
+    	} else {
+    		$not_found = true;
+    	}
+    	if ($not_found) {
+    		redirect('coaching/login/find_coaching');
+    	}
+	}
+	public function otp_verify($member_id=0, $slug='') {
+		$not_found = false;
+    	if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
+    		$slug = $_GET['sub'];
+	    	$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
+	    	if ($coaching) {
+	    		$coaching_dir = 'contents/coachings/' . $coaching['id'] . '/';
+				$coaching_logo = $this->config->item ('coaching_logo');
+				$logo_path =  $coaching_dir . $coaching_logo;				
+				$logo = base_url ($logo_path);
+
+				$page_title = $coaching['coaching_name'];
+				$data['slug'] = $slug;
+				$data['logo'] = $logo;
+				$data['coaching_id'] = $coaching['id'];
+				$data['member_id'] = $member_id;
+				$data['page_title'] = $page_title;
+
+				$data['script'] = $this->load->view ('scripts/otp_verify', $data, true); 
+				$this->load->view ('header', $data);
+				$this->load->view ('otp_verify', $data);
+				$this->load->view ('footer', $data);
+
+	    	} else {
+				$not_found = true;
+			}
+    	} else {
+    		$not_found = true;
+    	}
+    	if ($not_found) {
+    		redirect('coaching/login/find_coaching');
+    	}
+	}
 	public function logout ($slug='') {
 		$this->login_model->logout ();
 		redirect ('login/login/index/?sub='.$slug);

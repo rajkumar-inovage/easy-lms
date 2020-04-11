@@ -225,8 +225,202 @@ class Login_actions extends MX_Controller {
 			$this->session->set_userdata ('profile_image', $data['profile_image']);
 			$this->session->set_userdata ('site_title', $data['site_title']);			
 		}
-	}	
+	}
 
+	public function send_otp_request($slug=''){
+		$this->output->set_content_type("application/json");
+		$this->form_validation->set_rules ('userid', 'Username', 'required|trim');
+		if ($this->form_validation->run () == true) {
+			$userid = $this->input->post ('userid');
+			$coaching_id = $this->input->post ('coaching_id');
+			$expiry_minutes = 15;
+			$current_time = time();
+			$expiry_time = time() + (60*$expiry_minutes);
+			$member_detail = $this->users_model->get_user_by_coaching_n_login($coaching_id, $userid);
+			if(is_array($member_detail)){
+				$member_email = $member_detail['email'];
+				$member_id = intval($member_detail['member_id']);
+				$last_otp = $this->login_model->get_last_otp($member_id);
+				if(is_array($last_otp)){
+					if($current_time <= $last_otp['otp_expiry']){
+						if($this->login_model->send_otp($member_id, $member_email, $expiry_minutes)){
+							$this->output->set_output(json_encode(array(
+								'status'=>true,
+								'message'=>'Sending Agian... Last OTP is not expired yet.',
+								'redirect'=>site_url('login/login/otp_verify/'.$member_id.'/?sub='.$slug)
+							)));
+						}else{
+							//opt sending faliled.
+							$this->output->set_output(json_encode(array(
+								'status'=>false,
+								'code' => 1,
+								'error'=>'Unable to send OTP'
+							)));
+						}
+					}else{
+						if($this->login_model->regenerate_otp($last_otp, $current_time, $expiry_time)){
+							if($this->login_model->send_otp($member_id, $member_email, $expiry_minutes)){
+								$this->output->set_output(json_encode(array(
+									'status'=>true,
+									'message'=>'An OTP has been sent to your email successfully.',
+									'redirect'=>site_url('login/login/otp_verify/'.$member_id.'/?sub='.$slug)
+								)));
+							}else{
+								//opt sending faliled.
+								$this->output->set_output(json_encode(array(
+									'status'=>false,
+									'code' => 2,
+									'error'=>'Unable to send OTP'
+								)));
+							}
+						}else{
+							//opt regeneration faliled.
+							$this->output->set_output(json_encode(array(
+								'status'=>false,
+								'code' => 1,
+								'error'=>'Unable to regenerate OTP'
+							)));
+						}
+					}
+				}else{
+					if($this->login_model->generate_otp($member_id, $current_time, $expiry_time)){
+						if($this->login_model->send_otp($member_id, $member_email, $expiry_minutes)){
+							$this->output->set_output(json_encode(array(
+								'status'=>true,
+								'message'=>'An OTP has been sent to your email successfully.',
+								'redirect'=>site_url('login/login/otp_verify/'.$member_id.'/?sub='.$slug)
+							)));
+						}else{
+							//opt sending faliled.
+							$this->output->set_output(json_encode(array(
+								'status'=>false,
+								'code' => 3,
+								'error'=>'Unable to send OTP'
+							)));
+						}
+					}else{
+						//opt generation faliled.
+						$this->output->set_output(json_encode(array(
+							'status'=>false,
+							'code' => 2,
+							'error'=>'Unable to generate OTP'
+						)));
+					}
+				}
+			}else{
+				$this->output->set_output(json_encode(array(
+					'status'=>false,
+					'code' => 404,
+					'error'=>'Cannot find that User-id/Login'
+				)));
+			}
+		} else {
+			$this->output->set_output(json_encode(array(
+				'status'=>false,
+				'error'=>_AT_TEXT ('VALIDATION_ERROR', 'msg')
+			)));
+		}
+	}
+	public function do_otp_verification($slug=''){
+		$this->output->set_content_type("application/json");
+		$this->form_validation->set_rules ('otp', 'One Time Password', 'required|trim');
+		if ($this->form_validation->run () == true) {
+			$otp = $this->input->post ('otp');
+			$member_id = $this->input->post ('member_id');
+			$coaching_id = $this->input->post ('coaching_id');
+			$current_time = time();
+			$last_otp = $this->login_model->get_last_otp($member_id);
+			if(is_array($last_otp) && !empty($last_otp)){
+				if($current_time <= $last_otp['otp_expiry']){
+					if($otp===$last_otp['member_otp']){
+						$response = $this->login_model->auth_otp($member_id, $coaching_id, $slug);
+						if ($response['status'] == LOGIN_SUCCESSFUL) {
+							$redirect = $this->session->userdata ('dashboard');
+							$this->output->set_output(json_encode(array(
+								'status'=>true, 
+								'message'=>_AT_TEXT ('LOGIN_SUCCESSFUL', 'msg'), 
+								'user_token'=>$this->session->userdata ('user_token'),
+								'member_id'=>$this->session->userdata ('member_id'),
+								'is_logged_in'=>$this->session->userdata ('is_logged_in'),
+								'is_admin'=>$this->session->userdata ('is_admin'),
+								'role_id'=>$this->session->userdata ('role_id'),
+								'role_lvl'=>$this->session->userdata ('role_lvl'),
+								'dashboard'=>$this->session->userdata ('dashboard'),
+								'user_name'=>$this->session->userdata ('user_name'),
+								'slug'=>$this->session->userdata ('slug'),
+								'logo'=>$this->session->userdata ('logo'),
+								'profile_image'=>$this->session->userdata ('profile_image'),
+								'site_title'=>$this->session->userdata ('site_title'),
+								'coaching_id'=>$this->session->userdata ('coaching_id'),
+								'redirect'=>site_url($redirect),
+							)));
+						} else if ($response['status'] == INVALID_USERNAME) {
+							$this->output->set_output(json_encode(array(
+								'status'=>false,
+								'error'=>_AT_TEXT ('INVALID_USERNAME', 'msg')
+							)));
+						}
+					}else{
+						$this->output->set_output(json_encode(array(
+							'status'=>false,
+							'error'=>'Invalid OTP! Stop doing guesses.'
+						)));
+					}
+				}else{
+					$this->output->set_output(json_encode(array(
+						'status'=>false,
+						'error'=>'OTP Expired! You may try Requesting another OTP.'
+					)));
+				}
+			}else{
+				$this->output->set_output(json_encode(array(
+					'status'=>false,
+					'error'=>'Invalid User OTP.'
+				)));
+			}
+		} else {
+			$this->output->set_output(json_encode(array(
+				'status'=>false,
+				'error'=>_AT_TEXT ('VALIDATION_ERROR', 'msg')
+			)));
+		}
+	}
+	public function resend_otp($member_id=0, $slug=''){
+		$this->output->set_content_type("application/json");
+		$expiry_minutes = 15;
+		$current_time = time();
+		$member_detail = $this->users_model->get_user ($member_id);
+		$last_otp = $this->login_model->get_last_otp($member_id);
+		$member_email = $member_detail['email'];
+		if($current_time <= $last_otp['otp_expiry']){
+			if($last_otp['send_attempt']<5){
+				if($this->login_model->resend_otp($member_id, $member_email, $expiry_minutes)){
+					$this->output->set_output(json_encode(array(
+						'status'=>true,
+						'message'=>'Another OTP has been sent to your email successfully.'
+					)));
+				}else{
+					//opt sending faliled.
+					$this->output->set_output(json_encode(array(
+						'status'=>false,
+						'code' => 1,
+						'error'=>'Unable to send OTP'
+					)));
+				}
+			}else{
+				$this->output->set_output(json_encode(array(
+					'status'=>false,
+					'max_attempt'=>true,
+					'error'=>'Reached Max attepmt! Try again after '.($expiry_minutes + 5).' minutes.'
+				)));
+			}
+		}else{
+			$this->output->set_output(json_encode(array(
+				'status'=>false,
+				'error'=>'Last OTP Expired! Try Requesting another OTP.'
+			)));
+		}
+	}
 	public function logout () {
 		$this->session->sess_destroy();
 		redirect ('login/page/index');
