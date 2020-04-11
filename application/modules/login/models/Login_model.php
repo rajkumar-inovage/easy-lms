@@ -346,8 +346,14 @@ class Login_model extends CI_Model {
 		}
 	}
 	/*this function will remove the record from the otp table for that member_id.*/
-	public function clear_otp(){
+	public function clear_otp($member_id){
 		$this->db->where ('member_id', $member_id);
+    	$this->db->delete('members_otp');
+    	if($this->db->affected_rows() > 0){
+    		return true;
+    	}else{
+    		return false;
+    	}
 	}
 	/*this function will process the posted OTP on the server, it willl check if the otp is not expired and is correct, to let user in to dashboard or set new password,*/
 	public function auth_otp($member_id, $coaching_id, $slug){

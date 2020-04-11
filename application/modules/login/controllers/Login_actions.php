@@ -335,6 +335,7 @@ class Login_actions extends MX_Controller {
 					if($otp===$last_otp['member_otp']){
 						$response = $this->login_model->auth_otp($member_id, $coaching_id, $slug);
 						if ($response['status'] == LOGIN_SUCCESSFUL) {
+							$this->login_model->clear_otp($member_id);
 							$redirect = $this->session->userdata ('dashboard');
 							$this->output->set_output(json_encode(array(
 								'status'=>true, 
