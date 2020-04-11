@@ -236,7 +236,7 @@ class Login_actions extends MX_Controller {
 			$expiry_minutes = 15;
 			$current_time = time();
 			$expiry_time = time() + (60*$expiry_minutes);
-			$member_detail = $this->users_model->get_user_by_coaching_n_login($coaching_id, $userid);
+			$member_detail = $this->users_model->get_user_by_userid($userid);
 			if(is_array($member_detail)){
 				$member_email = $member_detail['email'];
 				$member_id = intval($member_detail['member_id']);
