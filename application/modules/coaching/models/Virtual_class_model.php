@@ -27,6 +27,13 @@ class Virtual_class_model extends CI_Model {
 		$attendee_pwd = $this->input->post ('attendee_pwd');
 		$moderator_pwd = $this->input->post ('moderator_pwd');
 		$wait_for_moderator = $this->input->post ('wait_for_moderator');
+
+		if ($this->input->post ('record_class')) {
+			$record_class = 'true';
+		} else {
+			$record_class = 'false';			
+		}
+		
 		if ($this->input->post ('welcome_message')) {
 			$welcome_message = $this->input->post ('welcome_message');
 		} else {
@@ -45,12 +52,7 @@ class Virtual_class_model extends CI_Model {
 		$ehh = $this->input->post ('end_time_hh');
 		$emm = $this->input->post ('end_time_mm');
 		$end_date = mktime ($ehh, $emm, 0, $em, $ed, $ey);
-		
-		if ($this->input->post ('record_class')) {
-			$record_class = $this->input->post ('record_class');
-		} else {
-			$record_class = false;			
-		}
+				
 		$record_description = $this->input->post ('record_description');
 		if ($this->input->post ('max_participants')) {
 			$max_participants = $this->input->post ('max_participants');
@@ -85,11 +87,13 @@ class Virtual_class_model extends CI_Model {
 		$query_string .= '&moderatorPW='.$moderator_pwd;
 		$query_string .= '&attendeePW='.$attendee_pwd;
 		$query_string .= '&welcome='.$welcome_message;
-		$query_string .= '&record=true';
+		$query_string .= '&record='.$record_class;
 		$query_string .= '&duration='.$duration;
 		$query_string .= '&maxParticipants='.$max_participants;
 		$query_string .= '&logoutURL='.urlencode($logoutURL);
 		$query_string .= '&bannerText='.$bannerText;
+		$query_string .= '&muteOnStart=true';
+		$query_string .= '&allowModsToUnmuteUsers=true';
 		//$query_string .= '&logo='.VC_LOGO;
 
 		$final_string = $call_name . $query_string . $shared_secret;
@@ -129,6 +133,7 @@ class Virtual_class_model extends CI_Model {
 
 	public function add_moderator ($coaching_id=0, $class_id=0, $member_id=0) {
 		
+		$user = $this->users_model->get_user ($member_id);
 		$class = $this->get_class ($coaching_id, $class_id);
 
 		$api_setting = $this->get_api_settings ();
@@ -139,8 +144,9 @@ class Virtual_class_model extends CI_Model {
 
 		$participant_role = VM_PARTICIPANT_MODERATOR;
 
-		$fullName = 'Classroom+Admin';
-
+		$fullName = $user['first_name'] . ' ' . $user['last_name'] . '(Classroom Admin)';
+		$fullName = str_replace(' ', '+', $fullName);
+ 
 		$query_string = '';
 		$query_string .= 'fullName='.$fullName;
 		$query_string .= '&meetingID='.$class['meeting_id'];

@@ -17,7 +17,8 @@
 						foreach ($users as $user) {
 						  if ($this->virtual_class_model->participants_added ($coaching_id, $class_id, $user['member_id']) > 0) {
 						  } else {
-								$full_name = $user['first_name'].'+'.$user['last_name'];
+								$full_name = $user['first_name'].' '.$user['last_name'];
+								$full_name = str_replace(' ', '+', $full_name);
 								?>
 								<tr>
 									<td>

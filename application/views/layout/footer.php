@@ -3,10 +3,12 @@
 	
 	<footer class="light-footer mt-4">
 		<div class="container">
+		  <?php if (! $this->session->userdata('is_logged_in')) { ?>
 			<p class="text-center">
 				Having trouble logging-in? <br>
 			  <a class="link-text" href="<?php echo site_url ('public/page/reset'); ?>"> Click Here To Reset and Start Over</a>
 			</p>
+		  <?php } ?>
 		  <div class="d-flex justify-content-center">
 			<p class="footer-info">
 			  <a class="link-text-color" href="<?php echo BRANDING_URL; ?>"><?php echo BRANDING_TEXT; ?></a>

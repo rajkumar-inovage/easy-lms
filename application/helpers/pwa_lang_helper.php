@@ -12,6 +12,7 @@ function _AT_TEXT ($code='', $type='', $lang='en') {
 			'INVALID_PASSWORD'=>'You have entered a wrong password',
 			'MAX_ATTEMPTS_REACHED'=>'Too many retry attempts. Try again after '.(LOCK_TIME/60).' minutes',
 			'LOGIN_ERROR'=>'There was some error. Please retry again',
+			'ACCOUNT_DISABLED'=>'Your account is disabled or pending for admin approval. Try again later',
 			'LOGIN_SUCCESSFUL'=>'Login successful. Loading your dashboard...',
 			'VALIDATION_ERROR'=>validation_errors (),
 			),

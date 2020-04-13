@@ -20,3 +20,4 @@ define ('INVALID_USERNAME', 		3);
 define ('INVALID_PASSWORD', 		4);
 define ('MAX_ATTEMPTS_REACHED', 	5);
 define ('LOGIN_ERROR', 				6);
+define ('ACCOUNT_DISABLED', 		7);

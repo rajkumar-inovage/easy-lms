@@ -6,7 +6,7 @@
 <?php } ?>
 		<div class="card mb-4">
 			<div class="card-body">
-				<?php echo form_open ('coaching/user_actions/create_account/'.$coaching_id.'/'.$role_id.'/'.$member_id, array ('class'=>'form-horizontal', 'id'=>'validate-1')); ?>
+				<?php echo form_open ('coaching/user_actions/create_account/'.$coaching_id.'/'.$role_id.'/'.$member_id, array ('class'=>'form-horizontal', 'id'=>'validate-')); ?>
 					
 					<div class="form-group row">
 						<div class="col-md-6">
@@ -101,7 +101,7 @@
 						<div class="col-md-6">
 							<?php echo form_label('Date Of Birth', '', array('class'=>'')); ?>
 							<?php 
-							if ($member_id > 0 ) {
+							if ($result["dob"]) {
 								$dob = date('Y-m-d', strtotime($result["dob"]));
 							} else {
 								$dob = '';

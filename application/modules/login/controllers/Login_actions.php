@@ -6,7 +6,7 @@ class Login_actions extends MX_Controller {
 
 	public function __construct () {
 		$config = ['config_login', 'coaching/config_coaching'];
-	    $models = ['login_model', 'coaching/users_model', 'coaching/coaching_model'];
+	    $models = ['login_model', 'coaching/users_model', 'coaching/coaching_model', 'coaching/settings_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 
@@ -43,6 +43,9 @@ class Login_actions extends MX_Controller {
 			} else if ($response['status'] == INVALID_CREDENTIALS) {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>_AT_TEXT ('INVALID_CREDENTIALS', 'msg'))));
+			} else if ($response['status'] == ACCOUNT_DISABLED) {
+				$this->output->set_content_type("application/json");
+				$this->output->set_output(json_encode(array('status'=>false, 'error'=>_AT_TEXT ('ACCOUNT_DISABLED', 'msg'))));
 			} else if ($response['status'] == MAX_ATTEMPTS_REACHED) {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>_AT_TEXT ('MAX_ATTEMPTS_REACHED', 'msg'))));
@@ -88,20 +91,38 @@ class Login_actions extends MX_Controller {
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'You already have an account with this email' )));
 			} else {
 
-				$status = USER_STATUS_ENABLED;
-				//$status = USER_STATUS_UNCONFIRMED;
+				$user_role = $this->input->post ('user_role');
+				$status = USER_STATUS_UNCONFIRMED;
+
+				// Get coaching settings
+				$settings = $this->settings_model->get_settings ($coaching_id);
+				if ($user_role == USER_ROLE_STUDENT) {
+					$approve = $settings['approve_student'];
+					if ($approve == 1) {
+						$status = USER_STATUS_ENABLED;
+					}
+				} else if ($user_role == USER_ROLE_TEACHER) {
+					$approve = $settings['approve_teacher'];
+					if ($approve == 1) {
+						$status = USER_STATUS_ENABLED;
+					}
+				}
+
 				// Save user details
 				$member_id = $this->users_model->save_account ($coaching_id, 0, $status);
 				
-				// Get coachiiiing details
+				// Get coaching details
 				$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
 				$coaching_name = $coaching['coaching_name'];
 				$user_name = $this->input->post ('first_name') . ' ' .$this->input->post ('last_name');
 				
 				// Notification Email to coaching admin
 				$to = $coaching['email'];
-				$subject = 'New User Registration';
-				$email_message = 'A new user <strong>'.$user_name.'</strong> has registered in your coaching <strong>'.$coaching_name. '</strong>. Account is pending for approval.';
+				$subject = 'New Registration';
+					$email_message = 'A new user <strong>'.$user_name.'</strong> has registered in your coaching <strong>'.$coaching_name. '</strong>. ';
+				if ($status == USER_STATUS_UNCONFIRMED) {
+					$email_message .= 'Account is pending for approval. Click here for details ' . anchor ('coaching/users/index/'.$coaching_id.'/'.$user_role.'/'.USER_STATUS_UNCONFIRMED);
+				} 
 				$this->common_model->send_email ($to, $subject, $email_message);
 			
 				// Notification email to user

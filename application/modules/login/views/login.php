@@ -43,9 +43,10 @@
 		<a href="<?php echo site_url ('login/login/register/?sub='.$slug.'&role='.USER_ROLE_TEACHER); ?>" class="btn btn-block btn-primary">Create Teacher Account</a>
 		<a href="<?php echo site_url ('login/login/register/?sub='.$slug.'&role='.USER_ROLE_STUDENT); ?>" class="btn btn-block btn-info">Create Student Account</a>
 
-        <div class="mt-4 text-center" id="installBanner" >
+        <div class="mt-4" id="installBanner" >
             <button class="btn btn-success " id="installBtn"><i class="fab fa-android"></i> Install App</button> 
         </div>
+
 
 	  </div>
 

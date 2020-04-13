@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-	<div class="col-md-9">
+	<div class="col-md-12">
 		<div class="card-decks card-group">
 			<?php
 			if (! empty ($dashboard_menu)) {

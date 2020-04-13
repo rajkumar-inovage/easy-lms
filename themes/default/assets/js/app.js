@@ -63,7 +63,9 @@ for (i = 0; i < submitFormSelectors.length; i++) {
 				toastr.clear ();
 				if (result.status == true) {
 					toastr.success (result.message);
-					document.location = result.redirect;
+					if (result.redirect != '') {
+						document.location = result.redirect;
+					}
 				} else {
 					var message = result.error.replace('/[\n\r]/g', '');
 					toastr.error (message);

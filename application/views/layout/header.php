@@ -174,7 +174,7 @@
                 foreach ($main_menu as $menu) {
                     $link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id;
                     if ($this->session->userdata ('role_id') == USER_ROLE_STUDENT) {
-                        $link .= '/'.$this->sesson->userdata ('member_id');
+                        $link .= '/'.$this->session->userdata ('member_id');
                     }
 					?>
 					<li class="">
@@ -188,14 +188,6 @@
 			}
 			?>
 		</ul>
-
-        <?php if ($this->session->userdata ('is_logged_in')) { ?>
-            <div class="sidebar-block"> 
-                <div class="" id="installBanner" >
-                    <button class="btn btn-success " id="installBtn"><i class="fab fa-android"></i> Install App</button> 
-                </div>
-            </div>
-        <?php } ?>
 
 	</div>
 	<!--// Sidebar left -->

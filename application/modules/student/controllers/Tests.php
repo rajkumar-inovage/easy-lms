@@ -251,7 +251,7 @@ class Tests extends MX_Controller {
 			$data['total_questions'] = 0;			
 		}
 		$confirm_div = $data['total_questions'] + 1;
-		$data['confirm_div'] = count ($confirm_div);
+		$data['confirm_div'] = ($confirm_div);
 		/* Perpare an array in form of subject->question_group->question */
 		$collect = array ();
 		if ( ! empty ($all_questions)) {					

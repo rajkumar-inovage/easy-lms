@@ -1,5 +1,21 @@
 <?php
-	$this->load->view ('public/scripts/validate');
+	if ($flush == false) {
+		$this->load->view ('public/scripts/validate');
+	} else {
+		?>
+		<script type="text/javascript">
+			
+			localStorage.clear ();
+
+			setCookie ('easy_coaching_app', '', '-200');
+
+			if ('caches' in window) {
+			    caches.delete('EasyCoaching-V1');
+			    caches.delete('EasyCoaching-V1-dynamic');
+			} 	
+		</script>
+		<?php
+	}
 ?>
 <script type="text/javascript">
 	var submitFormSelector = document.getElementById ('find-coaching');

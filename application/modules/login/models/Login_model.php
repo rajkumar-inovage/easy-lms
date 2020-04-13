@@ -22,10 +22,12 @@ class Login_model extends CI_Model {
 			$user_token = $row['user_token'];
 			$user_name 	= $row['first_name'].' '.$row['second_name'].' '.$row['last_name'];
 			$coaching_id = $row['coaching_id'];
-			
-			// This is a valid user,  check for password
 			$hashed_password = $row['password'];
-			if (password_verify($password, $hashed_password)) {
+			
+			// This is a valid user,  check for status
+			if ($row['status'] <> USER_STATUS_ENABLED ) {
+				$return['status'] = ACCOUNT_DISABLED;
+			} else if (password_verify($password, $hashed_password)) {
 				// Reset wrong passwords attempted, if any
 				$this->reset_wrong_password_attempts ($member_id);
 				// Save Session 

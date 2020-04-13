@@ -81,10 +81,8 @@ class Users_model extends CI_Model {
 	// Save account
 	public function save_account ($coaching_id=0, $member_id=0, $status=USER_STATUS_ENABLED) {
 	    
-	    if ($this->input->post ('dob')) {				
-			$dob = $this->input->post ('dob');
-			list ($y, $m, $d) = explode ('-', $dob);
-			$date = $m.'/'.$d.'/'.$y;
+	    if ($this->input->post ('dob')) {
+			$date = $this->input->post ('dob'); 
 		} else {
 			$date = '';
 		}

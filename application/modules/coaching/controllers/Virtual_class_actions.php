@@ -7,7 +7,7 @@ class Virtual_class_actions extends MX_Controller {
 	public function __construct () {		
 	    // Load Config and Model files required throughout Users sub-module
 	    $config = ['config_coaching', 'config_virtual_class'];
-	    $models = ['virtual_class_model'];
+	    $models = ['virtual_class_model', 'users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	    $this->load->helper ('string');
 

@@ -15,15 +15,16 @@ class Page extends MX_Controller {
     		$slug = $_GET['sub'];
 	    	redirect ('login/login/index/?sub='.$slug);
     	} else {
-    		$this->find_coaching ();
+    		$this->find_coaching ($flush=true);
     	}
 	}	
 	 
 
-	public function find_coaching () {
+	public function find_coaching ($flush=false) {
 		$data['page_title'] = 'Find your coaching';
 		$data['logo'] = base_url ($this->config->item('system_logo'));
 		$data['coaching'] = false;
+		$data['flush'] = $flush;
 		$data['script'] = $this->load->view ('scripts/find_coachings', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('find_coaching', $data);
