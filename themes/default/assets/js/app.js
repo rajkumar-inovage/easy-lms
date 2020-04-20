@@ -227,6 +227,11 @@ $('html, body').click(function(e) {
    }
 });
 
+/*=========== Check All ===========*/
+function check_all () {
+    $(".checks").prop ('checked', $('#checkAll').prop("checked"));
+}
+
 /* ===== Tooltips Init ===== */ 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip(); 

@@ -6,7 +6,9 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th width="10"><input id="checkAll" type="checkbox" ></th>
+							<th width="10">
+								<input id="checkAll" type="checkbox" onchange="check_all()">
+							</th>
 							<th>User Name/ID</th>
 							<th class="d-none d-sm-table-cell">Email</th>
 						</tr>

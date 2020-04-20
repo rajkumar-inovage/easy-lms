@@ -15,7 +15,7 @@ class Virtual_class_actions extends MX_Controller {
 	}
 
 	public function create_classroom ($coaching_id=0, $class_id=0) {
-		$this->form_validation->set_rules ('class_name', 'Virtual Classroom Name', 'required|alpha_numeric|trim');
+		$this->form_validation->set_rules ('class_name', 'Virtual Classroom Name', 'required|alpha_numeric|trim', ['alpha_numeric'=>'Class name can contain only alphabets and numbers without spaces']);
 		$this->form_validation->set_rules ('moderator_pwd', 'Moderator Password', 'required|numeric|trim');
 		$this->form_validation->set_rules ('attendee_pwd', 'Attendee Password', 'required|numeric|trim');
 		$this->form_validation->set_rules ('welcome_message', 'Welcome Message', 'max_length[100]|trim');

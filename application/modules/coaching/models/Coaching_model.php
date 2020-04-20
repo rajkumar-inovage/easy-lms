@@ -14,7 +14,7 @@ class Coaching_model extends CI_Model {
 		$coaching['subscription_status'] = SUBSCRIPTION_STATUS_ACTIVE;
 
 		$doj = time ();
-		$doe = time () + ( 180 * 24 * 3600);
+		$doe = time () + ( 30 * 24 * 3600);			// 30 days subscription plan
 		$coaching = [
 				'coaching_name'=>	$this->input->post ('coaching_name'), 
 				'coaching_url' => 	str_replace ('-', '_', $this->input->post ('coaching_url')),
@@ -22,7 +22,7 @@ class Coaching_model extends CI_Model {
 				'city'=>			$this->input->post ('city'), 
 				'website'=> 		prep_url ($this->input->post('website')),
 				'doj'=> 			$doj,
-				'doe'=>				$doe,
+				'doe'=>				'',
 				'status'=>			COACHING_ACCOUNT_ACTIVE,
 				'creation_date'=>	time (),
 				'created_by'=>		0
@@ -32,11 +32,13 @@ class Coaching_model extends CI_Model {
 		$coaching_id = $this->db->insert_id ();
 
 		// Add free subscription plan
-		$plan['created_by'] = 0;
 		$plan['plan_id']	= FREE_SUBSCRIPTION_PLAN_ID;
 		$plan['coaching_id']= $coaching_id;
 		$plan['starting_from']= $doj;
 		$plan['ending_on']	= $doe;
+		$plan['status']	= 1;
+		$plan['creation_date']	= time ();
+		$plan['created_by'] = 0;
 		$this->db->insert ('coaching_subscriptions', $plan);
 			
 		// Set Reference-id

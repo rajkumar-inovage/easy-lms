@@ -35,7 +35,7 @@ class Vitals extends MX_Controller {
 		/* 
 			For PUBLIC module login is not required, user will not be redirected to Dashboard OR Logout page
 		*/
-		if ($module == 'public' || $module == 'login' ) {
+		if ($module == 'public' || $module == 'login' || $module == 'admin') {
 			// Do Nothing
 		} else {
 			if (! $this->session->has_userdata ('is_logged_in')) {

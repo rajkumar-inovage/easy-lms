@@ -6,7 +6,7 @@
 
 <div class="card paper-shadow" data-z="0.5">
 
-    <?php echo form_open ('public/page_actions/create_coaching', array ('class'=>'', 'id'=>'validate-')); ?>
+    <?php echo form_open ('public/page_actions/create_coaching', array ('class'=>'', 'id'=>'validate-1')); ?>
         <div class="card-header ">
     		<h4 class="">Basic Details</h4>
     		<p class="text-subhead ">Add your coaching name, location and other detail</p>

@@ -2,7 +2,7 @@
 	<div class="col-md-9">
 		<div class="card card-default">
 			<div class="card-body">
-				<?php echo form_open('coaching/virtual_class_actions/create_classroom/'.$coaching_id.'/'.$class_id, array('class'=>'form-horizontal row-border', 'id'=>'validate1')); ?>
+				<?php echo form_open('coaching/virtual_class_actions/create_classroom/'.$coaching_id.'/'.$class_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1')); ?>
 
 					<div class="form-group ">
 						<?php echo form_label('Virtual Classroom Name<span class="required">*</span>', '', array('class'=>'control-label')); ?>

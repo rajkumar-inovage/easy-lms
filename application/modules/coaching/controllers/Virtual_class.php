@@ -169,7 +169,8 @@ class Virtual_class extends MX_Controller {
 		curl_close($ch);
 
 		$xml = simplexml_load_string($xml_response);
-		$response = $xml->returncode;
+		echo $response = $xml->returncode;
+		echo $response = $xml->recordings;
 
 		$data['coaching_id'] 	= $coaching_id;
 		$data['class_id'] 		= $class_id;
@@ -182,46 +183,7 @@ class Virtual_class extends MX_Controller {
         $this->load->view('virtual_class/recordings', $data);
         $this->load->view(INCLUDE_PATH . 'footer', $data);		
 	}
-
-
-	public function create_meeting ($coaching_id=0, $class_id=0) {
 		
-		$api_setting = $this->virtual_class_model->get_api_settings ();
-
-		$class = $this->virtual_class_model->get_class ($coaching_id, $class_id);
-		// Create call and query
-		$api_url = $api_setting['api_url'];
-		$call_name = $class['call_name'];
-		$query_string = $class['query_string'];
-		$checksum = $class['checksum'];
-
-		$final_string = $api_url . $call_name .'?'.  $query_string . '&checksum='.$checksum;
-		
-		// Upload whiteboard slide
-		$post_slide = '<xml>
-						<modules>
-						     <module name="presentation">
-						      <document url="https://easycoachingapp.com/apps/whiteboard.pdf"/>
-						   </module>
-						</modules>
-					  </xml>';
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $final_string);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
-		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_slide);
-		$xml_response = curl_exec($ch);
-		curl_close($ch);
-
-		$xml = simplexml_load_string($xml_response);
-
-		$returncode = $xml->returncode;
-		return $returncode;
-
-	}
 
 	public function join_class ($coaching_id=0, $class_id=0, $member_id=0) {
 		
@@ -232,13 +194,13 @@ class Virtual_class extends MX_Controller {
 		
 		$api_url = $api_setting['api_url'];
 		
-		$is_running = $this->is_meeting_running ($coaching_id, $class_id);
+		$is_running = $this->virtual_class_model->is_meeting_running ($coaching_id, $class_id);
 
 		if ( $is_running == 'true') {
 			redirect ($join['meeting_url']);
 		} else {
 			if ($join['role'] == VM_PARTICIPANT_MODERATOR)  {
-				$response = $this->create_meeting ($coaching_id, $class_id);
+				$response = $this->virtual_class_model->create_meeting ($coaching_id, $class_id);
 				if ($response == 'SUCCESS') {
 					redirect ($join['meeting_url']);
 				}
@@ -255,29 +217,8 @@ class Virtual_class extends MX_Controller {
         $this->load->view(INCLUDE_PATH . 'footer', $data);		
 	}
 
-	public function is_meeting_running ($coaching_id=0, $class_id=0) {
-
-		$api_setting = $this->virtual_class_model->get_api_settings ();
-		$class = $this->virtual_class_model->get_class ($coaching_id, $class_id);
-		
-		$api_url = $api_setting['api_url'];
-		$shared_secret = $api_setting['shared_secret'];
-		$call_name = 'isMeetingRunning';
-		$query_string = 'meetingID='.$class['meeting_id'];
-
-		$checksum_string = $call_name . $query_string . $shared_secret;
-		$checksum = sha1 ($checksum_string);
-		$url = $api_url . $call_name . '?'. $query_string . '&checksum='.$checksum;
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$xml_response = curl_exec($ch);
-		curl_close($ch);
-		$xml = simplexml_load_string($xml_response);
-		$running = $xml->running;
-
-		return $running;
+	public function end_meeting ($coaching_id=0, $class_id=0) {
+		$this->virtual_class_model->add_to_history ($coaching_id, $class_id);
+		redirect ('coaching/virtual_class/index/'.$coaching_id);
 	}
 }

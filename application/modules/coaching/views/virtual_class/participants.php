@@ -6,7 +6,7 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th width="10">#</th>
+							<th width="10"><input id="checkAll" type="checkbox" onchange="check_all()"></th>
 							<th width="50%">User Name/ID</th>
 							<th class="d-none d-sm-table-cell">Email</th>
 							<th>Role</th>
@@ -19,7 +19,7 @@
 							$full_name = $user['first_name'].' '.$user['last_name'];
 							?>
 							<tr>
-								<td><input type="checkbox" name="users[]" value="<?php echo $user['member_id']; ?>"></td>
+								<td><input type="checkbox" name="users[]" value="<?php echo $user['member_id']; ?>" class="checks"></td>
 								<td>
 									<?php echo $user['first_name'].' '.$user['last_name']; ?><br>
 									<?php echo $user['adm_no']; ?>									

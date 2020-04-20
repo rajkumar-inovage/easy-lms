@@ -49,6 +49,7 @@ class Login_model extends CI_Model {
 	    $attributes = array('ENGINE' => 'InnoDB');
 		$this->dbforge->create_table('members_otp', FALSE, $attributes);
 	}
+
     public function validate_login ($slug='') {
 		// this will validate if current user authentic to use resources
 		// based on the received username and password
@@ -56,7 +57,10 @@ class Login_model extends CI_Model {
 		$password		=  $this->input->post('password');
 		$coaching_id 	=  $this->input->post ('coaching_id');
 
-		$this->db->where ('coaching_id', $coaching_id);
+		if ($slug == 'admin') {
+		} else {
+			$this->db->where ('coaching_id', $coaching_id);
+		}
 		$where = "(login='$login' OR adm_no='$login' OR email='$login' OR primary_contact='$login')"; 
 		$this->db->where ($where);
 		$query = $this->db->get ("members");

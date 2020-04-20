@@ -6,7 +6,7 @@
 	  	<?php if (is_file ($logo)) { ?>
 			<img src="<?php echo $logo; ?>" height="50" title="<?php echo $page_title; ?>" class="text-center">
 		<?php } else { ?>
-		    <h4 class="text-center">Registered User</h4>
+		    <h4 class="text-center"><?php echo $site_title; ?></h4>
 		<?php } ?>
 	    <h6 class="text-center">Sign in with your credentials</h6>
 	  </div>

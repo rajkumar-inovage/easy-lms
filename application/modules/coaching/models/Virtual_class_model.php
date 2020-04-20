@@ -3,9 +3,14 @@
 class Virtual_class_model extends CI_Model {
 
 	public function get_all_classes ($coaching_id=0, $class_id=0) {
+		$result = [];
 		$this->db->where ('coaching_id', $coaching_id);
 		$sql = $this->db->get ('virtual_classroom');
-		return $sql->result_array ();
+		foreach ($sql->result_array () as $row) {
+			$row['running'] = $this->is_meeting_running ($coaching_id, $row['class_id']);
+			$result[] = $row;
+		}
+		return $result;
 	}
 
 	public function get_class ($coaching_id=0, $class_id=0) {
@@ -73,7 +78,7 @@ class Virtual_class_model extends CI_Model {
 		}
 		$bannerText = str_replace(' ', '+', $bannerText);
 
-		$logoutURL = VC_LOGOUT_URL . '/' . $coaching_id;
+		$logoutURL = VC_LOGOUT_URL . '/' . $coaching_id . '/' . $class_id;
 
 		$meeting_id = $this->get_meeting_id ($coaching_id, $class_id);
 
@@ -317,5 +322,94 @@ class Virtual_class_model extends CI_Model {
 			return $meeting_id;
 		}
 
+	}
+
+	public function is_meeting_running ($coaching_id=0, $class_id=0) {
+
+		$api_setting = $this->virtual_class_model->get_api_settings ();
+		$class = $this->virtual_class_model->get_class ($coaching_id, $class_id);
+		
+		$api_url = $api_setting['api_url'];
+		$shared_secret = $api_setting['shared_secret'];
+		$call_name = 'isMeetingRunning';
+		$query_string = 'meetingID='.$class['meeting_id'];
+
+		$checksum_string = $call_name . $query_string . $shared_secret;
+		$checksum = sha1 ($checksum_string);
+		$url = $api_url . $call_name . '?'. $query_string . '&checksum='.$checksum;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		$xml_response = curl_exec($ch);
+		curl_close($ch);
+		$xml = simplexml_load_string($xml_response);
+		$running = $xml->running;
+
+		return $running;
+	}
+
+	public function create_meeting ($coaching_id=0, $class_id=0) {
+		
+		$api_setting = $this->get_api_settings ();
+
+		$class = $this->get_class ($coaching_id, $class_id);
+		// Create call and query
+		$api_url = $api_setting['api_url'];
+		$call_name = $class['call_name'];
+		$query_string = $class['query_string'];
+		$checksum = $class['checksum'];
+
+		$final_string = $api_url . $call_name .'?'.  $query_string . '&checksum='.$checksum;
+		
+		// Upload whiteboard slide
+		$post_slide = '<xml>
+						<modules>
+						     <module name="presentation">
+						      <document url="https://easycoachingapp.com/apps/whiteboard.pdf"/>
+						   </module>
+						</modules>
+					  </xml>';
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $final_string);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_slide);
+		$xml_response = curl_exec($ch);
+		curl_close($ch);
+
+		$xml = simplexml_load_string($xml_response);
+
+		$returncode = $xml->returncode;
+		if ($returncode == 'SUCCESS') {
+			$member_id = $this->session->userdata ('member_id');
+			$this->add_to_history ($coaching_id, $class_id, $member_id);
+		}
+		return $returncode;
+	}
+
+	public function add_to_history ($coaching_id=0, $class_id=0, $member_id=0) {
+		$data['coaching_id'] = $coaching_id;
+		$data['class_id'] = $class_id;
+		$data['start_date'] = time ();
+		$data['end_date'] = 0;
+		$data['created_by'] = $member_id;
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('class_id', $class_id);
+		$this->db->where ('start_date >', 0);
+		$this->db->where ('end_date', 0);
+		$sql = $this->db->get ('virtual_classroom_history');
+		if ($sql->num_rows () == 0) {
+			$this->db->insert ('virtual_classroom_history', $data);
+		} else {
+			$this->db->set ('end_date', time ());
+			$this->db->where ('coaching_id', $coaching_id);
+			$this->db->where ('class_id', $class_id);
+			$this->db->update ('virtual_classroom_history');
+		}
 	}
 }

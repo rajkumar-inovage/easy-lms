@@ -6,7 +6,7 @@ $config['vc'] = '';
 define ('VM_PARTICIPANT_ATTENDEE', 				1);
 define ('VM_PARTICIPANT_MODERATOR', 			2);
 
-define ('VC_LOGOUT_URL', 					site_url('coaching/virtual_class/index'));
+define ('VC_LOGOUT_URL', 					site_url('coaching/virtual_class/end_meeting'));
 define ('VC_BANNER_TEXT', 					'Easy Coaching App');
 define ('VC_BANNER_COLOR', 					'#f5f5f5');
 define ('VC_LOGO', 							'');

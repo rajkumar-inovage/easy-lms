@@ -26,25 +26,25 @@ class Page extends MX_Controller {
 		$data['coaching'] = false;
 		$data['flush'] = $flush;
 		$data['script'] = $this->load->view ('scripts/find_coachings', $data, true);
-		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('login/header', $data);
 		$this->load->view('find_coaching', $data);
-		$this->load->view(INCLUDE_PATH . 'footer', $data);
+		$this->load->view('login/footer', $data);
 	}
 
 	public function create_coaching () {
 		$data['page_title'] = 'Create A New Coaching';
 		$data['logo'] = base_url ($this->config->item('system_logo'));
 		$data['coaching'] = false;
-		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('login/header', $data);
 		$this->load->view('create_coaching', $data);
-		$this->load->view(INCLUDE_PATH . 'footer', $data);
+		$this->load->view('login/footer', $data);
 	}
 
 	public function reset () {
 		$this->session->sess_destroy ();
 		$data['script'] = $this->load->view ('scripts/reset', [], true);
-		$this->load->view (INCLUDE_PATH . 'header', $data);
+		$this->load->view ('login/header', $data);
 		$this->load->view ('reset', $data);
-		$this->load->view (INCLUDE_PATH . 'footer', $data);
+		$this->load->view ('login/footer', $data);
 	}
 }

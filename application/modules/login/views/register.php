@@ -6,7 +6,7 @@
 	  	<?php if (is_file ($logo)) { ?>
 			<img src="<?php echo $logo; ?>" height="50" title="<?php echo $page_title; ?>" class="text-center">
 		<?php } else { ?>
-		    <h4 class="text-center">Don't Have An Account</h4>
+		    <h4 class="text-center"><?php echo $site_title; ?></h4>
 		<?php } ?>
 	    <h5 class="text-center">Create a new <?php if ($role_id == USER_ROLE_TEACHER) echo 'teacher'; else echo 'student'; ?> account</h5>
 	  </div>
@@ -67,7 +67,7 @@
 				
 				<p class="d-none mt-4 text-danger font-weight-bold">Note: Joining depends on admin approval ie, you will not be able to login until an admin approves your joining</p>
 
-				<a href="<?php echo site_url ('coaching/login/index/?sub='.$slug); ?>" class="mt-4">Already have an account? <strong>Sign In</strong></a>
+				<a href="<?php echo site_url ('login/login/index/?sub='.$slug); ?>" class="mt-4">Already have an account? <strong>Sign In</strong></a>
 			</div>
 	  	  </div>
 	  	</form>
