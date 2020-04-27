@@ -55,38 +55,16 @@
 </head>
 <body class="<?php if (isset($body_class)) echo $body_class; ?>">
 	
-	<header class="bg-white border-bottom ">
-        <div class="container">
-            <nav class="navbar ">
+	<header class="">
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container">
                 <!-- Sidebar Toggler -->
                 <button class="navbar-toggle" type="button" id="toggle_sidebar_left">
-                    <span class="icon-bar d-block bg-grey-500"></span>
-                    <span class="icon-bar d-block bg-grey-500"></span>
-                    <span class="icon-bar d-block bg-grey-500"></span>
+                    <span class="navbar-toggler-icon"></span>
                 </button>
                 <!-- /Sidebar Toggler -->
 
-                <?php 
-                if ($this->session->userdata ('site_title')) {
-                    $title = $this->session->userdata ('site_title');
-                } else if (isset($site_title)) {
-                    $title = $site_title;
-                } else {
-                    $title = APP_NAME;
-                }
-                ?>
-                <a class="navbar-brand link-text-color" href="<?php echo site_url($this->session->userdata ('dashboard')); ?>" title="<?php echo $title; ?>" >
-                    <?php 
-                        $logo_path = $this->session->userdata ('logo');
-                        if (is_file($logo_path)) {
-                            echo '<img src="'.$logo_path.'" alt="'.$title.'" class=" " width="120" height="" id="" />';
-                        } else {
-                            ?>
-                            <h5 class=""><?php echo $title; ?></h5>
-                            <?php
-                        }
-                    ?>                
-                </a>
+                <span class="nav-text font-weight-bold"><?php echo $this->session->userdata ('site_title'); ?></span>
 
                 <div class="profile-button">
                   <?php if ($this->session->userdata ('profile_image')) { ?>
@@ -106,8 +84,8 @@
                   <?php } ?>
                 </div>
 
-            </nav>
-        </div>
+            </div>
+        </nav>
     </header>
 
     <div class="bg-white shadow-sm  ">
@@ -188,6 +166,19 @@
 			}
 			?>
 		</ul>
+
+        <div class="sidebar-block">
+            <?php if (isset ($access_code) && $access_code != '')  { ?>
+                <div class="" id="installBanner" style="visibility: hidden;">
+                    <button class="btn btn-success " id="installBtn"><i class="fab fa-android"></i> Install App</button>
+                </div>
+            <?php } ?>
+        </div>
+
+        <div class="sidebar-block">
+            <a class="link-text-color " href="<?php echo BRANDING_URL; ?>"><?php echo BRANDING_TEXT; ?></a>
+        </div>
+
 
 	</div>
 	<!--// Sidebar left -->

@@ -6,7 +6,7 @@
 <?php } ?>
 		<div class="card mb-4">
 			<div class="card-body">
-				<?php echo form_open ('coaching/user_actions/create_account/'.$coaching_id.'/'.$role_id.'/'.$member_id, array ('class'=>'form-horizontal', 'id'=>'validate-')); ?>
+				<?php echo form_open ('coaching/user_actions/create_account/'.$coaching_id.'/'.$role_id.'/'.$member_id, array ('class'=>'form-horizontal', 'id'=>'validate-1')); ?>
 					
 					<div class="form-group row">
 						<div class="col-md-6">
@@ -37,9 +37,7 @@
 								?>
 							</select>
 						</div>
-					</div>
 					
-					<div class="form-group row">
 						<div class="col-md-6">
 							<label class="form-label"><?php echo 'Status'; ?></label>
 							<select name="status" class="form-control" id="search-status" >
@@ -50,6 +48,33 @@
 						</div>
 					</div>
 
+					<div class="form-group ">
+						<label for="first_name" class="">Name <span class="text-danger">*</span></label>
+						<div class="row">
+							<div class="col-md-4 mb-1">
+								<input name='first_name' class="form-control required " required="" id="first_name" placeholder="First name" type="text" value="<?php echo set_value('first_name', $result['first_name']);?>">
+							</div>
+							<div class="col-md-4 mb-1">
+								<input name='second_name' class="form-control " id="second_name" placeholder="Middle name" type="text" value="<?php echo set_value('second_name', $result['second_name']);?>">
+							</div>
+							<div class="col-md-4 mb-1">
+								<input name='last_name' class="form-control required " id="last_name" placeholder="Last name" type="text" value="<?php echo set_value('last_name', $result['last_name']);?>">
+							</div>
+						</div>
+					</div>
+						
+					<div class="form-group row">
+						<div class="col-md-6">
+							<?php echo form_label('Contact No<span class="text-danger">*</span>', '', array('class'=>'')); ?>
+							<?php echo form_input(array('name'=>'primary_contact', 'class'=>'form-control digits ', 'value'=>set_value('primary_contact', $result['primary_contact']) ));?>
+						</div>
+
+						<div class="col-md-6">
+							<?php echo form_label('E-mail <span class="text-danger"></span>', '', array('class'=>'', 'for' =>"email")); ?>
+							<?php echo form_input(array('name'=>'email', 'class'=>'form-control email  ', 'value'=>set_value('email', $result['email']), 'id'=>'email')); ?>
+						</div>
+						
+					</div>
 
 					<div class="form-group row">
 					    <?php if ($member_id > 0) { ?>
@@ -68,34 +93,7 @@
 								<?php echo form_input(array('name'=>'sr_no', 'class'=>'form-control', 'id'=>'sr_no', 'value'=>set_value('sr_no', $result['sr_no'])));?>
 							</div>
 						</div>
-					</div>						
-					
-					<div class="form-group ">
-						<label for="first_name" class="">Name <span class="text-danger">*</span></label>
-						<div class="row">
-							<div class="col-md-4 mb-1">
-								<input name='first_name' class="form-control required " required="" id="first_name" placeholder="First name" type="text" value="<?php echo set_value('first_name', $result['first_name']);?>">
-							</div>
-							<div class="col-md-4 mb-1">
-								<input name='second_name' class="form-control " id="second_name" placeholder="Middle name" type="text" value="<?php echo set_value('second_name', $result['second_name']);?>">
-							</div>
-							<div class="col-md-4 mb-1">
-								<input name='last_name' class="form-control required " id="last_name" placeholder="Last name" type="text" value="<?php echo set_value('last_name', $result['last_name']);?>">
-							</div>
-						</div>
-					</div>
-						
-					<div class="form-group row">
-						<div class="col-md-6">
-							<?php echo form_label('E-mail <span class="text-danger"></span>', '', array('class'=>'', 'for' =>"email")); ?>
-							<?php echo form_input(array('name'=>'email', 'class'=>'form-control email  ', 'value'=>set_value('email', $result['email']), 'id'=>'email')); ?>						
-						</div>
-						
-						<div class="col-md-6">
-							<?php echo form_label('Contact No<span class="text-danger">*</span>', '', array('class'=>'')); ?>
-							<?php echo form_input(array('name'=>'primary_contact', 'class'=>'form-control digits ', 'value'=>set_value('primary_contact', $result['primary_contact']) ));?>
-						</div>					
-					</div>
+					</div>					
 					
 					<div class="form-group row ">						
 						<div class="col-md-6">
@@ -133,14 +131,14 @@
 					</div>
 
 					<hr>
-					
-					<div class="btn-toolbar">
-						<?php
-						echo form_submit ( array ('name'=>'submit', 'value'=>'Save ', 'class'=>'btn btn-primary ')); 
-						?>
-					</div>	
 				</div>
-			</form>					
+					
+				<div class="card-footer">
+					<?php
+					echo form_submit ( array ('name'=>'submit', 'value'=>'Save ', 'class'=>'btn btn-primary ')); 
+					?>
+				</div>
+			</form>
 		</div>
 	</div>
 	<?php if ($member_id > 0) { ?>

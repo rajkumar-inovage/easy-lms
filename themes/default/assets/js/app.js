@@ -1,4 +1,6 @@
 const appPath = 'http://localhost/repos/easycoachingapp/';
+const logoutPath = 'login/login_actions/logout';
+const updatePath = 'login/login_actions/update_session';
 const sidebarSection = document.getElementById("sidebar");
 const mainSection = document.getElementById("content");
 const outputDiv = document.getElementById("response"); 
@@ -149,11 +151,33 @@ function show_confirm_ajax (msg, url, redirect) {
 
 /*----==== Logout User ====----*/
 function logout_user () {
-	const slug = localStorage.getItem ('slug');
+	// We dont want to remove access code
+	const access_code = localStorage.getItem ('access_code');
 	window.localStorage.clear ();
-	localStorage.setItem ('slug', slug);
-	document.location = appPath + 'login/login/logout/'+slug;
+	localStorage.setItem ('access_code', access_code);
+
+	const logoutURL = appPath + logoutPath + '/' + access_code;
+	fetch (logoutURL, { 
+		method : 'POST',
+	}).then (function (response) {
+		return response.json ();
+	}).then (function(result) {
+		document.location = result.redirect;
+	});
 }
+
+
+function update_session (user_token) {
+	const updateURL = appPath + updatePath + '/' + user_token;
+	fetch (updateURL, { 
+		method : 'POST',
+	}).then (function (response) {
+		return response.json ();
+	}).then (function(result) {
+		const dashboard = localStorage.getItem ('dashboard');
+		document.location = appPath + dashboard;
+	});
+}	
 
 /*
  * Interactive App install button
@@ -168,28 +192,29 @@ window.addEventListener('beforeinstallprompt', event => {
 	deferredPrompt = event;
 
 	// Update UI notify the user they can add to home screen
-	document.querySelector('#installBanner').style.visibility = 'visible';
+	const installBannerSelector = document.querySelector('#installBanner');
+	if (installBannerSelector) {
+		installBannerSelector.style.visibility = 'visible';
+		// Attach the install prompt to a user gesture
+		document.querySelector('#installBtn').addEventListener('click', event => {
 
-	// Attach the install prompt to a user gesture
-	document.querySelector('#installBtn').addEventListener('click', event => {
+			// Show the prompt
+			deferredPrompt.prompt();
 
-		// Show the prompt
-		deferredPrompt.prompt();
-
-		// Wait for the user to respond to the prompt
-		deferredPrompt.userChoice
-		  .then((choiceResult) => {
-		    if (choiceResult.outcome === 'accepted') {
-				// Update UI notify the user they can add to home screen
-				document.querySelector('#installBanner').style.visibility = 'hidden';
-				const slug = localStorage.getItem ('slug');
-				document.location.href = appPath + 'student/login/index/?sub='+slug;
-		    } else {
-		      console.log('User dismissed the A2HS prompt');
-		    }
-		    deferredPrompt = null;
+			// Wait for the user to respond to the prompt
+			deferredPrompt.userChoice
+			  .then((choiceResult) => {
+			    if (choiceResult.outcome === 'accepted') {
+					// Update UI notify the user they can add to home screen
+					document.querySelector('#installBanner').style.visibility = 'hidden';
+			    } else {
+			      console.log('User dismissed the A2HS prompt');
+			    }
+			    deferredPrompt = null;
+			});
 		});
-	});
+	}
+
 
 
 });
@@ -197,8 +222,8 @@ window.addEventListener('beforeinstallprompt', event => {
 // Check if app was successfully installed
 window.addEventListener('appinstalled', (evt) => {
 	app.logEvent ('a2hs', 'installed');
-	document.querySelector('#installBanner').style.display = 'none';
 	document.querySelector('#installBanner').style.visibility = 'hidden';
+	//document.querySelector('#installBanner').style.display = 'none';
 	$('#installBanner').hide ();
 });
 

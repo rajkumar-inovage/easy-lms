@@ -35,19 +35,16 @@ class Vitals extends MX_Controller {
 		/* 
 			For PUBLIC module login is not required, user will not be redirected to Dashboard OR Logout page
 		*/
-		if ($module == 'public' || $module == 'login' || $module == 'admin') {
+		if ($module == 'public' || $module == 'login') {
 			// Do Nothing
 		} else {
 			if (! $this->session->has_userdata ('is_logged_in')) {
-				$redirect = site_url ('public/page/index');
-				redirect ($redirect);				
-			} 
-			if ( $this->session->userdata ('role_id') == USER_ROLE_STUDENT && $module == 'coaching') {
-				$redirect = site_url ('student/home/dashboard');
+				$redirect = site_url ('login/login/index');
 				redirect ($redirect);				
 			}
 		}
 	}
+
 		
 	// Load default settings
 	public function load_acl_menu () {

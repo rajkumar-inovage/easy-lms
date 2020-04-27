@@ -24,34 +24,6 @@ class Tests_model extends CI_Model {
 		return $sql->row_array ();
 	}
 
-	public function create_category ($coaching_id=0, $category_id=0) {
-
-		$data['title'] 				= $this->input->post ('title');
-		
-		if ($category_id > 0 ) {
-			$this->db->where ('coaching_id', $coaching_id);
-			$this->db->where ('id', $category_id);
-			$this->db->update ('coaching_test_categories', $data);
-		} else {
-			$data['level'] 			= 0;
-			$data['parent_id'] 		= 0;
-			$data['status'] 		= 1;
-			$data['coaching_id'] 	= $coaching_id;
-			$data['creation_date'] = time ();
-			$data['created_by'] = $this->session->userdata ('member_id');
-			$this->db->insert ('coaching_test_categories', $data);
-			$category_id = $this->db->insert_id ();
-		}		
-		return $category_id;		
-	}
-
-	// Add ITS Categories to a plan
-	public function remove_category ($coaching_id=0, $category_id=0) {
-		$this->db->where ('coaching_id', $coaching_id);
-		$this->db->where ('id', $category_id);
-		$sql = $this->db->delete ('coaching_test_categories');
-	}
-
 	//=========== Model for list tests =======================
 	public function get_latest_tests ($limit=5) {
 		$this->db->where ('coaching_id', $coaching_id);

@@ -1,3 +1,23 @@
+<div class="row justify-content-center mb-4">
+	<div class="col-md-6 ">
+		<div class="card shadow-sm bg-green-200">
+			<div class="card-body">
+				<h4>ACESSS CODE</h4>
+				<?php echo $coaching['reg_no']; ?>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6 ">
+		<div class="card shadow-sm bg-green-200">
+			<div class="card-body">
+				<h4>ACESSS URL</h4>
+				<?php echo site_url('/?sub='.$coaching['reg_no']); ?>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="row">
 	<div class="col-md-6 ">
 		<?php echo form_open ('coaching/setting_actions/update_account/'.$coaching_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1')); ?>
@@ -51,7 +71,7 @@
 				</div>
 				
 				<div class="card-footer">
-					<input type="submit" name="submit" value="Save" class="btn btn-success">
+					<input type="submit" name="submit" value="Save" class="btn btn-primary">
 				</div>
 			</div>
 		</form>

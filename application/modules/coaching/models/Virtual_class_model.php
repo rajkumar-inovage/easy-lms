@@ -87,7 +87,6 @@ class Virtual_class_model extends CI_Model {
 
 		$call_name = 'create';
 		$query_string = '';
-		$query_string .= 'name='.$class_name;
 		$query_string .= '&meetingID='.$meeting_id;
 		$query_string .= '&moderatorPW='.$moderator_pwd;
 		$query_string .= '&attendeePW='.$attendee_pwd;
@@ -99,6 +98,7 @@ class Virtual_class_model extends CI_Model {
 		$query_string .= '&bannerText='.$bannerText;
 		$query_string .= '&muteOnStart=true';
 		$query_string .= '&allowModsToUnmuteUsers=true';
+		$query_string .= 'copyright='.VC_COPYRIGHT_TEXT;
 		//$query_string .= '&logo='.VC_LOGO;
 
 		$final_string = $call_name . $query_string . $shared_secret;

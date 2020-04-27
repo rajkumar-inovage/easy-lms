@@ -9,6 +9,7 @@ class User_actions extends MX_Controller {
 	    $config = ['config_coaching'];
 	    $models = ['coaching_model', 'users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
+	    $this->load->helper ('string');
 	}
 	
 	/* LIST USERS
@@ -27,8 +28,8 @@ class User_actions extends MX_Controller {
 		$this->form_validation->set_rules ('user_role', 'User Role', 'required');
 		$this->form_validation->set_rules ('first_name', 'First Name', 'required|max_length[50]|trim|ucfirst');
 		$this->form_validation->set_rules ('second_name', 'Second Name', 'max_length[50]|trim');
-		$this->form_validation->set_rules ('last_name', 'Last Name', 'required|max_length[50]|trim');
-		$this->form_validation->set_rules ('email', 'Email', 'required|valid_email');
+		$this->form_validation->set_rules ('last_name', 'Last Name', 'max_length[50]|trim');
+		$this->form_validation->set_rules ('email', 'Email', 'valid_email');
 		$this->form_validation->set_rules ('primary_contact', 'Primary Contact', 'required|is_natural|max_length[10]|trim');
 		$this->form_validation->set_rules ('batch', 'Batch Name', '');
 		$this->form_validation->set_rules ('gender', 'Gender', '');	
@@ -37,15 +38,20 @@ class User_actions extends MX_Controller {
 			$coaching = $this->coaching_model->get_coaching_subscription ($coaching_id);			
 			$free_users = $coaching['max_users'];
 			$num_users = $this->users_model->count_all_users ($coaching_id);
+			$contact 	= $this->input->post ('primary_contact');
 			
 			if ( ($num_users > $free_users) && $member_id == 0) {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'User limit reached. You can create a maximum of '.$free_users.' user accounts in Free Subscription plan. Upgrade your plan to create more users' )));
+			} else if ($member_id == 0 && ($this->users_model->contact_exists ($contact, $coaching_id) == true)) {
+				// Check if already exists
+				$this->output->set_content_type("application/json");
+				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'This mobile number is already in use with another account' )));
 			} else {
 				$status = $this->input->post ('status');
 				// Save user details
-				$id = $this->users_model->save_account ($coaching_id, $member_id, $status);
-				
+				$id = $this->users_model->save_account ($coaching_id, $member_id, $status);				
+
 				// Get coaching details
 				$coaching_name = $coaching['coaching_name'];
 				$user_name = $this->input->post ('first_name') . ' ' .$this->input->post ('last_name');
@@ -67,7 +73,6 @@ class User_actions extends MX_Controller {
 					$message = 'Your account has been created. You can log-in to your account';
 					$this->message->set ($message, 'success', true );
 				}
-
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url ('coaching/users/create/'.$coaching_id))));
 			}

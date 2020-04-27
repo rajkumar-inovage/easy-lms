@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['login'] = '';
 
+define ('INCLUDE_PATH', 			    'public/layout/');
+
 // Maximum wrong password attempts allowed (default 5)
 define('MAX_WRONG_PASSWORD_ATTEMPTS',   	5);
 

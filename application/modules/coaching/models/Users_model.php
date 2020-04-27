@@ -93,15 +93,29 @@ class Users_model extends CI_Model {
 	    	$gender = 'n';
 	    }
 
+	    if ($this->input->post ('password')) {
+	    	$password = $this->input->post ('password');
+	    } else {
+	    	$password = random_string ('numeric', 6);
+	    }
+
+    	$name = explode (' ', $this->input->post ('first_name'), 2);
+    	$first_name = $name[0];
+    	if (isset($name[1])) {
+    		$last_name = $name[1];
+    	} else {
+    		$last_name = '';
+    	}
+
 		$data = array (
 			'role_id'	=>		$this->input->post ('user_role'),
 			'sr_no'		=>		$this->input->post ('sr_no'), 
-			'first_name'=>		$this->input->post ('first_name'), 
-			'second_name'=>		$this->input->post ('second_name'), 
-			'last_name'	=>		$this->input->post ('last_name'), 
+			'first_name'=>		$first_name, 
+			'second_name'=>		'', 
+			'last_name'	=>		$last_name, 
 			'primary_contact'=> $this->input->post ('primary_contact'),
 			'email'		=>		$this->input->post ('email'),
-			'login'		=>		$this->input->post ('email'),
+			'login'		=>		'',
 			'dob'		=>		$date,
 			'gender'	=>		$gender,
 			'status'  	=> 		$status,
@@ -113,10 +127,10 @@ class Users_model extends CI_Model {
 			$this->db->update ('members', $data);			
 		} else {
 			// create profile
-			$password = $this->input->post ('password');
+			$otp = $password;
 			$data['password'] = password_hash ($password, PASSWORD_DEFAULT);
 			$data['coaching_id']  = $coaching_id;
-			$data['user_token'] = md5($this->input->post ('email'));
+			$data['user_token'] = md5 ($this->input->post ('primary_contact'));
 			$data['link_send_time']	= time();
 			$data['creation_date'] = time ();
 			$data['created_by'] = $this->session->userdata ('member_id');
@@ -126,8 +140,20 @@ class Users_model extends CI_Model {
 			// Set Userid
 			$user_id = $this->generate_reference_id ($member_id);
 			$this->db->set ('adm_no', $user_id);
+			$this->db->set ('login', $user_id);
 			$this->db->where ('member_id', $member_id);
 			$this->db->update ('members');
+
+			// Send SMS
+			if ($this->session->userdata ('member_id') > 0 ) {
+				// Account is created by someone else, so send message
+				$coaching 		= $this->coaching_model->get_coaching ($coaching_id);
+				$coaching_name  = $coaching['coaching_name'];
+				$contact = $this->input->post ('primary_contact');
+				$message = 'Dear '.$data['first_name'] .'. Your account is create in '.strtoupper($coaching_name).'. Your login details are- LoginID: '.$data['primary_contact'].', Password: '.$otp.', Access Code: '.$coaching['reg_no'].'. USe the following link to login '.site_url ('/?sub='.$coaching['reg_no']);
+				$this->sms_model->send_sms ($contact, $message);
+			}
+
 		}
 		return $member_id;
 	}
@@ -776,6 +802,17 @@ class Users_model extends CI_Model {
 		}
 	}	
 
+	public function contact_exists ($contact='', $coaching_id=0) {
+		$this->db->where ('primary_contact', $contact);
+		$this->db->where ('coaching_id', $coaching_id);
+		$sql = $this->db->get ('members');
+		if ($sql->num_rows () > 0 ) {
+			return true;
+		} else {
+			return false;
+		}
+	}	
+
 	public function check_unique ($str='', $type='adm_no', $member_id=0) {
 		
 		$this->db->where ($type, $str);
@@ -828,5 +865,17 @@ class Users_model extends CI_Model {
 		$this->db->set ('link_send_time', $time);
 		$this->db->where ('member_id', $member_id);
 		$this->db->update ('members');
-	}	
+	}
+
+
+	public function sms_template ($template=SMS_USER_ACCOUNT_CREATED, $member_id=0) {
+		$message = '';
+		$user = $this->get_user ($member_id);
+		$coaching 		= $this->coaching_model->get_coaching ($user['coaching_id']);
+		$coaching_name  = $coaching['coaching_name'];
+
+		$message[SMS_USER_ACCOUNT_CREATED] = '';
+
+		return $message[$template];
+	}
 }

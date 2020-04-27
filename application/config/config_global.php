@@ -18,7 +18,6 @@ $config['system_logo']					= 'contents/system/system_logo.png';
 $config['coaching_logo']				= 'logo.png';
 $config['profile_picture_path']			= 'contents/profile_images/';
 
-define ('INCLUDE_PATH', 			    'layout/');
 define ('THEME_PATH', 			    	'themes/default/');
 
 define ('APP_NAME', 					'Easy Coaching');

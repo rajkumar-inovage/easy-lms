@@ -3,13 +3,8 @@
 	
 	<footer class="light-footer mt-4">
 		<div class="container">
-			<p class="text-center">
-				Having trouble logging-in? <br>
-			  <a class="link-text" href="<?php echo site_url ('public/page/reset'); ?>"> Click Here To Reset and Start Over</a>
-			</p>
 		  <div class="d-flex justify-content-center">
 			<p class="footer-info">
-			  <a class="link-text-color" href="<?php echo BRANDING_URL; ?>"><?php echo BRANDING_TEXT; ?></a>
 			</p>
 		</div>
 	</footer>
@@ -25,7 +20,6 @@
 	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/toastr.min.js'); ?>"></script>
 	<!-- ChartJS -->
 	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/chart.bundle.min.js'); ?>"></script>
-	<script src="<?php echo base_url(THEME_PATH . 'assets/js/bootstrap-pincode-input.js'); ?>"></script>
 	<!-- Application JS -->
 	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/app.js'); ?>"></script>
 	<!-- Custom JS (Dynamically included) -->

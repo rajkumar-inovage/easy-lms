@@ -12,6 +12,7 @@ class Coachings_model extends CI_Model {
 		if ($status != '') {
 			$this->db->where ('C.status', $status);
 		}
+		$this->db->order_by ('creation_date', 'DESC');
 		$this->db->where('CS.coaching_id=C.id');
 		$this->db->where('SP.id=CS.plan_id');
 		$sql = $this->db->get ();
@@ -53,6 +54,7 @@ class Coachings_model extends CI_Model {
 
 	public function get_coaching_by_slug ($coaching_slug='') {
 		$this->db->where ('coaching_url', $coaching_slug);
+		$this->db->or_where ('reg_no', $coaching_slug);
 		$this->db->from ('coachings');
 		$sql = $this->db->get ();
 		if  ($sql->num_rows () > 0 ) {
@@ -326,15 +328,6 @@ class Coachings_model extends CI_Model {
 	/*---=== ===---*/
 	public function delete_account ($coaching_id=0) {
 
-		// Get All Coaching Plans
-		$this->db->where ("coaching_id", $coaching_id);
-		$sql = $this->db->get ("coaching_plans");
-		if ($sql->num_rows() > 0) {
-			foreach ($sql->result_array() as $row) {
-				$this->remove_plan ($row['id']);
-			}
-		}
-
 		// Delete Coaching Users
 		$this->db->where ("coaching_id", $coaching_id);
 		$this->db->delete ("members");
@@ -345,7 +338,7 @@ class Coachings_model extends CI_Model {
 
 		// Delete Coaching Plans
 		$this->db->where ("coaching_id", $coaching_id);
-		$this->db->delete ("coaching_plans");
+		$this->db->delete ("coaching_test_plans");
 
 		// Delete Coaching Account
 		$this->db->where ("id", $coaching_id);

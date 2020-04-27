@@ -5,15 +5,20 @@
 				<?php echo form_open('coaching/virtual_class_actions/create_classroom/'.$coaching_id.'/'.$class_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1')); ?>
 
 					<div class="form-group ">
-						<?php echo form_label('Virtual Classroom Name<span class="required">*</span>', '', array('class'=>'control-label')); ?>
+						<?php echo form_label('Classroom Name<span class="required">*</span>', '', array('class'=>'control-label')); ?>
 						<input type="text" class="form-control required" name="class_name" value="<?php echo set_value('class_name', $class['class_name']); ?>" />
-						<span class="text-muted">Use alphabets and numbers, without space</span>
 					</div>
 					
 					<div class="form-group ">
-						<?php echo form_label('Welcome Message', '', array('class'=>'control-label')); ?>
+						<?php echo form_label('Description (Optional)','', array('class'=>'control-label')); ?>
+						<textarea name="description" class="form-control" rows="3" max_length="200"><?php echo set_value('description', $class['description']); ?></textarea>
+						<div class="text-muted">Short desciption of the class. Maximum length can be 200 characters, including SPACES</div>
+					</div>
+
+					<div class="form-group ">
+						<?php echo form_label('Welcome Message (Optional)', '', array('class'=>'control-label')); ?>
 						<textarea name="welcome_message" class="form-control" rows="3" max_length="100"><?php echo set_value('welcome_message', $class['welcome_message']); ?></textarea>
-						<div class="text-muted">Maximum length can be 100 characters, including SPACES</div>
+						<div class="text-muted">This will be displayed to users in class. Maximum length can be 100 characters, including SPACES</div>
 					</div>
 
 					<div class="form-group row">
@@ -45,25 +50,25 @@
 						</label>
 					</div>
 
-					<div class="form-group row ">
+					<input type="hidden" class="form-control required" name="max_participants" value="<?php echo set_value('max_participants', $class['max_participants']); ?>" placeholder="<?php echo VC_MAX_PARTICIPANTS; ?>" />
+					<div class="form-group row d-none">
 						<div class="col-md-6"> 
 							<?php echo form_label('Max Participant', '', array('class'=>'control-label')); ?>
-							<input type="number" class="form-control required" name="max_participants" value="<?php echo set_value('max_participants', $class['max_participants']); ?>" placeholder="<?php echo VC_MAX_PARTICIPANTS; ?>" />
 							<div class="text-muted">Between 1 and <?php echo VC_MAX_PARTICIPANTS; ?></div>
 						</div>
 					</div>
 
-					<div class="form-group row ">
+					<input type="hidden" class="form-control required" name="duration" value="<?php echo set_value('duration', $class['duration']); ?>" placeholder="<?php echo VC_DURATION; ?>" />
+					<div class="form-group row d-none">
 						<div class="col-md-6"> 
 							<?php echo form_label('Duration (minutes)', '', array('class'=>'control-label')); ?>
-							<input type="number" class="form-control required" name="duration" value="<?php echo set_value('duration', $class['duration']); ?>" placeholder="<?php echo VC_DURATION; ?>" />
 							<div class="text-muted">Between 1 and <?php echo VC_DURATION; ?></div>
 						</div>
 					</div>					
 					
-					<h5 class="card-title border-bottom mt-4">Schedule</h5>
+					<h5 class="card-title border-bottom mt-4 d-none">Schedule</h5>
 
-					<div class="form-group row ">
+					<div class="form-group row d-none">
 						<?php
 							if ($class['start_date']) {
 								$start_date = date ('Y-m-d', $class['start_date']);
@@ -97,7 +102,7 @@
 						</div>
 					</div>
 
-					<div class="form-group row ">
+					<div class="form-group row d-none">
 						<?php
 							if ($class['end_date']) {
 								$end_date = date ('Y-m-d', $class['end_date']);
