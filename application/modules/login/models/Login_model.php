@@ -50,19 +50,18 @@ class Login_model extends CI_Model {
 		$this->dbforge->create_table('members_otp', FALSE, $attributes);
 	}
 
-    public function validate_login ($slug='') {
+    public function validate_login () {
 		// this will validate if current user authentic to use resources
 		// based on the received username and password
 		$login		 	=  $this->input->post('username');
 		$password		=  $this->input->post('password');
-		$coaching_id 	=  $this->input->post ('coaching_id');
+		$slug			=  $this->input->post('access_code');
 
-		if ($slug == 'admin') {
-		} else {
-			$this->db->where ('coaching_id', $coaching_id);
-		}
+		$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
+		$coaching_id = $coaching['id'];
 		$where = "(login='$login' OR adm_no='$login' OR email='$login' OR primary_contact='$login')"; 
 		$this->db->where ($where);
+		$this->db->where ('coaching_id', $coaching_id);
 		$query = $this->db->get ("members");
 		$row	=	$query->row_array();
 		$return = array ();
@@ -148,9 +147,7 @@ class Login_model extends CI_Model {
 		$role_home  	 = $roles['dashboard'];
 		$is_admin		 = $roles['admin_user'];
 		
-		// save login data to database			
-		$this->db->insert ('login_history', array ('member_id'=>$member_id, 'login_dt'=>$login_dt, 'logout_dt'=>$logout_dt, 'session_id'=>$session_id, 'last_activity'=>$last_activity, 'ip_address'=>$ip_address, 'user_agent'=>$user_agent, 'user_data'=>$user_data, 'status'=>$status, 'remarks'=>$remarks) );
-		
+
 		if ($coaching_id > 0) {
 		// Get coaching details
 			$coaching = $this->coaching_model->get_coaching ($coaching_id);
@@ -180,11 +177,22 @@ class Login_model extends CI_Model {
 						'site_title'	=> $site_title,
 						'coaching_id'	=> $coaching_id,
 						'profile_image'	=> $profile_image,
-						'slug'			=> $slug,
+						'access_code'	=> $slug,
 						);
 		
+		// save login data to database, if not already saved
+		$this->db->where ('user_token', $user_token);
+		$sql = $this->db->get ('login_history');
+		if ($sql->num_rows () == 0) {
+			$login_data = array ('login_dt'=>$login_dt, 'logout_dt'=>$logout_dt, 'session_id'=>$session_id, 'last_activity'=>$last_activity, 'ip_address'=>$ip_address, 'user_agent'=>$user_agent, 'user_data'=>$user_data, 'status'=>$status, 'remarks'=>$remarks);
+			$login_data = array_merge($login_data, $options);
+			$this->db->insert ('login_history',  $login_data);			
+		}
+
 		$this->session->set_userdata ($options);
 	}
+
+
 	public function check_registered_email ($email, $coaching_id='') {
 		$this->db->where ('email', $email);
 		if ( ! empty($login)) {
@@ -243,11 +251,8 @@ class Login_model extends CI_Model {
     		$menus = $this->common_model->load_acl_menus ($role_id, $parent_id, MENUTYPE_FOOTER);
     		$this->session->set_userdata ('FOOTER_MENU', $menus);
 		}
-	}
+	}	
 	
-	public function logout () {
-		$this->session->sess_destroy ();
-	}
 
 	public function update_password ($member_id) {
 		// get user details
@@ -278,6 +283,14 @@ class Login_model extends CI_Model {
 					);
 		$this->db->update('login_attempts',$data);
 	}
+
+
+	public function get_user_token ($user_token='') {
+		$this->db->where ('user_token', $user_token);
+		$sql = $this->db->get ('login_history');
+		return $sql->row_array ();
+	}
+
 	public function get_last_otp($member_id){
 		$this->db->select ('*');
     	$this->db->where ('member_id', $member_id);

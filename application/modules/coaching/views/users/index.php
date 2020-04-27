@@ -51,7 +51,7 @@
 
 
 <?php 
-echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$status, array('class'=>'form-horizontal row-border', 'id'=>'confirm') );
+echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$status, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') );
 	?>
 	<div class="card card-default">
 		<div class="-table-responsive" id="users-list">
@@ -59,10 +59,10 @@ echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$s
 				<thead>
 					<tr>
 						<th width="3%">
-							<input id="checkAll" type="checkbox" >
+							<input id="checkAll" type="checkbox" onchange="check_all()" >
 						</th>
 						<th ><?php echo 'Name'; ?></th>
-						<th class="d-none d-sm-table-cell"><?php echo 'Email'; ?></th>
+						<th class="d-none d-sm-table-cell"><?php echo 'Contact'; ?></th>
 						<th width=""><?php echo 'Actions'; ?></th>
 					</tr>
 				</thead>
@@ -85,7 +85,7 @@ echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$s
 								</a> <br> 
 								<?php echo $row['adm_no']; ?>
 							</td>
-							<td class="d-none d-sm-table-cell"><?php echo $row['email']; ?></td>
+							<td class="d-none d-sm-table-cell"><?php echo $row['primary_contact']; ?></td>
 							<td> 
 								<div class="dropdown">
 									<a class="btn btn-outline dropdown-toggle" type="button" id="userMenu<?php echo $row['member_id'];?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Edit</a>
@@ -121,6 +121,17 @@ echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$s
 				?>
 				</tbody>
 			</table> 
+		</div>
+
+		<div class="card-footer">
+			<select name="action">
+				<option value="0">---With Selected---</option>
+				<option value="delete">Delete</option>
+				<option value="enable">Enable Account</option>
+				<option value="disable">Disable Account</option>
+			</select>
+
+			<input type="submit" name="Submit">
 		</div>
 	</div>
 </form>

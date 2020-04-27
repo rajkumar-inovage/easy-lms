@@ -14,3 +14,4 @@ define ('VC_MAX_PARTICIPANTS', 				100);
 define ('VC_DURATION', 						300);		// in minutes
 define ('VC_RECORD', 						true);		
 define ('VC_WELCOME_MESSAGE', 				'Welcome to ');
+define ('VC_COPYRIGHT_TEXT', 				'');

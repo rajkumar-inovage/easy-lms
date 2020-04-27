@@ -4,12 +4,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Coaching_model extends CI_Model {
     
 	// Save account
+	public function coaching_exists ($contact='', $name='') {
+		$this->db->select ('M.member_id');
+		$this->db->from ('members M');
+		$this->db->join ('coachings C', 'M.coaching_id=C.id');
+		$this->db->where ('M.primary_contact', $contact);
+		$this->db->where ('M.role_id', USER_ROLE_COACHING_ADMIN);
+		$this->db->where ('C.coaching_name', $name);
+		$sql = $this->db->get ();
+		if ($sql->num_rows () > 0) {
+			return true;
+		} else {
+			return false;			
+		}
+	}
+
+
 	public function create_coaching () {
 		$coaching = [];
 		
-		$first_name = $this->input->post ('first_name');
-		$last_name  = $this->input->post ('last_name');
-		
+		$name = explode (' ', $this->input->post ('first_name'), 2);
+		$first_name = $name[0];
+		if (isset ($name[1])) {
+			$last_name  = $name[1];
+		} else {
+			$last_name = '';
+		}
+
+		if ($this->input->post ('coaching_url')) {
+			$coaching_url = str_replace ('-', '_', $this->input->post ('coaching_url'));
+		} else {
+			$coaching_url = '';
+		}
+
+		if ($this->input->post ('city')) {
+			$city = $this->input->post ('city');
+		} else {
+			$city = '';
+		}
+
+		if ($this->input->post ('website')) {
+			$website = prep_url($this->input->post ('website'));
+		} else {
+			$website = '';
+		}
+
 		$coaching['subscription_type'] = FREE_SUBSCRIPTION_PLAN_ID;
 		$coaching['subscription_status'] = SUBSCRIPTION_STATUS_ACTIVE;
 
@@ -17,10 +56,10 @@ class Coaching_model extends CI_Model {
 		$doe = time () + ( 30 * 24 * 3600);			// 30 days subscription plan
 		$coaching = [
 				'coaching_name'=>	$this->input->post ('coaching_name'), 
-				'coaching_url' => 	str_replace ('-', '_', $this->input->post ('coaching_url')),
+				'coaching_url' => 	$coaching_url,
 	    		'email'=>			$this->input->post ('email'),
-				'city'=>			$this->input->post ('city'), 
-				'website'=> 		prep_url ($this->input->post('website')),
+				'city'=>			$city, 
+				'website'=> 		$website,
 				'doj'=> 			$doj,
 				'doe'=>				'',
 				'status'=>			COACHING_ACCOUNT_ACTIVE,
@@ -44,13 +83,14 @@ class Coaching_model extends CI_Model {
 		// Set Reference-id
 		$reg_no = $this->common_model->generate_coaching_id ($coaching_id);
 		$this->db->set ('reg_no', $reg_no);
+		$this->db->set ('coaching_url', $reg_no);
 		$this->db->where ('id', $coaching_id);
 		$this->db->update ('coachings');
 
 		// Create admin account
 		$user = [];		
-		$user['login'] 		= $this->input->post ('email');
-		$user['user_token'] = md5($this->input->post ('email'));
+		$user['login'] 		= '';
+		$user['user_token'] = md5($this->input->post ('primary_contact'));
 		$password 			= $this->input->post ('password');
 		$user['password'] 	= password_hash($password, PASSWORD_DEFAULT);
 		$user['first_name'] = $first_name;
@@ -62,7 +102,7 @@ class Coaching_model extends CI_Model {
 		$user['status']  		= USER_STATUS_ENABLED;
 		$user['created_by']  	= 0;
 		$user['creation_date'] 	= time ();	
-		$slug = $coaching['coaching_url'];
+		$slug = $reg_no;
 		$this->create_user ($user, $slug);
 
 		return $slug;
@@ -77,11 +117,12 @@ class Coaching_model extends CI_Model {
 		// Generate user id
 		$user_id = $this->users_model->generate_reference_id ($member_id);
 		$this->db->set ('adm_no', $user_id);
+		$this->db->set ('login', $user_id);
 		$this->db->where ('member_id', $member_id);
 		$this->db->update ('members');
 
 		// Send confirmation email
-		$url			= site_url ('coaching/login/index/?sub='.$slug);
+		$url			= site_url ('/?sub='.$slug);
 		$name 			= $data['first_name'].' '.$data['last_name'];
 		$to 			= $data['email'];
 		$subject 		= 'Coaching Account Created';

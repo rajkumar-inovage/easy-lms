@@ -5,19 +5,20 @@ class Login_actions extends MX_Controller {
 
 
 	public function __construct () {
-		$config = ['config_login', 'coaching/config_coaching'];
+		$config = ['config_login'];
 	    $models = ['login_model', 'coaching/users_model', 'coaching/coaching_model', 'coaching/settings_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 
-    public function validate_login ($slug='') {		
+    public function validate_login () {
 	
 		$this->form_validation->set_rules ('username', 'Username', 'required|trim');
 		$this->form_validation->set_rules ('password', 'Password', 'required|trim');		
+		$this->form_validation->set_rules ('access_code', 'Access Code', 'required|trim');		
 		
 		if ($this->form_validation->run () == true) {
 			
-			$response = $this->login_model->validate_login ($slug);
+			$response = $this->login_model->validate_login ();
 
 			if ($response['status'] == LOGIN_SUCCESSFUL) {
 				$redirect = $this->session->userdata ('dashboard');
@@ -33,7 +34,7 @@ class Login_actions extends MX_Controller {
 					'role_lvl'=>$this->session->userdata ('role_lvl'),
 					'dashboard'=>$this->session->userdata ('dashboard'),
 					'user_name'=>$this->session->userdata ('user_name'),
-					'slug'=>$this->session->userdata ('slug'),
+					'access_code'=>$this->session->userdata ('access_code'),
 					'logo'=>$this->session->userdata ('logo'),
 					'profile_image'=>$this->session->userdata ('profile_image'),
 					'site_title'=>$this->session->userdata ('site_title'),
@@ -72,23 +73,27 @@ class Login_actions extends MX_Controller {
 	}
 	
 
-	public function register ($slug='') {
-		$this->form_validation->set_rules('first_name', 'First Name', 'required|trim'); 
-		$this->form_validation->set_rules('last_name', 'Last Name', 'trim'); 
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim');
-		$this->form_validation->set_rules ('primary_contact', 'Primary Contact', 'is_natural|trim|max_length[10]');		
+	public function register () {
+		$this->form_validation->set_rules('first_name', 'First Name', 'required|trim', ['required'=>'Please enter your name']); 
+		$this->form_validation->set_rules ('primary_contact', 'Primary Contact', 'required|is_natural|trim|max_length[14]');
+		$this->form_validation->set_rules('email', 'Email', 'valid_email|trim');
 		$this->form_validation->set_rules ('password', 'Password', 'required|min_length[8]');
-		$this->form_validation->set_rules ('confirm_password', 'Confirm Password', 'required|matches[password]');
+		$this->form_validation->set_rules ('access_code', 'Access Code', 'required|trim', ['required'=>'Please enter your access code which you recieved from your institution']);
 		 
 		if ( $this->form_validation->run() == true) {
 			
-			$coaching_id = $this->input->post ('coaching_id');
+			$ac = $this->input->post ('access_code');
+			$coaching = $this->coaching_model->get_coaching_by_slug ($ac);
+			$coaching_id = $coaching['id'];
 			$email 	= $this->input->post ('email');
-
-			// Check if already exists
-			if ($this->users_model->email_exists ($email, $coaching_id) == true) {
+			$contact 	= $this->input->post ('primary_contact');
+			if (! $coaching) {
 				$this->output->set_content_type("application/json");
-				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'You already have an account with this email' )));
+				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'You have provided wrong access code' )));
+			} else if ($this->users_model->contact_exists ($contact, $coaching_id) == true) {
+				// Check if already exists
+				$this->output->set_content_type("application/json");
+				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'You already have an account with this mobile number. Try Sign-in instead' )));
 			} else {
 
 				$user_role = $this->input->post ('user_role');
@@ -110,11 +115,11 @@ class Login_actions extends MX_Controller {
 
 				// Save user details
 				$member_id = $this->users_model->save_account ($coaching_id, 0, $status);
-				
+				// Save access code 
+				$this->session->set_userdata ('access_code', $ac);				
 				// Get coaching details
-				$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
 				$coaching_name = $coaching['coaching_name'];
-				$user_name = $this->input->post ('first_name') . ' ' .$this->input->post ('last_name');
+				$user_name = $this->input->post ('first_name');
 				
 				// Notification Email to coaching admin
 				$to = $coaching['email'];
@@ -146,7 +151,7 @@ class Login_actions extends MX_Controller {
 				$this->common_model->send_email ($to, $subject, $email_message);				
 
 				$this->output->set_content_type("application/json");
-				$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('login/login/index/?sub='.$slug)) ));
+				$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('login/user/index')) ));
 			}
 	    } else {
 			$this->output->set_content_type("application/json");
@@ -240,12 +245,14 @@ class Login_actions extends MX_Controller {
 			$this->session->set_userdata ('user_name', $data['user_name']);
 			$this->session->set_userdata ('user_token', $data['user_token']);
 			$this->session->set_userdata ('dashboard', $data['dashboard']);
-			$this->session->set_userdata ('slug', $data['slug']);
+			$this->session->set_userdata ('access_code', $data['access_code']);
 			$this->session->set_userdata ('logo', $data['logo']);
 			$this->session->set_userdata ('coaching_id', $data['coaching_id']);
 			$this->session->set_userdata ('profile_image', $data['profile_image']);
-			$this->session->set_userdata ('site_title', $data['site_title']);			
+			$this->session->set_userdata ('site_title', $data['site_title']);
 		}
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Success' )));
 	}
 
 	public function send_otp_request($slug=''){
@@ -443,8 +450,17 @@ class Login_actions extends MX_Controller {
 			)));
 		}
 	}
-	public function logout () {
-		$this->session->sess_destroy();
-		redirect ('login/page/index');
+
+	public function logout ($ac='') {
+		if ($this->session->userdata ('is_admin') == true) {
+			$redirect = site_url ('login/admin/index');
+		} else {
+			$redirect = site_url ('login/user/index/?sub='.$ac);
+		}
+		
+		$this->session->sess_destroy ();
+
+		$this->output->set_content_type("application/json");
+		$this->output->set_output(json_encode(array('status'=>true, 'redirect'=>$redirect)));
 	}
 }

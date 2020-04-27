@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['student'] = TRUE;
 
+define ('INCLUDE_PATH',                                 'student/layout/');
 
 /* System Parameters */
 define ('SYS_QB_LEVELS', 	                       'QB_LEVEL');

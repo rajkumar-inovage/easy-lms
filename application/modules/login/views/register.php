@@ -6,31 +6,20 @@
 	  	<?php if (is_file ($logo)) { ?>
 			<img src="<?php echo $logo; ?>" height="50" title="<?php echo $page_title; ?>" class="text-center">
 		<?php } else { ?>
-		    <h4 class="text-center"><?php echo $site_title; ?></h4>
+		    <h4 class="text-center"><?php echo $page_title; ?></h4>
 		<?php } ?>
 	    <h5 class="text-center">Create a new <?php if ($role_id == USER_ROLE_TEACHER) echo 'teacher'; else echo 'student'; ?> account</h5>
 	  </div>
-		<?php echo form_open ('login/login_actions/register/'.$slug, array('class'=>'form-horizontal ', 'id'=>'validate-1')); ?> 
-	  	  <div class="card-body px-lg-5 py-lg-5">
-	  	  	<input type="hidden" name="coaching_id" value="<?php echo $coaching_id; ?>">
+		<?php echo form_open ('login/login_actions/register', array('class'=>'form-horizontal ', 'id'=>'validate-1')); ?> 
+	  	  <div class="card-body ">
 	  	  	<input type="hidden" name="user_role" value="<?php echo $role_id; ?>">
 	  	  	<input type="hidden" name="sr_no" value="">
 	  	  	<input type="hidden" name="second_name" value="">
 							
 			<div class="form-group">
-				<label class="control-label ">First Name<span class="text-danger">*</span></label>
+				<label class="control-label ">Your Name<span class="text-danger">*</span></label>
 				<input type="text" name="first_name" class="form-control required"  value="<?php echo set_value ('first_name'); ?>">
-			</div>
-			
-			<div class="form-group">
-				<label class="control-label ">Last Name</label>
-				<input type="text" name="last_name" class="form-control required"  value="<?php echo set_value ('last_name'); ?>">
-			</div>
-			
-			<div class="form-group">
-				<label class="control-label ">Email<span class="text-danger">*</span></label>
-				<input type="text" name="email" class="form-control email required" value="<?php echo set_value ('email'); ?>">	
-			</div>
+			</div>			
 			
 			<div class="form-group">
 				<label class="control-label ">Mobile <span class="text-danger">*</span></label>
@@ -38,36 +27,39 @@
 			</div>
 
 			<div class="form-group">
-				<label class="control-label" for="password">Password</label>
-				<input type="password" name="password" id='password' class="form-control required" placeholder="Password">
-				<div id='password-strength'></div>				
-			</div>
+				<label class="control-label ">Email (Optional)</label>
+				<input type="text" name="email" class="form-control email required" value="<?php echo set_value ('email'); ?>">	
+			</div>			
 
 			<div class="form-group">
-				<label class="control-label" for="conf_password">Confirm Password</label>
-				<input type="password" name="confirm_password" class="form-control required" id="conf_password"  placeholder="Re-enter password" >
-			</div>
-			
-			<div class="form-group">			
-				<div id="pswd_info" >
-					<label class="">Password must meet the following requirements</label>
-					<div><i id="letter"></i>       <span>At least one capital and small letter</span></div>
-					<div><i id="number"></i>       <span>At least one number</span></div>
-					<div><i id="spcl_char"></i>    <span>At least one special character</span></div>
-					<div><i id="length"></i>       <span>Be at least 8 characters</span></div>
-					<div><i id="re_pass"></i>      <span>"Confirm Password" should match "Password".</span></div>
+				<label class="control-label" for="password">Password<span class="text-danger">*</span></label>
+				<div class="input-group mb-3">
+				  	<input type="password" name="password" id="reg-password" class="form-control required" placeholder="Password"  aria-label="Password" aria-describedby="show-password">
+				  	<div class="input-group-append">
+				  	  <span class="input-group-text" id="show-password">
+				  	  	<a style="cursor:pointer" id="show-password-link">Show Password</a>
+				  	  </span>
+				  	</div>
 				</div>
+				<p class="text-muted">Choosing a strong password is recommended</p>
 			</div>
-		  </div>
 
+		  	<?php if (! $access_code) { ?>
+			  <div class="form-group">
+				  <label class="control-label ">Access Code</label>
+				  <input class="form-control" placeholder="Access Code" type="text" name="access_code">
+				  <p class="text-muted">If you don't have access code, contact your coaching-center/institution</p>
+			  </div>
+		  	<?php } else { ?>
+				  <input class="form-control" placeholder="Access Code" type="hidden" name="access_code" value="<?php echo $access_code; ?>">
+		  	<?php } ?>
+
+		  </div>
 		  <div class="card-footer">
 			
 			<div class=" text-center ">
 				<p><input type="submit" name="save" class="btn btn-success btn-block" value="Create Account"></p>
-				
-				<p class="d-none mt-4 text-danger font-weight-bold">Note: Joining depends on admin approval ie, you will not be able to login until an admin approves your joining</p>
-
-				<a href="<?php echo site_url ('login/login/index/?sub='.$slug); ?>" class="mt-4">Already have an account? <strong>Sign In</strong></a>
+				Already have an account? <a href="<?php echo site_url ('login/user/index'); ?>" class="mt-4">Sign In</a>
 			</div>
 	  	  </div>
 	  	</form>

@@ -2,17 +2,12 @@
 	</main>
 	
 	<footer class="light-footer mt-4">
-		<div class="container">
-		  <?php if (! $this->session->userdata('is_logged_in')) { ?>
-			<p class="text-center">
-				Having trouble logging-in? <br>
-			  <a class="link-text" href="<?php echo site_url ('public/page/reset'); ?>"> Click Here To Reset and Start Over</a>
-			</p>
-		  <?php } ?>
-		  <div class="d-flex justify-content-center">
-			<p class="footer-info">
-			  <a class="link-text-color" href="<?php echo BRANDING_URL; ?>"><?php echo BRANDING_TEXT; ?></a>
-			</p>
+		<div class="container text-center">
+			<?php if (isset ($access_code) && $access_code != '')  { ?>
+		        <div class="" id="installBanner" style="visibility: hidden;">
+		            <button class="btn btn-success " id="installBtn"><i class="fab fa-android"></i> Install App</button>
+		        </div>
+		    <?php } ?>
 		</div>
 	</footer>
 
@@ -27,6 +22,7 @@
 	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/toastr.min.js'); ?>"></script>
 	<!-- ChartJS -->
 	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/chart.bundle.min.js'); ?>"></script>
+	<script src="<?php echo base_url(THEME_PATH . 'assets/js/bootstrap-pincode-input.js'); ?>"></script>
 	<!-- Application JS -->
 	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/app.js'); ?>"></script>
 	<!-- Custom JS (Dynamically included) -->

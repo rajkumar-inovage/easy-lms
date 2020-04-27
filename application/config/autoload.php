@@ -103,7 +103,7 @@ $autoload['helper'] = array('url', 'text', 'form', 'pwa_lang');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('config_global');
+$autoload['config'] = array('config_global', 'config_sms');
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('common_model');
+$autoload['model'] = array('common_model', 'sms_model');

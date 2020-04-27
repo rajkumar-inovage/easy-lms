@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['admin'] = TRUE;
 
+define ('INCLUDE_PATH', 			    'admin/layout/');
+
 // Default User Roles
 defined('USER_ROLE_SUPER_ADMIN') or define ('USER_ROLE_SUPER_ADMIN', 			1);
 defined('USER_ROLE_ADMIN') or define ('USER_ROLE_ADMIN', 					2);
