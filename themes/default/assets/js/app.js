@@ -154,7 +154,7 @@ function logout_user () {
 	// We dont want to remove access code
 	const access_code = localStorage.getItem ('access_code');
 	window.localStorage.clear ();
-	localStorage.setItem ('access_code', access_code); 
+	localStorage.setItem ('access_code', access_code);
 
 	const logoutURL = appPath + logoutPath + '/' + access_code;
 	fetch (logoutURL, { 
