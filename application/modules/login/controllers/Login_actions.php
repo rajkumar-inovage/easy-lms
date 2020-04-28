@@ -10,15 +10,17 @@ class Login_actions extends MX_Controller {
 	    $this->common_model->autoload_resources ($config, $models);
 	}
 
-    public function validate_login () {
+    public function validate_login ($admin_login=false) {
 	
 		$this->form_validation->set_rules ('username', 'Username', 'required|trim');
-		$this->form_validation->set_rules ('password', 'Password', 'required|trim');		
-		$this->form_validation->set_rules ('access_code', 'Access Code', 'required|trim');		
+		$this->form_validation->set_rules ('password', 'Password', 'required|trim');
+		if ($admin_login == false) {
+			$this->form_validation->set_rules ('access_code', 'Access Code', 'required|trim');
+		}
 		
 		if ($this->form_validation->run () == true) {
 			
-			$response = $this->login_model->validate_login ();
+			$response = $this->login_model->validate_login ($admin_login);
 
 			if ($response['status'] == LOGIN_SUCCESSFUL) {
 				$redirect = $this->session->userdata ('dashboard');

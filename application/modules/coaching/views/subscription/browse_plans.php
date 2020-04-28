@@ -13,9 +13,8 @@ if ( ! empty($all_plans)) {
 				  <div class="card-body">
 					<?php
 					$price = $plan['price'];
-					$price = $plan['price'];
 					if ($price > 0) {
-						$amount = $price/12;
+						$amount = $price;
 						$amount = round ($amount);
 						echo '<h5 class="card-price"> <i class="fa fa-rupee-sign"></i> '. $amount. ' per month  </h5>';
 					} else {

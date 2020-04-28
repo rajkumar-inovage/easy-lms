@@ -74,8 +74,27 @@ class Virtual_class_model extends CI_Model {
 		if ($this->session->userdata ('site_title')) {
 			$bannerText = $this->session->userdata ('site_title');
 		} else {
-			$bannerText = VC_BANNER_TEXT;			
+			$bannerText = VC_BANNER_TEXT;
 		}
+
+		if ($this->input->post ('mute_mic')) {
+			$mute_mic = $this->input->post ('mute_mic');
+		} else {
+			$mute_mic = FALSE;
+		}
+
+		if ($this->input->post ('lock_mic')) {
+			$lock_mic = $this->input->post ('lock_mic');
+		} else {
+			$lock_mic = FALSE;
+		}
+
+		if ($this->input->post ('auto_record')) {
+			$auto_record = $this->input->post ('auto_record');
+		} else {
+			$auto_record = FALSE;
+		}
+
 		$bannerText = str_replace(' ', '+', $bannerText);
 
 		$logoutURL = VC_LOGOUT_URL . '/' . $coaching_id . '/' . $class_id;
@@ -92,17 +111,19 @@ class Virtual_class_model extends CI_Model {
 		$query_string .= '&attendeePW='.$attendee_pwd;
 		$query_string .= '&welcome='.$welcome_message;
 		$query_string .= '&record='.$record_class;
+		$query_string .= '&autoStartRecording='.$auto_record;
 		$query_string .= '&duration='.$duration;
 		$query_string .= '&maxParticipants='.$max_participants;
 		$query_string .= '&logoutURL='.urlencode($logoutURL);
 		$query_string .= '&bannerText='.$bannerText;
-		$query_string .= '&muteOnStart=true';
+		$query_string .= '&muteOnStart='.$mute_mic;
 		$query_string .= '&allowModsToUnmuteUsers=true';
-		$query_string .= 'copyright='.VC_COPYRIGHT_TEXT;
+		$query_string .= '&lockSettingsDisableMic='.$lock_mic;
+		$query_string .= '&copyright='.VC_COPYRIGHT_TEXT;
 		//$query_string .= '&logo='.VC_LOGO;
 
 		$final_string = $call_name . $query_string . $shared_secret;
-
+		
 		$checksum = sha1 ($final_string);
 
 		// Prepare for database

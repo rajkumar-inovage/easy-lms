@@ -20,7 +20,7 @@ class Admin extends MX_Controller {
 		
 		$data['script'] = $this->load->view ('scripts/admin-login', $data, true); 
 		$this->load->view (INCLUDE_PATH . 'header', $data);
-		$this->load->view ('admin/login', $data);
+		$this->load->view ('admin-login', $data);
 		$this->load->view (INCLUDE_PATH . 'footer', $data);
     }	
 	

@@ -12,7 +12,7 @@
 				<li class="list-group-item media">
 					<div class="media-left">
 						<?php if ($row['running'] == 'true') { ?>
-							<span class="icon-block s25 rounded-circle bg-success">
+							<span class="icon-block half rounded-circle bg-success">
 								<i class="fa fa-video"></i>
 							</span>
 						<?php } else { ?>
@@ -51,8 +51,8 @@
 			}
 		} else {
         	?>
-            <div class="text-danger my-4">
-                No class right now 
+            <div class="text-danger my-4 mx-2">
+                You are not enroled in any class
             </div>
             <?php
         }
@@ -107,7 +107,7 @@
             echo '</ul>';
         } else {
             ?>
-            <div class="text-danger my-4">
+            <div class="text-danger my-4 mx-2">
                 No tests right now 
             </div>
             <?php

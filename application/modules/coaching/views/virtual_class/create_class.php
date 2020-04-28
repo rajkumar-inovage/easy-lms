@@ -2,7 +2,7 @@
 	<div class="col-md-9">
 		<div class="card card-default">
 			<div class="card-body">
-				<?php echo form_open('coaching/virtual_class_actions/create_classroom/'.$coaching_id.'/'.$class_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1')); ?>
+				<?php echo form_open('coaching/virtual_class_actions/create_classroom/'.$coaching_id.'/'.$class_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-')); ?>
 
 					<div class="form-group ">
 						<?php echo form_label('Classroom Name<span class="required">*</span>', '', array('class'=>'control-label')); ?>
@@ -44,11 +44,27 @@
 					</div>
 					
 					<div class="form-group ">
-						<?php echo form_label('Student must wait for moderator to join: ', '', array('class'=>'control-label')); ?>
-						<label for="checkbox1">
-							<input name="wait_for_moderator" id="checkbox1" type="checkbox" value="1" <?php echo set_checkbox('wait_for_moderator', $class['wait_for_moderator']); ?> checked="checked" > Yes
-						</label>
+						<div class="custom-control custom-switch">
+						  <input type="checkbox" name="wait_for_moderator" class="custom-control-input" id="wait_for_moderator" value="true" <?php if ($class['wait_for_moderator'] == true ) echo 'checked';?>  checked>
+						  <label class="custom-control-label" for="wait_for_moderator">Student must wait for moderator to join </label>
+						</div>
 					</div>
+
+					<div class="form-group ">
+						<div class="custom-control custom-switch">
+						  <input type="checkbox" name="mute_mic" class="custom-control-input" id="mute_mic" value="true" >
+						  <label class="custom-control-label" for="mute_mic">Mute all mics on start</label>
+						</div>
+					</div>
+
+					<div class="form-group ">
+						<div class="custom-control custom-switch">
+						  <input type="checkbox" name="lock_mic" class="custom-control-input" id="lock_mic" value="true" >
+						  <label class="custom-control-label" for="lock_mic">Allow users to join in 'Listen Only' mode <br>
+						  <span class="text-muted">(Moderators can control when to allow users to speak)</span></label>
+						</div>
+					</div>
+
 
 					<input type="hidden" class="form-control required" name="max_participants" value="<?php echo set_value('max_participants', $class['max_participants']); ?>" placeholder="<?php echo VC_MAX_PARTICIPANTS; ?>" />
 					<div class="form-group row d-none">
@@ -122,7 +138,7 @@
 								<?php for ($i=0; $i<=23; $i++) { ?>
 									<option value="<?php echo $i; ?>" <?php if ($i == date('h', $class['end_date'])) echo 'selected="selected"'; ?> ><?php echo $i; ?></option>
 								<?php } ?>
-							</select>						
+							</select>
 						</div>
 
 						<div class="col-md-3">
@@ -138,12 +154,18 @@
 
 					<h5 class="card-title border-bottom mt-4">Recording</h5>
 
-					<div class="form-group row ">
-						<div class="col-md-6"> 
-							<?php echo form_label('Record classroom', '', array('class'=>'control-label')); ?>
-							<label for="checkbox2">
-								<input name="record_class" id="checkbox2" type="checkbox" value="1" <?php echo set_checkbox('record', $class['record']); ?> > Yes
-							</label>
+					<div class="form-group ">
+						<div class="custom-control custom-switch">
+						  <input type="checkbox" name="record_class" class="custom-control-input" id="record-class" value="true" >
+						  <label class="custom-control-label" for="record-class">Enable recording </label>
+						</div>
+					</div>
+
+
+					<div class="form-group ">
+						<div class="custom-control custom-switch">
+						  <input type="checkbox" name="auto_record" class="custom-control-input" id="auto-record-class" value="true" >
+						  <label class="custom-control-label" for="auto-record-class">Auto start recording on class start </label>
 						</div>
 					</div>
 

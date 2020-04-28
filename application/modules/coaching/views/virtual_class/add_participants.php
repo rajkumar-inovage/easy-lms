@@ -15,10 +15,12 @@
 					</thead>
 					<tbody>
 					<?php
+					$i = 0;
 					if (! empty ($users)) {
 						foreach ($users as $user) {
 						  if ($this->virtual_class_model->participants_added ($coaching_id, $class_id, $user['member_id']) > 0) {
 						  } else {
+						  		$i++;
 								$full_name = $user['first_name'].' '.$user['last_name'];
 								$full_name = str_replace(' ', '+', $full_name);
 								?>
@@ -35,7 +37,8 @@
 								<?php
 							}
 						}
-					} else {
+					} 
+					if ($i == 0) {
 						?>
 						<tr>
 							<td colspan="4"><span class="text-danger">No users found</span></td>

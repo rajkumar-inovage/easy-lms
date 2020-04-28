@@ -29,7 +29,7 @@
 									<?php echo $row['price']; ?>
 								</td>
 								<td>
-									<?php if ($row['status'] == 1) echo 'Active'; else echo 'In-active' ?>
+									<?php if ($row['status'] == 1) echo '<span class="badge badge-success">Active</span>'; else echo '<span class="badge badge-secondary">In-active</span>' ?>
 								</td>
 								<td>
 								<div class="btn-group">

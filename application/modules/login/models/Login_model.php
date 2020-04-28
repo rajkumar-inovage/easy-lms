@@ -50,15 +50,20 @@ class Login_model extends CI_Model {
 		$this->dbforge->create_table('members_otp', FALSE, $attributes);
 	}
 
-    public function validate_login () {
+    public function validate_login ($admin_login=false) {
 		// this will validate if current user authentic to use resources
 		// based on the received username and password
 		$login		 	=  $this->input->post('username');
 		$password		=  $this->input->post('password');
-		$slug			=  $this->input->post('access_code');
+		if ($admin_login == false) {
+			$slug			=  $this->input->post('access_code');
+			$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
+			$coaching_id = $coaching['id'];
+		} else {
+			$slug = '';
+			$coaching_id = 0;
+		}
 
-		$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
-		$coaching_id = $coaching['id'];
 		$where = "(login='$login' OR adm_no='$login' OR email='$login' OR primary_contact='$login')"; 
 		$this->db->where ($where);
 		$this->db->where ('coaching_id', $coaching_id);

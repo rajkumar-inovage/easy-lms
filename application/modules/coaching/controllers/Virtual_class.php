@@ -169,8 +169,12 @@ class Virtual_class extends MX_Controller {
 		curl_close($ch);
 
 		$xml = simplexml_load_string($xml_response);
-		echo $response = $xml->returncode;
-		echo $response = $xml->recordings;
+		$response = $xml->returncode;
+		$recordings = $xml->recordings->recording->startTime;
+		echo $start_time = $xml->recordings->recording->startTime;
+		echo $end_time = $xml->recordings->recording->endTime;
+		$playback_format = $xml->recordings->recording->playback->format->type;
+		$playback_url = $xml->recordings->recording->playback->format->url;
 
 		$data['coaching_id'] 	= $coaching_id;
 		$data['class_id'] 		= $class_id;
@@ -219,6 +223,10 @@ class Virtual_class extends MX_Controller {
 
 	public function end_meeting ($coaching_id=0, $class_id=0) {
 		$this->virtual_class_model->add_to_history ($coaching_id, $class_id);
-		redirect ('coaching/virtual_class/index/'.$coaching_id);
+		if ($this->session->userdata ('role_id') == USER_ROLE_STUDENT) {
+			redirect ('student/virtual_class/index/'.$coaching_id);
+		} else {
+			redirect ('coaching/virtual_class/index/'.$coaching_id);			
+		}
 	}
 }
