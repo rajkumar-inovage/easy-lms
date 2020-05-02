@@ -156,13 +156,20 @@ function logout_user () {
 	window.localStorage.clear ();
 	localStorage.setItem ('access_code', access_code);
 
-	const logoutURL = appPath + logoutPath + '/' + access_code;
-	fetch (logoutURL, { 
-		method : 'POST',
-	}).then (function (response) {
-		return response.json ();
-	}).then (function(result) {
-		document.location = result.redirect;
+	caches.keys().then(function(cacheNames) {
+	    cacheNames.map(function(cacheName) {
+	        console.log(cacheName);
+	        return caches.delete(cacheName);
+	    })
+	}).then(function(){
+		const logoutURL = appPath + logoutPath + '/' + access_code;
+		fetch (logoutURL, { 
+			method : 'POST',
+		}).then (function (response) {
+			return response.json ();
+		}).then (function(result) {
+			document.location = result.redirect;
+		});
 	});
 }
 

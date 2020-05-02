@@ -88,7 +88,7 @@
         </nav>
 
         <nav class="bg-white border-bottom">
-            <ul class="nav nav-tabs nav-fill ">
+            <ul class="nav nav-tabs nav-justified ">
                 <?php 
                 $role_id = $this->session->userdata ('role_id');
                 $footer_menu = $this->common_model->load_acl_menus ($role_id, 0, MENUTYPE_FOOTER);

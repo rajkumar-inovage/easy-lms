@@ -4,8 +4,8 @@
 	*/
 
 	const loaderSelector = document.getElementById('loader');
-	const access_code = '<?php echo $ac; ?>';
-	
+	const access_code = <?php echo ($ac!='')?"'$ac'":"localStorage.getItem ('access_code')?localStorage.getItem ('access_code'):'';"; ?>
+
 	loaderSelector.style.display = 'block';
 
 	if (typeof(Storage) !== "undefined") {
