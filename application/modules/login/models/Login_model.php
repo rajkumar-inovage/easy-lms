@@ -1,60 +1,13 @@
- <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login_model extends CI_Model {
-    var $table_name;
-	public function __construct(){
-		parent::__construct();
-		$this->load->dbforge();
-		$this->model_check();
-	}
-	public function model_check(){
-		$this->table_name = $this->db->dbprefix.'members_otp';
-		if(!($this->db->table_exists($this->table_name))){
-			$this->forge_members_otp_table();
-		}
-	}
-	private function forge_members_otp_table(){
-	    $this->dbforge->add_field(array(
-			'id' => array(
-				'type' => 'BIGINT',
-				'constraint' => 11,
-                'auto_increment' => TRUE
-			),
-			'member_id' => array(
-				'type' => 'BIGINT',
-				'constraint' => 11
-			),
-			'member_otp' => array(
-				'type' => 'INT',
-				'constraint' => 6
-			),
-			'send_attempt' => array(
-				'type' => 'INT',
-				'constraint' => 11
-			),
-			'otp_creation' => array(
-				'type' => 'BIGINT',
-				'constraint' => 11
-			),
-			'otp_expiry' => array(
-				'type' => 'BIGINT',
-				'constraint' => 11
-			),
-			'productinfo' => array(
-				'type' => 'MEDIUMTEXT'
-			)
-		));
-		$this->dbforge->add_key('id', TRUE);
-	    $attributes = array('ENGINE' => 'InnoDB');
-		$this->dbforge->create_table('members_otp', FALSE, $attributes);
-	}
 
     public function validate_login ($admin_login=false) {
 		// this will validate if current user authentic to use resources
 		// based on the received username and password
 		$login		 	=  $this->input->post('username');
 		$password		=  $this->input->post('password');
+
 		if ($admin_login == false) {
 			$slug			=  $this->input->post('access_code');
 			$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
@@ -113,7 +66,7 @@ class Login_model extends CI_Model {
 		$this->db->delete ('password_attempts', $data);
 	}
 
-	// Set wrong password attepted by a user in a day
+	// Set wrong password attempted by a user in a day
 	public function wrong_password_attempted ($member_id=0) {
 		$today = mktime (0, 0, 0, date ('m'), date ('d'), date ('Y'));
 		$data = array ( 'member_id'=>$member_id,
@@ -211,18 +164,7 @@ class Login_model extends CI_Model {
 			return false;
 		}		
 	}
-	public function get_member_by_login ($login) {
-		$this->db->where ('login', $login);
-		$this->db->or_where ('adm_no', $login);
-		$sql = $this->db->get ('members');
-		return $sql->row_array (); 
-	}
-	public function get_member_by_email_coaching_id ($email, $coaching_id) {
-		$this->db->where ('email', $email);
-		$this->db->or_where ('coaching_id', $coaching_id);
-		$sql = $this->db->get ('members');
-		return $sql->row_array (); 
-	}
+
 	public function update_link_send_time ($login) {
 		$current_time   =   time();
 		$this->db->set('link_send_time', $current_time);
@@ -230,19 +172,8 @@ class Login_model extends CI_Model {
 		$this->db->or_where('adm_no', $login);
 		$this->db->update('members'); 
 	}
-	public function get_member_by_md5login ($login) {
-		$sql = $this->db->get ('members');
-		if ($sql->num_rows () > 0 ) { 
-			$result = $sql->result_array ();
-			foreach ($result as $row) {
-				if (md5($row['login']) == $login) {
-					return $row; 
-				}
-			}
-		} else {
-			return false;
-		}			
-	}
+
+
 	public function load_menu ($role_id=0, $parent_id=0) {
 		if ( ! $this->session->has_userdata ('MAIN_MENU')) {
     		$menus = $this->common_model->load_acl_menus ($role_id, $parent_id, MENUTYPE_SIDEMENU);
@@ -259,26 +190,6 @@ class Login_model extends CI_Model {
 	}	
 	
 
-	public function update_password ($member_id) {
-		// get user details
-		$this->db->where ('member_id', $member_id);
-		$sql = $this->db->get('members');
-		$row = $sql->row_array ();
-		if ($row['password'] == '') {
-			// if user password is blank, then this is a first time user
-			$this->db->set('status', USER_STATUS_ENABLED );
-		}
-		$password = $this->input->post ('password');
-		$password = password_hash($password, PASSWORD_DEFAULT);
-		$this->db->set('password', $password ); 
-		$this->db->where('member_id', $member_id ); 
-		$sql = $this->db->update('members');
-		$this->db->last_query ();
-		// reset_wrong_password_attempt is temporarily blocked
-		// due to change of schema 
-		//$this->reset_wrong_password_attempt($member_id);
-	}
-	
 	public function reset_wrong_password_attempt($member_id){
 		$this->db->where('member_id',$member_id);
 		$data 	=	array(
@@ -296,111 +207,13 @@ class Login_model extends CI_Model {
 		return $sql->row_array ();
 	}
 
-	public function get_last_otp($member_id){
-		$this->db->select ('*');
-    	$this->db->where ('member_id', $member_id);
-		$sql = $this->db->get ('members_otp');
-		if ($sql->num_rows()>0){
-			$result = $sql->result_array();
-			return array_pop($result);
-		}else{
-			return false;
-		}
-	}
-	/*this function will generate otp, and create a record in the otp table for the member_id.*/
-    public function generate_otp($member_id, $current_time, $expiry_time){
-    	$this->load->helper('string');
-    	$member_otp = random_string('numeric',6);
-    	$data = array(
-    		'member_id' => $member_id,
-    		'member_otp' => $member_otp,
-    		'send_attempt' => 1,
-    		'otp_creation' => $current_time,
-    		'otp_expiry' => $expiry_time
-    	);
-    	$sql = $this->db->insert ('members_otp', $data);
-		$otp_id = $this->db->insert_id();
-		if ($otp_id>0){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	/*this function will regenerate otp, and modify a record in the otp table for the member_id.*/
-	public function regenerate_otp($last_otp, $current_time, $expiry_time){
-		$this->load->helper('string');
-    	$member_otp = random_string('numeric',6);
-		$this->db->set('member_otp', $member_otp);
-		$this->db->set('send_attempt', 1);
-		$this->db->set('otp_creation', $current_time);
-		$this->db->set('otp_expiry', $expiry_time);
-		$this->db->where('id', $last_otp['id']);
-		$this->db->or_where('member_id', $last_otp['member_id']);
-		$this->db->update('members_otp');
-		if($this->db->affected_rows() > 0){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	/*this function will send otp by mail or sms, it initialize & store send_attempt with one.*/
-	public function send_otp($member_id, $member_email, $expiry_minutes){
-		$last_otp = $this->get_last_otp($member_id);
-		$otp = $last_otp['member_otp'];
-		$subject = 'EasyCoachingApp One Time Password';
-		$message = 'You have requested to login with your One Time Password for <b>'.SITE_TITLE.'</b> account.</p> <p>Chekc the OTP below to login now</p><p style="text-align:center;"><b>'.$otp.'</b></p><br><p><strong>Note: This link will expire in '.$expiry_minutes.' minutes.</strong></p>' ;
-		if($this->common_model->send_email ($member_email, $subject, $message)){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	/*this function will resend otp on mail or phone, it increment send_attempt by one. */
-	public function resend_otp($member_id, $member_email, $expiry_minutes){
-		$last_otp = $this->get_last_otp($member_id);
-		$send_attempt = $last_otp['send_attempt'] + 1;
-		$this->db->set('send_attempt', $send_attempt);
-		$this->db->where('id', $last_otp['id']);
-		$this->db->or_where('member_id', $last_otp['member_id']);
-		$this->db->update('members_otp');
-		if($this->db->affected_rows() > 0){
-			return $this->send_otp($member_id, $member_email, $expiry_minutes);
-		}else{
-			return false;
-		}
-	}
-	/*this function will remove the record from the otp table for that member_id.*/
-	public function clear_otp($member_id){
+	public function reset_password ($member_id=0) {
+		$otp = random_string ('numeric', 6);
+		$hashed = password_hash ($otp, PASSWORD_DEFAULT);
+		$this->db->set ('password', $hashed);
 		$this->db->where ('member_id', $member_id);
-    	$this->db->delete('members_otp');
-    	if($this->db->affected_rows() > 0){
-    		return true;
-    	}else{
-    		return false;
-    	}
+		$this->db->update ('members');
+		return $otp;
 	}
-	/*this function will process the posted OTP on the server, it willl check if the otp is not expired and is correct, to let user in to dashboard or set new password,*/
-	public function auth_otp($member_id, $coaching_id, $slug){
-		$this->db->where ('member_id', $member_id);
-		$this->db->where ('coaching_id', $coaching_id);
-		$query = $this->db->get ("members");
-		$row = $query->row_array();
-		$return = array ();
-		if ($query->num_rows() > 0) {
-			$member_id 	= $row['member_id'];
-			$role_id   	= $row['role_id'];
-			$user_token = $row['user_token'];
-			$user_name 	= $row['first_name'].' '.$row['second_name'].' '.$row['last_name'];
-			$coaching_id = $row['coaching_id'];
-			// Reset wrong passwords attempted, if any
-			$this->reset_wrong_password_attempts ($member_id);
-			$this->save_login_session ($member_id, $role_id, $user_name, $coaching_id, $user_token, $slug);
-			// Load menus 
-			$menus = $this->load_menu ($role_id, 0);
-			$return['status'] = LOGIN_SUCCESSFUL;
-		}else {
-			$return['status'] = INVALID_USERNAME;
-		}
-		return $return;
-	}
+
 }

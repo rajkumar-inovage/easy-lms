@@ -102,7 +102,7 @@ echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$s
 										<?php if ($row['status'] == USER_STATUS_UNCONFIRMED) { ?>
 											<a href="javascript:show_confirm_ajax ('Send email verication link?', '<?php echo site_url ('coaching/user_actions/send_confirmation_email/'.$row['member_id']);?>')" class="dropdown-item"><i class="fa fa-link"></i> Resend Confirmation Email</a>
 										<?php } else { ?>
-											<?php echo anchor('coaching/users/change_password/'.$coaching_id.'/'.$role_id.'/'.$row['member_id'], '<i class="fa fa-key"></i> Change Password', array ('class'=>'dropdown-item')); ?>
+											<?php echo anchor('coaching/users/change_password/'.$coaching_id.'/'.$row['member_id'], '<i class="fa fa-key"></i> Change Password', array ('class'=>'dropdown-item')); ?>
 										<?php } ?>									
 										<a href="javascript:void(0)" onclick="show_confirm ('<?php echo 'Are you sure want to delete this users?' ; ?>','<?php echo site_url('coaching/user_actions/delete_account/'.$coaching_id.'/'.$role_id.'/'.$row['member_id']); ?>' )" class="dropdown-item"><i class="fa fa-trash"></i> Delete Account</a>
 									</div>

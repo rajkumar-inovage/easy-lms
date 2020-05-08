@@ -21,7 +21,7 @@
 	<!-- ChartJS -->
 	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/chart.bundle.min.js'); ?>"></script>
 	<!-- Application JS -->
-	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/app.js'); ?>"></script>
+	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/app.js?ver=1.2'); ?>"></script>
 	<!-- Custom JS (Dynamically included) -->
 	<?php
 	if (isset ($script)) {

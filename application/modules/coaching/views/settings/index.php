@@ -83,7 +83,7 @@
 				<h4><i class="fa fa-picture-o"></i> Logo </h4>
 			</div>
 
-			<?php echo form_open_multipart('coaching/setting_actions/upload_logo/'.$coaching_id, array('class'=>'', 'id'=>'upload_images')); ?>					
+			<?php echo form_open_multipart('coaching/setting_actions/upload_logo/'.$coaching_id, array('class'=>'', 'id'=>'upload_image')); ?>					
 	            <div class="card-body">
 				
 					<div class="form-group">

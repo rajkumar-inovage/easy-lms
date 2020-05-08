@@ -10,11 +10,13 @@
 
 	if (typeof(Storage) !== "undefined") {
 
-		localStorage.setItem ('access_code', access_code);
+		if (access_code != '') {
+			localStorage.setItem ('access_code', access_code);
+		}
 		
 		const user_token = localStorage.getItem ('user_token');
 		if (user_token == null || user_token == 'null' || user_token == 'NULL' || user_token == 'undefined') {
-			logout_user ();
+			logout_user (access_code);
 		} else {
 			update_session (user_token);
 		}

@@ -1,52 +1,43 @@
-
-	<div class="card card-default">
-		<div class="-table-responsive" id="users-list">
-			<table class="table table-bordered v-middle mb-0" id="data-tables">
-				<thead>
-					<tr>
-						<th width="">#</th>
-						<th width="">Title</th>
-						<th width="" class="text-center">Status</th>
-						<th width="" class="text-center">Action</th>
-					</tr>
-				</thead>
-
-				<tbody>
-					<?php 
-					$i=1;
-					foreach($results as $row) { 
-						?>
-					<tr>
-						<td class=""><?php echo $i; ?></td>
-						<td><?php echo anchor ('coaching/announcements/create_announcement/'.$coaching_id.'/'.$row['announcement_id'], $row['title']); ?></td>
-						<td class="text-center">
-							<?php 
+<div class="card card-default">
+	<ul class="list-group">
+	<?php 
+		$i = 1;
+		if ( ! empty ($results)) {
+			foreach ($results as $row) {
+				?>
+				<li class="list-group-item media">
+					<div class="media-left"><?php echo $i; ?></div>
+					<div class="media-body">
+						<?php echo anchor ('coaching/announcements/create_announcement/'.$coaching_id.'/'.$row['announcement_id'], $row['title']); ?>
+						<p class="text-muted">
+							Availability: From <?php echo date ('d M, Y', $row['start_date']); ?> To <?php echo date ('d M, Y', $row['end_date']); ?>
+						</p>
+					</div>
+					<div class="media-right">
+						<?php 
 							$status= $row['status'];
-							if($status==1){
-								echo '<span class="text-success font-weight-bold">Active</span>';
+							if ($status == 1) {
+								//echo '<span class="badge badge-success">Published</span>';
+							} else {
+								//echo '<span class="badge badge-default">Un-published</span>';
 							}
-							else{
-								echo '<span class="text-danger font-weight-bold">Inactive</span>';
-							}
-							?>							
-						</td>
-						<td class="text-center"><span class="px-2">
-							<?php echo anchor ('coaching/announcements/create_announcement/'.$coaching_id.'/'.$row['announcement_id'], '<i class="fa fa-edit"></i>'); ?>
-							</span>
-							<span class="px-2">
-								<!-- <?php //echo anchor ('coaching/announcements/delete_announcement/'.$coaching_id.'/'.$row['announcement_id'], 'Delete'); ?> -->
-								<a href="javascript:void(0)" onclick="show_confirm ('<?php echo 'Are you sure want to delete this announcement?' ; ?>','<?php echo site_url('coaching/announcements/delete_announcement/'.$coaching_id.'/'.$row['announcement_id']); ?>' )"><i class="fa fa-trash"></i></a>
-
-							</span>
-						</td>
-					</tr>
-					<?php
-					$i++; 
-
-				}?> 
-	
-				</tbody>
-			</table> 			
-		</div>
-	</div>
+						?>
+					</div>
+					<div class="media-right">
+						<a href="javascript:void(0)" onclick="show_confirm ('<?php echo 'Are you sure want to delete this announcement?' ; ?>','<?php echo site_url('coaching/announcement_action/delete/'.$coaching_id.'/'.$row['announcement_id']); ?>' )">
+							<i class="fa fa-trash"></i>
+						</a>
+					</div>
+				</li>
+				<?php
+				$i++; 
+			}
+		} else {
+			?>
+			<li class="list-group-item text-danger">No announcements</li>
+			<?php
+		}
+		?>
+	</ul>
+</div>
 	

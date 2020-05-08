@@ -46,7 +46,7 @@ $(document).ready (function () {
 					output += '<thead>';
 						output += '<tr>';
 							output += '<th width="5%">';
-								output += '<input id="checkAll" type="checkbox" >';
+								output += '<input id="checkAll" type="checkbox" onclick="check_all ()">';
 							output += '</th>';
 							output += '<th width="25%">Name</th>';
 							output += '<th width="">Email</th>';

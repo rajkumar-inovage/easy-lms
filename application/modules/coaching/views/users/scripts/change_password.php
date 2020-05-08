@@ -4,7 +4,7 @@ $(document).ready (function () {
 		e.preventDefault ();
 		var x = confirm ('Send self-password creation link on user email?');
 		if (x) {
-			var url = '<?php echo site_url ('coaching/user_actions/send_confirmation_email/'.$member_id);?>';
+			var url = '<?php echo site_url ('coaching/user_actions/send_otp/'.$coaching_id.'/'.$member_id);?>';
 			fetch (url, {
 				method : 'POST',
 				body: url,

@@ -24,9 +24,14 @@
 							$member_id = $this->session->userdata ('member_id');
 							echo anchor ('coaching/virtual_class/join_class/'.$coaching_id.'/'.$row['class_id'].'/'.$member_id, '<i class="fa fa-plus"></i> Start and Join', ['class'=>'btn btn-primary mr-1']); 
 							echo anchor ('coaching/virtual_class/participants/'.$coaching_id.'/'.$row['class_id'], '<i class="fa fa-users"></i> Participants', ['class'=>'btn btn-info']); 
-							echo anchor ('coaching/virtual_class/recordings/'.$coaching_id.'/'.$row['class_id'].'/'.$row['meeting_id'], '<i class="fa fa-play"></i> Recordings', ['class'=>'btn btn-info-outline']); 
+							//echo anchor ('coaching/virtual_class/recordings/'.$coaching_id.'/'.$row['class_id'].'/'.$row['meeting_id'], '<i class="fa fa-play"></i> Recordings', ['class'=>'btn btn-info-outline']); 
+							if ($this->session->userdata ('role_id') == USER_ROLE_TEACHER) {
+							} else {
+								?>
+								<a onclick="show_confirm ('Delete this virtual classroom?', '<?php echo site_url ('coaching/virtual_class_actions/delete_class/'.$coaching_id.'/'.$row['class_id']); ?>')" class="btn btn-link text-danger">Delete Classroom</a>
+								<?php
+							}
 							?>
-							<a onclick="show_confirm ('Delete this virtual classroom?', '<?php echo site_url ('coaching/virtual_class_actions/delete_class/'.$coaching_id.'/'.$row['class_id']); ?>')" class="btn btn-link text-danger">Delete Classroom</a>
 						</div>
 					</li>
 					<?php

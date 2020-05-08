@@ -19,6 +19,8 @@ $config['coaching_logo']				= 'logo.png';
 $config['profile_picture_path']			= 'contents/profile_images/';
 
 define ('THEME_PATH', 			    	'themes/default/');
+define ('SMS_TEMPLATE', 			    'templates/sms/');
+define ('EMAIL_TEMPLATE', 			    'templates/email/');
 
 define ('APP_NAME', 					'Easy Coaching');
 define ('BRANDING_TEXT', 				'Powered by Easy Coaching');

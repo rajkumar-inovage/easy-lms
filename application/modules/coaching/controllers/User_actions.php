@@ -84,25 +84,21 @@ class User_actions extends MX_Controller {
 	
        
 	// EDIT MY ACCOUNT
-	public function my_account ($member_id=0) {
+	public function my_account ($coaching_id=0, $member_id=0) {
 	
 		$this->form_validation->set_rules ('first_name', 'First Name', 'required|max_length[50]|trim|ucfirst');
 		$this->form_validation->set_rules ('second_name', 'Second Name', 'max_length[50]|trim');
-		$this->form_validation->set_rules ('last_name', 'Last Name', 'required|max_length[50]|trim');
-		$this->form_validation->set_rules ('email', 'Email', 'required|valid_email');
-		$this->form_validation->set_rules ('primary_contact', 'Primary Contact', 'is_natural|trim');
+		$this->form_validation->set_rules ('last_name', 'Last Name', 'max_length[50]|trim');
+		$this->form_validation->set_rules ('email', 'Email', 'valid_email');
+		$this->form_validation->set_rules ('primary_contact', 'Primary Contact', 'required|is_natural|trim');
 		$this->form_validation->set_rules('dob', 'Date of Birth', '');
-		$this->form_validation->set_rules('gender', 'Date of Birth', '');
+		$this->form_validation->set_rules('gender', 'Gender', '');
 
 		if ($this->form_validation->run () == true) {
-			$id = $this->users_model->save_account ($member_id);
-			if ($member_id > 0) {
-				$message = 'Account updated successfully';
-			} else {
-				$message = 'Account created successfully';
-			}
+			$id = $this->users_model->save_account ($coaching_id, $member_id);
+			$message = 'Account updated successfully';
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('coaching/users/my_account/'.$member_id) )));
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('coaching/users/my_account/'.$coaching_id.'/'.$member_id) )));
 		} else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
@@ -112,15 +108,18 @@ class User_actions extends MX_Controller {
 	
 	/* PROFILE PICTURE */
 	// UPLOAD IMAGE
-	public function upload_profile_picture ($member_id) {
+	public function upload_profile_picture ($member_id=0, $coaching_id=0) {
 		$response = $this->users_model->upload_profile_picture ($member_id);
 		if (is_array($response)) {		// Upload successful
 		    if ($member_id == $this->session->userdata ('member_id')) {
-    		    $profile_image = base_url($this->config->item ('profile_picture_path').'pi_'.$member_id.'.gif');
+    		    $profile_image = ($this->config->item ('profile_picture_path').'pi_'.$member_id.'.gif');
                 $this->session->set_userdata ('profile_image', $profile_image);
+                $redirect = site_url ('coaching/users/my_account/'.$coaching_id.'/'.$member_id);
+		    } else {
+                $redirect = site_url ('coaching/users/create/'.$coaching_id.'/'.$member_id);
 		    }
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Profile picture uploaded successfully', 'redirect'=>'' )));
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Profile picture uploaded successfully', 'redirect'=>$redirect )));
 		} else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>$response )));
@@ -144,7 +143,7 @@ class User_actions extends MX_Controller {
 	/* CHANGE USER PASSWORD
 		Function to change password of selected user
 	*/
-	public function change_password ($coaching_id=0, $role=0, $member_id) {		
+	public function change_password ($coaching_id=0, $member_id) {		
 
 		$this->form_validation->set_rules('password', 'Password', 'required|min_length[8]|max_length[50]');			
 		$this->form_validation->set_rules('repeat_password', 'Repeat Password', 'required|matches[password]');
@@ -152,32 +151,40 @@ class User_actions extends MX_Controller {
 		if ($this->form_validation->run() == true) {
 			$password = $this->input->post ('password');
 			$this->users_model->update_password ($member_id, $password); 
-			$this->message->set('Password changed successfully', 'success', true);
-			$member_detail = $this->users_model->get_user ($member_id);				
-			
-			$send_to = $member_detail['email'];				
-			$subject = "Password Changed";
-			$message = "Your password has been changed. If you have changed your password you can ignore this mail, else contact your system administrator";
-			$this->common_model->send_email($send_to, $subject, $message );
-			
+			$user = $this->users_model->get_user ($member_id);
+
+			// Display message
+			$this->message->set('Password changed successfully', 'success', true);			
+
+			// Send SMS
+			$data = [];
+			$contact = $user['primary_contact'];
+			$message = $this->load->view (SMS_TEMPLATE . 'change_password', $data, true);
+			$this->sms_model->send_sms ($contact, $message);
+
+			// Send Email
+			if ($user['email'] != '') {
+				$data = [];
+				$email = $user['email'];
+				$subject = "Password Changed";
+				$message = $this->load->view (EMAIL_TEMPLATE . 'change_password', $data, true);
+				$this->common_model->send_email($send_to, $subject, $message );				
+			}
+
+			if ($member_id == $this->session->userdata ('member_id')) {
+				$redirect = site_url ('coaching/users/my_account/'.$coaching_id.'/'.$member_id);
+			} else {
+				$redirect = site_url ('coaching/users/create/'.$coaching_id.'/'.$user['role_id'].'/'.$member_id);
+			}
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Password changed successfully', 'redirect'=>site_url('coaching/users/index/'.$coaching_id.'/'.$role) )));
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Password changed successfully', 'redirect'=>$redirect )));
 		} else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
 		} 
 	} 
 	
-	// Send Reset PASSWORD Link
-	public function send_reset_link ($coaching_id=0, $role=0, $member_id) {
-		$user_details	=	$this->users_model->get_user($id);
-		$new_pass_url	=	anchor('login/admin/create_password/'.md5($user_details['email']),'Reset Your Password');
-		$to = $user_details['email'];
-		$subject = 'Reset Your Password';				
-		$email_message = '<h2> Hi '.$user_details['first_name'].' '.$user_details['second_name'].' '.$user_details['last_name'].',</h2>Welcome,<h3>'.$user_details['adm_no'].'</h3>You can now reset your password.<br>Click on the following like to create your new password<br>'.$new_pass_url.'<br>Note: This link will expire in 1 hour.';
-		$this->common_model->send_email ($to, $subject, $email_message);
-		$this->login_model->update_link_send_time($user_details['email']);
-	}
+	
 	/* DELETE ACCOUNT
 		Function to delete existing user accounts
 	*/
@@ -483,11 +490,27 @@ class User_actions extends MX_Controller {
 	
 	
 
-	public function send_confirmation_email ($member_id=0) {
+	public function send_otp ($coaching_id=0, $member_id=0) {
+		
+		$otp = $this->users_model->reset_password ($member_id);
+		$user = $this->users_model->get_user ($member_id);
+		$coaching = $this->coaching_model->get_coaching ($coaching_id);
+
+		$data['coaching_name'] = $coaching['coaching_name'];
+		$data['otp'] = $otp;
+		$message = $this->load->view (SMS_TEMPLATE . 'reset_password', $data, true);
+		$contact = $user['primary_contact'];
+		$this->sms_model->send_sms ($contact, $message);
+
+		// Send Email
+		if ($user['email'] != '') {
+			$email = $user['email'];
+			$subject = "OTP Login";
+			$message = $this->load->view (EMAIL_TEMPLATE . 'reset_password', $data, true);
+			$this->common_model->send_email($send_to, $subject, $message );				
+		}
 	
-		$this->users_model->send_confirmation_email ($member_id);
-		$this->message->set ('Email sent for verification', 'success') ;
 		$this->output->set_content_type("application/json");
-		$this->output->set_output(json_encode(array('status'=>true, 'message'=>'An email has been sent on registered user email to self-create password', 'redirect'=>'')));
+		$this->output->set_output(json_encode(array('status'=>true, 'message'=>'OTP sent on user mobile', 'redirect'=>'')));
 	}
 }

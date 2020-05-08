@@ -47,10 +47,10 @@ class Attendance_actions extends MX_Controller
         	)
         );
     }
-    public function mark_attendance($coaching_id=0, $member_id=0, $status=0, $date=0)
-    {
-        $data = $this->attendance_model->mark_attendance($coaching_id, $member_id, $status, $date);
+
+    public function mark_attendance($coaching_id=0, $member_id=0, $status=0, $date=0) {
+        $data = $this->attendance_model->mark_attendance ($coaching_id, $member_id, $status, $date);
         $this->output->set_content_type("application/json");
-        $this->output->set_output(json_encode(array('status'=>true, 'message'=>'Attendance marked')));
+        $this->output->set_output(json_encode(array('status'=>true, 'message'=>'Attendance marked', 'type'=>$status)));
     }
 }

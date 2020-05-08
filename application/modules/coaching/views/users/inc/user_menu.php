@@ -13,7 +13,7 @@
 		
 		<li class="list-group-item">
 			<?php 
-				$url = 'coaching/users/change_password/'.$coaching_id.'/'.$role_id.'/'.$member_id;
+				$url = 'coaching/users/change_password/'.$coaching_id.'/'.$member_id;
 			?>
 			<a class="link-text-color" href="<?php echo site_url ($url); ?>">Change Password</a>
 		</li>
@@ -24,13 +24,13 @@
 			?>
 			<a class="link-text-color" href="<?php echo site_url ($url); ?>">Reports</a>
 		</li>
-		<li class="list-group-item" >
-			<a href="javascript:void(0)" onclick="show_confirm ('<?php echo 'Are you sure want to delete this users?' ; ?>','<?php echo site_url('coaching/user_actions/delete_account/'.$coaching_id.'/'.$role_id.'/'.$member_id); ?>' )" class="text-danger" >Delete Account</a>
-		</li>
+		<?php if ($member_id <> $this->session->userdata ('member_id')) { ?>
+			<li class="list-group-item" >
+				<a href="javascript:void(0)" onclick="show_confirm ('<?php echo 'Are you sure want to delete this users?' ; ?>','<?php echo site_url('coaching/user_actions/delete_account/'.$coaching_id.'/'.$role_id.'/'.$member_id); ?>' )" class="text-danger" >Delete Account</a>
+			</li>
+		<?php } ?>
     </ul>
 </div>
-
-
 
 
 <!-- Add Image -->
@@ -52,7 +52,9 @@
 							<img src="<?php echo base_url ($profile_image); ?>" alt="Profile Image" class="img-responsive img-thumbnail rounded-circle align-center" >
 						</div>
 						<br>
-						<div class="align-center "><a class="" id="remove_image" href="#" onclick="show_confirm ('Remove this image?', '<?php echo site_url('coaching/user_actions/remove_profile_image/'.$member_id); ?>')">Remove Image</a></div>
+						<div class="align-center ">
+							<a class="" id="remove_image" href="#" onclick="show_confirm ('Remove this image?', '<?php echo site_url('coaching/user_actions/remove_profile_image/'.$member_id); ?>')">Remove Image</a>
+						</div>
 					</div>
 				</div>
 				

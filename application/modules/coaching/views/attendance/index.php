@@ -22,12 +22,12 @@
 				<div class="col-md-3 mb-2">
 					<select name="search_batch" class="form-control" id="search-batch">
 						<option value="0">All Batches</option>
-						<?php /* foreach ($batches as $batch) { ?>
+						<?php foreach ($batches as $batch) { ?>
 							<option value="<?php echo $batch['id']; ?>"><?php echo $batch['title']; ?></option>
-						<?php } */ ?>
+						<?php } ?>
 					</select>
 				</div>
-				<div class="col-md-3 mb-2">
+				<div class="col-md-3 mb-2 d-none">
 					<div class="input-group ">
 						<input name="search_text" class="form-control " type="search" placeholder="Search" aria-label="Search Test" aria-describedby="search-button">
 						<div class="input-group-append">
@@ -35,6 +35,7 @@
 						</div>
 					</div>
 				</div>
+				
 				<div class="col-md-3 mb-2">
 					<input type="date" id="date" value="<?php echo $date; ?>" max="<?php echo $date;?>" class="form-control"  > 
 				</div>
@@ -43,6 +44,7 @@
 		
 	</div>
 </div>
+
 <div class="card card-default">
 	<ul class="list-group" id="data-tables">
 		<?php
@@ -50,20 +52,28 @@
 		if ( ! empty ($results)) {
 			foreach ($results as $row) {
 				?>
-				<li class="list-group-item">
-				
+				<li class="list-group-item media">
+					
+					<div class="media-left">
+
+					</div>
+
+					<div class="media-body">
+
+
 					<p>
-						<a class="" href="<?php echo site_url ('coaching/users/edit/'.$coaching_id.'/'.$row['role_id'].'/'.$row['member_id']); ?>"> 
-							<?php echo ($row['first_name']) .' '. ($row['second_name']) .' '. ($row['last_name']); ?>
-						</a> <br> 
+						<?php echo ($row['first_name']) .' '. ($row['second_name']) .' '. ($row['last_name']); ?>
+						<br> 
 						<?php echo $row['adm_no']; ?>
 					</p>
+
+					</div>
 					<div class="btn-group">
-						<a href="javascript: _void()" onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_PRESENT; ?>);" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_PRESENT) echo 'disabled btn-success'; else echo 'btn-light' ?>" id="present<?php echo $row['member_id']; ?>" >Present</a>
+						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_PRESENT; ?>);" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_PRESENT) echo 'disabled btn-success'; else echo 'btn-default' ?>" id="present<?php echo $row['member_id']; ?>" >Present</a>
 						
-						<a href="javascript: _void()" onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_LEAVE; ?>);" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_LEAVE) echo 'disabled btn-success'; else echo 'btn-light' ?>" id="leave<?php echo $row['member_id']; ?>" >Leave</a>
+						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_LEAVE; ?>);" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_LEAVE) echo 'disabled btn-info'; else echo 'btn-default' ?>" id="leave<?php echo $row['member_id']; ?>" >Leave</a>
 						
-						<a href="javascript: _void()" onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_ABSENT; ?>);" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_ABSENT) echo 'disabled btn-success'; else echo 'btn-light' ?>" id="absent<?php echo $row['member_id']; ?>" >Absent</a>
+						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_ABSENT; ?>);" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_ABSENT) echo 'disabled btn-danger'; else echo 'btn-default' ?>" id="absent<?php echo $row['member_id']; ?>" >Absent</a>
 						
 						<a href="<?php echo site_url ('attendance/reports/member_report/'.$row['member_id']); ?>" class="btn btn-dark text-white d-none">Report</a>
 					</div>

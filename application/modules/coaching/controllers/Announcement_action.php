@@ -10,7 +10,7 @@ class Announcement_action extends MX_Controller {
 	    $this->common_model->autoload_resources ($config, $models);
 	    
 	}
-	 public function create($coaching_id=0, $announcement_id=0){
+	 public function create ($coaching_id=0, $announcement_id=0){
 	 	$this->form_validation->set_rules ('title', 'Title', 'required|trim');
 	 	if ($this->form_validation->run () == true) {
 
@@ -25,8 +25,11 @@ class Announcement_action extends MX_Controller {
 
 
 	 }
-	 public function delete($coaching_id=0, $announcement_id=0) {
+
+	 public function delete ($coaching_id=0, $announcement_id=0) {
 		$this->announcements_model->delete_announcement ($coaching_id,$announcement_id);
+		$this->message->set ('Announcement deleted successfully', 'success', true);
+		redirect ('coaching/announcements/index/'.$coaching_id);
 	}
 
 

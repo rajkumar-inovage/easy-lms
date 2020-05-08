@@ -27,9 +27,12 @@
 			  </div>
 			  <input class="form-control" placeholder="Password" type="password" name="password">
 			</div>
+	  		<a href="<?php echo site_url ('login/user/reset_password'); ?>" class="text">Reset password</a>
 		  </div>
 
-		  <?php if (! $access_code) { ?>
+		  <?php if ($access_code != '' && $found == true) { ?>
+			  <input class="form-control" placeholder="Access Code" type="hidden" name="access_code" value="<?php echo $access_code; ?>">
+		  <?php } else { ?>
 			  <div class="form-group">
 				<div class="input-group input-group-alternative">
 				  <div class="input-group-prepend">
@@ -37,15 +40,13 @@
 				  </div>
 				  <input class="form-control" placeholder="Access Code" type="text" name="access_code">
 				</div>
+		  		<a href="<?php echo site_url ('login/user/get_access_code'); ?>" class="text">Get Access Code</a>
 			  </div>
-		  <?php } else { ?>
-			  <input class="form-control" placeholder="Access Code" type="hidden" name="access_code" value="<?php echo $access_code; ?>">
 		  <?php } ?>
 
 
 		  <div class="media">
 		  	<div class="media-body">
-		  		<a href="<?php echo site_url ('login/login/forgot_password'); ?>" class="text">Forgot password?</a>
 		  	</div>
 		  	<div class="media-right d-none">
 		  		<a href="<?php echo site_url ('login/login/otp_request'); ?>" class="text">Sign in with OTP</a>

@@ -4,6 +4,7 @@ class Users_model extends CI_Model {
     
     // Get all users
 	public function get_users ($coaching_id=0, $role_id=0, $status='-1', $batch_id=0) {
+
 	    $select = 'M.*, SR.description'; 
 	    
 	    $this->db->select ($select);
@@ -107,6 +108,10 @@ class Users_model extends CI_Model {
     		$last_name = '';
     	}
 
+	    if ($this->input->post ('last_name')) {
+	    	$last_name = $this->input->post ('last_name');
+	    }
+
 		$data = array (
 			'role_id'	=>		$this->input->post ('user_role'),
 			'sr_no'		=>		$this->input->post ('sr_no'), 
@@ -209,7 +214,7 @@ class Users_model extends CI_Model {
 			$config['image_library'] = 'gd2';
 			$config['source_image']	= $file_path ;
 			$config['create_thumb'] = false; 
-			$config['maintain_ratio'] = true;
+			$config['maintain_ratio'] = false;
 			$config['width']	 	= 240;
 			$config['height']		= 240;
 			//$config['master_dim']	= 'auto';
@@ -802,16 +807,26 @@ class Users_model extends CI_Model {
 		}
 	}	
 
-	public function contact_exists ($contact='', $coaching_id=0) {
+	public function coaching_contact_exists ($contact='', $coaching_id=0) {
 		$this->db->where ('primary_contact', $contact);
 		$this->db->where ('coaching_id', $coaching_id);
 		$sql = $this->db->get ('members');
-		if ($sql->num_rows () > 0 ) {
-			return true;
+		if ($sql->num_rows () > 0) {
+			return $sql->row_array ();
 		} else {
 			return false;
 		}
-	}	
+	}
+
+	public function contact_exists ($contact='') {
+		$this->db->where ('primary_contact', $contact);
+		$sql = $this->db->get ('members');
+		if ($sql->num_rows () > 0) {
+			return $sql->result_array ();
+		} else {
+			return false;
+		}
+	}
 
 	public function check_unique ($str='', $type='adm_no', $member_id=0) {
 		
@@ -866,16 +881,14 @@ class Users_model extends CI_Model {
 		$this->db->where ('member_id', $member_id);
 		$this->db->update ('members');
 	}
-
-
-	public function sms_template ($template=SMS_USER_ACCOUNT_CREATED, $member_id=0) {
-		$message = '';
-		$user = $this->get_user ($member_id);
-		$coaching 		= $this->coaching_model->get_coaching ($user['coaching_id']);
-		$coaching_name  = $coaching['coaching_name'];
-
-		$message[SMS_USER_ACCOUNT_CREATED] = '';
-
-		return $message[$template];
+	
+	public function reset_password ($member_id=0) {
+		$otp = random_string ('numeric', 6);
+		$hashed = password_hash ($otp, PASSWORD_DEFAULT);
+		$this->db->set ('password', $hashed);
+		$this->db->where ('member_id', $member_id);
+		$this->db->update ('members');
+		return $otp;
 	}
+
 }

@@ -20,26 +20,33 @@ $(document).ready (function () {
 });
 
 var dateString = '<?php echo $dt_string; ?>';
+
 function mark_attendance (btn_id, member_id, att_status) {
-	console.log(dateString);
 	var formURL = '<?php echo site_url ('coaching/attendance_actions/mark_attendance/'.$coaching_id); ?>/'+member_id+'/'+att_status+'/'+dateString;
 	var disabledBtn = $('#'+btn_id).parent().find('.btn.disabled');
-	disabledBtn.removeClass('disabled btn-success').addClass('btn-light');
-	$('#'+btn_id).removeClass('btn-light').addClass('disabled');
+	disabledBtn.removeClass('disabled btn-success btn-danger btn-info').addClass('btn-default');
+	$('#'+btn_id).removeClass('btn-default').addClass('disabled');
 	fetch (formURL, {
 		method : 'POST',
 	}).then (function (response) {
 		return response.json ();
 	}).then(function(result) {
 		if (result.status == true) {
-			$('#'+btn_id);
-			$('#'+btn_id).addClass ('btn-success');
-			toastr.success(result.message);
+			if (result.type == <?php echo ATTENDANCE_ABSENT; ?>) {
+				$('#'+btn_id).addClass ('btn-danger');
+			}else if (result.type == <?php echo ATTENDANCE_LEAVE; ?>) {
+				$('#'+btn_id).addClass ('btn-info');
+			} else if (result.type == <?php echo ATTENDANCE_PRESENT; ?>) {
+				$('#'+btn_id).addClass ('btn-success');
+			}
+			//toastr.success(result.message);
 		}
 	});
 	
 	return true;
 }
+
+// Change date
 $('#date').on ('change', function () {
 	var string = $(this).val();
 	var attendanceDateURL = '<?php echo site_url ('coaching/attendance_actions/get_attendance/'.$coaching_id.'/'); ?>' + string;
@@ -77,4 +84,80 @@ $('#date').on ('change', function () {
 		}
 	});
 });
+</script>
+
+<script>
+	
+	const loaderSelector = document.getElementById('loader');
+	const formSelector = document.getElementById('search-form');
+	const formURL = formSelector.getAttribute ('action');
+	const outputSelector = document.getElementById ('users-list');
+	
+	formSelector.addEventListener ('submit', e => {
+		e.preventDefault ();
+		var formData = new FormData(formSelector);
+		loaderSelector.style.display = 'block';
+		
+		fetch (formURL, {
+			method : 'POST',
+			body: formData,
+		}).then (function (response) {
+			return response.json ();
+		}).then(function(result) {
+			if (result.status == true) {
+				loaderSelector.style.display = 'none';
+				var obj =  result.data;
+				var i = 1;
+				var output = '<table class="table">';
+					output += '<thead>';
+						output += '<tr>';
+							output += '<th width="5%">';
+								output += '<input id="checkAll" type="checkbox" onclick="check_all ()">';
+							output += '</th>';
+							output += '<th width="25%">Name</th>';
+							output += '<th width="">Email</th>';
+							output += '<th width="">Role</th>';
+							output += '<th width="">Status</th>';
+							output += '<th width="">Actions</th>';
+						output += '</tr>';
+					output += '</thead>';
+					output += '<tbody>';
+					for (var item in obj) {
+						output += '<tr>';
+							output += '<td>';
+								output += '<input type="checkbox" value="'+obj[item].member_id+'" class="checks">';
+							output += '</td>';
+							output += '<td>';
+								var name = obj[item].first_name+' '+obj[item].last_name;
+								output += '<a href="<?php echo site_url('coaching/users/create'); ?>/'+obj[item].coaching_id+'/'+obj[item].role_id+'/'+obj[item].member_id+'">'+name+'</a><br>';
+								output += obj[item].adm_no;
+							output += '</td>';
+							output += '<td>';
+								output += obj[item].email;
+							output += '</td>';
+							output += '<td>';
+								output += obj[item].role_id;
+							output += '</td>';
+							output += '<td>';
+								if (obj[item].status == 1) {
+									output += '<span class="badge badge-primary">Active</span>';
+								} else {
+									output += '<span class="badge badge-light">Inactive</span>';
+								}
+							output += '</td>';
+							output += '<td>';
+							output += '</td>';
+						output += '</tr>';
+						i++;
+					}
+					output += '<tbody>';
+				output += '</table>';
+				/*
+				/*
+				*/
+				outputSelector.innerHTML = output;
+			}
+		});
+	});
+
 </script>

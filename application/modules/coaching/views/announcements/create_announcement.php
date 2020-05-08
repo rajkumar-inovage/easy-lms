@@ -15,7 +15,7 @@
 					<div class="form-group row">
 						<div class="col-md-12">
 							<?php echo form_label('Description', '', array('class'=>'control-label')); ?>
-							<textarea class="form-control required" name="description" placeholder="Write your announcement..." rows="5"><?php echo set_value('description', $result['description']); ?></textarea>
+							<textarea class="form-control required" name="description" placeholder="" rows="5"><?php echo set_value('description', $result['description']); ?></textarea>
 							
 						</div>
 					</div>
@@ -23,56 +23,44 @@
 					<div class="form-group row">
 						<div class="col-md-6">
 							<?php echo form_label('Start Date', '', array('class'=>'control-label')); ?>
-							<?php $original_date_s=$result['start_date'];
-							$new_date_s = date("Y-m-d", $original_date_s); ?>
-							<input name="start_date" type="date" class="form-control required" value="<?php 
-							
-							echo set_value('start_date', $new_date_s); ?>"/>
+							<?php 
+								if ($result['start_date'] != '') {
+									$start_date = date ('Y-m-d', $result['start_date']);
+								} else {
+									$start_date = date("Y-m-d");
+								}
+							?>
+							<input name="start_date" type="date" class="form-control required" value="<?php echo set_value('start_date', $start_date); ?>"/>
 						</div>
 						<div class="col-md-6">
 							<?php echo form_label('End Date', '', array('class'=>'control-label')); ?>
-							<?php $original_date_e=$result['end_date'];
-							$new_date_e = date("Y-m-d", $original_date_e); ?>
-							<input name="end_date" type="date" class="form-control required "  value="<?php 
-							
-							echo set_value('end_date', $new_date_e); ?>"/>
+							<?php 
+								if ($result['end_date'] != '') {
+									$end_date = date ('Y-m-d', $result['end_date']);
+								} else {
+									$end_date = date("Y-m-d", time ()+86400);
+								}
+							?>
+							<input name="end_date" type="date" class="form-control required "  value="<?php echo set_value('end_date', $end_date); ?>"/>
 						</div>
 					</div>
+
 					<div class="form-group row">
 						<div class="col-md-6 mt-3">
-							<?php echo form_label('Status', '', array('class'=>'control-label pr-5')); ?>
+						  <?php echo form_label('Status', '', array('class'=>'control-label pr-5')); ?>
+       					  <div class="custom-control custom-switch">
+							  <input type="checkbox" name="status" class="custom-control-input" id="status" value="1" <?php if ($result['status'] == 1 ) echo 'checked';?> checked >
+							  <label class="custom-control-label" for="status">Publish </label>
+						  </div>
 
-							<input type="radio"
-				                 name="status"
-				                 id="active"
-				                 value="1"
-				                 <?php echo set_value('status', $result['status']) == 1 ? "checked" : ""; ?>
-				  
-				                 />
-				          <label for="active">Active</label>
-				          <input type="radio"
-				                 name="status"
-				                 id="inactive"
-				                 class="ml-3"
-				                 value="0"
-				                 <?php echo set_value('status', $result['status']) == 0 ? "checked" : ""; ?> 
-				  				
-				                 />
-				          <label for="inactive">Inactive</label>
 						</div>
 						
-					</div>
-					
-					
+					</div>					
+				</div>
 
-					<div class="form-group">
-					</div>
-					
-					<hr>
-					
+				<div class="card-footer">					
 					<p class="btn-toolbar">
 						<input type="submit" name="submit" value="<?php echo ('Save'); ?>" class="btn btn-primary " accesskey="s" />
-						<?php echo anchor ('coaching/announcements/index/'.$coaching_id, 'Cancel', array('class'=>'btn btn-danger ml-3')); ?>
 					</p>
 				</form>
 			</div>

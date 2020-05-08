@@ -3,8 +3,8 @@
 class Home extends MX_Controller {
 	
 	public function __construct () { 
-	    $config = ['config_coaching'];
-	    $models = ['coaching_model', 'users_model', 'subscription_model'];
+	    $config = ['config_coaching', 'config_virtual_class'];
+	    $models = ['coaching_model', 'users_model', 'subscription_model', 'virtual_class_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	}
  
@@ -43,6 +43,43 @@ class Home extends MX_Controller {
 		
 		$this->load->view (INCLUDE_PATH . 'header', $data);
 		$this->load->view ('home/dashboard', $data);
+		$this->load->view (INCLUDE_PATH . 'footer', $data);		
+		
+	}
+
+
+	public function teacher ($coaching_id=0, $member_id=0) {
+		
+		 if ($coaching_id==0) {
+            $coaching_id = $this->session->userdata ('coaching_id');
+        }
+        if ($member_id==0){
+            $member_id = $this->session->userdata ('member_id');
+        }
+        $role_id = $this->session->userdata ('role_id');
+
+        $data['coaching_id'] = $coaching_id;
+        $data['member_id'] = $member_id;
+
+        if ($role_id == USER_ROLE_SUPER_ADMIN || $role_id == USER_ROLE_ADMIN) {
+        	$role = USER_ROLE_COACHING_ADMIN;
+        } else {
+        	$role = $role_id;
+        }
+
+		$data['dashboard_menu'] = $this->common_model->load_acl_menus ($role, 0, MENUTYPE_DASHBOARD);
+
+		$data['coaching'] = $this->coaching_model->get_coaching ($coaching_id);
+		$data['my_classrooms'] = $this->virtual_class_model->my_classroom ($coaching_id, $member_id);
+		$data['announcements'] = $this->coaching_model->get_coaching_announcements ($coaching_id);
+		$data['cats_added'] = array ();		
+
+		$data['page_title'] = 'Dashboard';
+
+        //$data['bc'] = array ('Coachings'=>'admin/coaching/index');
+		
+		$this->load->view (INCLUDE_PATH . 'header', $data);
+		$this->load->view ('home/teacher', $data);
 		$this->load->view (INCLUDE_PATH . 'footer', $data);		
 		
 	}

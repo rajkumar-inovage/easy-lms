@@ -12,33 +12,29 @@ class User extends MX_Controller {
 	
  	public function index () {
     	// Default settings
+		$access_code = '';
 		$logo_path = $this->config->item ('system_logo');
 		$logo = base_url ($logo_path);
-		$page_title = SITE_TITLE;
+		$page_title = 'Sign-In';
+		$found = false;
 
-		if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
+		if (isset ($_GET['sub']) && ! empty ($_GET['sub']) && $_GET['sub'] != 'undefined') {
     		$access_code = $_GET['sub'];
-    	} else {
-    		$access_code = '';
-    	}
-    	if (! $this->session->has_userdata ('access_code')) {
-    		$this->session->set_userdata ('access_code', $access_code);
-    	}
-    	if ($this->session->userdata ('access_code')) {
-    		$slug = $this->session->userdata ('access_code');
-			$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
+    		$coaching = $this->coaching_model->get_coaching_by_slug ($access_code);
 			if ($coaching) {
 				$coaching_dir = 'contents/coachings/' . $coaching['id'] . '/';
 				$coaching_logo = $this->config->item ('coaching_logo');
 				$logo_path =  $coaching_dir . $coaching_logo;
 				$logo = base_url ($logo_path);
 				$page_title = $coaching['coaching_name'];
+				$found = true;
 			}
-		}
+    	}
 
 		$data['page_title'] = $page_title;
 		$data['logo'] = $logo;
-		$data['access_code'] = $this->session->userdata ('access_code');
+		$data['access_code'] = $access_code;
+		$data['found'] = $found;
 		
 		$data['script'] = $this->load->view ('scripts/login', $data, true); 
 		$this->load->view (INCLUDE_PATH . 'header', $data);
@@ -50,13 +46,14 @@ class User extends MX_Controller {
 	public function register () {
 
 		// Default settings
+		$access_code = '';
 		$logo_path = $this->config->item ('system_logo');
 		$logo = base_url ($logo_path);
 		$page_title = SITE_TITLE;
 
-    	if ($this->session->userdata ('access_code')) {
-    		$slug = $this->session->userdata ('access_code');
-			$coaching = $this->coaching_model->get_coaching_by_slug ($slug);
+		if (isset ($_GET['sub']) && ! empty ($_GET['sub']) && $_GET['sub'] != 'undefined') {
+    		$access_code = $_GET['sub'];
+    		$coaching = $this->coaching_model->get_coaching_by_slug ($access_code);
 			if ($coaching) {
 				$coaching_dir = 'contents/coachings/' . $coaching['id'] . '/';
 				$coaching_logo = $this->config->item ('coaching_logo');
@@ -64,7 +61,7 @@ class User extends MX_Controller {
 				$logo = base_url ($logo_path);
 				$page_title = $coaching['coaching_name'];
 			}
-		}
+    	}		
 
     	if (isset ($_GET['role']) && ! empty ($_GET['role'])) {
     		$role_id = $_GET['role'];
@@ -72,19 +69,66 @@ class User extends MX_Controller {
     		$role_id = USER_ROLE_STUDENT;
     	}
 
+		$data['access_code'] = $access_code;
 		$data['page_title'] = $page_title;
 		$data['logo'] = $logo;
 		$data['role_id'] = $role_id;
-		$data['access_code'] = $this->session->userdata ('access_code');								
-
+		
 		$data['script'] = $this->load->view ('scripts/register', $data, true); 
 		$this->load->view (INCLUDE_PATH . 'header', $data);
 		$this->load->view ( 'register', $data); 
 		$this->load->view (INCLUDE_PATH . 'footer', $data);
-
 	}
+
 	
-	 
+	/* forgot password */
+	public function reset_password () {
+		// Default settings
+		$access_code = '';
+		$logo_path = $this->config->item ('system_logo');
+		$logo = base_url ($logo_path);
+		$page_title = SITE_TITLE;
+
+		if (isset ($_GET['sub']) && ! empty ($_GET['sub']) && $_GET['sub'] != 'undefined') {
+    		$access_code = $_GET['sub'];
+    		$coaching = $this->coaching_model->get_coaching_by_slug ($access_code);
+			if ($coaching) {
+				$coaching_dir = 'contents/coachings/' . $coaching['id'] . '/';
+				$coaching_logo = $this->config->item ('coaching_logo');
+				$logo_path =  $coaching_dir . $coaching_logo;
+				$logo = base_url ($logo_path);
+				$page_title = $coaching['coaching_name'];
+			}
+    	}
+
+		$data['page_title'] = $page_title;
+		$data['logo'] 		= $logo;
+		$data['access_code']= $access_code;
+		$data['page_title'] = $page_title;
+		
+		$this->load->view (INCLUDE_PATH . 'header', $data);
+		$this->load->view('reset_password');		
+		$this->load->view (INCLUDE_PATH . 'footer', $data);
+	}
+
+	/* forgot password */
+	public function get_access_code () {
+		// Default settings
+		$access_code = '';
+		$logo_path = $this->config->item ('system_logo');
+		$logo = base_url ($logo_path);
+		$page_title = SITE_TITLE;
+
+		$data['page_title'] = $page_title;
+		$data['logo'] 		= $logo;
+		$data['access_code']= $access_code;
+		$data['page_title'] = $page_title;
+		
+		$this->load->view (INCLUDE_PATH . 'header', $data);
+		$this->load->view('get_access_code');		
+		$this->load->view (INCLUDE_PATH . 'footer', $data);
+	}
+
 	/* create password for new user register */
 	public function create_password ($user_id='') {
 		if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
@@ -131,10 +175,10 @@ class User extends MX_Controller {
 			$this->load->view( 'password', $data);
 			$this->load->view( INCLUDE_PATH . 'footer', $data);
 		}
-	}
-	
+	}	
+
 	/* forget password */
-	public function forgot_password (){
+	public function _forgot_password (){
 		if ($this->session->userdata('is_logged_in')) {
 			$this->login_model->logout ();
 		}

@@ -1,28 +1,23 @@
 <div class="row ">
 	<div class="col-md-9"> 
-		<div class="card card-default mb-4">						
+		<div class="card card-default mb-4">
 			<div class="card-body">
-				<?php echo form_open( 'coaching/user_actions/change_password/'.$coaching_id.'/'.$role_id.'/'.$member_id, array('class'=>'form-horizontal ', 'id'=>'validate-1')); ?>
+				<?php echo form_open( 'coaching/user_actions/change_password/'.$coaching_id.'/'.$member_id, array('class'=>'form-horizontal ', 'id'=>'validate-1')); ?>
 					<div class="form-group">
-						<label class="col-md-3" for="password">Password<span class="text-danger">*</span></label>
-						<div class="col-md-9">
-							<input type="password" name="password" id='password' class="form-control" placeholder="Password">
-							<div id='password-strength'></div>
-						</div>
+						<label class="" for="password">Password<span class="text-danger">*</span></label>
+						<input type="password" name="password" id='password' class="form-control" placeholder="Password">
+						<div id='password-strength'></div>
 					</div>
 					
 					<div class="form-group">
-						<label class="col-md-3" for="conf_password">Confirm Password<span class="text-danger">*</span></label>
-						<div class="col-md-9">
-							<input type="password" name="repeat_password" class="form-control" id="conf_password"  placeholder="Re-enter password" >
+						<label class="" for="conf_password">Confirm Password<span class="text-danger">*</span></label>
+						<input type="password" name="repeat_password" class="form-control" id="conf_password"  placeholder="Re-enter password" >
 
-						</div>
 					</div>
 
 					
 					<div class="form-group">
 					
-						<div class="col-md-3"></div>
 						<div id="pswd_info" class="col-md-9">
 							<label class="">Password must meet the following requirements</label>
 							<div><i id="letter"></i>       <span>At least one capital and small letter</span></div>
@@ -37,10 +32,16 @@
 				<div class="card-footer">
 					<div class="btn-toolbar">
 					    <input type="submit" name="submit" value="<?php echo ('Save'); ?>" class="btn btn-success pull-right" />
-					    <a href="" id="resend_confirmation" class="btn btn-link">Send Password Creation Link On Email</a>
 					</div>
 				</div>
 			</form>
+		</div>
+
+		<div class="card card-default bg-info mb-4">
+			<div class="card-body text-center">
+				<h5>OR</h5>
+			    <a href="" id="resend_confirmation" class="btn btn-secondary">Send OTP for Login</a>
+			</div>
 		</div>
 	</div>
 

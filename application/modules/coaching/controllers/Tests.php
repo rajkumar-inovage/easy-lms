@@ -674,9 +674,9 @@ class Tests extends MX_Controller {
 			}
 		}
 		
+   		$answer_content = '';
 		if ( ! empty($questions)) {
     		$count = 1;
-    		$answer_content = '';
     		$answer_content .= '<p style="page-break-before: always"></p>';
     		//$answer_content .= '<h4 class="margin-none">'.$data['coaching_name'].'</h4>';
     		$answer_content .= '<strong>'.$data['test']['title'].'</strong>';
@@ -711,9 +711,9 @@ class Tests extends MX_Controller {
 		
 		$data['print'] = true;
 		
-		$this->load->view(INCLUDE_PATH . 'noheader', $data);
+		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('tests/print_test', $data);
-		$this->load->view(INCLUDE_PATH . 'nofooter', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 	
 	

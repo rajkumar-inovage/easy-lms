@@ -106,7 +106,7 @@ class Virtual_class_model extends CI_Model {
 
 		$call_name = 'create';
 		$query_string = '';
-		$query_string .= '&meetingID='.$meeting_id;
+		$query_string .= 'meetingID='.$meeting_id;
 		$query_string .= '&moderatorPW='.$moderator_pwd;
 		$query_string .= '&attendeePW='.$attendee_pwd;
 		$query_string .= '&welcome='.$welcome_message;
@@ -143,15 +143,19 @@ class Virtual_class_model extends CI_Model {
 		$data['query_string'] 		= $query_string;
 		$data['checksum'] 			= $checksum;		
 
-		$data['coaching_id'] 		= $coaching_id;
-		$data['created_by'] 		= $this->session->userdata ('member_id');
-		$data['creation_date'] 		= time ();
 
-		if ($class_id == 0) {
+		if ($class_id > 0) {
+			$this->db->where ('class_id', $class_id);
+			$this->db->where ('coaching_id', $coaching_id);
+			$sql = $this->db->update ('virtual_classroom', $data);
+		} else {
+			$data['coaching_id'] 		= $coaching_id;
+			$data['created_by'] 		= $this->session->userdata ('member_id');
+			$data['creation_date'] 		= time ();
 			$sql = $this->db->insert ('virtual_classroom', $data);
 			$class_id = $this->db->insert_id ();
 			$member_id = $this->session->userdata ('member_id');
-			$this->add_moderator ($coaching_id, $class_id, $member_id);
+			$this->add_moderator ($coaching_id, $class_id, $member_id);			
 		}
 		return $class_id;
 	}
@@ -182,10 +186,7 @@ class Virtual_class_model extends CI_Model {
 		$final_string = $call_name . $query_string . $shared_secret;
 		$checksum = sha1 ($final_string);
 
-		$meeting_url = '';
-		$meeting_url .= $api_setting['api_url'];
-		$meeting_url .= $call_name;
-		$meeting_url .= '?';
+		$meeting_url = '';		
 		$meeting_url .= $query_string;
 		$meeting_url .= '&checksum='.$checksum;
 
@@ -201,7 +202,6 @@ class Virtual_class_model extends CI_Model {
 		if ($sql->num_rows () == 0) {
 			$this->db->insert ('virtual_classroom_participants', $data);
 		}
-
 	}
 
 	public function add_participants ($coaching_id=0, $class_id=0) {
@@ -241,9 +241,6 @@ class Virtual_class_model extends CI_Model {
 			$checksum = sha1 ($final_string);
 	
 			$meeting_url = '';
-			$meeting_url .= $api_setting['api_url'];
-			$meeting_url .= $call_name;
-			$meeting_url .= '?';
 			$meeting_url .= $query_string;
 			$meeting_url .= '&checksum='.$checksum;
 
@@ -433,4 +430,24 @@ class Virtual_class_model extends CI_Model {
 			$this->db->update ('virtual_classroom_history');
 		}
 	}
+
+
+	public function my_classroom ($coaching_id=0, $member_id=0) {
+		$result = [];
+		$this->db->select ('VC.*, VCP.meeting_url, VCP.role');
+		$this->db->from ('virtual_classroom VC');
+		$this->db->join ('virtual_classroom_participants VCP', 'VC.class_id=VCP.class_id');
+		$this->db->where ('VCP.coaching_id', $coaching_id);
+		$this->db->where ('VCP.member_id', $member_id);
+		$sql = $this->db->get ();
+		$sql_array = $sql->result_array ();
+		if (! empty ($sql_array)) {
+			foreach ($sql_array as $row) {
+				$row['running'] = $this->is_meeting_running ($coaching_id, $row['class_id']);
+				$result[] = $row;
+			}			
+		}
+		return $result;
+	}
+
 }

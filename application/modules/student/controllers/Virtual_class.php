@@ -38,26 +38,26 @@ class Virtual_class extends MX_Controller {
 
 	public function join_class ($coaching_id=0, $class_id=0, $member_id=0) {
 		
-		$api_setting = $this->virtual_class_model->get_api_settings ();
+		$api_setting = $this->virtual_class_model->get_api_settings ('join_url');
 		$class = $this->virtual_class_model->get_class ($coaching_id, $class_id);
 		$join = $this->virtual_class_model->join_class ($coaching_id, $class_id, $member_id);
-		$join['meeting_url'];
-		
-		$api_url = $api_setting['api_url'];
+		$meeting_url = $join['meeting_url'];
+		$api_join_url = $api_setting['join_url'];
+		$join_url = $api_join_url . $meeting_url;
 		
 		$is_running = $this->virtual_class_model->is_meeting_running ($coaching_id, $class_id);
 
 		if ( $is_running == 'true') {
-			redirect ($join['meeting_url']);
+			redirect ($join_url);
 		} else {
 			if ($join['role'] == VM_PARTICIPANT_MODERATOR)  {
 				$response = $this->virtual_class_model->create_meeting ($coaching_id, $class_id);
 				if ($response == 'SUCCESS') {
-					redirect ($join['meeting_url']);
+					redirect ($join_url);
 				}
 			}
 		}
-		
+
 		$data['coaching_id'] = $coaching_id;
 		$data['class_id'] = $class_id;
 		$data['page_title'] = 'Classroom Not Started';

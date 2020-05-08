@@ -190,11 +190,9 @@
 		</ul>
 
         <div class="sidebar-block">
-            <?php if (isset ($access_code) && $access_code != '')  { ?>
-                <div class="" id="installBanner" style="visibility: hidden;">
-                    <button class="btn btn-success " id="installBtn"><i class="fab fa-android"></i> Install App</button>
-                </div>
-            <?php } ?>
+            <div class="" id="installBanner" style="visibility: hidden;">
+                <button class="btn btn-success " id="installBtn"><i class="fab fa-android"></i> Install App</button>
+            </div>
         </div>
 
         <div class="sidebar-block">

@@ -121,17 +121,22 @@ class Coaching_model extends CI_Model {
 		$this->db->where ('member_id', $member_id);
 		$this->db->update ('members');
 
+		// Get coaching details
+		$coaching = $this->get_coaching_by_slug ($slug);
+
 		// Send confirmation email
 		$url			= site_url ('/?sub='.$slug);
 		$name 			= $data['first_name'].' '.$data['last_name'];
 		$to 			= $data['email'];
 		$subject 		= 'Coaching Account Created';
-		$message 		= '<strong> Greetings '.$name.'! </strong> 
-						  <p>Your coaching account is setup and ready to use. You can login to your account using the below URL 
-						  <p> <strong>'.$url.'</strong></p>
-						  <p>Please bookmark this URL and share with your users to login and/or create their accounts.';
-
+		$message 		= '<strong> Dear '.$name.'! </strong> <p>Your coaching account '.strtoupper(($coaching['coaching_name'])).' is setup and ready to use. You can login to your account using the URL <p>'.$url.'</p>. Your access code is '.$slug.'. <p>Please bookmark this URL and share with your users to login and/or create their accounts.';
 		$this->common_model->send_email ($to, $subject, $message);
+
+		// Send sms
+		$contact 		= $data['primary_contact'];
+		$message		= strip_tags($message);
+		$this->sms_model->send_sms ($contact, $message);
+
 		return $member_id;
 	}
 
@@ -164,6 +169,7 @@ class Coaching_model extends CI_Model {
 
 	public function get_coaching_by_slug ($coaching_slug='') {
 		$this->db->where ('coaching_url', $coaching_slug);
+		$this->db->or_where ('reg_no', $coaching_slug);
 		$this->db->from ('coachings');
 		$sql = $this->db->get ();
 		if  ($sql->num_rows () > 0 ) {

@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#4285F4">
     <meta name="msapplication-navbutton-color" content="#4285F4">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="msapplication-starturl" content="<?php echo site_url (); ?>">
+    <meta name="msapplication-starturl" content="<?php echo site_url (''); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="icon" sizes="128x128" href="<?php echo base_url(THEME_PATH . 'assets/img/touch/app-icon128.png'); ?>">
@@ -54,7 +54,10 @@
 
 </head>
 <body class="<?php if (isset($body_class)) echo $body_class; ?>">
-	
+	<?php
+        $coaching_id = $this->session->userdata ('coaching_id');
+        $member_id = $this->session->userdata ('member_id');
+    ?>
 	<header class="">
         <nav class="navbar navbar-dark bg-primary">
             <div class="container">
@@ -78,6 +81,8 @@
                             <div class="text-center" href="#"><?php echo $this->session->userdata ('user_name'); ?></div>
                         </p>
                         <hr>
+                        <a class="dropdown-item" href="<?php echo site_url ('coaching/users/my_account/'.$coaching_id.'/'.$member_id); ?>"><i class="fa fa-user"></i> My Account</a>
+                        <a class="dropdown-item" href="<?php echo site_url ('coaching/users/my_password/'.$coaching_id.'/'.$member_id); ?>"><i class="fa fa-lock"></i> Change Password</a>
                         <a class="dropdown-item" href="#" onclick="logout_user ()"><i class="fa fa-sign-out-alt"></i> Logout</a>
                       </div>
                     </div>
@@ -168,11 +173,9 @@
 		</ul>
 
         <div class="sidebar-block">
-            <?php if (isset ($access_code) && $access_code != '')  { ?>
-                <div class="" id="installBanner" style="visibility: hidden;">
-                    <button class="btn btn-success " id="installBtn"><i class="fab fa-android"></i> Install App</button>
-                </div>
-            <?php } ?>
+            <div class="" id="installBanner" style="visibility: hidden;">
+                <button class="btn btn-success " id="installBtn"><i class="fab fa-android"></i> Install App</button>
+            </div>
         </div>
 
         <div class="sidebar-block">

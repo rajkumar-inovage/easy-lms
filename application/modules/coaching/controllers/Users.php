@@ -133,14 +133,14 @@ class Users extends MX_Controller {
 	/* CHANGE USER PASSWORD
 		Function to change password of selected user
 	*/
-	public function change_password ($coaching_id=0, $role_id=0, $member_id=0) {	
+	public function change_password ($coaching_id=0, $member_id=0) {	
 		$data['result'] = $this->users_model->get_user ($member_id);
 		$data['profile_image'] = $this->users_model->view_profile_image ($member_id);
 		$data['page_title'] = 'Change Password'; 
 		$data['sub_title']  = $data['result']['first_name']; 
-		$data['member_id']  = $member_id;       
+		$data['member_id']  = $member_id;
+		echo $data['role_id']  = $data['result']['role_id'];
 		$data['coaching_id']   = $coaching_id;
-		$data['role_id']    = $role_id;
 		$data["bc"] = array ( 'Users'=>'coaching/users/index/'.$coaching_id );
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
@@ -152,7 +152,8 @@ class Users extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 	
-	public function my_account ($member_id=0) {
+	/*----------- MY ACCOUNT FUNCTIONS -------------*/
+	public function my_account ($coaching_id=0, $member_id=0) {
 		
 		$data['page_title'] = 'My Account';
 		if ($member_id == 0) {
@@ -168,7 +169,7 @@ class Users extends MX_Controller {
 		} else {
 			$data['result'] 	= false;
 		}		
-		$data['coaching_id'] 		= 0;
+		$data['coaching_id'] 	= $coaching_id;
 		$data['role_id'] 		= $user['role_id'];
 		$data['roles']	 		= $this->users_model->user_role_name ($user['role_id']);
 		$data['rand_str'] 		= time ();
@@ -182,6 +183,23 @@ class Users extends MX_Controller {
 		$this->load->view (INCLUDE_PATH . 'footer', $data);
 	}
 	
+	/*----------- MY PASSWORD ----------------*/
+	public function my_password ($coaching_id=0, $member_id=0) {
+		$data['result'] = $this->users_model->get_user ($member_id);
+		$data['profile_image'] = $this->users_model->view_profile_image ($member_id);
+		$data['page_title'] = 'Change Password'; 
+		$data['member_id']  = $member_id;       
+		$data['coaching_id']   = $coaching_id;
+		$data["bc"] = array ( 'Users'=>'coaching/users/my_account/'.$coaching_id.'/'.$member_id );
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+
+		$data['data'] = $data;
+		
+		$data['script'] = $this->load->view ('users/scripts/change_password', $data, true);
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('users/my_password', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
+	}
 	
 	/* MEMBER LOG FUNCTIONS */
 	public function member_log ($coaching_id=0, $role=0, $member_id=0, $log_id=0) {		

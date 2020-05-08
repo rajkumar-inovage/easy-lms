@@ -45,7 +45,7 @@ class Announcements extends MX_Controller {
 	public function create_announcement ($coaching_id=0,$announcement_id=0) {
 
 		$data['page_title']  = 'Create Announcements';
-		$data['bc'] = array ('Coaching Dashboard'=>'coaching/home/dashboard/');
+		$data['bc'] = array ('Coaching Dashboard'=>'coaching/announcements/index/'.$coaching_id);
 		/*Check submit button */
 		$data['coaching_id']=$coaching_id;
 		$data['announcement_id']=$announcement_id;
@@ -56,23 +56,8 @@ class Announcements extends MX_Controller {
 		$this->load->view ( 'announcements/create_announcement',$data);
 		$this->load->view ( INCLUDE_PATH  . 'footer', $data);
 	}
-	
-	public function delete_announcement ($coaching_id=0,$announcement_id=0) {
 
-		$data['bc'] = array ('Coaching Dashboard'=>'coaching/home/dashboard/');
-		/*Check submit button */
-		$data['coaching_id']=$coaching_id;
-		$data['announcement_id']=$announcement_id;
-		$data['result']=$this->announcements_model->delete_announcement($coaching_id,$announcement_id);
-		
-		/*load registration view form*/
-		$this->load->view ( INCLUDE_PATH  . 'header', $data);
-		$this->load->view ( INCLUDE_PATH  . 'footer', $data);
-	}
-	
-   
-
-   } 
+} 
 	
    
 	

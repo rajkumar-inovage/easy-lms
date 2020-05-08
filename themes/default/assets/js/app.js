@@ -1,4 +1,4 @@
-const appPath = 'http://localhost/repos/easycoachingapp/';
+const appPath = 'http://localhost/repos/easycoachingapp/'; 
 const logoutPath = 'login/login_actions/logout';
 const updatePath = 'login/login_actions/update_session';
 const sidebarSection = document.getElementById("sidebar");
@@ -15,7 +15,6 @@ window.addEventListener ('load', async e => {
 			console.log ('ServiceWorker registration failed');		
 		}
 	}
-	//validate_session ();
 });
 
 
@@ -150,12 +149,8 @@ function show_confirm_ajax (msg, url, redirect) {
 
 
 /*----==== Logout User ====----*/
-function logout_user () {
+function logout_user (access_code) {
 	// We dont want to remove access code
-	const access_code = localStorage.getItem ('access_code');
-	window.localStorage.clear ();
-	localStorage.setItem ('access_code', access_code);
-
 	const logoutURL = appPath + logoutPath + '/' + access_code;
 	fetch (logoutURL, { 
 		method : 'POST',
