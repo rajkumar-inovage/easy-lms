@@ -2,55 +2,6 @@
 
 class Users_model extends CI_Model {
     
-    // Get all users
-	public function get_users ($coaching_id=0, $role_id=0, $status='-1', $batch_id=0) {
-	    $select = 'M.*, SR.description'; 
-	    
-	    $this->db->select ($select);
-
-	    if ($status > '-1') {
-	        $this->db->where ('M.status', $status);
-	    }
-	    $this->db->from ('members M');
-	    
-	    if ($role_id > 0) {
-	        $this->db->where ('M.role_id', $role_id);
-	    }
-        $this->db->join ('sys_roles SR', 'M.role_id=SR.role_id');
-
-	    if ($batch_id > 0) {
-	        $this->db->join ('coaching_batch_users BU', 'M.member_id=BU.member_id AND BU.batch_id='.$batch_id);
-	    }
-	    $this->db->where ('coaching_id', $coaching_id);
-	    $sql = $this->db->get ();
-	    return $sql->result_array ();
-	}
-	
-    
-    public function search_users ($coaching_id=0) {
-		
-		$role_id = $this->input->post ('search-role');
-		$status = $this->input->post ('search-status');
-		$batch_id = $this->input->post ('search-batch');		
-		$search = $this->input->post ('search_text');
-		if ( ! empty($search)) {
-			$where = "(adm_no LIKE '%$search%' OR login LIKE '%$search%' OR first_name LIKE '%$search%' OR second_name LIKE '%$search%' OR last_name LIKE '%$search%' OR email LIKE '%$search%')";
-			$this->db->where ($where);
-		} 
-		if ($role_id > 0) {
-			$this->db->where ('role_id', $role_id); 
-		}
-		if ($status > '-1') {
-			$this->db->where ('status', $status);
-		}
-		if ($batch_id > 0) {
-			$this->db->where ('batch_id', $batch_id);
-		}
-		$this->db->where ('coaching_id', $coaching_id );
-		$sql = $this->db->get ('members');
-		return $sql->result_array ();
-		
-	}
 	
 	public function get_user ($member_id=0) {		
 		$this->db->where ('member_id', $member_id);
@@ -185,7 +136,7 @@ class Users_model extends CI_Model {
 			$config['image_library'] = 'gd2';
 			$config['source_image']	= $file_path ;
 			$config['create_thumb'] = false; 
-			$config['maintain_ratio'] = true;
+			$config['maintain_ratio'] = false;
 			$config['width']	 	= 240;
 			$config['height']		= 240;
 			//$config['master_dim']	= 'auto';

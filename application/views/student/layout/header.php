@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -78,6 +78,8 @@
                             <div class="text-center" href="#"><?php echo $this->session->userdata ('user_name'); ?></div>
                         </p>
                         <hr>
+                        <a class="dropdown-item" href="<?php echo site_url ('student/users/my_account/'.$coaching_id.'/'.$member_id); ?>"><i class="fa fa-user"></i> My Account</a>
+                        <a class="dropdown-item" href="<?php echo site_url ('student/users/my_password/'.$coaching_id.'/'.$member_id); ?>"><i class="fa fa-lock"></i> Change Password</a>
                         <a class="dropdown-item" href="#" onclick="logout_user ()"><i class="fa fa-sign-out-alt"></i> Logout</a>
                       </div>
                     </div>
@@ -88,7 +90,7 @@
         </nav>
 
         <nav class="bg-white border-bottom">
-            <ul class="nav nav-tabs nav-fill ">
+            <ul class="nav nav-tabs nav-justified ">
                 <?php 
                 $role_id = $this->session->userdata ('role_id');
                 $footer_menu = $this->common_model->load_acl_menus ($role_id, 0, MENUTYPE_FOOTER);

@@ -150,14 +150,13 @@ function show_confirm_ajax (msg, url, redirect) {
 
 /*----==== Logout User ====----*/
 function logout_user (access_code) {
-	// We dont want to remove access code
 	const logoutURL = appPath + logoutPath + '/' + access_code;
 	fetch (logoutURL, { 
 		method : 'POST',
 	}).then (function (response) {
 		return response.json ();
 	}).then (function(result) {
-		document.location = result.redirect;
+		document.location = result.redirect;	
 	});
 }
 

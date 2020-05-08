@@ -2,7 +2,7 @@
 	<div class="col-md-9"> 
 		<div class="card card-default mb-4">						
 			<div class="card-body">
-				<?php echo form_open( 'coaching/user_actions/change_password/'.$coaching_id.'/'.$member_id, array('class'=>'form-horizontal ', 'id'=>'validate-1')); ?>
+				<?php echo form_open( 'student/user_actions/change_password/'.$coaching_id.'/'.$member_id, array('class'=>'form-horizontal ', 'id'=>'validate-1')); ?>
 					<div class="form-group">
 						<label class="col-md-3" for="password">Password<span class="text-danger">*</span></label>
 						<div class="col-md-9">
