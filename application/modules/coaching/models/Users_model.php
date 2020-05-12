@@ -77,8 +77,25 @@ class Users_model extends CI_Model {
 			} 
 		}
 		return $result;
-	}	
-
+	}
+	// Save Batch
+	public function save_batch($batch_id, $member_id){
+		$this->db->where ('batch_id', $batch_id);
+		$this->db->where ('member_id', $member_id);
+		$sql = $this->db->get ('coaching_batch_users');
+		if  ($sql->num_rows () == 0 ) {
+			$data['member_id'] = $member_id;
+			$data['batch_id']  = $batch_id;
+			$sql = $this->db->insert ('coaching_batch_users', $data);
+			if($sql!=0){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
 	// Save account
 	public function save_account ($coaching_id=0, $member_id=0, $status=USER_STATUS_ENABLED) {
 	    
@@ -126,10 +143,14 @@ class Users_model extends CI_Model {
 			'status'  	=> 		$status,
 		);
 		
-		if ($member_id > 0) { 
+		if ($member_id > 0) {
+			// save batch
+			$batch_id = $this->input->post ('user_batch');
+			$this->save_batch($batch_id, $member_id);
+
 			// update account
 			$this->db->where ('member_id', $member_id);
-			$this->db->update ('members', $data);			
+			$this->db->update ('members', $data);		
 		} else {
 			// create profile
 			$otp = $password;
@@ -148,6 +169,10 @@ class Users_model extends CI_Model {
 			$this->db->set ('login', $user_id);
 			$this->db->where ('member_id', $member_id);
 			$this->db->update ('members');
+
+			// save batch
+			$batch_id = $this->input->post ('user_batch');
+			$this->save_batch($batch_id, $member_id);
 
 			// Send SMS
 			if ($this->session->userdata ('member_id') > 0 ) {

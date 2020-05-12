@@ -9,7 +9,7 @@
 				<?php echo form_open ('coaching/user_actions/create_account/'.$coaching_id.'/'.$role_id.'/'.$member_id, array ('class'=>'form-horizontal', 'id'=>'validate-1')); ?>
 					
 					<div class="form-group row">
-						<div class="col-md-6">
+						<div class="col">
 							<label class="form-label"><?php echo 'User Role'; ?></label>
 							<select data-toggle="select2" class="form-control" name="user_role">
 								<?php 
@@ -37,13 +37,26 @@
 								?>
 							</select>
 						</div>
-					
-						<div class="col-md-6">
+						<div class="col">
 							<label class="form-label"><?php echo 'Status'; ?></label>
 							<select name="status" class="form-control" id="search-status" >
 								<option value="<?php echo USER_STATUS_ENABLED; ?>" <?php if ($row['status']==USER_STATUS_ENABLED) echo 'selected="selected"'; ?> >Enabled</option>
 								<option value="<?php echo USER_STATUS_DISABLED; ?>" <?php if ($row['status']==USER_STATUS_DISABLED) echo 'selected="selected"'; ?> >Disabled</option>
 								<option value="<?php echo USER_STATUS_UNCONFIRMED; ?>" <?php if ($row['status']==USER_STATUS_UNCONFIRMED) echo 'selected="selected"'; ?> >Pending</option>
+							</select>
+						</div>
+						<div class="col <?php echo ($select_role_id != 4)?' d-none':'' ?>">
+							<label class="form-label">User Batch</label>
+							<select name="user_batch" class="form-control" id="user-batch">
+								<option>Select Batch</option>
+								<?php 
+								if (! empty($batches)) {
+								  foreach ($batches as $batch) { ?>
+									<option value="<?php echo $batch['batch_id']; ?>" <?php if (!empty($result['user_batches'])){if(in_array($batch['batch_id'], $result['user_batches'])) echo 'selected="selected"';} ?>><?php echo $batch['batch_name']; ?></option>
+								  <?php 
+								  }      
+								}  
+								?>
 							</select>
 						</div>
 					</div>
@@ -121,10 +134,12 @@
 								else
 									$status_none = true;
 							?>
-							<div>
-								<label class=" mr-3"><?php echo form_radio(array('name'=>'gender', 'value'=>'m', 'checked'=>$status_male, 'class'=>'')); ?><?php echo ('Male'); ?></label>
-								<label class="form-check-label mr-3"><?php echo form_radio(array('name'=>'gender', 'value'=>'f', 'checked'=>$status_female, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Female'); ?></label>
-								<label class="form-check-label mr-3"><?php echo form_radio(array('name'=>'gender', 'value'=>'n', 'checked'=>$status_none, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Not Specified'); ?></label>
+							<div class="d-block">
+								<div class="btn-group btn-group-toggle gender-toggle" data-toggle="buttons">
+									<label class="btn position-relative btn-blue-500"><?php echo form_radio(array('name'=>'gender', 'value'=>'m', 'checked'=>$status_male, 'class'=>'')); ?><?php echo ('Male'); ?></label>
+									<label class="btn position-relative btn-pink-500"><?php echo form_radio(array('name'=>'gender', 'value'=>'f', 'checked'=>$status_female, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Female'); ?></label>
+									<label class="btn position-relative btn-dark"><?php echo form_radio(array('name'=>'gender', 'value'=>'n', 'checked'=>$status_none, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Not Specified'); ?></label>
+								</div>
 							</div>
 						</div>
 						

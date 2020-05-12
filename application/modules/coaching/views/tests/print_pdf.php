@@ -24,7 +24,7 @@
 							</td>
 							<td>
 								<?php echo $row['question']; ?>
-								<?php echo $this->qb_model->display_answer_choices($row['type'], $row); ?>
+								<?php echo $this->qb_model->pdf_answer_choices($row['type'], $row); ?>
 							</td>
 						</tr>
 						<?php

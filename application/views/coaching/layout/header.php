@@ -72,7 +72,7 @@
                 <div class="profile-button">
                   <?php if ($this->session->userdata ('profile_image')) { ?>
                     <div class="dropdown ">
-                      <a href="#" class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <a href="#" class=" dropdown-toggler" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" class="rounded-circle img-thumbnail" width="30"> 
                       </a>
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
@@ -112,9 +112,9 @@
 
                 <div class="right-toolbar">
                     <?php if (! empty ($toolbar_buttons)) { ?>
-                        <div class="dropdown show">
-                          <a class="btn btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-plus-circle"></i>
+                        <div class="dropdown show h-100 d-flex align-items-center">
+                          <a class="btn btn-success dropdown-toggler p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v"></i>
                           </a>
                           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                             <?php foreach ($toolbar_buttons as $title=>$url) { ?>

@@ -69,7 +69,7 @@
                 <div class="profile-button">
                   <?php if ($this->session->userdata ('profile_image')) { ?>
                     <div class="dropdown ">
-                      <a href="#" class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <a href="#" class="dropdown-toggler" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" class="rounded-circle img-thumbnail" width="30"> 
                       </a>
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">

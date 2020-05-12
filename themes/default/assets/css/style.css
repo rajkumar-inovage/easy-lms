@@ -291,6 +291,16 @@ span.required{
 table td p {
     margin: 0;
 }
+.gender-toggle .btn.active::before {
+    /* border: 1px solid; */
+    position: absolute;
+    content: '';
+    left: 1px;
+    right: 1px;
+    top: 1px;
+    bottom: 1px;
+    box-shadow: inset 0px 0px 5px #ffffff;
+}
 /*14-10-2019 by Raj*/
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width:767px){
