@@ -226,13 +226,16 @@ class Users extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'footer', $data);				
 	}
 	
-	public function import ($coaching_id=0, $role_id=USER_ROLE_STUDENT) { 
+	public function import ($coaching_id=0, $role_id=0) { 
 		$data['page_title'] = 'Users';
 		$data['sub_title'] = 'Import Users';
 		$data['coaching_id'] 	= $coaching_id;
 		$data['role_id'] 	= $role_id;
 		$data['bc'] 		= array ('Users'=>'coaching/users/index/'.$coaching_id.'/'.$role_id);
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		$role_lvl 		 	= $this->session->userdata ('role_lvl');	
+		$data['roles']	 	=  $this->users_model->user_roles_by_level ($role_lvl);
+		$data['batches']	 	=  $this->users_model->get_batches ($coaching_id);
 		
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('users/import', $data);

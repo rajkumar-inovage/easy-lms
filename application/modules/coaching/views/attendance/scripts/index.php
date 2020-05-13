@@ -23,9 +23,8 @@ var dateString = '<?php echo $dt_string; ?>';
 
 function mark_attendance (btn_id, member_id, att_status) {
 	var formURL = '<?php echo site_url ('coaching/attendance_actions/mark_attendance/'.$coaching_id); ?>/'+member_id+'/'+att_status+'/'+dateString;
-	var disabledBtn = $('#'+btn_id).parent().find('.btn.disabled');
-	disabledBtn.removeClass('disabled btn-success btn-danger btn-info').addClass('btn-default');
-	$('#'+btn_id).removeClass('btn-default').addClass('disabled');
+	//var disabledBtn = $('#'+btn_id).parent().find('.btn.disabled');
+	//disabledBtn.removeClass('disabled btn-success btn-danger btn-info').addClass('btn-default');
 	fetch (formURL, {
 		method : 'POST',
 	}).then (function (response) {
@@ -33,11 +32,14 @@ function mark_attendance (btn_id, member_id, att_status) {
 	}).then(function(result) {
 		if (result.status == true) {
 			if (result.type == <?php echo ATTENDANCE_ABSENT; ?>) {
-				$('#'+btn_id).addClass ('btn-danger');
-			}else if (result.type == <?php echo ATTENDANCE_LEAVE; ?>) {
-				$('#'+btn_id).addClass ('btn-info');
+				$('.btn-att-'+member_id).removeClass().addClass ('btn ');
+				$('#'+btn_id).addClass('btn btn-success ');
+			} else if (result.type == <?php echo ATTENDANCE_LEAVE; ?>) {
+				$('.btn-att-'+member_id).removeClass().addClass ('btn ');
+				$('#'+btn_id).addClass('btn btn-success ');
 			} else if (result.type == <?php echo ATTENDANCE_PRESENT; ?>) {
-				$('#'+btn_id).addClass ('btn-success');
+				$('.btn-att-'+member_id).removeClass().addClass ('btn ');
+				$('#'+btn_id).addClass('btn btn-success ');
 			}
 			//toastr.success(result.message);
 		}

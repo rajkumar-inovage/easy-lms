@@ -100,7 +100,7 @@
 								<?php echo form_label('Enroll From', '', array('class'=>'mb-0')); ?>
 							</div>
 							<div class="col-md-10"> 
-								<input type="date" name="start_date" value="<?php echo set_value ('start_date', date ('Y-m-j')); ?>" min="<?php echo date('Y-m-j');?>" class="start_enroll form-control input-width-small " />
+								<input type="date" name="start_date" value="<?php echo set_value ('start_date', date ('Y-m-d')); ?>" min="<?php echo date('Y-m-d');?>" class="start_enroll form-control input-width-small " />
 							</div>
 						</div>
 
@@ -109,7 +109,7 @@
 								<?php echo form_label('Enroll Till', '', array('class'=>'mb-0')); ?>
 							</div>
 							<div class="col-md-10"> 
-								<input type="date" name="end_date" value="<?php echo set_value ('end_date', date ('Y-m-j')); ?>" min="<?php echo date('Y-m-j');?>" class="end_enroll form-control input-width-small" />
+								<input type="date" name="end_date" value="<?php echo set_value ('end_date', date ('Y-m-d')); ?>" min="<?php echo date('Y-m-d');?>" class="end_enroll form-control input-width-small" />
 							</div>
 						</div>
 						

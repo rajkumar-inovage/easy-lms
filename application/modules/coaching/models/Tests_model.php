@@ -596,7 +596,7 @@ class Tests_model extends CI_Model {
 		if ($batch_id > 0) {
 		    $query .= ', '.$prefix.'coaching_batch_users BU';
 		}
-		$query .= ' WHERE M.coaching_id='.$coaching_id;
+  		$query .= ' WHERE TE.coaching_id='.$coaching_id.' AND TE.test_id='.$test_id;
 		if ($batch_id > 0) {
 		    $query .= ' AND M.member_id=BU.member_id AND BU.batch_id='.$batch_id;
 		}

@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+ <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 class Tests_actions extends MX_Controller {	
 
@@ -301,6 +301,7 @@ class Tests_actions extends MX_Controller {
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
 		}
 	}
+
 	// Ajax unenrol users
 	public function unenrol_users ($coaching_id=0, $category_id=0, $test_id=0, $role_id=0, $class_id=0, $type=0, $batch_id=0, $status='-1') {
 		
@@ -335,6 +336,7 @@ class Tests_actions extends MX_Controller {
 			redirect ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type.'/'.$batch_id.'/'.$status);
 		}
 	}
+	
 	// Ajax validation question group
 	public function validate_question_group_create ($coaching_id, $category_id=0, $test_id=0, $question_id=0) {
 		$this->form_validation->set_rules('type', 'Question Type', 'required');

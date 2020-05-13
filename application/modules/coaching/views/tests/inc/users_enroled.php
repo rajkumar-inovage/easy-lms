@@ -28,12 +28,12 @@
 						<td class="text-right" ><?php echo $i++; ?></td>
 						<td>
 							<?php echo ($row['first_name']) .' '. ($row['second_name']) .' '. ($row['last_name']); ?><br>
-							<?php echo $row['adm_no'].'-'.$row['member_id']; ?>
+							<?php echo $row['adm_no']; ?>
 						</td>
 						<td class="text-right" ><?php echo date ('d-m-Y H:i A', $row['start_date']); ?></td>
 						<td class="text-right" ><?php echo date ('d-m-Y H:i A', $row['end_date']); ?></td>
 						<td> 
-							<a href="javascript: void ()" onclick="show_confirm ('Un-enroll this user?', '<?php echo site_url ('coaching/test_actions/unenrol_user/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type.'/'.$batch_id.'/'.$status.'/'.$row['member_id'].'/1'); ?>')"><i class="fa fa-trash"></i></a>
+							<a href="javascript: void ()" onclick="show_confirm ('Un-enroll this user?', '<?php echo site_url ('coaching/tests_actions/unenrol_user/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type.'/'.$batch_id.'/'.$status.'/'.$row['member_id'].'/1'); ?>')"><i class="fa fa-trash"></i></a>
 						</td>
 					</tr>
 					<?php 

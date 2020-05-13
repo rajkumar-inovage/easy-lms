@@ -8,11 +8,7 @@
 	
 	loaderSelector.style.display = 'block';
 
-	if (typeof(Storage) !== "undefined") {
-
-		if (access_code != '') {
-			localStorage.setItem ('access_code', access_code);
-		}
+	if (typeof(Storage) !== "undefined") {		
 		
 		const user_token = localStorage.getItem ('user_token');
 		if (user_token == null || user_token == 'null' || user_token == 'NULL' || user_token == 'undefined') {

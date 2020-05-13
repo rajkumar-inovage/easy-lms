@@ -16,9 +16,8 @@ class Login extends MX_Controller {
     	
     	if (isset ($_GET['sub']) && ! empty ($_GET['sub'])) {
     		$access_code = $_GET['sub'];
-    	} else {
-    		$access_code = '';
     	}
+    	
     	$data['ac'] = $access_code;
 		$data['script'] = $this->load->view ('scripts/validate', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);

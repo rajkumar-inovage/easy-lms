@@ -12,7 +12,7 @@
 					<div class="card-header">
 						<div class="">
 							<?php if ( $test['finalized'] == 0) { ?>
-								<input type="checkbox" class="checks checkAll" id="checkAll<?php echo $parent_id; ?>" value="<?php echo $parent_id; ?>">
+								<input type="checkbox" class="checks checkAll" id="checkAll<?php echo $parent_id; ?>" value="<?php echo $parent_id; ?>" onclick="check_all ()">
 							<?php } ?>
 							<label for="checkAll<?php echo $parent_id; ?>" class="">Section <?php echo $num_parent; ?></label>
 						</div>

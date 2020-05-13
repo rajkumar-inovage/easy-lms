@@ -11,7 +11,7 @@ class Users_model extends CI_Model {
 			return $result;
 		} else {
 			return false;
-		}		
+		}
 	}
 	
 	public function member_profile ($member_id=0) {
@@ -438,14 +438,9 @@ class Users_model extends CI_Model {
 	}
 	
 	public function member_batches ($member_id = 0) {
-		$result = array ();		
-		if($member_id > 0){			
-			$this->db->where('member_id', $member_id);
-		}					
+		$this->db->where('member_id', $member_id);
 		$sql = $this->db->get ('coaching_batch_users');		
-		if($sql->num_rows() > 0){
-			$result = $sql->result_array ();		
-		}
+		$result = $sql->result_array ();		
 		return $result;
 	}	
 	

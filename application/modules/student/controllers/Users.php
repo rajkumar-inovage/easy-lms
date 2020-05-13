@@ -35,7 +35,9 @@ class Users extends MX_Controller {
 		$data['member_id'] 		= $member_id;
 		$data['profile_image'] 	= $this->users_model->view_profile_image ($member_id);
 		$user 					= $this->users_model->get_user ($member_id);
-		$user_profile 			= $this->users_model->member_profile ($member_id);
+		$user_profile 			= $this->users_model->member_profile ($member_id); 
+		$batches 				= $this->users_model->member_batches ($member_id); 
+		
 		if ( is_array ($user) ) {
 			$data['result'] 	= array_merge ($user, $user_profile);			
 		} else {
@@ -43,6 +45,7 @@ class Users extends MX_Controller {
 		}		
 		$data['coaching_id'] 	= $coaching_id;
 		$data['role_id'] 		= $user['role_id'];
+		$data['batches'] 		= $user['batches'];
 		$data['roles']	 		= $this->users_model->user_role_name ($user['role_id']);
 		$data['rand_str'] 		= time ();
 		

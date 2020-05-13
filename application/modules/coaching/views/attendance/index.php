@@ -11,6 +11,7 @@
 						<option value="<?php echo USER_STATUS_UNCONFIRMED; ?>" <?php if ($status==USER_STATUS_UNCONFIRMED) echo 'selected="selected"'; ?> >Pending</option>
 					</select>
 				</div>
+
 				<div class="col-md-3 mb-2">
 					<select name="search_role" class="form-control" id="search-role">
 						<option value="0">All Roles</option>
@@ -22,9 +23,9 @@
 				<div class="col-md-3 mb-2">
 					<select name="search_batch" class="form-control" id="search-batch">
 						<option value="0">All Batches</option>
-						<?php foreach ($batches as $batch) { ?>
+						<?php /*foreach ($batches as $batch) { ?>
 							<option value="<?php echo $batch['id']; ?>"><?php echo $batch['title']; ?></option>
-						<?php } ?>
+						<?php }*/ ?>
 					</select>
 				</div>
 				<div class="col-md-3 mb-2 d-none">
@@ -69,11 +70,11 @@
 
 					</div>
 					<div class="btn-group">
-						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_PRESENT; ?>);" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_PRESENT) echo 'disabled btn-success'; else echo 'btn-default' ?>" id="present<?php echo $row['member_id']; ?>" >Present</a>
+						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_PRESENT; ?>);" class="btn btn-att-<?php echo $row['member_id']; ?> <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_PRESENT) echo 'disabled btn-success'; else echo 'btn-default' ?>" id="present<?php echo $row['member_id']; ?>" >Present</a>
 						
-						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_LEAVE; ?>);" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_LEAVE) echo 'disabled btn-info'; else echo 'btn-default' ?>" id="leave<?php echo $row['member_id']; ?>" >Leave</a>
+						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_LEAVE; ?>);" class="btn btn-att-<?php echo $row['member_id']; ?> <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_LEAVE) echo 'disabled btn-success'; else echo 'btn-default' ?>" id="leave<?php echo $row['member_id']; ?>" >Leave</a>
 						
-						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_ABSENT; ?>);" class="btn <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_ABSENT) echo 'disabled btn-danger'; else echo 'btn-default' ?>" id="absent<?php echo $row['member_id']; ?>" >Absent</a>
+						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_ABSENT; ?>);" class="btn btn-att-<?php echo $row['member_id']; ?> <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_ABSENT) echo 'disabled btn-success'; else echo 'btn-default' ?>" id="absent<?php echo $row['member_id']; ?>" >Absent</a>
 						
 						<a href="<?php echo site_url ('attendance/reports/member_report/'.$row['member_id']); ?>" class="btn btn-dark text-white d-none">Report</a>
 					</div>

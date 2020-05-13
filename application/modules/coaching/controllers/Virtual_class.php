@@ -14,7 +14,9 @@ class Virtual_class extends MX_Controller {
 
 	    $cid = $this->uri->segment (4);
         $this->toolbar_buttons['<i class="fa fa-list"></i> All Classes']= 'coaching/virtual_class/index/'.$cid;
-        $this->toolbar_buttons['<i class="fa fa-plus-circle"></i> Create Class']= 'coaching/virtual_class/create_class/'.$cid;
+        if ($this->session->userdata ('role_id') <> USER_ROLE_TEACHER ) {
+        	$this->toolbar_buttons['<i class="fa fa-plus-circle"></i> Create Class']= 'coaching/virtual_class/create_class/'.$cid;
+        }
         
         // Security step to prevent unauthorized access through url
         if ($this->session->userdata ('is_admin') == TRUE) {
@@ -46,6 +48,11 @@ class Virtual_class extends MX_Controller {
 
 	public function create_class ($coaching_id=0, $class_id=0) {
 		
+        if ($this->session->userdata ('role_id') == USER_ROLE_TEACHER ) {
+        	$this->message->set ('Not allowed', 'danger', true);
+        	redirect ('coaching/virtual_class/index/'.$coaching_id.'/'.$class_id);
+        }
+
 		$data['coaching_id'] = $coaching_id;
 		$data['class_id'] = $class_id;
 		$data['page_title'] = 'Create Classroom';

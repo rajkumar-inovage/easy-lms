@@ -671,7 +671,7 @@ class Users_model extends CI_Model {
 	/*
 	EXPORT USERS
 	*/
-	public function upload_users_csv ($coaching_id=0, $role_id=USER_ROLE_STUDENT, $data) {
+	public function upload_users_csv ($coaching_id=0, $batch_id=0, $data) {
 
 		$data['coaching_id']  	= $coaching_id;
 		$data['link_send_time']	= time();
@@ -689,6 +689,18 @@ class Users_model extends CI_Model {
 		$this->db->set ('adm_no', $user_id);
 		$this->db->where ('member_id', $member_id);
 		$this->db->update ('members');
+
+		// Save batch
+		if ($batch_id > 0) {			
+			$this->db->where ('batch_id', $batch_id);
+			$this->db->where ('member_id', $member_id);
+			$sql = $this->db->get ('coaching_batch_users');
+			if  ($sql->num_rows () == 0 ) { 
+				$data['member_id'] = $member_id;
+				$data['batch_id']  = $batch_id;
+				$sql = $this->db->insert ('coaching_batch_users', $data);
+			}
+		}
 	}
 
 	public function  import_cleanup () {

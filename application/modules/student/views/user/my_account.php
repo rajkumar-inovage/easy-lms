@@ -12,6 +12,19 @@
 							<label class="form-label"><?php echo 'Role'; ?>	</label>
 							<p class="form-control-static "><?php echo $roles['description']; ?></p>
 						</div>
+
+						<div class="col-md-6">
+							<label class="form-label"><?php echo 'Batch Details'; ?>	</label>
+							<p class="form-control-static ">
+								<?php
+								if (! empty ($batches)) {
+									foreach ($batches as $batch) {
+										echo $batch['batch_name'];
+									}
+								}
+								?>
+							</p>
+						</div>
 					</div>
 					
 					<div class="form-group row">

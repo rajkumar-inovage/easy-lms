@@ -174,7 +174,7 @@ class Login_actions extends MX_Controller {
 			$user = $this->users_model->coaching_contact_exists ($contact, $coaching['id']);
 			if ($user == false) {
 				$this->output->set_content_type("application/json");
-				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'This mobile number is not registered with '.strtoupper($coaching['coaching_name']) )));
+				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'Please check your mobile number/access code and try again') ));
 			} else {
 				$password = $this->login_model->reset_password ($user['member_id']);
 				$data['coaching_name'] = $coaching['coaching_name'];

@@ -62,23 +62,20 @@
 							<?php 
 							$i++;
 						}
-						?>
-						<tr>
-							<td colspan="3">
-								<?php if ($add_users > 0) { ?>
-									<input type="submit" value="Add Users" class="btn btn-primary"> 
-								<?php } else { ?>
-									<input type="submit" value="Remove" class="btn btn-danger"> 
-								<?php } ?>
-							</td>
-						</tr>
-						<?php
 					} else { 
-						echo '<tr><td colspan="3">No users in this batch</td></tr>';
+						echo '<tr><td colspan="4">No users in this batch</td></tr>';
 					}
 					?>
 					</tbody>
 				</table>
+				<div class="card-footer">
+					<?php if ($add_users > 0) { ?>
+						<input type="submit" value="Add Users" class="btn btn-primary"> 
+					<?php } else { ?>
+						<input type="submit" value="Remove" class="btn btn-danger"> 
+					<?php } ?>
+				</div>
+
 			</form>
 		</div>
 	</div>

@@ -353,12 +353,14 @@ class User_actions extends MX_Controller {
 		$this->form_validation->set_rules ('users[]', 'Users', 'required');
 		if ($this->form_validation->run () == true) {
 			$this->users_model->save_batch_users ($batch_id);			
+			$message = 'User(s) added to batch successfully';
+			$this->message->set ($message, 'success', true);
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('coaching/users/batch_users/'.$coaching_id.'/'.$batch_id.'/1') )));
 		} else {
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors () )));
 		}
-		$message = 'User(s) added to batch successfully';
-		$this->message->set ($message, 'success', true);
-		$this->output->set_content_type("application/json");
-		$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('coaching/users/batch_users/'.$coaching_id.'/'.$batch_id.'/1') )));
 	}
 	
 	public function remove_batch_users ($coaching_id=0, $batch_id=0, $member_id=0, $add_user=0) {
@@ -414,13 +416,21 @@ class User_actions extends MX_Controller {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>$errors )));
 		} else {
+			
+			$coaching = $this->coaching_model->get_coaching_subscription ($coaching_id);			
+			$free_users = $coaching['max_users'];
+			$num_users = $this->users_model->count_all_users ($coaching_id);
+			
 			$upload_data = $this->upload->data();
+			$role_id = $this->input->post ('role');
+			$batch_id = $this->input->post ('batch');
+
 			$file = $upload_dir . $upload_data['file_name'];
-			//$get_file = file ($file, FILE_SKIP_EMPTY_LINES);
 			$get_file = read_file ($file);
 			$i = 0;
 			$count_error = 0;
 			$data = [];
+
 			if (($handle = fopen (base_url($file), "r")) !== FALSE) {
 				while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
 					
@@ -439,12 +449,16 @@ class User_actions extends MX_Controller {
 					$users['primary_contact'] 	=  (trim($row[12]));
 					$users['mobile'] 			=  (trim($row[13]));
 					$users['fax'] 				=  (trim($row[14]));
+					$users['role_id'] 			=  $role_id;
 
 					if ($i > 0) {
 						if ($users['email'] == '' || $users['first_name'] == '' || $users['last_name'] == '') {
 							$count_error++;
+						} else if ( ($num_users > $free_users) && $member_id == 0) {
+								$this->output->set_content_type("application/json");
+								$this->output->set_output(json_encode(array('status'=>false, 'error'=>'User limit reached. You can create a maximum of '.$free_users.' user accounts in Free Subscription plan. Upgrade your plan to create more users' )));
 						} else {
-							$this->users_model->upload_users_csv ($coaching_id, $role_id, $users);
+							$this->users_model->upload_users_csv ($coaching_id, $batch_id, $users);
 							$message = $i . ' users uploaded successfully. ';
 							if ($count_error > 0) {
 								$message .= $count_error. ' records were skipped due to insufficient data.';
