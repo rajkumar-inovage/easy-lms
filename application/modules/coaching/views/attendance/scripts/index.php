@@ -3,7 +3,7 @@ $(document).ready (function () {
 	$('#search-status').on ('change', function () {
 		var status = $(this).val ();
 		var url = '<?php echo site_url ('coaching/attendance/index/'.$coaching_id.'/'.$role_id); ?>/'+status+'/<?php echo $batch_id.'/'.$date; ?>';
-		$(location).attr('href', url);
+		$(location).attr('href', url);	
 	});
 
 	$('#search-role').on ('change', function () {
@@ -54,7 +54,7 @@ $('#date').on ('change', function () {
 	var attendanceDateURL = '<?php echo site_url ('coaching/attendance_actions/get_attendance/'.$coaching_id.'/'); ?>' + string;
 	$(this).trigger('blur');
 	$('body').addClass('loading');
-	$('.btn.disabled').removeClass('btn-success').addClass('btn-light');
+	$('.btn.disabled').removeClass('btn-success btn-info btn-danger').addClass('btn-default');
 	$('.btn.btn-light').addClass('disabled');
 	fetch (attendanceDateURL, {
 		method : 'GET',
@@ -70,17 +70,17 @@ $('#date').on ('change', function () {
 					var member_attendance = parseInt(result.attendance[member_id].attendance);
 					switch(member_attendance){
 						case 1:
-							$(`#present${member_id}`).removeClass('btn-light').addClass('btn-success');
+							$(`#present${member_id}`).removeClass('btn-light').addClass('btn-success check');
 						break;
 						case 2:
-							$(`#leave${member_id}`).removeClass('btn-light').addClass('btn-success');
+							$(`#leave${member_id}`).removeClass('btn-light').addClass('btn-info check');
 						break;
 						case 3:
-							$(`#absent${member_id}`).removeClass('btn-light').addClass('btn-success');
+							$(`#absent${member_id}`).removeClass('btn-light').addClass('btn-danger check');
 						break;
 						default:
 					}
-					$('.btn.btn-success').addClass('disabled');
+					$('.btn.check').addClass('disabled').removeClass('check');
 				}
 		    });
 		}

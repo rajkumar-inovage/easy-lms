@@ -81,8 +81,12 @@ class Users extends MX_Controller {
 		$user 				= $this->users_model->get_user ($member_id);
 		$user_profile 		= $this->users_model->member_profile ($member_id);
 		$user_batches 		= $this->users_model->member_batches ($member_id);
+		$batches = array('user_batches' => array());
+		foreach ($user_batches as $batch) {
+			array_push($batches['user_batches'], $batch['batch_id']);
+		}
 		if ( is_array ($user) ) {
-			$data['result'] 	= array_merge ($user, $user_profile, $user_batches);
+			$data['result'] 	= array_merge ($user, $user_profile, $batches);
 		} else {
 			$data['result'] = false;
 		}
@@ -90,6 +94,7 @@ class Users extends MX_Controller {
 		$role_lvl 		 	= $this->session->userdata ('role_lvl');
 		$admin 				= FALSE;
 		$data['roles']	 	= $this->users_model->get_user_roles ($admin, $role_lvl);
+		$data['batches']	=  $this->users_model->get_batches ($coaching_id);
 		$data['role_id'] 	= $role_id;
 		
 		$data['toolbar_buttons'] = $this->toolbar_buttons;

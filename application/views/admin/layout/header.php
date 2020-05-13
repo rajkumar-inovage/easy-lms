@@ -130,7 +130,7 @@
                 <div class="right-toolbar">
                     <?php if (! empty ($toolbar_buttons)) { ?>
                         <div class="dropdown show">
-                          <a class="btn btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <a class="btn btn-success dropdown-toggler" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-plus-circle"></i>
                           </a>
                           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">

@@ -1283,9 +1283,108 @@ class Qb_model extends CI_Model {
 		return $output;
 	}
 	
+	public function pdf_answer_choices ($type=QUESTION_MCSC, $row) {
+
+		$format 	= $this->input->post ('import_format');
+		$print_opt 	= $this->input->post ('print_opt');
+		$file_type 	= $this->input->post ('file_type');
+
+		$output = '';
+		
+		switch ($type) {
+
+			case QUESTION_MCMC:
+				$output .= '<ol type="a">';
+				for ($i=1; $i <= QB_NUM_ANSWER_CHOICES; $i++) {
+					$choice = html_entity_decode ($row['choice_'.$i]);
+					if ($choice != '') {
+						if ($row['answer_'.$i] == $i && ! isset ($hide_correct_answer) ) {
+							$class = "text-success";
+						} else {
+							$class= "";
+						}
+						$output .= '<li class="'.$class.'">';
+							$output .= $choice;
+						$output .= '</li>';
+					}
+				} 
+				$output .= '</ol>';
+			break;
+			
+			case QUESTION_TF: 
+				$output .= '<ol type="a">';
+					if ($row['answer_1'] == 1 && !isset ($hide_correct_answer) ) {
+						$class = "text-success";
+					} else {
+						$class= "";
+					}
+					$output .= '<li class="'.$class.'">True</li>';
+					
+					if ($row['answer_2'] == 2 && !isset ($hide_correct_answer) ) {
+						$class = "text-success text-bold";
+					} else {
+						$class= "";
+					}
+					$output .= '<li class="'.$class.'">False</li>';
+				$output .= '</ol>';
+			break;
+			
+			case QUESTION_LONG:
+				for ($i=1; $i <= 2; $i++) {
+					$choice = html_entity_decode ($row['choice_'.$i]);
+					if ($choice != '') {
+						if ($row['answer_'.$i] == $i && !isset ($hide_correct_answer) ) {
+							$class = "text-success";
+						} else {
+							$class= "";
+						}
+					}
+				} 
+			break;
+			
+			case QUESTION_MATCH:												
+				for ($i=1; $i <= QB_NUM_ANSWER_CHOICES; $i++) {
+					$choice = html_entity_decode ($row['choice_'.$i]);
+					$option = html_entity_decode ($row['option_'.$i]);
+					if ($choice != '' || $option != '') {
+						$output .= '<div class="row">';
+							$output .= '<div class="col-md-6">';
+								$output .= $choice;
+							$output .= '</div>';
+							$output .= '<div class="col-md-6">';
+								$output .= $option;
+							$output .= '</div>';
+						$output .= '</div>';
+					}
+				} 													
+			break;
+			
+			default :
+				$a = 'a';
+				for ($i=1; $i <= QB_NUM_ANSWER_CHOICES; $i++) {
+					$choice = html_entity_decode ($row['choice_'.$i]);
+					if ($choice != '') {
+							$output .= '<p>';
+							if ( ($row['answer_'.$i] == $i) &&
+								 ((isset ($format) && $format == 'import') ||
+								 (isset ($print_opt['ca']) && $print_opt['ca'] == 'ca'))) {
+								$output .= "*";
+							}
+							$output .=  $a++ . '. ';
+							$output .= strip_tags($choice);
+							$output .= '</p>';
+							
+							if ($file_type == 'txt') {
+								$output .= "\r\n";
+							}
+					}
+				}
+			break;
+		}
+		return $output;
+	}
 
 	public function print_answer_choices ($type=QUESTION_MCSC, $row=false, $format='PDF', $file_type='') {
-
 		$print_opt 	= $this->input->post ('print_opt');
 
 		$output = '';

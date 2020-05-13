@@ -49,7 +49,7 @@
 		  	<div class="media-body">
 		  	</div>
 		  	<div class="media-right d-none">
-		  		<a href="<?php echo site_url ('login/login/otp_request'); ?>" class="text">Sign in with OTP</a>
+		  		<a href="<?php echo site_url ('login/user/otp_request'); ?>" class="text">Sign in with OTP</a>
 		  	</div>
 		  </div>
 		  <div class="text-center">
