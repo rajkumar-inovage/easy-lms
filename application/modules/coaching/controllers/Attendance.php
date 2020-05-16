@@ -13,7 +13,7 @@ class Attendance extends MX_Controller
     }
 
 
-    public function index($coaching_id=0, $role_id=0, $status='1', $batch_id=0, $date='')
+    public function index($coaching_id=0, $role_id=0, $status='-1', $batch_id=0, $date='')
     {
         if ($date == '') {
             $date = date('Y-m-d');

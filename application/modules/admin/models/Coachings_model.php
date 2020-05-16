@@ -26,8 +26,8 @@ class Coachings_model extends CI_Model {
 
 	
 	public function get_coaching ($coaching_id=0) {
-		$this->db->where ('coachings.id', $coaching_id);
 		$this->db->from ('coachings');
+		$this->db->where ('id', $coaching_id);
 		$sql = $this->db->get ();
 		if  ($sql->num_rows () > 0 ) {
 			$result = $sql->row_array ();

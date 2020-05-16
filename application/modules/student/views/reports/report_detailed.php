@@ -6,11 +6,11 @@
 				<span class="display mt-4">Answered</span>
 			</p>		
 			<p class="nav-link mb-0">
-				<span class="badge bg-success rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $brief['answered']; ?></span>
+				<span class="badge bg-success rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $brief['correct']; ?></span>
 				<span class="display mt-4">Correct</span>
 			</p>		
 			<p class="nav-link mb-0">
-				<span class="badge bg-danger rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $brief['answered']; ?></span>
+				<span class="badge bg-danger rounded-circle text-white height-30 width-30 d-flex align-items-center justify-content-center mx-auto"><?php echo $brief['wrong']; ?></span>
 				<span class="display mt-4">Wrong</span>
 			</p>		
 			<p class="nav-link mb-0">
@@ -50,9 +50,9 @@
 								<td>
 								<?php
 									if ($type == TQ_CORRECT_ANSWERED) {
-										echo '<span class="badge badge-success"><i class="fa fa-times fa-2x"></i></span>';
+										echo '<span class="badge badge-success"><i class="fa fa-check fa-1x"></i></span>';
 									} else if ($type == TQ_WRONG_ANSWERED) {
-										echo '<span class="badge badge-danger"><i class="fa fa-times fa-2x"></i></span>';
+										echo '<span class="badge badge-danger"><i class="fa fa-times fa-1x"></i></span>';
 									} else {
 										echo '<span class="badge badge-light">Not Answered</span>';
 									}

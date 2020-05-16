@@ -38,7 +38,7 @@
 				</div>
 				
 				<div class="col-md-3 mb-2">
-					<input type="date" id="date" value="<?php echo $date; ?>" max="<?php echo $date;?>" class="form-control"  > 
+					<input type="date" id="search-date" value="<?php echo $date; ?>" max="<?php echo $date;?>" class="form-control"  > 
 				</div>
 			</div>
 		</form>				
@@ -70,11 +70,11 @@
 
 					</div>
 					<div class="btn-group">
-						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_PRESENT; ?>);" class="btn btn-att-<?php echo $row['member_id']; ?> <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_PRESENT) echo 'disabled btn-success'; else echo 'btn-default' ?>" id="present<?php echo $row['member_id']; ?>" >Present</a>
+						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_PRESENT; ?>);" class="btn btn-att-<?php echo $row['member_id']; ?> <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_PRESENT) echo 'btn-success'; else echo 'btn-default' ?>" id="present<?php echo $row['member_id']; ?>" >Present</a>
 						
-						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_LEAVE; ?>);" class="btn btn-att-<?php echo $row['member_id']; ?> <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_LEAVE) echo 'disabled btn-success'; else echo 'btn-default' ?>" id="leave<?php echo $row['member_id']; ?>" >Leave</a>
+						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_LEAVE; ?>);" class="btn btn-att-<?php echo $row['member_id']; ?> <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_LEAVE) echo 'btn-success'; else echo 'btn-default' ?>" id="leave<?php echo $row['member_id']; ?>" >Leave</a>
 						
-						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_ABSENT; ?>);" class="btn btn-att-<?php echo $row['member_id']; ?> <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_ABSENT) echo 'disabled btn-success'; else echo 'btn-default' ?>" id="absent<?php echo $row['member_id']; ?>" >Absent</a>
+						<a onclick="mark_attendance (this.id, <?php echo $row['member_id']; ?>, <?php echo ATTENDANCE_ABSENT; ?>);" class="btn btn-att-<?php echo $row['member_id']; ?> <?php if ($attendance[$row['member_id']]['attendance'] == ATTENDANCE_ABSENT) echo 'btn-success'; else echo 'btn-default' ?>" id="absent<?php echo $row['member_id']; ?>" >Absent</a>
 						
 						<a href="<?php echo site_url ('attendance/reports/member_report/'.$row['member_id']); ?>" class="btn btn-dark text-white d-none">Report</a>
 					</div>

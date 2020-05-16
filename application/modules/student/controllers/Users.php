@@ -45,7 +45,7 @@ class Users extends MX_Controller {
 		}		
 		$data['coaching_id'] 	= $coaching_id;
 		$data['role_id'] 		= $user['role_id'];
-		$data['batches'] 		= $user['batches'];
+		$data['batches'] 		= $batches;
 		$data['roles']	 		= $this->users_model->user_role_name ($user['role_id']);
 		$data['rand_str'] 		= time ();
 		

@@ -7,17 +7,25 @@
 		  </div>
 		  <ul class="list-group">
 			<?php 
+			$i = 1;
 			if (! empty ($questions)) {
 				foreach ($questions as $q) {
 					?>
-					<li class="list-group-item <?php if ($q['question_id'] == $question_id) echo 'active'; ?>">
-						<?php 
-						$qn = strip_tags ($q['question']); 
-						$qn = character_limiter ($qn, 150);
-						echo anchor ('coaching/tests/question_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$q['parent_id'].'/'.$q['question_id'].'/'.$lang_id, $qn);
-						?>
+					<li class="list-group-item media">
+						<div class="media-left">
+							<?php echo $i; ?>
+						</div>
+						<div class="media-body">
+							<?php 
+							$qn = strip_tags ($q['question']); 
+							$qn = character_limiter ($qn, 100);
+							?>
+							<a href="<?php echo site_url ('coaching/tests/question_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$q['parent_id'].'/'.$q['question_id'].'/'.$lang_id); ?>" class="<?php if ($q['question_id'] == $question_id) echo 'text-danger'; ?>"><?php echo $qn; ?></a>
+						</div>
+						
 					</li>
 					<?php
+					$i++;
 				}
 				
 			} else {

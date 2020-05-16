@@ -44,6 +44,8 @@ class Home extends MX_Controller {
         }
         $data['tests'] = $enroled;
 
+        $data['annc'] = $this->announcements_model->get_announcements ($coaching_id);
+
 		$data['dashboard_menu'] = $this->common_model->load_acl_menus ($role_id, 0, MENUTYPE_DASHBOARD);
 
         $this->load->view (INCLUDE_PATH . 'header', $data);

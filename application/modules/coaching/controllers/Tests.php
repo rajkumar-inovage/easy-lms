@@ -60,23 +60,16 @@ class Tests extends MX_Controller {
 		$this->load->view(INCLUDE_PATH  . 'footer', $data);	    
 	}
 	
-	public function index ($coaching_id=0, $category_id=0, $type=0) { 
+	public function index ($coaching_id=0, $category_id=0, $status='-1') { 
 
 		$data['coaching_id'] = $coaching_id;
 		$data['category_id'] = $category_id;
-		$data['type'] 		 = $type;
-		$data['page_title']  = 'Tests';
-		$data['sub_title']   = 'All Tests';
-		
+		$data['status'] 	 = $status;
 		$data['member_id'] = $member_id = $this->session->userdata ('member_id');
 		$data['categories'] = $this->tests_model->test_categories ($coaching_id);
 
-		
-		/*---=== Back Link ===---*/
-		$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
-
 		/*---=== Coaching Tests ===---*/
-		$data['tests'] = $tests = $this->tests_model->get_all_tests ($coaching_id, $category_id, $type);
+		$data['tests'] = $tests = $this->tests_model->get_all_tests ($coaching_id, $category_id, $status);
 		$data['plans'] = $this->test_plans_model->coaching_test_plans ($coaching_id);
 		
 		if ( ! empty ($tests)) {
@@ -85,6 +78,15 @@ class Tests extends MX_Controller {
 			$count_tests = 0;
 		}
 		$data['count_tests'] = $count_tests;
+
+		// For ajax and "View-in-View" files
+		$data['data'] = $data;
+
+		$data['page_title']  = 'Tests';
+		$data['sub_title']   = 'All Tests';
+		
+		/*---=== Back Link ===---*/
+		$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
 		
 		/* --==// Toolbar //==-- */
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
@@ -113,6 +115,9 @@ class Tests extends MX_Controller {
 		}else{
 			$data['bc'] = array ('Back'=>'coaching/tests/index/'.$coaching_id);
 		}
+
+		/* --==// Toolbar //==-- */
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		
 		$data['categories'] = $this->tests_model->test_categories ($coaching_id);
 		$data['results'] = $this->tests_model->view_tests ($test_id);
@@ -129,31 +134,32 @@ class Tests extends MX_Controller {
 	
 	
 	public function manage ($coaching_id=0, $category_id=0, $test_id=0) {
-		
-		$data['row'] 	= $test = $this->tests_model->view_tests ($test_id);
-		if ($test['finalized']) {
-		}
-		
+		$this->questions ($coaching_id, $category_id, $test_id);
+
+		/*
+		$test = $this->tests_model->view_tests ($test_id);
+
 		$data['page_title'] = 'Manage Test';
 		$data['sub_title']  = $test['title'];
 		$data['test_id'] 	 = $test_id;
 		$data['category_id'] = $category_id;
 		$data['coaching_id'] = $coaching_id;
+		$data['test'] 		 = $test;
 		
-		/* Breadcrumbs */
+		/* Breadcrumbs * /
 		$data['bc'] = array ('Tests'=>'coaching/tests/index/'.$coaching_id);
 		
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
 		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id, $questions);
 
-		/* Toolbar Buttons */
+		/* --==// Toolbar //==-- * /
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
-		$data['toolbar_buttons'][] = ['Manage'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id];
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/manage_test', $data);		
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
-
+		*/
 	}
 	
 	
@@ -194,17 +200,12 @@ class Tests extends MX_Controller {
 		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
 		
 		/* --==// Sidebar //==-- */ 
-		$data['sidebar']		= $this->load->view ('tests/inc/manage_test', $data, true);
 		$data['page_title'] = 'Preview Test'; 
 		$data['sub_title']  = $test['title'];
 		
 		/* --==// Toolbar //==-- */ 
-		$param = array ($category_id, $test_id);
-		//$data['toolbar'] = $this->common_model->generate_toolbar ($param);
-		$data['toolbar_buttons'] = array (
-				'<i class="fa fa-plus"></i> Add Section'=>'coaching/tests/question_group_create/'.$coaching_id.'/'.$category_id.'/'.$test_id,
-				'<i class="fa fa-eye"></i> Preview Test'=>'coaching/tests/preview_test/'.$coaching_id.'/'.$category_id.'/'.$test_id,
-				);
+
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
 		/* --==// Pagination Settings //==-- 
 		$this->load->library ('pagination');
@@ -214,8 +215,61 @@ class Tests extends MX_Controller {
 		$this->pagination->initialize($config);
 		*/
 		$data['script'] = $this->load->view ('tests/scripts/preview_test', $data, true);
-		$this->load->view(INCLUDE_PATH . 'header', $data);		
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/preview_test', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);	
+		
+	}
+
+	/* Preview Test
+	// 
+	*/
+	public function questions ($coaching_id=0, $category_id=0, $test_id=0, $offset='' ) {
+
+		$data['test'] = $test = $this->tests_model->view_tests ($test_id);
+
+		$data['coaching_id'] = $coaching_id;
+		$data['category_id'] = $category_id;
+		$data['test_id'] = $test_id;
+		
+		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
+		if (!empty ($questions)) {
+			$num_questions = count($questions);
+		} else {
+			$num_questions = 0;			
+		}
+
+		$questionTime = $this->tests_model->getTestQuestionTime ($coaching_id, $questions);
+		$result = array ();
+		if ( ! empty($questions)) {
+			foreach ($questions as $id) {
+				$row = $this->qb_model->getQuestionDetails ($id);
+				$parent_id = $row['parent_id'];
+				$parent_row = $this->qb_model->getQuestionDetails ($parent_id);
+				$result[$parent_id]['parent'] = $parent_row;
+				$result[$parent_id]['questions'][$id] = $row;
+			}
+		}
+		$data['results'] = $result;
+		$data['questionTimeSeconds'] = $questionTime;
+		$data['questionTime'] = date("H:i", mktime(0,0, $questionTime,0,0,0));
+
+		/* --==// Back Link //==-- */
+		//$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+		$data['bc'] = array ('Manage Test'=>'coaching/tests/index/'.$coaching_id.'/'.$category_id);
+		
+		/* --==// Sidebar //==-- */ 
+		$data['page_title'] = 'Questions'; 
+		$data['sub_title']  = $test['title'];
+		
+		/* --==// Toolbar //==-- */ 
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+
+		$data['script'] = $this->load->view ('tests/scripts/preview_test', $data, true);
+		$this->load->view(INCLUDE_PATH . 'header', $data);		
+		$this->load->view('tests/inc/manage_test', $data);
+		$this->load->view('tests/questions', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);	
 		
 	}	
@@ -232,7 +286,10 @@ class Tests extends MX_Controller {
 		$data['status'] 		= $status;
 		$data['type'] 			= $type;
 		/* Breadcrumbs */
-		$data['bc'] = array ('Manage '=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);		
+		$data['bc'] = array ('Manage '=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+	
 		
 		/*
 		if ($batch_id > 0) {
@@ -322,14 +379,12 @@ class Tests extends MX_Controller {
 		
 		$data['script'] = $this->load->view ('tests/scripts/enrolments', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/enrolments', $data); 
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 	
-	public function question_group_edit($coaching_id=0, $category_id=0, $test_id=0, $question_id=0){
-		$this->question_group_create($coaching_id, $category_id, $test_id, $question_id);
-	}
-
+	
 	// Create new question group
 	/* CREATE QUESTION GROUP
 		Function to create question group
@@ -349,7 +404,7 @@ class Tests extends MX_Controller {
 		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id, $questions);
 		
 		/* Breadcrumbs */
-		$data['bc'] = array ('Questions'=>'coaching/tests/preview_test/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+		$data['bc'] = array ('Questions'=>'coaching/tests/questions/'.$coaching_id.'/'.$category_id.'/'.$test_id);
 
 		// All Question Types
 		$data['question_types'] = $this->common_model->get_sys_parameters (SYS_QUESTION_TYPES);
@@ -364,16 +419,16 @@ class Tests extends MX_Controller {
 			$data['question_type'] = $this->common_model->sys_parameter_name (SYS_QUESTION_TYPES, $result['type']);
 		}
 		$data['result'] = $result;
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		
 		$data['script'] 	= $this->load->view ('tests/scripts/question_group_create', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/question_group_create', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
     }
 	
-	public function question_edit ($coaching_id=0, $category_id=0, $test_id=0, $parent_id=0, $question_id=0, $lang_id=0) {
-		$this->question_create($coaching_id, $category_id, $test_id, $parent_id, $question_id, $lang_id);
-	}
+	
 	/* function for Create/Edit question */
 	public function question_create ($coaching_id=0, $category_id=0, $test_id=0, $parent_id=0, $question_id=0, $lang_id=0) {
 		
@@ -388,12 +443,9 @@ class Tests extends MX_Controller {
 		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id, $questions);
 
 		/* Back Link */
-		$data['bc'] = array ('Question Group'=>'coaching/tests/question_group_edit/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id);
+		$data['bc'] = array ('Question Group'=>'coaching/tests/question_group_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id);
 
-		$data['toolbar_buttons'] = array ('<i class="fa fa-plus"></i> Actions'=>array (
-				'Add Questions'=>'coaching/tests/question_group_create/'.$category_id.'/'.$test_id,
-				'Preview Test'=>'coaching/tests/preview_test/'.$category_id.'/'.$test_id,
-				));
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
 		/* Page Related Statistics */
 
@@ -408,10 +460,10 @@ class Tests extends MX_Controller {
 		$data['question_difficulties'] = $this->common_model->get_sys_parameters (SYS_QUESTION_DIFFICULTIES);
 		$data['page_title'] = 'Add/Edit Question';
 		/* --==// Sidebar //==-- */ 
-		$data['sidebar']	= $this->load->view ('tests/inc/manage_test', $data, true);
 		$data['script'] 	= $this->load->view ('tests/scripts/question_create', $data, true);
 		
 		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/question_create', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
@@ -432,14 +484,7 @@ class Tests extends MX_Controller {
 		$data['crumb_buttons'] = '';
 		
 		/* Page Related Toolbar Buttons */
-		$toolbar_buttons = array ();
-		if ($category_id > 0) {
-			$toolbar_buttons = array ( 
-					'buttons'=>array ( 
-						anchor ('coaching/tests/create/'.$category_id, '<i class="fa fa-plus"></i> New Test' )
-					));
-		}
-
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		/* Back Link */
 		if ($backlink == "") {
 			$data['bc'] = array ('Back'=>'coaching/tests/index/'.$category_id);
@@ -455,6 +500,7 @@ class Tests extends MX_Controller {
 		//$page_stats = $this->qb_model->page_stats ('index', $lesson_id);		
 		
 		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/test_details',$data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
@@ -554,9 +600,7 @@ class Tests extends MX_Controller {
 		$page_stats['psf4']  = count ($questions);
 		$data['page_stats']  = $page_stats;
 		
-		// sidebar
-		$data['show_sidebar'] = true;
-		$data['sidebar_content'] = $this->common_model->prepare_tree (SYS_TREE_TYPE_QB, TREE_MODE_CHECKABLE, $lesson_id);
+		
 
 		$data['category_id'] 		= $category_id;
 		$data['test_id'] 			= $test_id;

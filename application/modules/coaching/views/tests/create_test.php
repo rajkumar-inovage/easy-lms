@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-	<div class="col-md-9">
+	<div class="col-md-12">
 		<div class="card">
 			
 			<div class="card-body">
@@ -51,16 +51,14 @@
                         <div class="form-check">
                             <input type="radio" class="form-check-input" id="test_regular" name="test_type" value="<?php echo TEST_TYPE_REGULAR; ?>" <?php echo set_radio('test_type', TEST_TYPE_REGULAR, true); ?>> 
                             <label class="form-check-label" for="test_regular">
-                                Private<br>
-    						    <small>Available to enroled students only</small>
+                                Available to enroled students only
                             </label>
                         </div>
                         
                         <div class="form-check">
                             <input type="radio" class="form-check-input" id="test_practice" name="test_type" value="<?php echo TEST_TYPE_PRACTICE; ?>" <?php echo set_radio('test_type', TEST_TYPE_PRACTICE); ?>> 
                             <label class="form-check-label" for="test_practice">
-                                Protected<br>
-					        	<small>Available to all your coaching students</small>
+					        	Available to all students
                             </label>
                         </div>
                         

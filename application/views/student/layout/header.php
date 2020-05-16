@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -217,6 +217,20 @@
 
 	<main id="content" role="main">
 		<div class="container pt-4">
+           <?php if (! empty ($annc)) { ?>
+            <div class="alert alert-info">
+              <marquee>
+              <ul class="list-inline">
+              <?php foreach ($annc as $row) { ?>
+                <li class="list-inline-item">
+                    <?php echo anchor ('student/announcements/view/'.$coaching_id.'/'.$row['announcement_id'], $row['title']); ?>
+                </li>
+              <?php } ?>
+              </ul>
+              </marquee>
+            </div>
+           <?php } ?>
+
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-4 col-sm-8">
                   <?php $this->message->display (); ?>

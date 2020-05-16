@@ -11,6 +11,12 @@ $(document).ready (function () {
 		var url = '<?php echo site_url ('coaching/attendance/index/'.$coaching_id); ?>/'+role_id+'/<?php echo $status.'/'.$batch_id.'/'.$date; ?>';
 		$(location).attr('href', url);
 	});
+
+	$('#search-date').on ('change', function () {
+		var date = $(this).val ();
+		var url = '<?php echo site_url ('coaching/attendance/index/'.$coaching_id.'/'.$role_id.'/'.$status.'/'.$batch_id); ?>/'+date;
+		$(location).attr('href', url);
+	});
 	
 	$('#search-batches').on ('change', function () {
 		var batch_id = $(this).val ();
@@ -23,25 +29,16 @@ var dateString = '<?php echo $dt_string; ?>';
 
 function mark_attendance (btn_id, member_id, att_status) {
 	var formURL = '<?php echo site_url ('coaching/attendance_actions/mark_attendance/'.$coaching_id); ?>/'+member_id+'/'+att_status+'/'+dateString;
-	//var disabledBtn = $('#'+btn_id).parent().find('.btn.disabled');
-	//disabledBtn.removeClass('disabled btn-success btn-danger btn-info').addClass('btn-default');
 	fetch (formURL, {
 		method : 'POST',
 	}).then (function (response) {
 		return response.json ();
 	}).then(function(result) {
 		if (result.status == true) {
-			if (result.type == <?php echo ATTENDANCE_ABSENT; ?>) {
-				$('.btn-att-'+member_id).removeClass().addClass ('btn ');
-				$('#'+btn_id).addClass('btn btn-success ');
-			} else if (result.type == <?php echo ATTENDANCE_LEAVE; ?>) {
-				$('.btn-att-'+member_id).removeClass().addClass ('btn ');
-				$('#'+btn_id).addClass('btn btn-success ');
-			} else if (result.type == <?php echo ATTENDANCE_PRESENT; ?>) {
-				$('.btn-att-'+member_id).removeClass().addClass ('btn ');
-				$('#'+btn_id).addClass('btn btn-success ');
-			}
-			//toastr.success(result.message);
+			$('#present'+member_id).removeClass('btn-success');
+			$('#leave'+member_id).removeClass('btn-success');
+			$('#absent'+member_id).removeClass('btn-success');
+			$('#'+btn_id).addClass('btn-success ');
 		}
 	});
 	

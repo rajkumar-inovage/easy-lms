@@ -13,9 +13,9 @@
     <?php if ($test_type == TEST_TYPE_REGULAR) { ?>
         <div class="card-header ">
             <ul class="nav nav-pills nav-fill">
-              <li class="nav-item"><a class="nav-link active" href="#ongoing" data-toggle="tab">Active</a></li>
-              <li class="nav-item"><a class="nav-link" href="#upcoming" data-toggle="tab">New</a></li>
-              <li class="nav-item"><a class="nav-link" href="#archived" data-toggle="tab">Old</a></li>
+              <li class="nav-item"><a class="nav-link active" href="#ongoing" data-toggle="tab">On-Going</a></li>
+              <li class="nav-item"><a class="nav-link" href="#upcoming" data-toggle="tab">Up-Coming</a></li>
+              <li class="nav-item"><a class="nav-link" href="#archived" data-toggle="tab">Archived</a></li>
               <li class="nav-item"><a class="nav-link" href="#practice" data-toggle="tab">Practice</a></li>
             </ul>
         </div>
@@ -130,7 +130,7 @@
             </div>
 
             <div class="tab-pane " id="practice">
-              sdsd
+              
             </div>
 
         </div>

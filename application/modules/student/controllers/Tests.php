@@ -326,8 +326,10 @@ class Tests extends MX_Controller {
 		$data['attempt_id']		    = $attempt_id;
 
 		$data['test_marks'] 		= $this->tests_model->getTestquestionMarks ($coaching_id, $test_id);
-		$data['score']				= $this->tests_reports->obtained_marks ($test_id, $attempt_id, $data['member_id']);
+		$ob = $this->tests_reports->calculate_obtained_marks ($test_id, $attempt_id, $member_id);
+		//$data['score']				= $this->tests_reports->obtained_marks ($test_id, $attempt_id, $data['member_id']);
 
+		$data['score'] = $ob;
 		$data['bc']					= ['Test Taken'=>'student/tests/tests_taken/'.$coaching_id.'/'.$member_id.'/'.$test_id];
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);

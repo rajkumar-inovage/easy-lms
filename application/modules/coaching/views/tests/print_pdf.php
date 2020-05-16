@@ -1,4 +1,7 @@
+
+<!--
 <div>Marks: <?php echo $test_marks['marks']; ?></div>
+
 <?php 
 	if ( is_array($results) ) {
 		$num_parent = 1;
@@ -46,3 +49,5 @@
 		<?php 
 	} 
 ?>
+
+-->

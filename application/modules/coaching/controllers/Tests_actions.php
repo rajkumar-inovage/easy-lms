@@ -43,9 +43,14 @@ class Tests_actions extends MX_Controller {
 	
 
     public function search_tests ($coaching_id=0) {
-		$data = $this->tests_model->search_tests ($coaching_id);
+		$tests = $this->tests_model->search_tests ($coaching_id);
+		$data['coaching_id'] = $coaching_id;
+		$data['category_id'] = $this->input->post ('category');
+		$data['status'] = $this->input->post ('status');
+		$data['tests'] = $tests;
+		$tests = $this->load->view ('tests/inc/index', $data, true);
 		$this->output->set_content_type("application/json");
-		$this->output->set_output(json_encode(array('status'=>true, 'data'=>$data)));
+		$this->output->set_output(json_encode(array('status'=>true, 'data'=>$tests)));
 	}
 	
 	public function create_test ($coaching_id=0, $category_id=0, $test_id=0) {
@@ -132,10 +137,10 @@ class Tests_actions extends MX_Controller {
 	
 	
 	// Remove Individual Questions
-	public function remove_question ($category_id=0, $test_id=0, $id=0, $lesson_id=0, $cat_ids=0, $diff_ids=0, $exclude=0) {
-		$result = $this->tests_model->deleteTestQuestion ($test_id, $id);
-		$this->message->set('Questions removed from this test', 'success', true);
-		redirect ('coaching/tests/preview_test/'.$category_id.'/'.$test_id);
+	public function remove_question ($coaching_id=0, $category_id=0, $test_id=0, $parent_id=0, $question_id=0, $cat_ids=0, $diff_ids=0, $exclude=0) {
+		$result = $this->tests_model->deleteTestQuestion ($test_id, $question_id);
+		$this->message->set('Question removed from this test', 'success', true);
+		redirect ('coaching/tests/preview_test/'.$coaching_id.'/'.$test_id);
 	}	
 	
 	// Remove Individual Questions From Add Questions PAge
@@ -198,8 +203,10 @@ class Tests_actions extends MX_Controller {
 	}
 	
 	public function export_pdf ($coaching_id=0, $category_id=0, $test_id=0) {
+
 		$this->load->helper ('tcpdf');
-		@tcpdf();
+		tcpdf();
+		/*
 
 		$test = $this->tests_model->view_tests ($test_id);
 		$coaching = $this->coaching_model->get_coaching ($coaching_id);
@@ -226,7 +233,6 @@ class Tests_actions extends MX_Controller {
 		$data['category_id'] = $category_id;
 		$data['test_id'] 	 = $test_id;
 		
-		
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
 		$questionMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
 		$questionTime = $this->tests_model->getTestQuestionTime ($coaching_id, $questions);
@@ -246,21 +252,22 @@ class Tests_actions extends MX_Controller {
 			}
 		}
 		$data['results'] 				= $result;
-		$data['test_marks'] 			= $questionMarks;
+		$data['test_marks'] 			= $questionMarks =0;
 		$data['answers'] 				= $answers;
 		$data['questionTimeSeconds'] 	= $questionTime;
 		$data['questionTime'] 			= date("H:i", mktime(0,0, $questionTime,0,0,0));		
-
 		
 		ob_start();
 		// we can have any view part here like HTML, PHP etc
 		$content = '';
-		$content .= 	$this->load->view('tests/print_pdf', $data, true);
+		//$content .= 	$this->load->view('tests/print_pdf', $data, true);
 		$file = $title . '.pdf';
 		$obj_pdf->writeHTML($content, true, false, false, false, '');
 
 		$count = 1;
 		$answer_content = '';
+		*/
+		/*
 		$answer_content .= '<h4>Answer Sheet</h4>';
 		if ( ! empty($questions)) {
 			foreach ($questions as $id) {
@@ -281,11 +288,135 @@ class Tests_actions extends MX_Controller {
 		$obj_pdf->writeHTML($answer_content, true, false, true, false, '');
 		ob_end_clean();
 		$obj_pdf->Output($file, 'I');
+		*/
 		
-		$this->output->set_content_type("application/json");
-		$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Your file is being downloaded', 'redirect'=>site_url('coaching/tests/preview_test/'.$category_id.'/'.$test_id) )));
+		//$this->output->set_content_type("application/json");
+		//$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Your file is being downloaded', 'redirect'=>site_url('coaching/tests/preview_test/'.$coaching_id.'/'.$category_id.'/'.$test_id) )));
+
+				// create new PDF document
+		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+		// set document information
+		$pdf->SetCreator(PDF_CREATOR);
+		$pdf->SetAuthor('Nicola Asuni');
+		$pdf->SetTitle('TCPDF Example 006');
+		$pdf->SetSubject('TCPDF Tutorial');
+		$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+		// set default header data
+		$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 006', PDF_HEADER_STRING);
+
+		// set header and footer fonts
+		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+		// set default monospaced font
+		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+		// set margins
+		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+		// set auto page breaks
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+		// set image scale factor
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+		// set some language-dependent strings (optional)
+		if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+		    require_once(dirname(__FILE__).'/lang/eng.php');
+		    $pdf->setLanguageArray($l);
+		}
+
+		// ---------------------------------------------------------
+
+		// set font
+		$pdf->SetFont('dejavusans', '', 10);
+
+		// add a page
+		$pdf->AddPage();
+
+		// writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
+		// writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
+
+		// create some HTML content
+		$html = '<h1>HTML Example</h1>
+		Some special characters: &lt; € &euro; &#8364; &amp; è &egrave; &copy; &gt; \\slash \\\\double-slash \\\\\\triple-slash
+		<h2>List</h2>
+		List example:
+		<ol>
+		    <li><img src="images/logo_example.png" alt="test alt attribute" width="30" height="30" border="0" /> test image</li>
+		    <li><b>bold text</b></li>
+		    <li><i>italic text</i></li>
+		    <li><u>underlined text</u></li>
+		    <li><b>b<i>bi<u>biu</u>bi</i>b</b></li>
+		    <li><a href="http://www.tecnick.com" dir="ltr">link to http://www.tecnick.com</a></li>
+		    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.<br />Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</li>
+		    <li>SUBLIST
+		        <ol>
+		            <li>row one
+		                <ul>
+		                    <li>sublist</li>
+		                </ul>
+		            </li>
+		            <li>row two</li>
+		        </ol>
+		    </li>
+		    <li><b>T</b>E<i>S</i><u>T</u> <del>line through</del></li>
+		    <li><font size="+3">font + 3</font></li>
+		    <li><small>small text</small> normal <small>small text</small> normal <sub>subscript</sub> normal <sup>superscript</sup> normal</li>
+		</ol>
+		<dl>
+		    <dt>Coffee</dt>
+		    <dd>Black hot drink</dd>
+		    <dt>Milk</dt>
+		    <dd>White cold drink</dd>
+		</dl>
+		<div style="text-align:center">IMAGES<br />
+		
+		</div>';
+
+		// output the HTML content
+		$pdf->writeHTML($html, true, false, true, false, '');
+
+
+		
+		// reset pointer to the last page
+		$pdf->lastPage();
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// Print a table
+
+		
+
+		// add a page
+		$pdf->AddPage();
+
+		// create some HTML content
+		$html = '<h1>Image alignments on HTML table</h1>';
+
+		// output the HTML content
+		$pdf->writeHTML($html, true, false, true, false, '');
+
+		// reset pointer to the last page
+		$pdf->lastPage();
+
+
+		// ---------------------------------------------------------
+		ob_end_clean ();
+		
+		//Close and output PDF document
+		$pdf->Output('example_006.pdf', 'I');
+
+		//============================================================+
+		// END OF FILE
+		//============================================================+
 
 	}
+
+
 	// Ajax enrol users
 	public function enrol_users ($coaching_id=0, $category_id=0, $test_id=0, $role_id=0, $class_id=0, $type=0, $batch_id=0, $status='-1') {		
 		

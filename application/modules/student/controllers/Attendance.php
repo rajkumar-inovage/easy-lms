@@ -10,6 +10,12 @@ class Attendance extends MX_Controller {
 	}
 
 	public function index ($coaching_id=0, $member_id=0) { 
+		if ($coaching_id==0) {
+            $coaching_id = $this->session->userdata ('coaching_id');
+        }
+        if ($member_id==0) {
+            $member_id = $this->session->userdata ('member_id');
+        }
 		$this->my_attendance ($coaching_id, $member_id);
 	}
 

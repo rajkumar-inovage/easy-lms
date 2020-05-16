@@ -24,13 +24,18 @@ class Announcements extends MX_Controller {
 
 	public function index ($coaching_id=0, $status=0) { 
 
-		$data['coaching_id'] = $coaching_id;
-		$data['page_title']  = 'Announcements';
 
-		
+		if ($coaching_id==0) {
+            $coaching_id = $this->session->userdata ('coaching_id');
+        }
+            $member_id = $this->session->userdata ('member_id');
+
 		/*---=== Back Link ===---*/
 		$data['bc'] = array ('Student Dashboard'=>'student/home/dashboard/'.$coaching_id);
 		$data['results'] = $this->announcements_model->get_announcements ($coaching_id);
+		$data['coaching_id'] = $coaching_id;
+		$data['member_id'] = $member_id;
+		$data['page_title']  = 'Announcements';
 			
 		$this->load->view ( INCLUDE_PATH  . 'header', $data);
 		$this->load->view ( 'annc/index', $data);
@@ -39,7 +44,13 @@ class Announcements extends MX_Controller {
 
 	public function view ($coaching_id=0, $annc_id=0) { 
 
+		if ($coaching_id==0) {
+            $coaching_id = $this->session->userdata ('coaching_id');
+        }
+        $member_id = $this->session->userdata ('member_id');
+
 		$data['coaching_id'] = $coaching_id;
+		$data['member_id'] = $member_id;
 		$data['page_title']  = 'Announcement';
 		
 		/*---=== Back Link ===---*/

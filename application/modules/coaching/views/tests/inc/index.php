@@ -1,65 +1,63 @@
-<div data-scrollable>
-
-	<h4 class="category">Search</h4>
-	<div class="sidebar-block">
-		<?php echo form_open('tests/admin/search_tests/'.$category_id); ?>
-			<?php if (!isset($search)) $search = ''; ?>
-			<div class="form-group">
-				<input id="forumSearch" type="text" class="form-control" placeholder="Search test-name" name="search" value="<?php echo set_value ('search', $search); ?>" >
-			</div>
-			<p class="text-muted">Search test-name</p>
-			<input type="submit" class="btn btn-inverse paper-shadow relative" data-z="0.5" data-hover-z="1" value="Search">
-			<?php
-				if ($node_details['level'] >= TEST_LEVEL_YEAR) {
-					echo anchor ('tests/admin/create/'.$category_id, 'Create Test', array('class'=>'btn btn-success'));					
-				}
-			?>
-		</form>
-	</div>
-	
-	<?php if ( ! empty ($my_subscriptions)) { ?>
-		<h4 class="category">Filter</h4>
-		<ul class="sidebar-block list-group list-group-menu list-group-minimal">
-			<?php
-			foreach ($my_subscriptions as $row) { 
-				if (isset ($row['category_id'])) {
-					$id = $row['category_id'];
-				} else {
-					$id = $row['id'];								
-				}
-				
-				if ($id == $category_id) {
-					$class = 'active'; 
-				} else {
-					$class = '';
-				}
-				
-				// Get num tests 
-				$tests = $this->tests_model->tests_in_category ($id);
-				$count = 0;
-				if ( ! empty ($tests)) {
-					$num_tests = count ($tests);
-					//$count = $count + $num_tests;
-					$create_badge = '<span class="label label-default pull-right">'.$num_tests.'</span>';
-
-					$details = $this->common_model->node_details ($id, SYS_TREE_TYPE_TEST);
+<div class="card card-default mb-4">
+	<div class="table-responsive" id="test-lists">
+		<table class="table mb-0">
+			<thead>
+				<tr>
+					<th width="5%">#</th>
+					<th width="50%">Test Name</th>
+					<th>Test Type</th>
+					<th>Duration</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php 
+			$i = 1;
+			if ( ! empty ($tests)) { 
+				foreach ($tests as $row) { 
 					?>
-					<li class="list-group-item <?php echo $class; ?>">
-						<?php 
-						if ($this->session->userdata('admin_user') == 1) {
-							echo anchor ('tests/admin/index/'.$id, $details['title'] . $create_badge);
-						} else {
-							echo anchor ('tests/frontend/index/'.$id, $details['title'] . $create_badge);
-						}
-						?>
-					</li>
-					<?php
-				} else {
-					$num_tests = 0;
-				}
+					<tr>
+						<td><?php echo $i; ?>
+						<td>
+							<?php echo anchor('coaching/tests/manage/'.$coaching_id.'/'.$row['category_id'].'/'.$row['test_id'], $row['title'], array('title'=>'Plans', 'class'=>'btn-link')); ?><br>
+							<?php echo $row['unique_test_id']; ?>
+						</td>
+						<td>
+							<?php 
+							$param = $this->common_model->sys_parameter_name(SYS_TEST_TYPE, $row['test_type']);
+							echo $param['paramval'];
+							?>
+						</td>
+						<td>
+							<?php echo $duration = $row['time_min'] . ' mins'; ?>
+						</td>
+						<td>
+							<?php 
+							if ($row['finalized'] == 1) {
+								echo '<span class="badge badge-primary">Published</span>';
+							} else {
+								echo '<span class="badge badge-light">Un-published</span>';
+							}
+							?>
+						</td>
+					</tr>
+					<?php 
+					$i++; 
+				} 
+			} else {
+				?>
+				<tr>
+					<td colspan="5" >
+						<div>
+							<span class="text-danger">No tests found</span>									
+						</div>
+						<?php echo anchor ('coaching/tests/create_test/'.$coaching_id.'/'.$category_id, 'Create Test'); ?>
+					</td>
+				</tr>
+				<?php
 			}
 			?>
-		</ul>
-		
-	<?php } ?>
+			</tbody>
+		</table>
+	</div>
 </div>

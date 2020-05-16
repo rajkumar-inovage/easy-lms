@@ -160,7 +160,6 @@ class Virtual_class extends MX_Controller {
 		$api_setting = $this->virtual_class_model->get_api_settings ();
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		$class = $this->virtual_class_model->get_class ($coaching_id, $class_id);
-		//$data['recordings'] = $this->virtual_class_model->get_recordings ($coaching_id, $class_id, $meeting_id);
 
 		// Create call and query
 		$api_url = $api_setting['api_url'];
@@ -197,7 +196,6 @@ class Virtual_class extends MX_Controller {
 		$data['page_title'] 	= 'Recordings';
 		$data['bc'] = array('Classrooms'=>'coaching/virtual_class/index/'.$coaching_id);
 
-        //$data['script'] = $this->load->view('attendance/scripts/index', $data, true);
         $this->load->view(INCLUDE_PATH . 'header', $data);
         $this->load->view('virtual_class/recordings', $data);
         $this->load->view(INCLUDE_PATH . 'footer', $data);		

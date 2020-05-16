@@ -69,10 +69,10 @@ class Tests_model extends CI_Model {
 	}
 	
 	//=========== Model for list tests =======================
-	public function get_all_tests ($coaching_id=0, $category_id=0, $type=0) {
+	public function get_all_tests ($coaching_id=0, $category_id=0, $status='-1') {
 		
-		if ( $type > 0 ) {
-			$this->db->where ('test_type', $type);			
+		if ( $status > '-1' ) {
+			$this->db->where ('finalized', $status);
 		}
 		if ( $category_id > 0 ) {
 			$this->db->where ('category_id', $category_id);
@@ -120,15 +120,18 @@ class Tests_model extends CI_Model {
 	//=========== Model for search tests =======================
 	public function search_tests ($coaching_id=0) {
 		
-		$status = $this->input->post ('search_status');
-		$type = $this->input->post ('search_type');
-		$search = $this->input->post ('search_text');
+		$status 	= $this->input->post ('status');
+		$category_id = $this->input->post ('category');
+		$search 	= $this->input->post ('search_text');
 				
 		if ($search != '') {
 			$this->db->like ('title', $search, 'both');
 		}
 		if ($status > '-1') {
-			$this->db->where ('finalized', $status);			
+			$this->db->where ('finalized', $status);
+		}
+		if ($category_id > 0) {
+			$this->db->where ('category_id', $category_id);
 		}
 		$this->db->where ('coaching_id', $coaching_id);
 		$query = $this->db->get ("coaching_tests");
@@ -180,7 +183,7 @@ class Tests_model extends CI_Model {
 	}
 
 	//=========== Model for View a details of test =====================
-	public function view_tests ($tid) {
+	public function view_tests ($tid=0) {
 		//$this->db->where ('coaching_id', $coaching_id);		
 		$this->db->where ('test_id', $tid);
 		$query = $this->db->get ('coaching_tests');
@@ -1520,6 +1523,16 @@ class Tests_model extends CI_Model {
 	public function delete_subscription_plan ($plan_id=0) {
 		$this->db->where ('id', $plan_id);
 		$sql = $this->db->delete ('subscription_plans');
+	}
+
+	public function manage_test_toolbar ($coaching_id=0, $category_id=0, $test_id=0) {
+		$toolbar['Prepare'] = [
+			'<i class="fa fa-list"></i> Manage'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id,
+			'<i class="fa fa-search"></i> Preview'=>'coaching/tests/preview_test/'.$coaching_id.'/'.$category_id.'/'.$test_id,
+			'<i class="fa fa-superscript"></i> Questions'=>'coaching/tests/preview_test/'.$coaching_id.'/'.$category_id.'/'.$test_id,
+		];
+
+		return $toolbar;
 	}
 	
 }

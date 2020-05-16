@@ -19,7 +19,7 @@
 								<?php
 								if (! empty ($batches)) {
 									foreach ($batches as $batch) {
-										echo $batch['batch_name'];
+										//echo $batch['batch_name'];
 									}
 								}
 								?>

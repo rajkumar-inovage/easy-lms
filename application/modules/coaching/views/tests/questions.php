@@ -21,7 +21,7 @@
 						  <div class="">
 							<?php
 								if ( $test['finalized'] == 0) {
-									echo anchor ('coaching/tests/question_group_edit/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id, $parent['question']);
+									echo anchor ('coaching/tests/question_group_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id, $parent['question']);
 								} else {
 									echo $parent['question'];
 								}
@@ -50,7 +50,7 @@
 									<div class="media-body">
 										<?php 
 										if ( $test['finalized'] == 0) {
-											echo anchor ('coaching/tests/question_edit/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$id, $row['question']);
+											echo anchor ('coaching/tests/question_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$id, $row['question']);
 										} else {
 											echo $row['question'];
 										}

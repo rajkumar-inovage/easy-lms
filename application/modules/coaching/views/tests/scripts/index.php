@@ -2,8 +2,14 @@
 $(document).ready (function () {
 	$('#search-status').on ('change', function () {
 		var status = $(this).val ();
-		var url = '<?php echo site_url ('coaching/tests/index/'.$category_id.'/'.$type); ?>/'+status;
+		var url = '<?php echo site_url ('coaching/tests/index/'.$coaching_id.'/'.$category_id); ?>/'+status;
 		$(location).attr('href', url);
+	});
+
+	$('#search-category').on ('change', function () {
+		var cat_id = $(this).val ();
+		var url = '<?php echo site_url ('coaching/tests/index/'.$coaching_id); ?>/'+cat_id+'/<?php echo $status; ?>';
+		$(location).attr ('href', url);
 	});
 });
 </script>
@@ -12,7 +18,7 @@ $(document).ready (function () {
 	const loaderSelector = document.getElementById ('loader');
 	const formSelector = document.getElementById ('search-form');
 	const formURL = formSelector.getAttribute ('action');
-	const outputSelector = document.getElementById ('test-lists');
+	const outputSelector = document.getElementById ('test-list');
 	
 	formSelector.addEventListener ('submit', e => {
 		e.preventDefault ();
@@ -27,7 +33,8 @@ $(document).ready (function () {
 		}).then(function(result) {
 			if (result.status == true) {
 				loaderSelector.style.display = 'none';
-				var obj =  result.data;
+				var output =  result.data;
+				/*
 				var i = 1;
 				var output = '<table class="table">';
 				for (var item in obj) {
@@ -55,9 +62,9 @@ $(document).ready (function () {
 				output += '</table>';
 				/*
 				/*
-				*/
 				document.getElementById('count-tests').innerHTML = (i-1);
 				document.getElementById('pagination').innerHTML = '';
+				*/
 				outputSelector.innerHTML = output;
 			}
 		});

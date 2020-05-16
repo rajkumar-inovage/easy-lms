@@ -1,6 +1,5 @@
-<section class="content">
     	<div class="card card-default">
-			<div class="card-body table-responsive">
+			<div class="table-responsive">
 	            <?php echo form_open('coaching/reports/marking_reports/'.$class_id.'/'.$test_id, array('class'=>'form-horizontal row-border'));?>
 	            <table class="table table-bordered table-hover table-checkable datatable mb-0">
 					<thead>
@@ -38,7 +37,7 @@
 					} else {
 						?>
 						<tr>
-							<td colspan="4" class="text-center bg-danger text-white">No submissions yet</td>
+							<td colspan="4" class="text-danger">No submissions yet</td>
 						</tr>
 						<?php
 					}
@@ -48,4 +47,3 @@
 				<?php echo form_close();?>
 			</div>
 		</div>
-</section>
