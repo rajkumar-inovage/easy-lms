@@ -1,15 +1,32 @@
-<?php if (! defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php if (! defined('BASEPATH')) { exit ('No direct script access allowed'); }
 
-class Attendance extends MX_Controller
-{
-    public function __construct()
-    {
+class Attendance extends MX_Controller {
+
+    public function __construct ()  {
         // Load Config and Model files required throughout Users sub-module
         $config = ['config_coaching'];
-        $models = ['attendance_model', 'users_model'];
+        $models = ['attendance_model', 'users_model', 'subscription_model'];
         $this->common_model->autoload_resources($config, $models);
+    
+        $cid = $this->uri->segment (4);
+        if ($this->session->userdata ('is_admin') == TRUE) {
+        } else {
+
+            // Security step to prevent unauthorized access through url
+            if ($this->session->userdata ('coaching_id') <> $cid) {
+                $this->message->set ('Direct url access not allowed', 'danger', true);
+                redirect ('coaching/home/dashboard');
+            }
+
+            // Check subscription plan expiry
+            $coaching = $this->subscription_model->get_coaching_subscription ($cid);
+            $today = time ();
+            $current_plan = $coaching['subscription_id'];
+            if ($today > $coaching['ending_on']) {
+                $this->message->set ('Your subscription has expired. Choose a plan to upgrade', 'danger', true);
+                redirect ('coaching/subscription/browse_plans/'.$cid.'/'.$current_plan);
+            }
+        }        
     }
 
 

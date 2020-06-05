@@ -10,7 +10,7 @@
         <?php } ?>
         <h6 class="text-center">Create a new coaching account</h6>
       </div>
-      <div class="card-body px-lg-5 py-lg-5">
+      <div class="card-body ">
          
          <?php echo form_open ('public/page_actions/create_coaching', array('id'=>'validate-1')); ?>
 
@@ -68,9 +68,8 @@
 		</div>
 
 		<div class="card-footer">
-			<?php 
-			echo form_submit ( array ('name'=>'submit', 'value'=>'Save ', 'class'=>'btn btn-primary ')); 
-			?>
+			<?php echo form_submit ( array ('name'=>'submit', 'value'=>'Save ', 'class'=>'btn btn-primary ')); ?>
+            <p>By clicking <strong>Save</strong>, you agree to our <a href="<?php echo 'https://easycoachingapp.com/eula'; ?>" target="_blank">Terms and Conditions</a> and <a href="https://easycoachingapp.com/privacy-policy" target="_blank">Privacy Policy</a>
 		</div>
 	</form>
 </div>

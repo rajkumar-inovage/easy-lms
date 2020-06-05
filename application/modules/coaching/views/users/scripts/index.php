@@ -16,7 +16,7 @@ $(document).ready (function () {
 		var batch_id = $(this).val ();
 		var url = '<?php echo site_url ('coaching/users/index/'.$coaching_id.'/'.$role_id.'/'.$status); ?>/'+batch_id;
 		$(location).attr('href', url);
-	});
+	}); 
 });
 </script>
 
@@ -40,6 +40,8 @@ $(document).ready (function () {
 		}).then(function(result) {
 			if (result.status == true) {
 				loaderSelector.style.display = 'none';
+				var output =  result.data;
+				/*
 				var obj =  result.data;
 				var i = 1;
 				var output = '<table class="table">';

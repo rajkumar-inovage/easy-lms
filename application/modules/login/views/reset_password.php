@@ -12,7 +12,7 @@
 	  </div>
 	  <div class="card-body px-lg-5 py-lg-5">
 		<div class="alert alert-info">
-			You will recieve an OTP on your registered mobile number and email (if given). Use that OTP as password to sign-in. Once you are logged-in change your password from "My Account" menu.
+			You will recieve new password on your registered mobile number and email (if given). Use that password to sign-in. Once you are logged-in change your password from "My Account" menu.
 		</div>
 
 		<?php echo form_open ('login/login_actions/reset_password', array ('class'=>'form-vertical', 'id'=>'validate-1') ); ?>

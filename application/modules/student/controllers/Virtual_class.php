@@ -66,7 +66,59 @@ class Virtual_class extends MX_Controller {
         $this->load->view(INCLUDE_PATH . 'header', $data);
         $this->load->view('virtual_class/error', $data);
         $this->load->view(INCLUDE_PATH . 'footer', $data);		
-	}	
+	}
+
+	public function recordings ($coaching_id=0, $class_id=0, $meeting_id=0) {		
+
+		$api_setting = $this->virtual_class_model->get_api_settings ();
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		$class = $this->virtual_class_model->get_class ($coaching_id, $class_id);
+
+		if ($class['recording_for_students'] != 'true') {
+			$this->message->set ('Recordings not allowed', 'success', true);
+			redirect ('student/virtual_class/my_classroom/'.$coaching_id.'/'.$class_id);
+		}
+
+		// Create call and query
+		$api_url = $api_setting['api_url'];
+		$shared_secret = $api_setting['shared_secret'];
+
+		$call_name = 'getRecordings';
+		$query_string = 'meetingID='.$class['meeting_id'];
+		$final_string = $call_name . $query_string . $shared_secret;
+		$checksum = sha1($final_string);
+
+		$url = $api_url . $call_name . '?' . $query_string . '&checksum='.$checksum;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		$xml_response = curl_exec($ch);
+		curl_close($ch);
+
+		$xml = simplexml_load_string($xml_response);
+		$response = $xml->returncode;
+		if ($response == 'SUCCESS') {
+			$recordings = $xml->recordings;
+		} else {
+			$recordings = [];
+		}
+		
+		$data['response'] = $response;
+		$data['recordings'] = $recordings;
+
+		$data['coaching_id'] 	= $coaching_id;
+		$data['class_id'] 		= $class_id;
+		$data['class'] 			= $class;
+		$data['meeting_id'] 	= $meeting_id;
+		$data['page_title'] 	= 'Recordings';
+		$data['bc'] = array('Classrooms'=>'student/virtual_class/index/'.$coaching_id);
+
+        $this->load->view(INCLUDE_PATH . 'header', $data);
+        $this->load->view('virtual_class/recordings', $data);
+        $this->load->view(INCLUDE_PATH . 'footer', $data);
+	}
 
 	public function end_meeting ($coaching_id=0, $class_id=0) {
 		redirect ('student/virtual_class/index/'.$coaching_id);

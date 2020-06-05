@@ -11,17 +11,27 @@ class Tests extends MX_Controller {
 
 	    $this->common_model->autoload_resources ($config, $models);
 	    
-        $cid = $this->uri->segment (4);
+	    $cid = $this->uri->segment (4);
         $this->toolbar_buttons['<i class="fa fa-puzzle-piece"></i> All Tests']= 'coaching/tests/index/'.$cid;
         $this->toolbar_buttons['<i class="fa fa-plus-circle"></i> New Test']= 'coaching/tests/create_test/'.$cid;
         $this->toolbar_buttons['<i class="fa fa-list"></i> Test Categories']= 'coaching/tests/categories/'.$cid;
         
-        // Security step to prevent unauthorized access through url
         if ($this->session->userdata ('is_admin') == TRUE) {
         } else {
+
+        	// Security step to prevent unauthorized access through url
             if ($this->session->userdata ('coaching_id') <> $cid) {
-                //$this->message->set ('Direct url access not allowed', 'danger', true);
-                //redirect ('coaching/home/dashboard');
+                $this->message->set ('Direct url access not allowed', 'danger', true);
+                redirect ('coaching/home/dashboard');
+            }
+
+        	// Check subscription plan expiry
+            $coaching = $this->subscription_model->get_coaching_subscription ($cid);
+            $today = time ();
+            $current_plan = $coaching['subscription_id'];
+            if ($today > $coaching['ending_on']) {
+            	$this->message->set ('Your subscription has expired. Choose a plan to upgrade', 'danger', true);
+            	redirect ('coaching/subscription/browse_plans/'.$cid.'/'.$current_plan);
             }
         }
 	}

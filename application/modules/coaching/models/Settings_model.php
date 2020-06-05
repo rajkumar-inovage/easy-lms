@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Settings_model extends CI_Model {
     
 	// Save account
-	public function update_account () {
+	public function update_account ($coaching_id=0) {
 		$data = array (
 						'address'=>			$this->input->post ('address'), 
 						'city'=>			$this->input->post ('city'), 

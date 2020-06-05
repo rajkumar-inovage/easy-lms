@@ -10,11 +10,12 @@
 		<?php } ?>
 	    <h5 class="text-center">Create a new <?php if ($role_id == USER_ROLE_TEACHER) echo 'teacher'; else echo 'student'; ?> account</h5>
 	  </div>
-		<?php echo form_open ('login/login_actions/register', array('class'=>'form-horizontal ', 'id'=>'validate-1')); ?> 
+		<?php echo form_open ('login/login_actions/register', array('class'=>'form-horizontal ', 'id'=>'validate-')); ?> 
 	  	  <div class="card-body ">
 	  	  	<input type="hidden" name="user_role" value="<?php echo $role_id; ?>">
 	  	  	<input type="hidden" name="sr_no" value="">
 	  	  	<input type="hidden" name="second_name" value="">
+	  	  	<input type="hidden" name="user_batch" value="0">
 							
 			<div class="form-group">
 				<label class="control-label ">Your Name<span class="text-danger">*</span></label>
@@ -46,7 +47,7 @@
 
 		  	<?php if (! $access_code) { ?>
 			  <div class="form-group">
-				  <label class="control-label ">Access Code</label>
+				  <label class="control-label ">Access Code<span class="text-danger">*</span></label>
 				  <input class="form-control" placeholder="Access Code" type="text" name="access_code">
 				  <p class="text-muted">If you don't have access code, contact your coaching-center/institution</p>
 			  </div>
@@ -59,7 +60,7 @@
 			
 			<div class=" text-center ">
 				<p><input type="submit" name="save" class="btn btn-success btn-block" value="Create Account"></p>
-				Already have an account? <a href="<?php echo site_url ('login/user/index'); ?>" class="mt-4">Sign In</a>
+				Already have an account? <a href="<?php echo site_url ('login/user/index?sub='.$access_code); ?>" class="mt-4">Sign In</a>
 			</div>
 	  	  </div>
 	  	</form>

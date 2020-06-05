@@ -67,7 +67,11 @@
                 <span class="nav-text font-weight-bold"><?php echo $this->session->userdata ('site_title'); ?></span>
 
                 <div class="profile-button">
-                  <?php if ($this->session->userdata ('profile_image')) { ?>
+                  <?php 
+                    $member_id = $this->session->userdata ('member_id');
+
+                    if ($this->session->userdata ('profile_image')) { 
+                    ?>
                     <div class="dropdown ">
                       <a href="#" class="dropdown-toggler" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" class="rounded-circle img-thumbnail" width="30"> 

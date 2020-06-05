@@ -40,7 +40,7 @@ class Vitals extends MX_Controller {
 		} else {
 			if (! $this->session->has_userdata ('is_logged_in')) {
 				$redirect = site_url ('login/login/index');
-				redirect ($redirect);				
+				redirect ($redirect);
 			}
 		}
 	}

@@ -27,8 +27,12 @@ if ( ! empty($all_plans)) {
 					<span class="tag tag-pill tag-info"></span>
 				  </div>
 				  <div class="card-footer">
-					<a href="<?php echo site_url ('coaching/cart_actions/add_item/'.$coaching_id.'/'.$plan['id']); ?>" class="btn btn-primary  btn-lg stretched-link"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Select Plan</a>
-				  </div>				  
+				  	<?php if ($plan['id'] == $current_plan) { ?>
+				  		<span class="badge badge-success">Current Plan</span>
+				  	<?php } else { ?>
+						<a href="<?php echo site_url ('coaching/cart_actions/add_item/'.$coaching_id.'/'.$plan['id']); ?>" class="btn btn-primary"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Select Plan</a>
+				  	<?php } ?>
+				  </div>
 				</div>
 			  </div>
 			</div>

@@ -1,7 +1,7 @@
 <div class="card mb-2"> 
 	<div class="card-body ">
 		<strong>Search</strong>
-		<?php echo form_open('coaching/user_actions/search_users/'.$coaching_id, array('class'=>"", 'id'=>'search-form')); ?>
+		<?php echo form_open('coaching/user_actions/search_users/'.$coaching_id.'/'.$role_id.'/'.$status.'/'.$batch_id, array('class'=>"", 'id'=>'search-form')); ?>
 			<div class="form-group row mb-2">
 				<div class="col-md-3 mb-2">
 					<select name="search_status" class="form-control" id="search-status" >
@@ -48,90 +48,6 @@
 	</div>
 </div>
 
-
-
-<?php 
-echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$status, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') );
-	?>
-	<div class="card card-default">
-		<div class="-table-responsive" id="users-list">
-			<table class="table table-bordered v-middle mb-0" id="data-tables">
-				<thead>
-					<tr>
-						<th width="3%">
-							<input id="checkAll" type="checkbox" onchange="check_all()" >
-						</th>
-						<th ><?php echo 'Name'; ?></th>
-						<th class="d-none d-sm-table-cell"><?php echo 'Contact'; ?></th>
-						<th width=""><?php echo 'Actions'; ?></th>
-					</tr>
-				</thead>
-
-				<tbody>
-				<?php
-				$i = 0 ;
-				if ( ! empty ($results)) {
-					foreach ($results as $row) {
-						?>
-						<tr>
-							<td>
-								<input id="" type="checkbox" name="mycheck[]" value="<?php echo $row['member_id']; ?>" class="checks">
-							</td>
-
-							<td>
-								<a class="" href="<?php echo site_url ('coaching/users/create/'.$coaching_id.'/'.$row['role_id'].'/'.$row['member_id']); ?>"> 
-									<?php echo ($row['first_name']) .' '. ($row['second_name']) .' '. ($row['last_name']); ?>
-
-								</a> <br> 
-								<?php echo $row['adm_no']; ?>
-							</td>
-							<td class="d-none d-sm-table-cell"><?php echo $row['primary_contact']; ?></td>
-							<td> 
-								<div class="dropdown">
-									<a class="btn btn-outline dropdown-toggle" type="button" id="userMenu<?php echo $row['member_id'];?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Edit</a>
-									<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu<?php echo $row['member_id'];?>">
-										<?php echo anchor('coaching/users/edit/'.$coaching_id.'/'.$row['role_id'].'/'.$row['member_id'], '<i class="fa fa-edit"></i> Profile', array('title'=>'Edit', 'class'=>'dropdown-item')); ?>
-										
-										<?php if ( $row['status'] == USER_STATUS_ENABLED ) { ?>
-											<a href="javascript:void(0)" onclick="javascript:show_confirm ( '<?php echo 'Do you want to disable this user?'; ?>', '<?php echo site_url('coaching/user_actions/disable_member/'.$coaching_id.'/'.$role_id.'/'.$row['member_id']); ?>' )" title="Disable" class="dropdown-item" ><i class="fa fa-times-circle"></i> Disable Account</a>
-										<?php } else if ( $row['status'] == USER_STATUS_DISABLED ) { ?>
-											<a href="javascript:void(0)" onclick="javascript:show_confirm ( '<?php echo 'Do you want to enable this user?'; ?>', '<?php echo site_url('coaching/user_actions/enable_member/'.$coaching_id.'/'.$role_id.'/'.$row['member_id']); ?>' )" class="dropdown-item"><i class="fa fa-check-circle"></i> Enable Account</a>
-										<?php } ?>
-										<?php //echo anchor('coaching/users/member_log/'.$coaching_id.'/'.$role_id.'/'.$row['member_id'], '<i class="fa fa-info-circle"></i> Member Log', array ('class'=>'dropdown-item') ); ?>
-										
-										<?php if ($row['status'] == USER_STATUS_UNCONFIRMED) { ?>
-											<a href="javascript:show_confirm_ajax ('Send email verication link?', '<?php echo site_url ('coaching/user_actions/send_confirmation_email/'.$row['member_id']);?>')" class="dropdown-item"><i class="fa fa-link"></i> Resend Confirmation Email</a>
-										<?php } else { ?>
-											<?php echo anchor('coaching/users/change_password/'.$coaching_id.'/'.$row['member_id'], '<i class="fa fa-key"></i> Change Password', array ('class'=>'dropdown-item')); ?>
-										<?php } ?>									
-										<a href="javascript:void(0)" onclick="show_confirm ('<?php echo 'Are you sure want to delete this users?' ; ?>','<?php echo site_url('coaching/user_actions/delete_account/'.$coaching_id.'/'.$role_id.'/'.$row['member_id']); ?>' )" class="dropdown-item"><i class="fa fa-trash"></i> Delete Account</a>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<?php 
-					} // foreach 
-				} else {
-					?>
-					<tr>
-						<td colspan="6">No users found</td>
-					</tr>
-					<?php
-				}
-				?>
-				</tbody>
-			</table> 
-		</div>
-
-		<div class="card-footer">
-			<select name="action">
-				<option value="0">---With Selected---</option>
-				<option value="delete">Delete</option>
-				<option value="enable">Enable Account</option>
-				<option value="disable">Disable Account</option>
-			</select>
-
-			<input type="submit" name="Submit">
-		</div>
-	</div>
-</form>
+<div id="users-list">
+	<?php $this->load->view ('users/inc/index', $data); ?>
+</div>

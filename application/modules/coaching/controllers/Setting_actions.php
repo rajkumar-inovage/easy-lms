@@ -20,7 +20,7 @@ class Setting_actions extends MX_Controller {
 		if ($this->form_validation->run () == true) {				
 			$id = $this->settings_model->update_account ($coaching_id);
 			$message = 'Information updated successfully';
-			$redirect = site_url('coaching/settings/index');				
+			$redirect = site_url('coaching/settings/index/'.$coaching_id);
 			$this->message->set ($message, 'success', true) ;
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>$redirect)));		

@@ -32,6 +32,14 @@
 
 		  <?php if ($access_code != '' && $found == true) { ?>
 			  <input class="form-control" placeholder="Access Code" type="hidden" name="access_code" value="<?php echo $access_code; ?>">
+			  <div class="form-group">
+				<div class="input-group input-group-alternative">
+				  <div class="input-group-prepend">
+					<span class="input-group-text"><i class="fa fa-key"></i></span>
+				  </div>
+				  <input class="form-control" placeholder="Access Code" type="text" name="access_code" value="<?php echo $access_code; ?>" readonly>
+				</div>
+			  </div>
 		  <?php } else { ?>
 			  <div class="form-group">
 				<div class="input-group input-group-alternative">
@@ -60,7 +68,7 @@
 
 	  <div class="card-footer">
 	  	<h5 class="text-center">Don't have an account?</h5>
-		<a href="<?php echo site_url ('login/user/register/?role='.USER_ROLE_STUDENT); ?>" class="btn btn-block btn-info">Create Account</a>
+		<a href="<?php echo site_url ('login/user/register/?sub='.$access_code.'&role='.USER_ROLE_STUDENT); ?>" class="btn btn-block btn-info">Create Account</a>
 	  </div>
 
   </div>

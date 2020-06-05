@@ -77,7 +77,7 @@ class Login_actions extends MX_Controller {
 	
 
 	public function register () {
-		$this->form_validation->set_rules('first_name', 'First Name', 'required|trim', ['required'=>'Please enter your name']); 
+		$this->form_validation->set_rules('first_name', 'First Name', 'required|trim', ['required'=>'Please enter Your Name.']); 
 		$this->form_validation->set_rules ('primary_contact', 'Primary Contact', 'required|is_natural|trim|max_length[14]');
 		$this->form_validation->set_rules('email', 'Email', 'valid_email|trim');
 		$this->form_validation->set_rules ('password', 'Password', 'required|min_length[8]');
@@ -90,9 +90,18 @@ class Login_actions extends MX_Controller {
 			$coaching_id = $coaching['id'];
 			$email 	= $this->input->post ('email');
 			$contact 	= $this->input->post ('primary_contact');
+
+			$coaching_sub = $this->coaching_model->get_coaching_subscription ($coaching_id);			
+			$max_users = $coaching_sub['max_users'];
+			$num_users = $this->users_model->count_all_users ($coaching_id);
+			
+			
 			if (! $coaching) {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'You have provided wrong access code' )));
+			} else if ( $num_users > $max_users) {
+				$this->output->set_content_type("application/json");
+				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'Maximum user account limit for current subscription plan has been reached. Contact your coaching owner to upgrade their subscription plan.' )));
 			} else if ($this->users_model->contact_exists ($contact, $coaching_id) == true) {
 				// Check if already exists
 				$this->output->set_content_type("application/json");
@@ -187,13 +196,13 @@ class Login_actions extends MX_Controller {
 				// Send Email
 				if ($user['email'] != '') {
 					$email = $user['email'];
-					$subject = 'OTP';
+					$subject = 'Reset Password';
 					$message = $this->load->view (EMAIL_TEMPLATE . 'reset_password', $data, true);
 					$this->common_model->send_email ($email, $subject, $message);					
 				}				
 				
 				// Display Message
-				$msg = 'We have sent OTP on your mobile and email. Use the OTP to sign-in to your account';
+				$msg = 'Your password is reset. You will receive new password on your mobile and email. Use the password to sign-in to your account. After signing-in please change your password from "My Account" menu.';
 				
 				$this->message->set ($msg, 'success', true);
 				
@@ -297,6 +306,7 @@ class Login_actions extends MX_Controller {
 		}
 		
 		$this->session->sess_destroy ();
+		setcookie ("easy_coaching_app", "", time () - 3600);
 
 		$this->output->set_content_type("application/json");
 		$this->output->set_output(json_encode(array('status'=>true, 'redirect'=>$redirect)));

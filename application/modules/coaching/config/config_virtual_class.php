@@ -7,11 +7,10 @@ define ('VM_PARTICIPANT_ATTENDEE', 				1);
 define ('VM_PARTICIPANT_MODERATOR', 			2);
 
 define ('VC_LOGOUT_URL', 					site_url('coaching/virtual_class/end_meeting'));
-define ('VC_BANNER_TEXT', 					'Easy Coaching App');
+define ('VC_BANNER_TEXT', 					'WERT');
 define ('VC_BANNER_COLOR', 					'#f5f5f5');
 define ('VC_LOGO', 							'');
-define ('VC_MAX_PARTICIPANTS', 				100);		
+define ('VC_MAX_PARTICIPANTS', 				150);		
 define ('VC_DURATION', 						300);		// in minutes
-define ('VC_RECORD', 						true);		
-define ('VC_WELCOME_MESSAGE', 				'Welcome to ');
-define ('VC_COPYRIGHT_TEXT', 				'');
+define ('VC_WELCOME_MESSAGE', 				'Live+Classroom');
+define ('VC_COPYRIGHT_TEXT', 				'asas');

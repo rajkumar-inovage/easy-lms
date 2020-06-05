@@ -16,15 +16,22 @@ class User_actions extends MX_Controller {
 		Function to list all or selected users 
 	*/	
 	
-	public function search_users () {
-		$data = $this->users_model->search_users ();
+	public function search_users ($coaching_id=0, $role_id=0, $status='-1', $batch_id=0) {
+		$data = [];
+		$data['coaching_id'] = $coaching_id;
+		$data['role_id'] = $role_id;
+		$data['status'] = $status;
+		$data['batch_id'] = $batch_id;
+		$data['results'] = $this->users_model->search_users ($coaching_id); 
+		$output = $this->load->view ('users/inc/index', $data, true);
 		$this->output->set_content_type("application/json");
-		$this->output->set_output(json_encode(array('status'=>true, 'data'=>$data)));	
+		$this->output->set_output(json_encode(array('status'=>true, 'data'=>$output)));	
 	}
 
 	
 	// CREATE NEW ACCOUNT
 	public function create_account ($coaching_id=0, $role_id=0, $member_id=0) {
+
 		$this->form_validation->set_rules ('user_role', 'User Role', 'required');
 		$this->form_validation->set_rules ('first_name', 'First Name', 'required|max_length[50]|trim|ucfirst');
 		$this->form_validation->set_rules ('second_name', 'Second Name', 'max_length[50]|trim');
@@ -43,7 +50,7 @@ class User_actions extends MX_Controller {
 			if ( ($num_users > $free_users) && $member_id == 0) {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'User limit reached. You can create a maximum of '.$free_users.' user accounts in Free Subscription plan. Upgrade your plan to create more users' )));
-			} else if ($member_id == 0 && ($this->users_model->contact_exists ($contact, $coaching_id) == true)) {
+			} else if ($member_id == 0 && ($this->users_model->coaching_contact_exists ($contact, $coaching_id) == true)) {
 				// Check if already exists
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'This mobile number is already in use with another account' )));
@@ -70,7 +77,7 @@ class User_actions extends MX_Controller {
 					$this->common_model->send_email ($to, $subject, $email_message);
 					
 					// Display message for user
-					$message = 'Your account has been created. You can log-in to your account';
+					$message = 'User account created successfully';
 					$this->message->set ($message, 'success', true );
 				}
 				$this->output->set_content_type("application/json");

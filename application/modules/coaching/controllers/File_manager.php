@@ -1,14 +1,34 @@
-<?php if (! defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php if (! defined('BASEPATH')) { exit ('No direct script access allowed'); }
 
-class File_manager extends MX_Controller{
+class File_manager extends MX_Controller {
+
     public function __construct(){
         // Load Config and Model files required throughout Users sub-module
         $config = ['coaching/config_coaching'];
-        $models = ['files_model'];
+        $models = ['files_model', 'subscription_model'];
         $this->common_model->autoload_resources($config, $models);
+        
+        $cid = $this->uri->segment (4);        
+        if ($this->session->userdata ('is_admin') == TRUE) {
+        } else {
+
+            // Security step to prevent unauthorized access through url
+            if ($this->session->userdata ('coaching_id') <> $cid) {
+                $this->message->set ('Direct url access not allowed', 'danger', true);
+                redirect ('coaching/home/dashboard');
+            }
+
+            // Check subscription plan expiry
+            $coaching = $this->subscription_model->get_coaching_subscription ($cid);
+            $today = time ();
+            $current_plan = $coaching['subscription_id'];
+            if ($today > $coaching['ending_on']) {
+                $this->message->set ('Your subscription has expired. Choose a plan to upgrade', 'danger', true);
+                //redirect ('coaching/subscription/browse_plans/'.$cid.'/'.$current_plan);
+            }
+        }
     }
+
     public function index($coaching_id=0){
         $data['bc'] = array ('Browse Plans'=>($coaching_id == 0)?'coaching/home/dashboard/':'coaching/home/dashboard/'.$coaching_id);
         $member_id = $this->session->userdata('member_id');

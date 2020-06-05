@@ -20,104 +20,138 @@ class Virtual_class_model extends CI_Model {
 		return $sql->row_array ();
 	}
 
-	public function create_classroom ($coaching_id=0, $class_id=0) {
-		
-		if ($this->session->userdata ('site_title')) {
-			$site_title = $this->session->userdata ('site_title');
-		} else {
-			$site_title = 'Live Classroom';
-		}
+	public function create_classroom ($coaching_id=0, $class_id=0) {		
 
+		// 1. Basic settings
 		$class_name = $this->input->post ('class_name');
-		$attendee_pwd = $this->input->post ('attendee_pwd');
-		$moderator_pwd = $this->input->post ('moderator_pwd');
-		$wait_for_moderator = $this->input->post ('wait_for_moderator');
+		$description = $this->input->post ('description');
+		$meeting_id = $this->get_meeting_id ($coaching_id, $class_id);
+		$pwd = $this->get_password ($coaching_id, $class_id);
+		$attendee_pwd = $pwd['attendee_pwd'];
+		$moderator_pwd = $pwd['moderator_pwd'];
+		$max_participants = VC_MAX_PARTICIPANTS;
+		$duration = VC_DURATION;
 
-		if ($this->input->post ('record_class')) {
-			$record_class = 'true';
-		} else {
-			$record_class = 'false';			
-		}
-		
 		if ($this->input->post ('welcome_message')) {
 			$welcome_message = $this->input->post ('welcome_message');
 		} else {
-			$welcome_message = VC_WELCOME_MESSAGE . $site_title;			
-		}
-		$welcome_message = str_replace(' ', '+', $welcome_message);
-
-		$start_date = $this->input->post ('start_date');
-		list ($sy, $sm, $sd) = explode ("-", $start_date);
-		$shh = $this->input->post ('start_time_hh');
-		$smm = $this->input->post ('start_time_mm');
-		$start_date = mktime ($shh, $smm, 0, $sm, $sd, $sy);
-
-		$end_date = $this->input->post ('end_date');
-		list ($ey, $em, $ed) = explode ("-", $end_date);
-		$ehh = $this->input->post ('end_time_hh');
-		$emm = $this->input->post ('end_time_mm');
-		$end_date = mktime ($ehh, $emm, 0, $em, $ed, $ey);
-				
-		$record_description = $this->input->post ('record_description');
-		if ($this->input->post ('max_participants')) {
-			$max_participants = $this->input->post ('max_participants');
-		} else {
-			$max_participants = VC_MAX_PARTICIPANTS;
-		}
-
-		if ($this->input->post ('duration')) {
-			$duration = $this->input->post ('duration');
-		} else {
-			$duration = VC_DURATION;
-		}
-
+			$welcome_message = VC_WELCOME_MESSAGE;
+		}		
+		$welcome_message = str_replace(' ', '+', $welcome_message);		
 		if ($this->session->userdata ('site_title')) {
 			$bannerText = $this->session->userdata ('site_title');
 		} else {
 			$bannerText = VC_BANNER_TEXT;
 		}
-
-		if ($this->input->post ('mute_mic')) {
-			$mute_mic = $this->input->post ('mute_mic');
-		} else {
-			$mute_mic = FALSE;
-		}
-
-		if ($this->input->post ('lock_mic')) {
-			$lock_mic = $this->input->post ('lock_mic');
-		} else {
-			$lock_mic = FALSE;
-		}
-
-		if ($this->input->post ('auto_record')) {
-			$auto_record = $this->input->post ('auto_record');
-		} else {
-			$auto_record = FALSE;
-		}
-
 		$bannerText = str_replace(' ', '+', $bannerText);
 
 		$logoutURL = VC_LOGOUT_URL . '/' . $coaching_id . '/' . $class_id;
 
-		$meeting_id = $this->get_meeting_id ($coaching_id, $class_id);
+
+		// 2. Restrictions
+		$wait_for_moderator = 'true';
+		
+		if ($this->input->post ('webcam_for_moderator')) {
+			$webcam_for_moderator = 'true';
+		} else {
+			$webcam_for_moderator = 'false';
+		}
+
+		if ($this->input->post ('mute_mic')) {
+			$mute_mic = 'true';
+		} else {
+			$mute_mic = 'false';
+		}
+
+		if ($this->input->post ('lock_mic')) {
+			$lock_mic = 'true';
+		} else {
+			$lock_mic = 'false';
+		}
+		$allow_mods_to_unmute_users = 1;
+
+
+		if ($this->input->post ('record_class')) {
+			$record_class = 'true';
+		} else {
+			$record_class = 'false';
+		}
+		
+		if ($this->input->post ('auto_record')) {
+			$auto_record = 'true';
+		} else {
+			$auto_record = 'false';
+		}
+
+		if ($this->input->post ('recording_for_students')) {
+			$recording_for_students = 'true';
+		} else {
+			$recording_for_students = 'false';
+		}
+
+		if ($this->input->post ('lock_public_chat')) {
+			$lock_public_chat = 'true';
+		} else {
+			$lock_public_chat = 'false';
+		}
+
+		if ($this->input->post ('lock_private_chat')) {
+			$lock_private_chat = 'true';
+		} else {
+			$lock_private_chat = 'false';
+		}
+
+		if ($this->input->post ('lock_notes')) {
+			$lock_notes = 'true';
+		} else {
+			$lock_notes = 'false';
+		}
+
+
+		// 3. Schedule
+		if ($this->input->post ('start_date_check') == 1) {
+			$start_date = $this->input->post ('start_date');
+			list ($sy, $sm, $sd) = explode ("-", $start_date);
+			$shh = $this->input->post ('start_time_hh');
+			$smm = $this->input->post ('start_time_mm');
+			$start_date = mktime ($shh, $smm, 0, $sm, $sd, $sy);
+		} else {
+			$start_date = '';
+		}
+
+		if ($this->input->post ('end_date_check') == 1) {
+			$end_date = $this->input->post ('end_date');
+			list ($ey, $em, $ed) = explode ("-", $end_date);
+			$ehh = $this->input->post ('end_time_hh');
+			$emm = $this->input->post ('end_time_mm');
+			$end_date = mktime ($ehh, $emm, 0, $em, $ed, $ey);
+		} else {
+			$end_date = '';
+		}	
+
 
 		$api_setting = $this->get_api_settings ();
 		$shared_secret = $api_setting['shared_secret'];
 
 		$call_name = 'create';
+
 		$query_string = '';
 		$query_string .= 'meetingID='.$meeting_id;
 		$query_string .= '&moderatorPW='.$moderator_pwd;
 		$query_string .= '&attendeePW='.$attendee_pwd;
 		$query_string .= '&welcome='.$welcome_message;
-		$query_string .= '&record='.$record_class;
-		$query_string .= '&autoStartRecording='.$auto_record;
 		$query_string .= '&duration='.$duration;
 		$query_string .= '&maxParticipants='.$max_participants;
+		$query_string .= '&webcamsOnlyForModerator='.$webcam_for_moderator;		
+		$query_string .= '&record='.$record_class;
+		$query_string .= '&autoStartRecording='.$auto_record;
+		$query_string .= '&lockSettingsDisablePublicChat='.$lock_public_chat;
+		$query_string .= '&lockSettingsDisablePrivateChat='.$lock_private_chat;
+		$query_string .= '&lockSettingsDisableNote='.$lock_notes;
 		$query_string .= '&logoutURL='.urlencode($logoutURL);
 		$query_string .= '&bannerText='.$bannerText;
 		$query_string .= '&muteOnStart='.$mute_mic;
-		$query_string .= '&allowModsToUnmuteUsers=true';
+		$query_string .= '&allowModsToUnmuteUsers='.$allow_mods_to_unmute_users;
 		$query_string .= '&lockSettingsDisableMic='.$lock_mic;
 		$query_string .= '&copyright='.VC_COPYRIGHT_TEXT;
 		//$query_string .= '&logo='.VC_LOGO;
@@ -129,19 +163,23 @@ class Virtual_class_model extends CI_Model {
 		// Prepare for database
 		$data['meeting_id'] 		= $meeting_id;
 		$data['class_name'] 		= $class_name;
-		$data['welcome_message']	= $welcome_message;
-		$data['attendee_pwd'] 		= $attendee_pwd;
-		$data['moderator_pwd'] 		= $moderator_pwd;
+		$data['description'] 		= $description;
+		$data['welcome_message']	= str_replace('+', ' ', $welcome_message);
 		$data['wait_for_moderator'] = $wait_for_moderator;
+		$data['webcam_for_moderator'] = $webcam_for_moderator;
 		$data['record_class'] 		= $record_class;
-		$data['record_description'] = $record_description;
+		$data['auto_start_recording'] 		= $auto_record;
+		$data['recording_for_students'] 		= $recording_for_students;
+		$data['lock_public_chat'] 		= $lock_public_chat;
+		$data['lock_private_chat'] 		= $lock_private_chat;
+		$data['lock_notes'] 		= $lock_notes;
+		$data['mute_all_mics'] 		= $mute_mic;
+		$data['join_listen_only'] 	= $lock_mic;
 		$data['start_date'] 		= $start_date;
 		$data['end_date'] 			= $end_date;
-		$data['max_participants'] 	= $max_participants;
-		$data['duration'] 			= $duration;
 		$data['call_name'] 			= $call_name;
 		$data['query_string'] 		= $query_string;
-		$data['checksum'] 			= $checksum;		
+		$data['checksum'] 			= $checksum;
 
 
 		if ($class_id > 0) {
@@ -150,6 +188,10 @@ class Virtual_class_model extends CI_Model {
 			$sql = $this->db->update ('virtual_classroom', $data);
 		} else {
 			$data['coaching_id'] 		= $coaching_id;
+			$data['attendee_pwd'] 		= $attendee_pwd;
+			$data['moderator_pwd'] 		= $moderator_pwd;
+			$data['max_participants'] 	= $max_participants;
+			$data['duration'] 			= $duration;
 			$data['created_by'] 		= $this->session->userdata ('member_id');
 			$data['creation_date'] 		= time ();
 			$sql = $this->db->insert ('virtual_classroom', $data);
@@ -327,6 +369,24 @@ class Virtual_class_model extends CI_Model {
 		return $sql->row_array ();
 	}
 
+	public function get_password ($coaching_id=0, $class_id=0) {
+		if ($class_id > 0) {
+			$this->db->select ('attendee_pwd, moderator_pwd');
+			$this->db->where ('coaching_id', $coaching_id);
+			$this->db->where ('class_id', $class_id);
+			$sql = $this->db->get ('virtual_classroom');
+			$row = $sql->row_array();
+			return $row;
+		} else {
+			// Meeting Id must be unique
+			// Trying to create a unique string out of timestamp, member_id and a random salt
+			$row['attendee_pwd'] = random_string ('numeric', 4);
+			$row['moderator_pwd'] = random_string ('numeric', 4);
+			return $row;
+		}
+
+	}
+
 	public function get_meeting_id ($coaching_id=0, $class_id=0) {
 		if ($class_id > 0) {
 			$this->db->where ('coaching_id', $coaching_id);
@@ -335,8 +395,12 @@ class Virtual_class_model extends CI_Model {
 			$row = $sql->row_array();
 			return $row['meeting_id'];
 		} else {
+			// Meeting Id must be unique
+			// Trying to create a unique string out of timestamp, member_id and a random salt
+			$ts = time ();
 			$member_id = $this->session->userdata ('member_id');
-			$meeting_id = random_string('alnum', 6) . $member_id;
+			$salt = random_string('alnum', 6);
+			$meeting_id = $salt . $ts . $member_id;
 			return $meeting_id;
 		}
 

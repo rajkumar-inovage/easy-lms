@@ -59,7 +59,8 @@ class Subscription extends MX_Controller {
 		$data['coaching_id'] = $coaching_id;
 		$data['current_plan'] = $current_plan;
 		$status = 1;
-		$data['all_plans'] = $this->subscription_model->subscription_plans ($status);
+		$paid_plans = 1;
+		$data['all_plans'] = $this->subscription_model->subscription_plans ($status, $paid_plans);
 		$data['cats_added'] = array ();
 
 		$data['bc'] = array ('Coachings'=>'coaching/home/dashboard/'.$coaching_id);

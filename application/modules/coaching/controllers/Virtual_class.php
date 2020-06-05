@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+ <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Virtual_class extends MX_Controller {	
 
@@ -7,7 +7,7 @@ class Virtual_class extends MX_Controller {
 	public function __construct () {		
 	    // Load Config and Model files required throughout Users sub-module
 	    $config = ['config_coaching', 'config_virtual_class'];
-	    $models = ['virtual_class_model', 'users_model'];
+	    $models = ['virtual_class_model', 'users_model', 'subscription_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 
 	    $this->load->helper ('string'); 
@@ -18,12 +18,22 @@ class Virtual_class extends MX_Controller {
         	$this->toolbar_buttons['<i class="fa fa-plus-circle"></i> Create Class']= 'coaching/virtual_class/create_class/'.$cid;
         }
         
-        // Security step to prevent unauthorized access through url
         if ($this->session->userdata ('is_admin') == TRUE) {
         } else {
+
+        	// Security step to prevent unauthorized access through url
             if ($this->session->userdata ('coaching_id') <> $cid) {
                 $this->message->set ('Direct url access not allowed', 'danger', true);
                 redirect ('coaching/home/dashboard');
+            }
+
+        	// Check subscription plan expiry
+            $coaching = $this->subscription_model->get_coaching_subscription ($cid);
+            $today = time ();
+            $current_plan = $coaching['subscription_id'];
+            if ($today > $coaching['ending_on'] && $this->session->userdata ('role_id') != USER_ROLE_STUDENT) {
+            	$this->message->set ('Your subscription has expired. Choose a plan to upgrade', 'danger', true);
+            	redirect ('coaching/subscription/browse_plans/'.$cid.'/'.$current_plan);
             }
         }
 	}
@@ -62,6 +72,7 @@ class Virtual_class extends MX_Controller {
 		$data['attendee_pwd'] = random_string ('numeric', 4);
 		$data['moderator_pwd'] = random_string ('numeric', 4);
 
+        $data['script'] = $this->load->view('virtual_class/scripts/create_class', $data, true);
         $this->load->view(INCLUDE_PATH . 'header', $data);
         $this->load->view('virtual_class/create_class', $data);
         $this->load->view(INCLUDE_PATH . 'footer', $data);		
@@ -192,13 +203,14 @@ class Virtual_class extends MX_Controller {
 
 		$data['coaching_id'] 	= $coaching_id;
 		$data['class_id'] 		= $class_id;
+		$data['class'] 			= $class;
 		$data['meeting_id'] 	= $meeting_id;
 		$data['page_title'] 	= 'Recordings';
 		$data['bc'] = array('Classrooms'=>'coaching/virtual_class/index/'.$coaching_id);
 
         $this->load->view(INCLUDE_PATH . 'header', $data);
         $this->load->view('virtual_class/recordings', $data);
-        $this->load->view(INCLUDE_PATH . 'footer', $data);		
+        $this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 		
 
@@ -239,7 +251,7 @@ class Virtual_class extends MX_Controller {
 		if ($this->session->userdata ('role_id') == USER_ROLE_STUDENT) {
 			redirect ('student/virtual_class/index/'.$coaching_id);
 		} else {
-			redirect ('coaching/virtual_class/index/'.$coaching_id);			
+			redirect ('coaching/virtual_class/index/'.$coaching_id);
 		}
 	}
 }

@@ -144,7 +144,7 @@ class Users extends MX_Controller {
 		$data['page_title'] = 'Change Password'; 
 		$data['sub_title']  = $data['result']['first_name']; 
 		$data['member_id']  = $member_id;
-		echo $data['role_id']  = $data['result']['role_id'];
+		$data['role_id']  = $data['result']['role_id'];
 		$data['coaching_id']   = $coaching_id;
 		$data["bc"] = array ( 'Users'=>'coaching/users/index/'.$coaching_id );
 		$data['toolbar_buttons'] = $this->toolbar_buttons;

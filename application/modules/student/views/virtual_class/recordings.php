@@ -33,7 +33,7 @@
 	} 
 	if ($i == 0) {
 		?>
-		<li class="list-group-item text-danger">No rcordings found</li>
+		<li class="list-group-item text-danger">No recordings found</li>
 		<?php
 	}
 	?>

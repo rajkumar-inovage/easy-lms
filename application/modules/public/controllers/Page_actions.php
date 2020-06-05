@@ -31,7 +31,7 @@ class Page_actions extends MX_Controller {
 				$this->session->set_userdata ('access_code', $access_code);
 				$this->message->set ('Your coaching account has been set-up succesfully. Login with your credentials provided on previous page', 'success', true);
 				$this->output->set_content_type("application/json");
-				$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Coaching account created', 'redirect'=>site_url('login/user/index') )));
+				$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Coaching account created', 'redirect'=>site_url('login/user/index?sub='.$access_code) )));
 			}
 		} else {
 			$this->output->set_content_type("application/json");

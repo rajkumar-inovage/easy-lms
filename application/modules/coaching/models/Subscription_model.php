@@ -3,7 +3,7 @@
 class Subscription_model extends CI_Model {
 
 	public function get_coaching_subscription ($coaching_id=0) {
-		$this->db->select ('C.*, CS.starting_from, CS.ending_on, CS.created_by, SP.*, SP.id AS sp_id');
+		$this->db->select ('C.*, CS.id AS subscription_id, CS.starting_from, CS.ending_on, CS.created_by, SP.*, SP.id AS sp_id');
 		$this->db->from ('coachings C, coaching_subscriptions CS, subscription_plans SP');
 		$this->db->where('CS.coaching_id=C.id');
 		$this->db->where('SP.id=CS.plan_id');
@@ -18,9 +18,12 @@ class Subscription_model extends CI_Model {
 	}
 
 	/* Subscription Plans */
-	public function subscription_plans ($status='') {
+	public function subscription_plans ($status='', $paid_plans=0) {
 		if ($status != '') {
-			$this->db->where ('status', $status);			
+			$this->db->where ('status', $status);
+		}
+		if ($paid_plans == 1) {
+			$this->db->where ('price > ', 0);
 		}
 		$this->db->order_by ('ordering', 'ASC');
 		$sql = $this->db->get ('subscription_plans');
