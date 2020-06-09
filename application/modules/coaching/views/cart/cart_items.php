@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-	<div class="col-md-10">
+	<div class="col-md-12">
 		<?php
 		echo form_open ('payment/page/checkout/', array ('class'=>''));
 		echo form_hidden ('owner_name', $user['first_name'] . " " . $user['last_name']);
@@ -31,7 +31,7 @@
 							<td>
 								<?php
 								$options = [];
-								for ($i=3; $i<=12; $i=$i+3) {
+								for ($i=1; $i<=12; $i++) {
 									if ($i > 1)
 										$options[$i] =  "$i Months";
 									else
@@ -45,36 +45,59 @@
 								<?php
 								$price = $plan['price'];
 								$amount = 0;
-								if ($price > 0) {
-									$amount = $price/12 * 3;
-									$amount = round ($amount);
-									echo '<i class="fa fa-rupee-sign"></i> '. $amount. ' per month ';
-								} else {
-									echo 'Free';
-								}
-								?> 
+								$gst = ($price * $gst_slab)/100;
+								$amount = $price * 1;
+								$total_amount = $amount + $gst;
+								$total_amount = round ($total_amount, 2);
+								?>
+								<i class="fa fa-rupee-sign"></i> <span id="price_html"><?php echo $price; ?></span>  per month
+								<input type="" name="price" value="<?php echo $price; ?>" id="price" >
 							</td>
 						</tr>
 						<tr>
-							<th colspan="3" class="justify-content-between">
-								Total Amount: <span id="plan_price" class="float-right"><i class="fa fa-rupee-sign"></i> <?php echo $amount; ?></span>
-								<?php echo form_input(['type' => 'hidden','name' => 'tammount','id' => 'tammount','value' => $amount]); ?>
+							<th class="justify-content-right">
+								Amount 
+							</th>
+							<th class="justify-content-left">
+								<i class="fa fa-rupee-sign"></i> <span id="amount_html"><?php echo $amount; ?></span>
+								<input type="" name="gst" value="<?php echo $amount; ?>" id="amount" >
 							</th>
 						<tr>
 						<tr>
-							<th colspan="3" class="justify-content-between">
-							<?php if ($price > 0) { ?>
-								<?php echo form_button(array('type' => 'submit','class' => 'btn btn-primary btn-block','content' => 'Make Payment'));?>
-							<?php } else { ?> 
-								<a href="<?php echo site_url ('coaching/subscription_actions/change_plan/'.$coaching_id.'/'.$plan_id); ?>" class="btn btn-primary">Subscribe Plan</a>
-							<?php } ?>
+							<th class="justify-content-right">
+								GST @ <?php echo $gst_slab; ?>%
+							</th>
+							<th class="justify-content-left">
+								<i class="fa fa-rupee-sign"></i> <span id="gst_html"><?php echo $gst; ?></span>
+								<input type="" name="gst" value="<?php echo $gst; ?>" id="gst" >
+							</th>
+						<tr>
+						<tr>
+							<th class="justify-content-right">
+								Total Amount
+							</th>
+							<th class="justify-content-left">
+								<i class="fa fa-rupee-sign"></i> <span id="total_amount_html"><?php echo $total_amount; ?></span>
+								<input type="" name="amount" value="<?php echo $total_amount; ?>" id="total_amount" >
+							</th>
+						<tr>
+						<tr>
+							<th class="justify-content-between">
+								<a href="<?php echo site_url ('coaching/subscription/browse_plans/'.$coaching_id.'/'.$plan_id); ?>" class="btn btn-link">Cancel</a>
+							</th>
+							<th>
+								<?php if ($price > 0) { ?>
+									<?php echo form_button(array('type' => 'submit','class' => 'btn btn-primary','content' => 'Make Payment'));?>
+								<?php } else { ?> 
+									<a href="<?php echo site_url ('coaching/subscription_actions/change_plan/'.$coaching_id.'/'.$plan_id); ?>" class="btn btn-primary">Subscribe Plan</a>
+								<?php } ?>
 							</th>
 						</tr>
 						<?php 
 					} else {
 						?>
 						<tr>
-							<td colspan="3">No items in cart <?php echo anchor ('coaching/subscription/browse_plans/'.$coaching_id, 'Browse Plans' ); ?></td>
+							<td colspan="3">No items in cart <?php echo anchor ('coaching/subscription/browse_plans/'.$coaching_id.'/'.$current_plan, 'Browse Plans' ); ?></td>
 						</tr>
 						<?php
 					}

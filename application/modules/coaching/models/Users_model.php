@@ -22,8 +22,8 @@ class Users_model extends CI_Model {
 	    if ($batch_id > 0) {
 	        $this->db->join ('coaching_batch_users BU', 'M.member_id=BU.member_id AND BU.batch_id='.$batch_id);
 	    }
-	    $this->db->where ('coaching_id', $coaching_id);
-	    $this->db->order_by ('M.member_id', 'ASC');
+	    $this->db->where ('M.coaching_id', $coaching_id);
+	    $this->db->order_by ('M.first_name, M.second_name, M.last_name', 'ASC');
 	    $sql = $this->db->get ();
 	    return $sql->result_array ();
 	}
@@ -60,8 +60,8 @@ class Users_model extends CI_Model {
 	    if ($batch_id > 0) {
 	        $this->db->join ('coaching_batch_users BU', 'M.member_id=BU.member_id AND BU.batch_id='.$batch_id);
 	    }
-	    $this->db->where ('coaching_id', $coaching_id);
-	    $this->db->order_by ('M.creation_date', 'DESC');
+	    $this->db->where ('M.coaching_id', $coaching_id);
+	    $this->db->order_by ('M.first_name, M.second_name, M.last_name', 'ASC');
 		$sql = $this->db->get ();
 		return $sql->result_array ();
 		
@@ -169,15 +169,23 @@ class Users_model extends CI_Model {
 			$otp = $password;
 			$data['password'] = password_hash ($password, PASSWORD_DEFAULT);
 			$data['coaching_id']  = $coaching_id;
-			$data['user_token'] =  md5 ($this->input->post ('primary_contact'));
+			$data['user_token'] =  '';
 			$data['link_send_time']	= time();
 			$data['creation_date'] = time ();
 			$data['created_by'] = $this->session->userdata ('member_id');
 			$sql = $this->db->insert ('members', $data);
 			$member_id = $this->db->insert_id ();
 
-			// Set Userid
+			// User Id
 			$user_id = $this->generate_reference_id ($member_id);
+
+			// User Token
+			$salt = random_string ('alnum', 4);
+			$str = $user_id . $coaching_id . $member_id . $salt;
+			$user_token = md5($str);
+
+			// Update User-id, User-token and Login
+			$this->db->set ('user_token', $user_token);
 			$this->db->set ('adm_no', $user_id);
 			$this->db->set ('login', $user_id);
 			$this->db->where ('member_id', $member_id);

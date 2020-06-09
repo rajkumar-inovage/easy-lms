@@ -7,6 +7,18 @@ class Settings extends MX_Controller {
 	    $models = ['coaching_model', 'settings_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	    $this->load->helper ('file');
+
+        $cid = $this->uri->segment (4);
+        
+        // Security step to prevent unauthorized access through url
+        if ($this->session->userdata ('is_admin') == TRUE) {
+        } else {
+            if ($this->session->userdata ('coaching_id') <> $cid) {
+                $this->message->set ('Direct url access not allowed', 'danger', true);
+                redirect ('coaching/home/dashboard');
+            }
+        }
+
 	}
 
 	public function index ($coaching_id=0) {

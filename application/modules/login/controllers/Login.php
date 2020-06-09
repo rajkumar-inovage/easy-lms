@@ -27,15 +27,9 @@ class Login extends MX_Controller {
 	}
 
 	// For backward compatibility
-	public function logout ($ac='') {
-		if ($this->session->userdata ('is_admin') == true) {
-			$redirect = site_url ('login/admin/index');
-		} else {
-			$redirect = site_url ('login/user/index/?sub='.$ac);
-		}
-		
+	public function logout () {
 		$this->session->sess_destroy ();
-
+		$redirect = site_url ('login/user/index');		
 		redirect ($redirect);
 	}
 

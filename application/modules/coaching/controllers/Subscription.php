@@ -11,18 +11,13 @@ class Subscription extends MX_Controller {
 	    $this->common_model->autoload_resources ($config, $models);
 	    
         $cid = $this->uri->segment (4);
-        $this->toolbar_buttons['<i class="fa fa-list"></i> All Users']= 'coaching/users/index/'.$cid;
-        $this->toolbar_buttons['<i class="fa fa-plus-circle"></i> New User']= 'coaching/users/create/'.$cid;
-        $this->toolbar_buttons['<i class="fa fa-upload"></i> Import Users']= 'coaching/users/import/'.$cid;
-        $this->toolbar_buttons['<i class="fa fa-users"></i> Batches']= 'coaching/users/batches/'.$cid;
-        $this->toolbar_buttons['<i class="fa fa-plus"></i> New Batch']= 'coaching/users/batch_create/'.$cid;
         
         // Security step to prevent unauthorized access through url
         if ($this->session->userdata ('is_admin') == TRUE) {
         } else {
             if ($this->session->userdata ('coaching_id') <> $cid) {
-                //$this->message->set ('Direct url access not allowed', 'danger', true);
-                //redirect ('coaching/home/dashboard');
+                $this->message->set ('Direct url access not allowed', 'danger', true);
+                redirect ('coaching/home/dashboard');
             }
         }
 	}

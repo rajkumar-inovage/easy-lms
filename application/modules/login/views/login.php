@@ -17,9 +17,10 @@
 			  <div class="input-group-prepend">
 				<span class="input-group-text"><i class="fa fa-user"></i></span>
 			  </div>
-			  <input class="form-control" placeholder="Mobile No/User-ID/Email-id" type="text" name="username">
+			  <input class="form-control" placeholder="Mobile No/Email-id/User-ID" type="text" name="username">
 			</div>
 		  </div>
+
 		  <div class="form-group">
 			<div class="input-group input-group-alternative">
 			  <div class="input-group-prepend">
@@ -28,10 +29,9 @@
 			  <input class="form-control" placeholder="Password" type="password" name="password">
 			</div>
 	  		<a href="<?php echo site_url ('login/user/reset_password'); ?>" class="text">Reset password</a>
-		  </div>
+		  </div> 
 
 		  <?php if ($access_code != '' && $found == true) { ?>
-			  <input class="form-control" placeholder="Access Code" type="hidden" name="access_code" value="<?php echo $access_code; ?>">
 			  <div class="form-group">
 				<div class="input-group input-group-alternative">
 				  <div class="input-group-prepend">

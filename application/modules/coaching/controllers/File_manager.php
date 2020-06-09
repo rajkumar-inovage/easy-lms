@@ -22,9 +22,9 @@ class File_manager extends MX_Controller {
             $coaching = $this->subscription_model->get_coaching_subscription ($cid);
             $today = time ();
             $current_plan = $coaching['subscription_id'];
-            if ($today > $coaching['ending_on']) {
+            if ($today > $coaching['ending_on'] && $this->session->userdata ('role_id') != USER_ROLE_STUDENT) {
                 $this->message->set ('Your subscription has expired. Choose a plan to upgrade', 'danger', true);
-                //redirect ('coaching/subscription/browse_plans/'.$cid.'/'.$current_plan);
+                redirect ('coaching/subscription/browse_plans/'.$cid.'/'.$current_plan);
             }
         }
     }

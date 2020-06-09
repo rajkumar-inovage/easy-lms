@@ -5,10 +5,6 @@
 	
 	formSelector.addEventListener ('submit', e => {
 		e.preventDefault ();
-		var idbSupported = false;
-		var db;
-		const dbName = 'itsc';
-		const dbVersion = 1;
 		const formURL = formSelector.getAttribute ('action');
 		var formData = new FormData(formSelector);
 		loaderSelector.style.display = 'block';		
@@ -23,22 +19,10 @@
 			if (result.status == true) {
 				if (typeof(Storage) !== "undefined") {
 				   localStorage.clear ();
-				   localStorage.setItem('is_logged_in', result.is_logged_in );
-				   localStorage.setItem('member_id', result.member_id );
-				   localStorage.setItem('is_admin', result.is_admin );
-				   localStorage.setItem('user_token', result.user_token );
-				   localStorage.setItem('user_name', result.user_name );
-				   localStorage.setItem('role_id', result.member_id );
-				   localStorage.setItem('role_lvl', result.role_lvl );
-				   localStorage.setItem('dashboard', result.dashboard );
-				   localStorage.setItem('logo', result.logo );
-				   localStorage.setItem('profile_image', result.profile_image );
-				   localStorage.setItem('coaching_id', result.coaching_id );
-				   localStorage.setItem('site_title', result.site_title );
-				   localStorage.setItem('access_code', result.access_code );				    
-				}
-				else {
-				  // Too bad, no localStorage for us
+				   localStorage.setItem('user_token', result.user_token);
+				} else {
+				  // Too bad, no localStorage for us - Set cookie for 10 days
+				   setCookie('user_token', result.user_token, 10 );
 				}
 				toastr.success (result.message);
 				document.location = result.redirect;

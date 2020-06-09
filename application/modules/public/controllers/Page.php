@@ -19,4 +19,27 @@ class Page extends MX_Controller {
 		$this->load->view('create_coaching', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
+
+	public function update_tokens () {
+		$this->load->helper ('string');
+
+		$i = 0;
+		$sql = $this->db->get ('members');
+		foreach ($sql->result_array () as $row) {
+			$adm_no = $row['adm_no'];
+			$member_id = $row['member_id'];
+			$coaching_id = $row['coaching_id'];
+			$salt = random_string ('alnum', 4);
+			$str = $adm_no . $coaching_id . $member_id . $salt;
+			$user_token = md5($str);
+
+			$this->db->set ('user_token', $user_token);
+			$this->db->where ('member_id', $member_id);
+			$q = $this->db->update ('members');
+
+			$i++;
+		}
+
+		echo $i;
+	}
 }

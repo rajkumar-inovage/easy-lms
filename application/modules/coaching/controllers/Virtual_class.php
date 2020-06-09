@@ -20,7 +20,6 @@ class Virtual_class extends MX_Controller {
         
         if ($this->session->userdata ('is_admin') == TRUE) {
         } else {
-
         	// Security step to prevent unauthorized access through url
             if ($this->session->userdata ('coaching_id') <> $cid) {
                 $this->message->set ('Direct url access not allowed', 'danger', true);

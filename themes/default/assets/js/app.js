@@ -149,14 +149,24 @@ function show_confirm_ajax (msg, url, redirect) {
 
 
 /*----==== Logout User ====----*/
-function logout_user (access_code) {
-	const logoutURL = appPath + logoutPath + '/' + access_code;
+function logout_user () {
+	// Logout URL
+	const logoutURL = appPath + logoutPath;
+
+	// Clear Local Storage
+	if (typeof(Storage) !== "undefined") {
+		localStorage.clear ();
+	} else {
+		setCookie ('user_token', '', '-1');
+	}
+
+	// Clear Server Session
 	fetch (logoutURL, { 
 		method : 'POST',
 	}).then (function (response) {
 		return response.json ();
 	}).then (function(result) {
-		document.location = result.redirect;	
+		document.location = result.redirect;
 	});
 }
 

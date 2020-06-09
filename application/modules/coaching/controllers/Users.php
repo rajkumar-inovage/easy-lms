@@ -21,8 +21,8 @@ class Users extends MX_Controller {
         if ($this->session->userdata ('is_admin') == TRUE) {
         } else {
             if ($this->session->userdata ('coaching_id') <> $cid) {
-                //$this->message->set ('Direct url access not allowed', 'danger', true);
-                //redirect ('coaching/home/dashboard');
+                $this->message->set ('Direct url access not allowed', 'danger', true);
+                redirect ('coaching/home/dashboard');
             }
         }
 	}

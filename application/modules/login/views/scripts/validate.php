@@ -4,17 +4,25 @@
 	*/
 
 	const loaderSelector = document.getElementById('loader');
-	const access_code = '<?php echo $ac; ?>';
-	
 	loaderSelector.style.display = 'block';
+	//const access_code = '<?php echo $ac; ?>';
+	
+	var user_token = '';
 
-	if (typeof(Storage) !== "undefined") {		
-		
-		const user_token = localStorage.getItem ('user_token');
-		if (user_token == null || user_token == 'null' || user_token == 'NULL' || user_token == 'undefined') {
-			logout_user (access_code);
-		} else {
-			update_session (user_token);
-		}
+		// Check browser support
+	if (typeof(Storage) !== "undefined") {
+		// Retrieve user token from local storage
+	  	user_token = localStorage.getItem("user_token");	  	
+	} else {
+		// Local storage not supported, retrieve from cookie	  	
+	  	user_token = getCookie ('user_token');
 	}
+
+	if (user_token == null || user_token == '') {
+		// user token not found, redirect to login page after clean-up
+  		logout_user ();
+  	} else {
+		// user token found, validate token and login
+  		update_session (user_token);
+  	}
 </script>

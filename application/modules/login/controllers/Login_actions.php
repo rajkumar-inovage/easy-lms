@@ -15,9 +15,7 @@ class Login_actions extends MX_Controller {
 	
 		$this->form_validation->set_rules ('username', 'Username', 'required|trim');
 		$this->form_validation->set_rules ('password', 'Password', 'required|trim');
-		if ($admin_login == false) {
-			$this->form_validation->set_rules ('access_code', 'Access Code', 'required|trim');
-		}
+		$this->form_validation->set_rules ('access_code', 'Access Code', 'required|trim');
 		
 		if ($this->form_validation->run () == true) {
 			
@@ -30,18 +28,6 @@ class Login_actions extends MX_Controller {
 					'status'=>true, 
 					'message'=>_AT_TEXT ('LOGIN_SUCCESSFUL', 'msg'), 
 					'user_token'=>$this->session->userdata ('user_token'),
-					'member_id'=>$this->session->userdata ('member_id'),
-					'is_logged_in'=>$this->session->userdata ('is_logged_in'),
-					'is_admin'=>$this->session->userdata ('is_admin'),
-					'role_id'=>$this->session->userdata ('role_id'),
-					'role_lvl'=>$this->session->userdata ('role_lvl'),
-					'dashboard'=>$this->session->userdata ('dashboard'),
-					'user_name'=>$this->session->userdata ('user_name'),
-					'access_code'=>$this->session->userdata ('access_code'),
-					'logo'=>$this->session->userdata ('logo'),
-					'profile_image'=>$this->session->userdata ('profile_image'),
-					'site_title'=>$this->session->userdata ('site_title'),
-					'coaching_id'=>$this->session->userdata ('coaching_id'),
 					'redirect'=>site_url($redirect),
 				)));
 			} else if ($response['status'] == INVALID_CREDENTIALS) {
@@ -63,15 +49,9 @@ class Login_actions extends MX_Controller {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>_AT_TEXT ('LOGIN_ERROR', 'msg'))));
 			}
-			/*
-			echo 'Good';
-			*/
 		} else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>_AT_TEXT ('VALIDATION_ERROR', 'msg') )));			
-			/*
-			echo 'Bad';
-			*/
 		}
 	}
 	
@@ -272,41 +252,33 @@ class Login_actions extends MX_Controller {
 
 		$data = $this->login_model->get_user_token ($user_token);
 
-		if (! $this->session->has_userdata ('member_id')) {
-			$this->session->set_userdata ('member_id', $data['member_id']);
-			$this->session->set_userdata ('role_id', $data['role_id']);
-			$this->session->set_userdata ('role_lvl', $data['role_lvl']);
-			$this->session->set_userdata ('is_admin', $data['is_admin']);
-			$this->session->set_userdata ('is_logged_in', $data['is_logged_in']);
-			$this->session->set_userdata ('user_name', $data['user_name']);
-			$this->session->set_userdata ('user_token', $data['user_token']);
-			$this->session->set_userdata ('dashboard', $data['dashboard']);
-			$this->session->set_userdata ('access_code', $data['access_code']);
-			$this->session->set_userdata ('logo', $data['logo']);
-			$this->session->set_userdata ('coaching_id', $data['coaching_id']);
-			$this->session->set_userdata ('profile_image', $data['profile_image']);
-			$this->session->set_userdata ('site_title', $data['site_title']);
-
-			$this->login_model->load_menu ($data['role_id']);
+		if (! empty ($data)) {
+			// Update session
+			$member_id = $data['member_id'];
+			$role_id = $data['role_id'];
+			$user_name = $data['user_name'];
+			$coaching_id = $data['coaching_id'];
+			$user_token = $data['user_token'];
+			$this->login_model->save_login_session ($member_id, $role_id, $user_name, $coaching_id, $user_token);
+			
+			// Update menu
+			$this->login_model->load_menu ($role_id);
+	
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Success' )));
+		} else {
+			// Session cannot be updated due to user-token mismatch, so logout
+			redirect ('login/login/logout');
 		}
 
-		$this->output->set_content_type("application/json");
-		$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Success' )));
 	}
 
-	public function logout ($ac='') {
-		if ($this->session->userdata ('is_admin') == true) {
-			$redirect = site_url ('login/admin/index');
-		} else {
-			if ($ac == '' || $ac == 'undefined') {
-				$redirect = site_url ('login/user/index');
-			} else {
-				$redirect = site_url ('login/user/index/?sub='.$ac);				
-			}
-		}
+	public function logout () {
+
+		$redirect = site_url ('login/user/index');
 		
 		$this->session->sess_destroy ();
-		setcookie ("easy_coaching_app", "", time () - 3600);
+		setcookie ("user_token", "", time () - 3600);
 
 		$this->output->set_content_type("application/json");
 		$this->output->set_output(json_encode(array('status'=>true, 'redirect'=>$redirect)));

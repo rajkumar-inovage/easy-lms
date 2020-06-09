@@ -7,8 +7,20 @@ class Plans extends MX_Controller {
     public function __construct () {
 	    $config = ['config_coaching'];
 	    $models = ['test_plans_model', 'plans_model'];
-	    $this->common_model->autoload_resources ($config, $models);	    
-	}	
+	    $this->common_model->autoload_resources ($config, $models);
+
+        $cid = $this->uri->segment (4);
+
+        // Security step to prevent unauthorized access through url
+        if ($this->session->userdata ('is_admin') == TRUE) {
+        } else {
+            if ($this->session->userdata ('coaching_id') <> $cid) {
+                $this->message->set ('Direct url access not allowed', 'danger', true);
+                redirect ('coaching/home/dashboard');
+            }
+        }
+
+	}
 	
 	
 	// List All Plans

@@ -9,7 +9,9 @@ $config['general']['contact_email']		= 'contact@indiatests.in';
 $config['general']['max_storage']		= 52428800;
 $config['general']['max_file_size']		= 20971520;
 
-$config['general']['gst_slab']		    = 18;
+$config['gst']['gst_slab_18']		    = 18;
+$config['gst']['gst_slab_24']		    = 24;
+$config['gst']['gst_slab_28']		    = 28;
 
 $config['upload_dir']					= 'contents/';
 $config['temp_dir']						= 'contents/temp/';

@@ -24,7 +24,7 @@
 	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/chart.bundle.min.js'); ?>"></script>
 	<script src="<?php echo base_url(THEME_PATH . 'assets/js/bootstrap-pincode-input.js'); ?>"></script>
 	<!-- Application JS -->
-	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/app.js?ver=1.2'); ?>"></script>
+	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/app.js?ver=1.3'); ?>"></script>
 	<!-- Custom JS (Dynamically included) -->
 	<?php
 	if (isset ($script)) {

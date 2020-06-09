@@ -38,9 +38,14 @@ class Vitals extends MX_Controller {
 		if ($module == 'public' || $module == 'login') {
 			// Do Nothing
 		} else {
+			// If session is not set, logout user
 			if (! $this->session->has_userdata ('is_logged_in')) {
 				$redirect = site_url ('login/login/index');
 				redirect ($redirect);
+			}
+
+			if ($module == 'coaching' && $this->session->userdata('role_id') == USER_ROLE_STUDENT) {
+				redirect ('student/home/dashboard');
 			}
 		}
 	}

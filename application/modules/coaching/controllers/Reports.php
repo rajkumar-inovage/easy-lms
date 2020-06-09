@@ -10,6 +10,18 @@ class Reports extends MX_Controller {
 		$config = ['config_coaching'];
 	    $models = ['tests_reports', 'tests_model' ,'qb_model', 'users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
+
+        $cid = $this->uri->segment (4);
+
+        // Security step to prevent unauthorized access through url
+        if ($this->session->userdata ('is_admin') == TRUE) {
+        } else {
+            if ($this->session->userdata ('coaching_id') <> $cid) {
+                $this->message->set ('Direct url access not allowed', 'danger', true);
+                redirect ('coaching/home/dashboard');
+            }
+        }
+
 	}
 	
 	// SUBMISSIONS

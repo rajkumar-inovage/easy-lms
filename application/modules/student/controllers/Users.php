@@ -16,8 +16,8 @@ class Users extends MX_Controller {
         if ($this->session->userdata ('is_admin') == TRUE) {
         } else {
             if ($this->session->userdata ('coaching_id') <> $cid) {
-                //$this->message->set ('Direct url access not allowed', 'danger', true);
-                //redirect ('coaching/home/dashboard');
+                $this->message->set ('Direct url access not allowed', 'danger', true);
+                redirect ('student/home/dashboard');
             }
         }
 	}
@@ -50,7 +50,7 @@ class Users extends MX_Controller {
 		$data['rand_str'] 		= time ();
 		
 		/* Breadcrumbs */
-		$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);		
+		$data['bc'] = array ('Dashboard'=>'student/home/dashboard/'.$coaching_id);		
 		$data['data'] = $data;
 		
 		$this->load->view (INCLUDE_PATH . 'header', $data);
@@ -65,7 +65,7 @@ class Users extends MX_Controller {
 		$data['page_title'] = 'Change Password'; 
 		$data['member_id']  = $member_id;       
 		$data['coaching_id']   = $coaching_id;
-		$data["bc"] = array ( 'Users'=>'coaching/user/my_account/'.$coaching_id.'/'.$member_id );
+		$data["bc"] = array ( 'Users'=>'student/users/my_account/'.$coaching_id.'/'.$member_id );
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
 		$data['data'] = $data;

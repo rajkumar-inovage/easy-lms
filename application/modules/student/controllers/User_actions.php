@@ -41,13 +41,9 @@ class User_actions extends MX_Controller {
 	public function upload_profile_picture ($member_id=0, $coaching_id=0) {
 		$response = $this->users_model->upload_profile_picture ($member_id);
 		if (is_array($response)) {		// Upload successful
-		    if ($member_id == $this->session->userdata ('member_id')) {
-    		    $profile_image = ($this->config->item ('profile_picture_path').'pi_'.$member_id.'.gif');
-                $this->session->set_userdata ('profile_image', $profile_image);
-                $redirect = site_url ('student/users/my_account/'.$coaching_id.'/'.$member_id);
-		    } else {
-                $redirect = site_url ('student/users/create/'.$coaching_id.'/'.$member_id);
-		    }
+			$profile_image = $this->users_model->view_profile_image ($member_id);
+            $this->session->set_userdata ('profile_image', $profile_image);
+            $redirect = site_url ('student/users/my_account/'.$coaching_id.'/'.$member_id);
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Profile picture uploaded successfully', 'redirect'=>$redirect )));
 		} else {
@@ -111,8 +107,8 @@ class User_actions extends MX_Controller {
 		} else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
-		} 
-	} 
+		}
+	}
 	
 
 	public function send_otp ($coaching_id=0, $member_id=0) {
