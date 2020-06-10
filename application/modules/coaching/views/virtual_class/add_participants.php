@@ -1,5 +1,15 @@
+<div class="card d-none">
+	<div class="row">
+		<div class="col-md-4">
+
+		</div>
+		<div class="col-md-4">
+
+		</div>
+	</div>
+</div>
+
 <div class="row">
-	
 	<div class="col-md-9">
 		<div class="card">
 			<?php echo form_open ('coaching/virtual_class_actions/add_participants/'.$coaching_id.'/'.$class_id, ['id'=>'validate-1']); ?>

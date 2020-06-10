@@ -1,6 +1,3 @@
-<?php 
-echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$status, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') );
-	?>
 	<div class="card card-default">
 		<div class="-table-responsive">
 			<table class="table table-bordered v-middle mb-0" id="data-tables">
@@ -56,14 +53,12 @@ echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$s
 											<a href="javascript:void(0)" onclick="javascript:show_confirm ( '<?php echo 'Do you want to disable this user?'; ?>', '<?php echo site_url('coaching/user_actions/disable_member/'.$coaching_id.'/'.$role_id.'/'.$row['member_id']); ?>' )" title="Disable" class="dropdown-item" ><i class="fa fa-times-circle"></i> Disable Account</a>
 										<?php } else if ( $row['status'] == USER_STATUS_DISABLED ) { ?>
 											<a href="javascript:void(0)" onclick="javascript:show_confirm ( '<?php echo 'Do you want to enable this user?'; ?>', '<?php echo site_url('coaching/user_actions/enable_member/'.$coaching_id.'/'.$role_id.'/'.$row['member_id']); ?>' )" class="dropdown-item"><i class="fa fa-check-circle"></i> Enable Account</a>
+										<?php } else if ($row['status'] == USER_STATUS_UNCONFIRMED) { ?>
+											<a href="javascript:void(0)" onclick="javascript:show_confirm ( '<?php echo 'Do you want to approve this user?'; ?>', '<?php echo site_url('coaching/user_actions/enable_member/'.$coaching_id.'/'.$role_id.'/'.$row['member_id']); ?>' )" class="dropdown-item"><i class="fa fa-check-circle"></i> Approve</a>
 										<?php } ?>
 										<?php //echo anchor('coaching/users/member_log/'.$coaching_id.'/'.$role_id.'/'.$row['member_id'], '<i class="fa fa-info-circle"></i> Member Log', array ('class'=>'dropdown-item') ); ?>
 										
-										<?php if ($row['status'] == USER_STATUS_UNCONFIRMED) { ?>
-											<a href="javascript:show_confirm_ajax ('Send email verication link?', '<?php echo site_url ('coaching/user_actions/send_confirmation_email/'.$row['member_id']);?>')" class="dropdown-item"><i class="fa fa-link"></i> Resend Confirmation Email</a>
-										<?php } else { ?>
-											<?php echo anchor('coaching/users/change_password/'.$coaching_id.'/'.$row['member_id'], '<i class="fa fa-key"></i> Change Password', array ('class'=>'dropdown-item')); ?>
-										<?php } ?>									
+										<?php echo anchor('coaching/users/change_password/'.$coaching_id.'/'.$row['member_id'], '<i class="fa fa-key"></i> Change Password', array ('class'=>'dropdown-item')); ?>
 										<a href="javascript:void(0)" onclick="show_confirm ('<?php echo 'Are you sure want to delete this users?' ; ?>','<?php echo site_url('coaching/user_actions/delete_account/'.$coaching_id.'/'.$role_id.'/'.$row['member_id']); ?>' )" class="dropdown-item"><i class="fa fa-trash"></i> Delete Account</a>
 									</div>
 								</div>
@@ -94,4 +89,3 @@ echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$s
 			<input type="submit" name="Submit" value="Change" class="btn btn-primary btn-sm">
 		</div>
 	</div>
-</form>

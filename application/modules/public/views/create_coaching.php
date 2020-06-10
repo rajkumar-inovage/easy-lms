@@ -12,7 +12,7 @@
       </div>
       <div class="card-body ">
          
-         <?php echo form_open ('public/page_actions/create_coaching', array('id'=>'validate-1')); ?>
+         <?php echo form_open ('public/page_actions/create_coaching', array('id'=>'validate-')); ?>
 
             <div class="form-group ">
                 <label class="control-label">Coaching Name<span class="required">*</span></label>

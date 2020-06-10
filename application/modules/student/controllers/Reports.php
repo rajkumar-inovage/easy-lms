@@ -7,6 +7,18 @@ class Reports extends MX_Controller {
 		$config = ['config_student'];
 	    $models = ['tests_reports', 'tests_model' ,'qb_model', 'users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
+
+        $cid = $this->uri->segment (4);        
+        
+        // Security step to prevent unauthorized access through url
+        if ($this->session->userdata ('is_admin') == TRUE) {
+        } else {
+            if ($cid == true && $this->session->userdata ('coaching_id') <> $cid) {
+                $this->message->set ('Direct url access not allowed', 'danger', true);
+                redirect ('student/home/dashboard');
+            }
+        }
+
 	}
 	
 	public function test_report ($coaching_id=0, $member_id=0, $attempt_id=0, $test_id=0, $type=SUMMARY_REPORT, $nav='' ) {

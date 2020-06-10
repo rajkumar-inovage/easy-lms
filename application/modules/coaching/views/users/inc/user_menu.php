@@ -3,7 +3,7 @@
         <div class="profile text-center">
 			<img src="<?php echo base_url($profile_image); ?>" alt="Profile Image" class="img-responsive img-thumbnail rounded-circle " width="200"> 
 			<h4><?php echo $result['first_name'].' '.$result['last_name']; ?></h4>
-			<small><a href="#" class="" data-toggle="modal" data-target="#add_image">Edit</a></small>
+			<a href="#" class="" data-toggle="modal" data-target="#add_image">Edit</a>
 		</div>
 	</div>
 	<ul class="list-group list-group-menu">

@@ -149,9 +149,9 @@ function show_confirm_ajax (msg, url, redirect) {
 
 
 /*----==== Logout User ====----*/
-function logout_user () {
+function logout_user (access_code) {
 	// Logout URL
-	const logoutURL = appPath + logoutPath;
+	const logoutURL = appPath + logoutPath + '/' + access_code;
 
 	// Clear Local Storage
 	if (typeof(Storage) !== "undefined") {
@@ -178,8 +178,7 @@ function update_session (user_token) {
 	}).then (function (response) {
 		return response.json ();
 	}).then (function(result) {
-		const dashboard = localStorage.getItem ('dashboard');
-		document.location = appPath + dashboard;
+		document.location = result.redirect;
 	});
 }	
 

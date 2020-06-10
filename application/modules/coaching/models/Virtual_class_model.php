@@ -4,8 +4,11 @@ class Virtual_class_model extends CI_Model {
 
 	public function get_all_classes ($coaching_id=0, $class_id=0) {
 		$result = [];
-		$this->db->where ('coaching_id', $coaching_id);
-		$sql = $this->db->get ('virtual_classroom');
+		$this->db->select ('VC.*');
+		$this->db->from ('virtual_classroom VC');
+		//$this->db->join ('virtual_classroom_participants VCP', 'VC.coaching_id=VCP.coaching_id', 'left');
+		$this->db->where ('VC.coaching_id', $coaching_id);
+		$sql = $this->db->get ();
 		foreach ($sql->result_array () as $row) {
 			$row['running'] = $this->is_meeting_running ($coaching_id, $row['class_id']);
 			$result[] = $row;
@@ -248,6 +251,7 @@ class Virtual_class_model extends CI_Model {
 
 	public function add_participants ($coaching_id=0, $class_id=0) {
 
+		$coaching = $this->coaching_model->get_coaching ($coaching_id);
 		$class = $this->get_class ($coaching_id, $class_id);
 
 		$api_setting = $this->get_api_settings ();
@@ -292,13 +296,28 @@ class Virtual_class_model extends CI_Model {
 			$data['member_id'] = $member_id;
 			$data['role'] = $participant_role;
 			$data['meeting_url'] = $meeting_url;
+			
 			// Insert only when not already inserted
 			$this->db->where ($data);
 			$sql = $this->db->get ('virtual_classroom_participants');
 			if ($sql->num_rows () == 0) {
 				$this->db->insert ('virtual_classroom_participants', $data);
 			}
+
+
+			// Send SMS to user
+			$user = $this->users_model->get_user ($member_id);
+			$contact = $user['primary_contact'];
+			$data['name'] = $user['first_name'];
+			$data['coaching_name'] = $coaching['coaching_name'];
+			$data['class_name'] = $class['class_name'];
+			$data['start_date'] = $class['start_date'];
+			$message = $this->load->view (SMS_TEMPLATE . 'vc_add_participant', $data, true);
+			$this->sms_model->send_sms ($contact, $message);
+
 		}
+
+
 	}
 
 

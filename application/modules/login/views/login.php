@@ -10,7 +10,7 @@
 		<?php } ?>
 	    <h6 class="text-center">Sign in with your credentials</h6>
 	  </div>
-	  <div class="card-body px-lg-5 py-lg-5">
+	  <div class="card-body py-5">
 		<?php echo form_open ('login/login_actions/validate_login', array('id'=>'login-form')); ?>
 		  <div class="form-group mb-3">
 			<div class="input-group input-group-alternative">

@@ -129,7 +129,7 @@
     </div>
 	
 	<!-- Sidebar left -->
-	<div id="sidebar-left" class="sidebar sidebar-skin-white-blue left">
+	<div id="sidebar-left" class="sidebar sidebar-skin-dark left">
 		<div class="sidebar-block">
             <div class="">
 				<?php 
@@ -144,6 +144,12 @@
 				?>
                 <div class="sidebar-text">
                     <?php echo $this->session->userdata ('user_name'); ?>
+                </div>
+                <div class="sidebar-text">
+                    <?php echo $this->session->userdata ('role_name'); ?>
+                </div>
+                <div class="sidebar-text">
+                    <?php echo $this->session->userdata ('access_code'); ?>
                 </div>
             </div>
     	</div>

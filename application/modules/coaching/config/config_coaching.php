@@ -107,4 +107,3 @@ define ('QUESTION_MATCH',      				5);
 define ('QUESTION_BLANK',	  				6); 
 define ('QUESTION_MCMC',		  			7); 
 define ('QB_NUM_ANSWER_CHOICES',		  	6);
-

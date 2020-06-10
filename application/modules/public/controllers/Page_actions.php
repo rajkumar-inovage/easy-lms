@@ -27,11 +27,23 @@ class Page_actions extends MX_Controller {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'You already have an Admin account registered with this mobile number. Try Sign-in instead' )));
 			} else {
-				$access_code = $this->coaching_model->create_coaching ();
-				$this->session->set_userdata ('access_code', $access_code);
+				$data = $this->coaching_model->create_coaching ();		
+
+				// Send SMS
+				$message = $this->load->view (SMS_TEMPLATE . 'coaching_acc_created', $data, true);
+				$this->sms_model->send_sms ($contact, $message);
+
+				// Send Email
+				if ($data['email'] != '') {
+					$email = $data['email'];
+					$subject = 'Account Created';
+					$message = $this->load->view (EMAIL_TEMPLATE . 'coaching_acc_created', $data, true);
+					$this->common_model->send_email ($email, $subject, $message);					
+				}
+
 				$this->message->set ('Your coaching account has been set-up succesfully. Login with your credentials provided on previous page', 'success', true);
 				$this->output->set_content_type("application/json");
-				$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Coaching account created', 'redirect'=>site_url('login/user/index?sub='.$access_code) )));
+				$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Coaching account created', 'redirect'=>site_url('login/user/index?sub='.$data['access_code']) )));
 			}
 		} else {
 			$this->output->set_content_type("application/json");

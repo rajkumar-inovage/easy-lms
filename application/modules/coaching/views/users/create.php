@@ -8,6 +8,18 @@
 			<div class="card-body">
 				<?php echo form_open ('coaching/user_actions/create_account/'.$coaching_id.'/'.$role_id.'/'.$member_id, array ('class'=>'form-horizontal', 'id'=>'validate-1')); ?>
 					
+				    <?php if ($member_id > 0) { ?>
+						<div class="form-group row">
+							<div class="col-md-4">
+								<?php echo form_label('User Id <span class="text-danger">*</span>', '', array('class'=>'', 'for' =>"adm_no")); ?>
+								<?php 
+								$option = array('name'=>'adm_no','class'=>'form-control','readonly'=>'true','id'=>'adm_no','value'=>set_value('adm_no', $result['adm_no']));
+								echo form_input($option);
+								?>
+							</div>
+						</div>
+					<?php } ?>
+
 					<div class="form-group row">
 						<div class="col-md-4">
 							<label class="form-label"><?php echo 'User Role'; ?></label>
@@ -28,7 +40,7 @@
 								if ( ! empty ($roles)) {
 									foreach ($roles as $row) {
 										?>
-										<option value =<?php echo $row['role_id'];?> <?php if ($row['role_id'] == $select_role_id) echo 'selected="selected"'; ?> >
+										<option value=<?php echo $row['role_id'];?> <?php if ($row['role_id'] == $select_role_id) echo 'selected="selected"'; ?> >
 											<?php echo $row['description']; ?> 
 										</option>
 										<?php
@@ -48,19 +60,12 @@
 						</div>
 
 						<div class="col-md-4">
-							<label class="form-label">User Batch</label>
-							<select name="user_batch" class="form-control" id="user-batch">
-								<option>Select Batch</option>
-								<?php 
-								if (! empty($batches)) {
-								  foreach ($batches as $batch) { ?>
-									<option value="<?php echo $batch['batch_id']; ?>" <?php if (!empty($result['user_batches'])){if(in_array($batch['batch_id'], $result['user_batches'])) echo 'selected="selected"';} ?>><?php echo $batch['batch_name']; ?></option>
-								  <?php 
-								  }      
-								}  
-								?>
-							</select>
+							<?php echo form_label('Serial No', '', array('class'=>'', 'for' =>"sr_no")); ?>
+							<div class="">
+								<?php echo form_input(array('name'=>'sr_no', 'class'=>'form-control', 'id'=>'sr_no', 'value'=>set_value('sr_no', $result['sr_no'])));?>
+							</div>
 						</div>
+
 					</div>
 
 					<div class="form-group ">
@@ -91,26 +96,8 @@
 						
 					</div>
 
-					<div class="form-group row">
-					    <?php if ($member_id > 0) { ?>
-						<div class="col-md-6">
-							<?php echo form_label('User Id <span class="text-danger">*</span>', '', array('class'=>'', 'for' =>"adm_no")); ?>
-							<?php 
-							$option = array('name'=>'adm_no','class'=>'form-control','readonly'=>'true','id'=>'adm_no','value'=>set_value('adm_no', $result['adm_no']));
-							echo form_input($option);
-							?>
-						</div>
-						<?php } ?>
-						
-						<div class="col-md-6">
-							<?php echo form_label('Serial No', '', array('class'=>'', 'for' =>"sr_no")); ?>
-							<div class="">
-								<?php echo form_input(array('name'=>'sr_no', 'class'=>'form-control', 'id'=>'sr_no', 'value'=>set_value('sr_no', $result['sr_no'])));?>
-							</div>
-						</div>
-					</div>					
 					
-					<div class="form-group row ">						
+					<div class="form-group row ">
 						<div class="col-md-6">
 							<?php echo form_label('Date Of Birth', '', array('class'=>'')); ?>
 							<?php 
@@ -147,7 +134,29 @@
 						
 					</div>
 
-					<hr>
+					<div class="form-group row">
+						<div class="col-md-6">
+							<label class="form-label">User Batch</label>
+							<?php 
+							if (! empty($batches)) {
+							  foreach ($batches as $batch) { ?>
+							  	<div class="ml-2">
+							  		
+								  	<label class="form-label">
+								  		<input type="checkbox" value="<?php echo $batch['batch_id']; ?>" name="batches[]" <?php if ($batch['enroled'] == 1) echo 'checked'; ?> >
+								  		<?php echo $batch['batch_name']; ?>
+								  	</label>
+							  	</div>
+							  <?php 
+							  }      
+							}  
+							?>
+						</div>
+
+						<div class="col-md-6">
+						</div>
+
+					</div>
 				</div>
 					
 				<div class="card-footer">

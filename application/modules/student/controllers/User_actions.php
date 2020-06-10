@@ -58,11 +58,11 @@ class User_actions extends MX_Controller {
 	} 
 	
 	/* REMOVE PROFILE IMAGE	*/
-	public function remove_profile_image ($member_id, $coaching_id=0 ) {
+	public function remove_profile_image ($member_id=0, $coaching_id=0 ) {
 		$user = $this->users_model->get_user ($member_id);
 		$this->users_model->remove_profile_image ($member_id);
 		$this->message->set ('Profile image removed successfully', 'success', true);
-        redirect ('student/users/create/'.$user['coaching_id'].'/'.$user['role_id'].'/'.$member_id);
+        redirect ('student/users/my_account/'.$coaching_id.'/'.$user['role_id'].'/'.$member_id);
 	}
 	
 	
@@ -97,11 +97,7 @@ class User_actions extends MX_Controller {
 				$this->common_model->send_email($send_to, $subject, $message );				
 			}
 
-			if ($member_id == $this->session->userdata ('member_id')) {
-				$redirect = site_url ('student/users/my_account/'.$coaching_id.'/'.$member_id);
-			} else {
-				$redirect = site_url ('student/users/create/'.$coaching_id.'/'.$user['role_id'].'/'.$member_id);
-			}
+			$redirect = site_url ('student/users/my_account/'.$coaching_id.'/'.$member_id);
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Password changed successfully', 'redirect'=>$redirect )));
 		} else {

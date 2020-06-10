@@ -20,7 +20,7 @@ class Users extends MX_Controller {
         // Security step to prevent unauthorized access through url
         if ($this->session->userdata ('is_admin') == TRUE) {
         } else {
-            if ($this->session->userdata ('coaching_id') <> $cid) {
+            if ($cid == true && $this->session->userdata ('coaching_id') <> $cid) {
                 $this->message->set ('Direct url access not allowed', 'danger', true);
                 redirect ('coaching/home/dashboard');
             }
@@ -45,6 +45,7 @@ class Users extends MX_Controller {
 		$data['role_id'] 	= $role_id;
 		$data['status'] 	= $status;
 		$data['batch_id'] 	= $batch_id;
+		$data['sort'] 		= SORT_ALPHA_ASC;
 		$data['data'] 		= $data;
 		$data['page_title'] = 'Users';
 
@@ -79,22 +80,25 @@ class Users extends MX_Controller {
 		// Reference Id
 		$data['profile_image'] 	= $this->users_model->view_profile_image ($member_id, $coaching_id);
 		$user 				= $this->users_model->get_user ($member_id);
-		$user_profile 		= $this->users_model->member_profile ($member_id);
-		$user_batches 		= $this->users_model->member_batches ($member_id);
-		$batches = array('user_batches' => array());
-		foreach ($user_batches as $batch) {
-			array_push($batches['user_batches'], $batch['batch_id']);
+		$get_batches 		= $this->users_model->get_batches ($coaching_id);
+		$batches 			= [];
+		if (! empty ($get_batches)) {			
+			foreach ($get_batches as $batch) {
+				if ($this->users_model->user_in_batch ($coaching_id, $member_id, $batch['batch_id']) == true) {
+					$batch['enroled'] = 1;
+				} else {
+					$batch['enroled'] = 0;
+				}
+				$batches[] = $batch;
+			}
 		}
-		if ( is_array ($user) ) {
-			$data['result'] 	= array_merge ($user, $user_profile, $batches);
-		} else {
-			$data['result'] = false;
-		}
+
+		$data['result'] 	= $user;
 
 		$role_lvl 		 	= $this->session->userdata ('role_lvl');
 		$admin 				= FALSE;
 		$data['roles']	 	= $this->users_model->get_user_roles ($admin, $role_lvl);
-		$data['batches']	=  $this->users_model->get_batches ($coaching_id);
+		$data['batches']	= $batches;
 		$data['role_id'] 	= $role_id;
 		
 		$data['toolbar_buttons'] = $this->toolbar_buttons;

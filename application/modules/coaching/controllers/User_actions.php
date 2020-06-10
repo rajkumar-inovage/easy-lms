@@ -15,14 +15,13 @@ class User_actions extends MX_Controller {
 	/* LIST USERS
 		Function to list all or selected users 
 	*/	
-	
 	public function search_users ($coaching_id=0, $role_id=0, $status='-1', $batch_id=0) {
 		$data = [];
 		$data['coaching_id'] = $coaching_id;
 		$data['role_id'] = $role_id;
 		$data['status'] = $status;
 		$data['batch_id'] = $batch_id;
-		$data['results'] = $this->users_model->search_users ($coaching_id); 
+		$data['results'] = $this->users_model->search_users ($coaching_id, $data);
 		$output = $this->load->view ('users/inc/index', $data, true);
 		$this->output->set_content_type("application/json");
 		$this->output->set_output(json_encode(array('status'=>true, 'data'=>$output)));	
@@ -38,7 +37,6 @@ class User_actions extends MX_Controller {
 		$this->form_validation->set_rules ('last_name', 'Last Name', 'max_length[50]|trim');
 		$this->form_validation->set_rules ('email', 'Email', 'valid_email');
 		$this->form_validation->set_rules ('primary_contact', 'Primary Contact', 'required|is_natural|max_length[10]|trim');
-		$this->form_validation->set_rules ('batch', 'Batch Name', '');
 		$this->form_validation->set_rules ('gender', 'Gender', '');	
 		
 		if ($this->form_validation->run () == true) {
@@ -50,14 +48,14 @@ class User_actions extends MX_Controller {
 			if ( ($num_users > $free_users) && $member_id == 0) {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'User limit reached. You can create a maximum of '.$free_users.' user accounts in Free Subscription plan. Upgrade your plan to create more users' )));
-			} else if ($member_id == 0 && ($this->users_model->coaching_contact_exists ($contact, $coaching_id) == true)) {
+			} else if (($this->users_model->coaching_contact_exists ($contact, $coaching_id) == true)) {
 				// Check if already exists
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'This mobile number is already in use with another account' )));
 			} else {
 				$status = $this->input->post ('status');
 				// Save user details
-				$id = $this->users_model->save_account ($coaching_id, $member_id, $status);				
+				$data = $this->users_model->save_account ($coaching_id, $member_id, $status);				
 
 				// Get coaching details
 				$coaching_name = $coaching['coaching_name'];
@@ -69,12 +67,23 @@ class User_actions extends MX_Controller {
 					$message = 'Account updated successfully.';
 					$this->message->set ($message, 'success', true );
 				} else {
+
+					// Send SMS to user
+					$data['name'] = $user_name;
+					$data['coaching_name'] = $coaching_name;
+					$data['access_code'] = $coaching['reg_no'];
+					$data['url'] = site_url ('login/login/index/?sub='.$data['access_code']);
+					$data['login'] = $contact;
+					$message = $this->load->view (SMS_TEMPLATE . 'user_acc_created', $data, true);
+					$this->sms_model->send_sms ($contact, $message);
+
 					// Email message for user
-					$to = $this->input->post('email');
-					$subject = 'Account Created';
-					$email_message = '<strong> Hi '.$user_name.',</strong><br>
-					<p>Your account is created in <strong>'.$coaching_name.'</strong>. You can create your password using the link below.</p>';
-					$this->common_model->send_email ($to, $subject, $email_message);
+					if ($data['email'] != '') {
+						$to = $data['email'];
+						$subject = 'Account Created';
+						$message = $this->load->view (EMAIL_TEMPLATE . 'user_acc_created', $data, true);
+						$this->common_model->send_email ($to, $subject, $message);
+					}
 					
 					// Display message for user
 					$message = 'User account created successfully';
@@ -139,11 +148,15 @@ class User_actions extends MX_Controller {
 	} 
 	
 	/* REMOVE PROFILE IMAGE	*/
-	public function remove_profile_image ($member_id, $coaching_id=0 ) {
+	public function remove_profile_image ($member_id=0, $coaching_id=0 ) {
 		$user = $this->users_model->get_user ($member_id);
 		$this->users_model->remove_profile_image ($member_id);
 		$this->message->set ('Profile image removed successfully', 'success', true);
-        redirect ('coaching/users/create/'.$user['coaching_id'].'/'.$user['role_id'].'/'.$member_id);
+	    if ($member_id == $this->session->userdata ('member_id')) {
+            $redirect = site_url ('coaching/users/my_account/'.$coaching_id.'/'.$member_id);
+	    } else {
+	        redirect ('coaching/users/create/'.$coaching_id.'/'.$user['role_id'].'/'.$member_id);
+	    }
 	}
 	
 	
@@ -233,36 +246,63 @@ class User_actions extends MX_Controller {
 	}
 	
 	// ENABLE USER ACCOUNT
-	public function enable_member ($coaching_id=0, $role=0, $member_id=0) {		
+	public function enable_member ($coaching_id=0, $role=0, $member_id=0, $r=1) {
+
 		$this->users_model->enable_user ($member_id);
 		
-		$member_detail = $this->users_model->get_user ($member_id);
-			
-		$send_to = $member_detail['email'];				
-		$subject = "Account Active";
-		$message = "Your account has been activated. You can  ".anchor ('', 'log-in')." to start using the system.";
-		$this->common_model->send_email($send_to, $subject, $message );
-		$this->message->set ('User account enabled successfully', 'success', TRUE);
-		redirect ('coaching/users/index/'.$coaching_id.'/'.$role.'/'.USER_STATUS_ENABLED);
+		$user = $this->users_model->get_user ($member_id);
+		$coaching = $this->coaching_model->get_coaching ($coaching_id);
+
+		$data['name'] = $user['first_name'];
+		$data['coaching_name'] = $coaching['coaching_name'];
+		$data['access_code'] = $coaching['reg_no'];
+		$data['url'] = site_url ('login/login/index/?sub='.$data['access_code']);
+
+		// Send SMS
+		$contact = $user['primary_contact'];
+		$message = $this->load->view (SMS_TEMPLATE . 'user_acc_enabled', $data, true);
+		$this->sms_model->send_sms ($contact, $message);
+
+		// Send Email
+		if ($user['email'] != '') {
+			$email = $user['email'];
+			$subject = 'Account Approved';
+			$message = $this->load->view (EMAIL_TEMPLATE . 'user_acc_enabled', $data, true);
+			$this->common_model->send_email ($email, $subject, $message);
+		}
+
+		if ($r == 1) {
+			$this->message->set ('User account enabled successfully', 'success', TRUE);		
+			redirect ('coaching/users/index/'.$coaching_id.'/'.$role);			
+		}
 	}
 	
 	// DISABLE USER ACCOUNT
-	public function disable_member ( $coaching_id=0, $role=0, $member_id=0) {
-		if ($member_id == $this->session->userdata ('member_id')) {
-			$this->message->set ('You cannot disable your own account ', 'danger', true);
-			redirect ('coaching/users/index/'.$coaching_id.'/'.$role);
+	public function disable_member ( $coaching_id=0, $role=0, $member_id=0, $r=1) {
+
+		if ($member_id <> $this->session->userdata ('member_id')) {
+
+			$this->users_model->disable_user ($member_id);
+	
+			$user = $this->users_model->get_user ($member_id);
+			$coaching = $this->coaching_model->get_coaching ($coaching_id);
+	
+			$data['name'] = $user['first_name'];
+			$data['coaching_name'] = $coaching['coaching_name'];
+
+			// Send Email
+			if ($user['email'] != '') {
+				$email = $user['email'];
+				$subject = 'Account Disabled';
+				$message = $this->load->view (EMAIL_TEMPLATE . 'user_acc_disabled', $data, true);
+				$this->common_model->send_email ($email, $subject, $message);
+			}
+
+			if ($r == 1) {
+				$this->message->set ('Account disabled. User will not be able to login now.', 'success', TRUE);
+				redirect('coaching/users/index/'.$coaching_id.'/'.$role);
+			}
 		}
-		$this->users_model->disable_user ($member_id);
-		$member_detail = $this->users_model->get_user ($member_id);
-			
-		$send_to = $member_detail['email'];				
-		$subject = "Account Inactive";
-		$message = "Your account has been disabled by system administrators. You may contact system administrators for re-activating your account.";
-		
-		$this->common_model->send_email($send_to, $subject, $message );
-		
-		$this->message->set ('Account disabled. User will not be able to login now.', 'success', TRUE);
-		redirect('coaching/users/index/'.$coaching_id.'/'.$role);
 	}
 	
 	// confirm delete/Enable-Disable
@@ -294,10 +334,10 @@ class User_actions extends MX_Controller {
 							$this->users_model->delete_account ($id);
 						} else if ($action == 'enable') {
 							$message = 'Users enabled successfully';
-							$this->users_model->enable_user ($id);
+							$this->enable_member ($coaching_id, $role, $id, 0);
 						} else if ($action == 'disable') {
-							$message = 'Users disabled successfully'; 
-							$this->users_model->disable_user ($id);
+							$message = 'Users disabled successfully';
+							$this->disable_member ($coaching_id, $role, $id, 0);
 						}
 						$i++;
 					}

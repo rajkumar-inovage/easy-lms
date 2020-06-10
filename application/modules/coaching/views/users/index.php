@@ -29,25 +29,39 @@
 						  foreach ($batches as $batch) { ?>
 							<option value="<?php echo $batch['batch_id']; ?>" <?php if ($batch_id == $batch['batch_id']) echo 'selected="selected"'; ?>><?php echo $batch['batch_name']; ?></option>
 						  <?php 
-						  }      
+						  }
 						}  
 						?>
 					</select>
 				</div>
 
 				<div class="col-md-3">
+					<select name="filter_sort" class="form-control" id="filter-sort" >
+						<option value="<?php echo SORT_ALPHA_ASC; ?>" <?php if ($sort==SORT_ALPHA_ASC) echo 'selected="selected"'; ?> >Name: A to Z</option>
+						<option value="<?php echo SORT_ALPHA_DESC; ?>" <?php if ($sort==SORT_ALPHA_DESC) echo 'selected="selected"'; ?> >Name: Z to A</option>
+						<option value="<?php echo SORT_CREATION_ASC; ?>" <?php if ($sort==SORT_CREATION_ASC) echo 'selected="selected"'; ?> >Old to New</option>
+						<option value="<?php echo SORT_CREATION_DESC; ?>" <?php if ($sort==SORT_CREATION_DESC) echo 'selected="selected"'; ?> >New to Old</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row mb-2">
+				<div class="col-md-6 mb-2">
 					<div class="input-group ">
-						<input name="search_text" class="form-control " type="search" placeholder="Search" aria-label="Search Test" aria-describedby="search-button">
+						<input name="search_text" class="form-control " type="search" placeholder="Search by name, mobile number, user-id" aria-label="Search Test" aria-describedby="search-button">
 						<div class="input-group-append">
 							<button class="btn btn-sm btn-primary " type="submit" id="search-button"><i class="fa fa-search"></i></button>
 						</div>
 					</div>
 				</div>
 			</div>
+
 		</form>
 	</div>
 </div>
 
-<div id="users-list">
-	<?php $this->load->view ('users/inc/index', $data); ?>
-</div>
+<?php echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$status, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') ); ?>
+	<div id="users-list">
+		<?php $this->load->view ('users/inc/index', $data); ?>
+	</div>
+</form>

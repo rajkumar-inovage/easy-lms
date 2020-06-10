@@ -81,16 +81,17 @@ class Coaching_model extends CI_Model {
 		$this->db->insert ('coaching_subscriptions', $plan);
 			
 		// Set Reference-id
-		$reg_no = $this->common_model->generate_coaching_id ($coaching_id);
-		$this->db->set ('reg_no', $reg_no);
-		$this->db->set ('coaching_url', $reg_no);
+		$access_code = $this->common_model->generate_coaching_id ($coaching_id);
+		$this->db->set ('reg_no', $access_code);
+		$this->db->set ('coaching_url', $access_code);
 		$this->db->where ('id', $coaching_id);
 		$this->db->update ('coachings');
 
 		// Create admin account
+
 		$user = [];		
 		$user['login'] 		= '';
-		$user['user_token'] = md5($this->input->post ('primary_contact'));
+		$user['user_token'] = '';
 		$password 			= $this->input->post ('password');
 		$user['password'] 	= password_hash($password, PASSWORD_DEFAULT);
 		$user['first_name'] = $first_name;
@@ -101,11 +102,21 @@ class Coaching_model extends CI_Model {
 		$user['primary_contact'] 	= $this->input->post ('primary_contact');
 		$user['status']  		= USER_STATUS_ENABLED;
 		$user['created_by']  	= 0;
-		$user['creation_date'] 	= time ();	
-		$slug = $reg_no;
-		$this->create_user ($user, $slug);
+		$user['creation_date'] 	= time ();
+		$this->create_user ($user, $access_code);
 
-		return $slug;
+		$coaching_url = site_url ('login/user/index/?sub='.$access_code);
+		$return = [
+			'name'=>$user['first_name'],
+			'coaching_name'=>$this->input->post('coaching_name'),
+			'access_code'=>$access_code,
+			'url'=>$coaching_url,
+			'login'=>$this->input->post ('primary_contact'),
+			'password'=>$password,
+			'email'=>$this->input->post ('email'),
+			];
+
+		return $return;
 	}
 
 	// Create coaching user
@@ -116,26 +127,17 @@ class Coaching_model extends CI_Model {
 		
 		// Generate user id
 		$user_id = $this->users_model->generate_reference_id ($member_id);
+
+		// User Token
+		$salt = random_string ('alnum', 4);
+		$str = $user_id . $data['coaching_id'] . $member_id . $salt;
+		$user_token = md5($str);
+
 		$this->db->set ('adm_no', $user_id);
 		$this->db->set ('login', $user_id);
+		$this->db->set ('user_token', $user_token);
 		$this->db->where ('member_id', $member_id);
 		$this->db->update ('members');
-
-		// Get coaching details
-		$coaching = $this->get_coaching_by_slug ($slug);
-
-		// Send confirmation email
-		$url			= site_url ('/?sub='.$slug);
-		$name 			= $data['first_name'].' '.$data['last_name'];
-		$to 			= $data['email'];
-		$subject 		= 'Coaching Account Created';
-		$message 		= '<strong> Dear '.$name.'! </strong> <p>Your coaching account '.strtoupper(($coaching['coaching_name'])).' is setup and ready to use. You can login to your account using the URL <p>'.$url.'</p>. Your access code is '.$slug.'. <p>Please bookmark this URL and share with your users to login and/or create their accounts.';
-		$this->common_model->send_email ($to, $subject, $message);
-
-		// Send sms
-		$contact 		= $data['primary_contact'];
-		$message		= strip_tags($message);
-		$this->sms_model->send_sms ($contact, $message);
 
 		return $member_id;
 	}

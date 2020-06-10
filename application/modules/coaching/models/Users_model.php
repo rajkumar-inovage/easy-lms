@@ -31,21 +31,24 @@ class Users_model extends CI_Model {
     
     public function search_users ($coaching_id=0) {
 		
+
 		$role_id = $this->input->post ('search_role');
 		$status = $this->input->post ('search_status');
 		$batch_id = $this->input->post ('search_batch');		
 		$search = $this->input->post ('search_text');
+		$sort_type = $this->input->post ('filter_sort');
+		
 
 		$select = '';
 		$select .= 'M.*';
 		$select .= ',SR.description';
 	    if ($batch_id > 0) {
-			$select .= ',BU.batch_name';
+		//	$select .= ', BU.batch_name';
 		}
 		$this->db->select ($select);
 
 		if ( ! empty($search)) {
-			$where = "(adm_no LIKE '%$search%' OR login LIKE '%$search%' OR first_name LIKE '%$search%' OR second_name LIKE '%$search%' OR last_name LIKE '%$search%' OR email LIKE '%$search%')";
+			$where = "(adm_no LIKE '%$search%' OR login LIKE '%$search%' OR first_name LIKE '%$search%' OR second_name LIKE '%$search%' OR last_name LIKE '%$search%' OR email LIKE '%$search%' OR primary_contact LIKE '%$search%')";
 			$this->db->where ($where);
 		} 
 		if ($role_id > 0) {
@@ -61,7 +64,17 @@ class Users_model extends CI_Model {
 	        $this->db->join ('coaching_batch_users BU', 'M.member_id=BU.member_id AND BU.batch_id='.$batch_id);
 	    }
 	    $this->db->where ('M.coaching_id', $coaching_id);
-	    $this->db->order_by ('M.first_name, M.second_name, M.last_name', 'ASC');
+
+		if ($sort_type == SORT_ALPHA_DESC) {
+		    $this->db->order_by ('M.first_name, M.second_name, M.last_name', 'DESC');
+		} else if ($sort_type == SORT_CREATION_ASC) {
+		    $this->db->order_by ('M.creation_date', 'ASC');
+		} else if ($sort_type == SORT_CREATION_DESC) {
+		    $this->db->order_by ('M.creation_date', 'DESC');
+		} else {
+		    $this->db->order_by ('M.first_name, M.second_name, M.last_name', 'ASC');
+		}
+
 		$sql = $this->db->get ();
 		return $sql->result_array ();
 		
@@ -91,24 +104,27 @@ class Users_model extends CI_Model {
 		}
 		return $result;
 	}
+
+
 	// Save Batch
-	public function save_batch($batch_id, $member_id){
-		$this->db->where ('batch_id', $batch_id);
+	public function save_batch ($coaching_id=0, $member_id=0, $batches=[]) {
+		// Clear all batches
+		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('member_id', $member_id);
-		$sql = $this->db->get ('coaching_batch_users');
-		if  ($sql->num_rows () == 0 ) {
-			$data['member_id'] = $member_id;
-			$data['batch_id']  = $batch_id;
-			$sql = $this->db->insert ('coaching_batch_users', $data);
-			if($sql!=0){
-				return true;
-			}else{
-				return false;
+		$this->db->delete ('coaching_batch_users');
+
+		// Insert fresh batch
+		if (! empty ($batches)) {
+			foreach ($batches as $batch_id) {
+				$data['coaching_id'] = $coaching_id;
+				$data['member_id'] = $member_id;
+				$data['batch_id']  = $batch_id;
+				$sql = $this->db->insert ('coaching_batch_users', $data);
 			}
-		}else{
-			return false;
 		}
 	}
+
+
 	// Save account
 	public function save_account ($coaching_id=0, $member_id=0, $status=USER_STATUS_ENABLED) {
 	    
@@ -156,11 +172,8 @@ class Users_model extends CI_Model {
 			'status'  	=> 		$status,
 		);
 		
+		$return = [];		
 		if ($member_id > 0) {
-			// save batch
-			$batch_id = $this->input->post ('user_batch');
-			$this->save_batch ($batch_id, $member_id);
-
 			// update account
 			$this->db->where ('member_id', $member_id);
 			$this->db->update ('members', $data);		
@@ -190,23 +203,13 @@ class Users_model extends CI_Model {
 			$this->db->set ('login', $user_id);
 			$this->db->where ('member_id', $member_id);
 			$this->db->update ('members');
-
-			// save batch
-			$batch_id = $this->input->post ('user_batch');
-			$this->save_batch($batch_id, $member_id);
-
-			// Send SMS
-			if ($this->session->userdata ('member_id') > 0 ) {
-				// Account is created by someone else, so send message
-				$coaching 		= $this->coaching_model->get_coaching ($coaching_id);
-				$coaching_name  = $coaching['coaching_name'];
-				$contact = $this->input->post ('primary_contact');
-				$message = 'Dear '.$data['first_name'] .'. Your account is created in '.strtoupper($coaching_name).'. Your login details are- LoginID: '.$data['primary_contact'].', Password: '.$otp.', Access Code: '.$coaching['reg_no'].'. Use the following link to login '.site_url ('/?sub='.$coaching['reg_no']);
-				$this->sms_model->send_sms ($contact, $message);
-			}
-
+			$return = ['password'=>$otp, 'email'=>$this->input->post ('email'), 'member_id'=>$member_id];
 		}
-		return $member_id;
+
+		$batches = $this->input->post ('batches');
+		$this->save_batch ($coaching_id, $member_id, $batches);
+
+		return $return;
 	}
 	
 	
@@ -546,14 +549,23 @@ class Users_model extends CI_Model {
 	    return $sql->result_array ();
 	}
 	
-	// Get Batches
+	// Get single batch details
 	public function get_batch_details ($batch_id=0) {
 	    $this->db->where ('batch_id', $batch_id);
 	    $sql = $this->db->get ('coaching_batches');
 	    return $sql->row_array ();
 	}
 	
-	// Save member batch
+	// Check if user in batch
+	public function user_in_batch ($coaching_id=0, $member_id=0, $batch_id=0) {
+	    $this->db->where ('coaching_id', $coaching_id);
+	    $this->db->where ('member_id', $member_id);
+	    $this->db->where ('batch_id', $batch_id);
+	    $sql = $this->db->get ('coaching_batch_users');
+	    return $sql->row_array ();
+	}
+	
+	// Save member batch ???????????
 	public function save_member_batch ($member_id=0) { 
 		$batch_id = $this->input->post ('batch');
 		$profile = array (

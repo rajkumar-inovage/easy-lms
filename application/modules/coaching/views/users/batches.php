@@ -30,6 +30,7 @@
 					?>
 				</div>
 				<div class="media-right">
+					<a href="<?php echo site_url('coaching/users/create_batch/'.$coaching_id.'/'.$row["batch_id"]); ?>" class="text-danger"><i class="fa fa-edit"></i> </a>	
 					<a href="javascript:void(0);" onclick="show_confirm ('Are you sure delete this batch?', '<?php echo site_url('coaching/user_actions/delete_batch/'.$coaching_id.'/'.$row["batch_id"]); ?>')" class="text-danger"><i class="fa fa-trash"></i> </a>	
 				</div>
 			</li>

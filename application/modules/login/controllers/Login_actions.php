@@ -82,7 +82,7 @@ class Login_actions extends MX_Controller {
 			} else if ( $num_users > $max_users) {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'Maximum user account limit for current subscription plan has been reached. Contact your coaching owner to upgrade their subscription plan.' )));
-			} else if ($this->users_model->contact_exists ($contact, $coaching_id) == true) {
+			} else if ($this->users_model->coaching_contact_exists ($contact, $coaching_id) == true) {
 				// Check if already exists
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'You already have an account with this mobile number. Try Sign-in instead' )));
@@ -107,47 +107,65 @@ class Login_actions extends MX_Controller {
 
 				// Save user details
 				$member_id = $this->users_model->save_account ($coaching_id, 0, $status);
-				// Save access code 
-				$this->session->set_userdata ('access_code', $ac);				
+
 				// Get coaching details
 				$coaching_name = $coaching['coaching_name'];
 				$user_name = $this->input->post ('first_name');
 				
 				// Notification Email to coaching admin
-				$to = $coaching['email'];
-				$subject = 'New Registration';
-					$email_message = 'A new user <strong>'.$user_name.'</strong> has registered in your coaching <strong>'.$coaching_name. '</strong>. ';
-				if ($status == USER_STATUS_UNCONFIRMED) {
-					$email_message .= 'Account is pending for approval. Click here for details ' . anchor ('coaching/users/index/'.$coaching_id.'/'.$user_role.'/'.USER_STATUS_UNCONFIRMED);
-				} 
-				$this->common_model->send_email ($to, $subject, $email_message);
+				if ($coaching['email'] != '') {					
+					$to = $coaching['email'];
+					$subject = 'New Registration';
+						$email_message = 'A new user <strong>'.$user_name.'</strong> has registered in your coaching <strong>'.$coaching_name. '</strong>. ';
+					if ($status == USER_STATUS_UNCONFIRMED) {
+						$email_message .= 'Account is pending for approval. Click here for details ' . anchor ('coaching/users/index/'.$coaching_id.'/'.$user_role.'/'.USER_STATUS_UNCONFIRMED);
+					} 
+					$this->common_model->send_email ($to, $subject, $email_message);
+				}
 			
 				// Notification email to user
-				$to = $this->input->post('email');
-				$subject = 'Account Created';
-				if ($status == USER_STATUS_UNCONFIRMED) {				
+				if ($status == USER_STATUS_UNCONFIRMED) {
 					// Email message for user
 					$email_message = '<strong> Hi '.$user_name.',</strong><br>
 					<p>You have created an account in <strong>'.$coaching_name.'</strong>. You can login with your registered email and password once your account is approved. You will receive another email regarding account approval.</p>';
 					// Display message for user
-					$message = 'Your account has been created but pending for admin approval';
+					$message = 'Your account in '.$coaching_name.' has been created but pending for admin approval. You will be notified once your account is approved by your coaching admin';
 					$this->message->set ($message, 'warning', true );
+					// Send SMS to user
+					$this->sms_model->send_sms ($contact, $message);
 				} else {
+					
 					// Email message for user
 					$email_message = '<strong> Hi '.$user_name.',</strong><br>
 					<p>You have created an account in <strong>'.$coaching_name.'</strong>. Your account is active now. You can login with your registered email and password.</p>';
+					
 					// Display message for user
 					$message = 'Your account has been created. You can log-in to your account';
+					
+					// Send SMS to user
+					$data['name'] = $user['first_name'];
+					$data['coaching_name'] = $coaching['coaching_name'];
+					$data['access_code'] = $coaching['reg_no'];
+					$data['url'] = site_url ('login/login/index/?sub='.$data['access_code']);
+					$data['login'] = $contact;
+					$data['password'] = $this->input->post ('password');
+					$message = $this->load->view (SMS_TEMPLATE . 'user_acc_created', $data, true);
+					$this->sms_model->send_sms ($contact, $message);
 					$this->message->set ($message, 'success', true );
 				}
-				$this->common_model->send_email ($to, $subject, $email_message);				
+				if ($this->input->post ('email')) {
+					$to = $this->input->post('email');
+					$subject = 'Account Created';
+					$this->common_model->send_email ($to, $subject, $email_message);				
+				}
+
 
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('login/user/index')) ));
 			}
 	    } else {
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));			
+			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
 		}
 	}
 
@@ -179,7 +197,7 @@ class Login_actions extends MX_Controller {
 					$subject = 'Reset Password';
 					$message = $this->load->view (EMAIL_TEMPLATE . 'reset_password', $data, true);
 					$this->common_model->send_email ($email, $subject, $message);					
-				}				
+				}
 				
 				// Display Message
 				$msg = 'Your password is reset. You will receive new password on your mobile and email. Use the password to sign-in to your account. After signing-in please change your password from "My Account" menu.';
@@ -228,7 +246,10 @@ class Login_actions extends MX_Controller {
 					}					
 				}
 				
+				// Send SMS
 				$this->sms_model->send_sms ($contact, $sms_msg);
+
+				// Send email
 				if ($send_email == true) {
 					$this->common_model->send_email ($email, $subject, $email_msg);
 				}
@@ -263,19 +284,22 @@ class Login_actions extends MX_Controller {
 			
 			// Update menu
 			$this->login_model->load_menu ($role_id);
-	
+			
+			$dashboard = $this->session->userdata ('dashboard');
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Success' )));
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Success', 'redirect'=>site_url ($dashboard))));
 		} else {
 			// Session cannot be updated due to user-token mismatch, so logout
-			redirect ('login/login/logout');
+			$logout = site_url ('login/login/logout');
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(json_encode(array('status'=>false, 'message'=>'Error', 'redirect'=>$logout)));
 		}
 
 	}
 
-	public function logout () {
+	public function logout ($access_code='') {
 
-		$redirect = site_url ('login/user/index');
+		$redirect = site_url ('login/user/index/?sub='.$access_code);
 		
 		$this->session->sess_destroy ();
 		setcookie ("user_token", "", time () - 3600);

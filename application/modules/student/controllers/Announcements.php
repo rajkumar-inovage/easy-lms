@@ -15,9 +15,9 @@ class Announcements extends MX_Controller {
         // Security step to prevent unauthorized access through url
         if ($this->session->userdata ('is_admin') == TRUE) {
         } else {
-            if ($this->session->userdata ('coaching_id') <> $cid) {
-                //$this->message->set ('Direct url access not allowed', 'danger', true);
-                //redirect ('coaching/home/dashboard');
+            if ($cid == true && $this->session->userdata ('coaching_id') <> $cid) {
+                $this->message->set ('Direct url access not allowed', 'danger', true);
+                redirect ('student/home/dashboard');
             }
         }
 	}

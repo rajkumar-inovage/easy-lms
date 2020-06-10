@@ -5,7 +5,7 @@
 
 	const loaderSelector = document.getElementById('loader');
 	loaderSelector.style.display = 'block';
-	//const access_code = '<?php echo $ac; ?>';
+	const access_code = '<?php echo $ac; ?>';
 	
 	var user_token = '';
 
@@ -20,7 +20,7 @@
 
 	if (user_token == null || user_token == '') {
 		// user token not found, redirect to login page after clean-up
-  		logout_user ();
+  		logout_user (access_code);
   	} else {
 		// user token found, validate token and login
   		update_session (user_token);

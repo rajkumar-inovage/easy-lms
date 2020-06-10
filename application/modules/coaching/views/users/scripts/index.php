@@ -1,4 +1,11 @@
 <script>
+
+const loaderSelector = document.getElementById('loader');
+const formSelector = document.getElementById('search-form');
+const formURL = formSelector.getAttribute ('action');
+const outputSelector = document.getElementById ('users-list');
+
+
 $(document).ready (function () {
 	$('#search-status').on ('change', function () {
 		var status = $(this).val ();
@@ -17,15 +24,30 @@ $(document).ready (function () {
 		var url = '<?php echo site_url ('coaching/users/index/'.$coaching_id.'/'.$role_id.'/'.$status); ?>/'+batch_id;
 		$(location).attr('href', url);
 	}); 
+
+	$('#filter-sort').on ('change', function (e) {
+		
+		var formData = new FormData(formSelector);
+		loaderSelector.style.display = 'block';
+
+		fetch (formURL, {
+			method : 'POST',
+			body: formData,
+		}).then (function (response) {
+			return response.json ();
+		}).then(function(result) {
+			if (result.status == true) {
+				loaderSelector.style.display = 'none';
+				var output =  result.data;
+				outputSelector.innerHTML = output;
+			}
+		});
+	});
+
 });
 </script>
 
-<script>
-	
-	const loaderSelector = document.getElementById('loader');
-	const formSelector = document.getElementById('search-form');
-	const formURL = formSelector.getAttribute ('action');
-	const outputSelector = document.getElementById ('users-list');
+<script>	
 	
 	formSelector.addEventListener ('submit', e => {
 		e.preventDefault ();

@@ -21,7 +21,7 @@ class Virtual_class extends MX_Controller {
         if ($this->session->userdata ('is_admin') == TRUE) {
         } else {
         	// Security step to prevent unauthorized access through url
-            if ($this->session->userdata ('coaching_id') <> $cid) {
+            if ($cid == true && $this->session->userdata ('coaching_id') <> $cid) {
                 $this->message->set ('Direct url access not allowed', 'danger', true);
                 redirect ('coaching/home/dashboard');
             }
@@ -218,27 +218,43 @@ class Virtual_class extends MX_Controller {
 		$api_setting = $this->virtual_class_model->get_api_settings ('join_url');
 		$class = $this->virtual_class_model->get_class ($coaching_id, $class_id);
 		$join = $this->virtual_class_model->join_class ($coaching_id, $class_id, $member_id);
-		$meeting_url = $join['meeting_url'];
-		$api_join_url = $api_setting['join_url'];
-		$join_url = $api_join_url . $meeting_url;
 
-		$is_running = $this->virtual_class_model->is_meeting_running ($coaching_id, $class_id);
+		$error_code = $this->config->item ('vc_error_code');
 
-		if ( $is_running == 'true') {
-			redirect ($join_url);
-		} else {
-			if ($join['role'] == VM_PARTICIPANT_MODERATOR)  {
-				$response = $this->virtual_class_model->create_meeting ($coaching_id, $class_id);
-				if ($response == 'SUCCESS') {
-					redirect ($join_url);
+		if ($join) {
+			// User is a participant in this classroom
+			$meeting_url = $join['meeting_url'];
+			$api_join_url = $api_setting['join_url'];
+		echo	$join_url = $api_join_url . $meeting_url;
+
+			$is_running = $this->virtual_class_model->is_meeting_running ($coaching_id, $class_id);
+
+			if ( $is_running == 'true') {
+				// if class has already started, join class
+				redirect ($join_url);
+			} else {
+				// if class has not started, create class and join (if moderator of class)
+				if ($join['role'] == VM_PARTICIPANT_MODERATOR)  {
+					$response = $this->virtual_class_model->create_meeting ($coaching_id, $class_id);
+					if ($response == 'SUCCESS') {
+						redirect ($join_url);
+					} else {
+						$error = $error_code[1];
+					}
+				} else {
+					$error = $error_code[2];
 				}
 			}
+		} else {
+			$error = $error_code[3];
 		}
 		
 		$data['coaching_id'] = $coaching_id;
 		$data['class_id'] = $class_id;
-		$data['page_title'] = 'Classroom not found';
+		$data['page_title'] = 'Classroom Error';
 		$data['bc'] = array('Virtual Classroom'=>'coaching/virtual_class/index/'.$coaching_id.'/'.$member_id);
+		
+		$data['error'] = $error;
 
         $this->load->view(INCLUDE_PATH . 'header', $data);
         $this->load->view('virtual_class/error', $data);
