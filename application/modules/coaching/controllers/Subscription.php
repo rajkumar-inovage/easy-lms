@@ -32,7 +32,7 @@ class Subscription extends MX_Controller {
 		$data['sub_title'] = 'Subscribed Plan';
 		$data['coaching_id'] = $coaching_id;
 
-		$data['bc'] = array ('Coachings'=>'coachings/admin/dashboard');
+		$data['bc'] = array ('Coachings'=>'coaching/home/dashboard');
 		
 		//$data['coaching'] = $this->subscription_model->get_coaching ($coaching_id);
 		$data['coaching'] = $this->subscription_model->get_coaching_subscription ($coaching_id);

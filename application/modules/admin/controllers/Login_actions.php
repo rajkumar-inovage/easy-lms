@@ -6,7 +6,7 @@ class Login_actions extends MX_Controller {
 
 	public function __construct () {
 		$config = ['config_login'];
-	    $models = ['login_model', 'coaching/users_model', 'coaching/coaching_model', 'coaching/settings_model'];
+	    $models = ['login_model', 'users_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	    $this->load->helper ('string');
 	}
@@ -15,7 +15,6 @@ class Login_actions extends MX_Controller {
 	
 		$this->form_validation->set_rules ('username', 'Username', 'required|trim');
 		$this->form_validation->set_rules ('password', 'Password', 'required|trim');
-		$this->form_validation->set_rules ('access_code', 'Access Code', 'required|trim');
 		
 		if ($this->form_validation->run () == true) {
 			
@@ -295,20 +294,5 @@ class Login_actions extends MX_Controller {
 			$this->output->set_output(json_encode(array('status'=>false, 'message'=>'Error', 'redirect'=>$logout)));
 		}
 
-	}
-
-	public function logout ($access_code='') {
-
-		if ($this->session->userdata ('is_admin') == true) {
-			$redirect = site_url ('admin/login/index');
-		} else {
-			$redirect = site_url ('login/user/index/?sub='.$access_code);
-		}		
-		
-		$this->session->sess_destroy ();
-		setcookie ("user_token", "", time () - 3600);
-
-		$this->output->set_content_type("application/json");
-		$this->output->set_output(json_encode(array('status'=>true, 'redirect'=>$redirect)));
 	}
 }

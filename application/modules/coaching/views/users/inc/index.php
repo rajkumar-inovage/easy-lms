@@ -6,6 +6,9 @@
 						<th width="3%">
 							<input id="checkAll" type="checkbox" onchange="check_all()" >
 						</th>
+						<th width="3%">
+							#
+						</th>
 						<th ><?php echo 'Name'; ?></th>
 						<th class="d-none d-sm-table-cell"><?php echo 'Contact'; ?></th>
 						<th class="d-none d-sm-table-cell"><?php echo 'Status'; ?></th>
@@ -16,7 +19,7 @@
 
 				<tbody>
 				<?php
-				$i = 0 ;
+				$i = 1 ;
 				if ( ! empty ($results)) {
 					foreach ($results as $row) {
 						?>
@@ -24,7 +27,7 @@
 							<td>
 								<input id="" type="checkbox" name="mycheck[]" value="<?php echo $row['member_id']; ?>" class="checks">
 							</td>
-
+							<td><?php echo $i; ?></td>
 							<td>
 								<a class="" href="<?php echo site_url ('coaching/users/create/'.$coaching_id.'/'.$row['role_id'].'/'.$row['member_id']); ?>"> 
 									<?php echo ($row['first_name']) .' '. ($row['second_name']) .' '. ($row['last_name']); ?>
@@ -65,6 +68,7 @@
 							</td>
 						</tr>
 						<?php 
+						$i++;
 					} // foreach 
 				} else {
 					?>

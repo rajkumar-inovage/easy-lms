@@ -100,7 +100,7 @@
                             <div class="text-center" href="#"><?php echo $this->session->userdata ('user_name'); ?></div>
                         </p>
                         <hr>
-                        <a class="dropdown-item" href="#" onclick="logout_user ()"><i class="fa fa-sign-out-alt"></i> Logout</a>
+                        <a class="dropdown-item" onclick="logout_user ()"><i class="fa fa-sign-out-alt"></i> Logout</a>
                       </div>
                     </div>
                   <?php } ?>

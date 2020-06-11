@@ -35,7 +35,7 @@ class Vitals extends MX_Controller {
 		/* 
 			For PUBLIC module login is not required, user will not be redirected to Dashboard OR Logout page
 		*/
-		if ($module == 'public' || $module == 'login') {
+		if ($module == 'public' || $module == 'login' || ($module == 'admin' && $controller == 'login') || ($module == 'admin' && $controller == 'login_actions')) {
 			// Do Nothing
 		} else {
 			// If session is not set, logout user
