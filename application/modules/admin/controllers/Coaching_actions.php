@@ -11,6 +11,14 @@ class Coaching_actions extends MX_Controller {
 		$this->load->dbforge ();
 	} 
 	
+	public function search_coaching () {
+		
+		$data['results'] = $this->coachings_model->search_coaching ();
+
+		$coachings = $this->load->view ('coaching/inc/index', $data, true);
+		$this->output->set_content_type("application/json");
+		$this->output->set_output(json_encode(array('status'=>true, 'data'=>$coachings)));
+	}
 	
 	public function create_account ($coaching_id=0) {
 	
@@ -75,7 +83,7 @@ class Coaching_actions extends MX_Controller {
 		if ($this->form_validation->run () == true) {				
 			$id = $this->coachings_model->edit_plan ($coaching_id, $plan_id);
 			$message = 'Plan updated successfully';
-			$redirect = site_url('admin/coaching/plan/'.$coaching_id);
+			$redirect = site_url('admin/coaching/manage/'.$coaching_id);
 			$this->message->set ($message, 'success', true) ;
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>$redirect)));

@@ -16,11 +16,15 @@ class Coaching extends MX_Controller {
     public function index () { 
 		
 		$data['page_title'] = 'Coachings';
-		$data['sub_title']  = 'All Coachings';
+		$data['sub_title']  = 'All Coachings';		
+
+		$data['results'] = $this->coachings_model->get_all_coachings ();
+		$data['data']	= $data;
+		
 		$data['bc'] = array ('Dashboard'=>'admin/home/dashboard');
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		
-		$data['results'] = $this->coachings_model->get_all_coachings ();
+		$data['script'] = $this->load->view ('coaching/script/index', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('coaching/index', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);

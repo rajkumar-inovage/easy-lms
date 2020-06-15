@@ -659,10 +659,11 @@ class Users_model extends CI_Model {
 	}
 
 	public function batch_users ($batch_id=0) {
-		$this->db->select ('M.*');
-		$this->db->where ('MB.batch_id', $batch_id);
-		$this->db->from ('coaching_batch_users MB');
+		$this->db->select ('M.*, SR.description');
+		$this->db->from ('coaching_batch_users MB, sys_roles SR');
 		$this->db->join ('members M', 'MB.member_id=M.member_id');
+		$this->db->where ('MB.batch_id', $batch_id);
+		$this->db->where ('SR.role_id=M.role_id');
 		$sql = $this->db->get ();
 		if  ($sql->num_rows () > 0 ) {
 			$result = $sql->result_array ();
@@ -877,7 +878,10 @@ class Users_model extends CI_Model {
 		}
 	}	
 
-	public function coaching_contact_exists ($contact='', $coaching_id=0) {
+	public function coaching_contact_exists ($contact='', $coaching_id=0, $member_id=0) {
+		if ($member_id > 0) {
+			$this->db->where ('member_id <>', $member_id);
+		}
 		$this->db->where ('primary_contact', $contact);
 		$this->db->where ('coaching_id', $coaching_id);
 		$sql = $this->db->get ('members');

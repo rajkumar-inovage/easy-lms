@@ -53,7 +53,7 @@ class Coaching_model extends CI_Model {
 		$coaching['subscription_status'] = SUBSCRIPTION_STATUS_ACTIVE;
 
 		$doj = time ();
-		$doe = time () + ( 30 * 24 * 3600);			// 30 days subscription plan
+		$doe = time () + ( FREE_SUBSCRIPTION_PERIOD * 24 * 3600);			// 30 days subscription plan
 		$coaching = [
 				'coaching_name'=>	$this->input->post ('coaching_name'), 
 				'coaching_url' => 	$coaching_url,

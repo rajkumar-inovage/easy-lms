@@ -41,16 +41,15 @@ class Reports extends MX_Controller {
 			OVERALL_REPORT =>array ('title'=>'Brief Report', 'report_file'=>'report_brief', 'script_file'=>'report_brief'),
 			DETAIL_REPORT =>array ('title'=>'Detail Report', 'report_file'=>'report_detailed', 'script_file'=>'report_detail'),
 			DIFFICULTY_REPORT =>array ('title'=>'Difficulty-wise Report', 'report_file'=>'report_difficulty', 'script_file'=>'report_difficulty'),
-			CATEGORY_REPORT =>array ('title'=>'Category-wise Report', 'report_file'=>'report_category', 'script_file'=>'report_category'),
+			CATEGORY_REPORT =>array ('title'=>'Classification-wise Report', 'report_file'=>'report_category', 'script_file'=>'report_category'),
 			//TOPIC_REPORT =>array ('title'=>'Topic-wise Report', 'report_file'=>'report_topic', 'script_file'=>'report_topic'),
 			);
 		
 		$page = str_replace (':', '/', $nav);
 		$data['member'] 	= $this->users_model->get_user ($member_id);
-		$data['test_marks'] = $this->tests_model->getTestquestionMarks ($coaching_id, $test_id);
 		$test 				= $this->tests_model->view_tests ($test_id);
 		$questions 			= $this->tests_model->getTestQuestions ($coaching_id, $test_id);
-		$testMarks 			= $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id, $questions);
+		$test_marks 		= $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
 		
 		// Count total questions
 		$num_questions 		= 0;
@@ -82,10 +81,10 @@ class Reports extends MX_Controller {
 		$cat_response		= array ();
 		$dif_response		= array ();
 		if ( ! empty ($questions)) { 
-			foreach ($questions as $question_id) {
-				$question = $this->qb_model->getQuestionDetails ($question_id);
-				$cat = $this->common_model->sys_parameter_name (SYS_QUESTION_CATEGORIES, $question['category_id']); 
-				$diff = $this->common_model->sys_parameter_name (SYS_QUESTION_DIFFICULTIES, $question['clsf_id']);
+			foreach ($questions as $question) {
+				$question_id = $question['question_id'];
+				$cat = $this->common_model->sys_parameter_name (SYS_QUESTION_CLASSIFICATION, $question['clsf_id']); 
+				$diff = $this->common_model->sys_parameter_name (SYS_QUESTION_DIFFICULTIES, $question['diff_id']);
 				
 				$check = $this->tests_reports->check_test_question ($attempt_id, $test_id, $question_id, $member_id);				
 				$question['om'] = $om;
@@ -127,7 +126,6 @@ class Reports extends MX_Controller {
 		$total_questions = $answered + $not_answered;
 
 		// Obtained Percentage
-		$test_marks = $testMarks['marks'];
 
 		if ($test_marks > 0) {
 			$ob_perc = ($om / $test_marks) * 100;
@@ -155,7 +153,7 @@ class Reports extends MX_Controller {
 		$data['attempt_id'] 		= $attempt_id;
 		$data['attempts'] 			= $attempts;
 		$data['max_marks'] 			= $max_marks;
-		$data['testMarks'] 			= $testMarks;
+		$data['testMarks'] 			= $test_marks;
 		$data['response'] 			= $response;
 		$data['ob_marks'] 			= $ob_marks;
 		$data['page'] 				= $page;

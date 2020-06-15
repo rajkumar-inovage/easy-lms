@@ -8,7 +8,7 @@
 					<p>Click the below button to see your result.</p>
 				</div>
 				<p class="lead">
-					Your score in this attempt: <span class=""><?php echo $score.'/'.$test_marks['marks']; ?></span>
+					Your score in this attempt: <span class=""><?php echo $score.'/'.$test_marks; ?></span>
 				</p>
 			</div>
 			<div class="card-footer d-flex justify-content-between">

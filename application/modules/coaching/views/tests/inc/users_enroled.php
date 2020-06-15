@@ -1,4 +1,4 @@
-<?php echo form_open('coaching/tests_actions/unenrol_users/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type.'/'.$batch_id.'/'.$status, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') ); ?>
+<?php echo form_open('coaching/tests_actions/unenrol_users/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$type.'/'.$role_id.'/'.$class_id.'/'.$batch_id.'/'.$status, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') ); ?>
 	<div class="card ">
 		<table class="table table-bordered table-hover table-checkable datatable mb-0">
 			<thead>

@@ -16,13 +16,13 @@ $(document).ready (function () {
 
 <?php
 $i			   = 1;	
-$right_answers = 0;
-$wrong_answers = 0;
-$not_answered  = 0;
-$answered	   = 0;
 $total  	   = 0;
 if ( ! empty ($cat_response)) {
 	foreach ($cat_response as $cat_title=>$data) {
+		$right_answers = 0;
+		$wrong_answers = 0;
+		$not_answered  = 0;
+		$answered	   = 0;
 		if (! empty ($data)) {
 			foreach ($data as $type=>$questions) {
 				if ($type == TQ_CORRECT_ANSWERED) { 

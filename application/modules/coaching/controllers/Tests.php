@@ -144,96 +144,43 @@ class Tests extends MX_Controller {
 	
 	
 	public function manage ($coaching_id=0, $category_id=0, $test_id=0) {
-		$this->questions ($coaching_id, $category_id, $test_id);
+		//$this->questions ($coaching_id, $category_id, $test_id);
 
-		/*
+		
 		$test = $this->tests_model->view_tests ($test_id);
 
-		$data['page_title'] = 'Manage Test';
-		$data['sub_title']  = $test['title'];
-		$data['test_id'] 	 = $test_id;
-		$data['category_id'] = $category_id;
+		$data['page_title'] = 'Manage Test';		
 		$data['coaching_id'] = $coaching_id;
+		$data['category_id'] = $category_id;
+		$data['test_id'] 	 = $test_id;
 		$data['test'] 		 = $test;
 		
-		/* Breadcrumbs * /
+		/* Breadcrumbs */
 		$data['bc'] = array ('Tests'=>'coaching/tests/index/'.$coaching_id);
 		
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
-		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id, $questions);
+		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
 
-		/* --==// Toolbar //==-- * /
+		if (!empty($questions)) {
+			$num_test_questions = count ($questions);
+		} else {
+			$num_test_questions = 0;
+		}
+		$data['test_marks'] = $testMarks;
+		$data['num_test_questions'] = $num_test_questions;
+
+		/* --==// Toolbar //==-- */
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/manage_test', $data);		
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
-		*/
 	}
 	
 	
-	/* Preview Test
-	// 
-	*/
-	public function preview_test ($coaching_id=0, $category_id=0, $test_id=0, $offset='' ) {
-
-		$data['test'] = $test = $this->tests_model->view_tests ($test_id);
-
-		$data['coaching_id'] = $coaching_id;
-		$data['category_id'] = $category_id;
-		$data['test_id'] = $test_id;
-		
-		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
-		if (!empty ($questions)) {
-			$num_questions = count($questions);
-		} else {
-			$num_questions = 0;			
-		}
-
-		$questionTime = $this->tests_model->getTestQuestionTime ($coaching_id, $questions);
-		$result = array ();
-		if ( ! empty($questions)) {
-			foreach ($questions as $id) {
-				$row = $this->qb_model->getQuestionDetails ($id);
-				$parent_id = $row['parent_id'];
-				$parent_row = $this->qb_model->getQuestionDetails ($parent_id);
-				$result[$parent_id]['parent'] = $parent_row;
-				$result[$parent_id]['questions'][$id] = $row;
-			}
-		}
-		$data['results'] = $result;
-		$data['questionTimeSeconds'] = $questionTime;
-		$data['questionTime'] = date("H:i", mktime(0,0, $questionTime,0,0,0));
-
-		/* --==// Back Link //==-- */
-		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
-		
-		/* --==// Sidebar //==-- */ 
-		$data['page_title'] = 'Preview Test'; 
-		$data['sub_title']  = $test['title'];
-		
-		/* --==// Toolbar //==-- */ 
-
-		$data['toolbar_buttons'] = $this->toolbar_buttons;
-
-		/* --==// Pagination Settings //==-- 
-		$this->load->library ('pagination');
-		$config = $this->config->item ('pagination');
-		$config['base_url'] = site_url ('coaching/tests/preview_test/'.$category_id.'/'.$test_id.'/'.$lesson_id);
-		$config['total_rows'] = $num_questions;
-		$this->pagination->initialize($config);
-		*/
-		$data['script'] = $this->load->view ('tests/scripts/preview_test', $data, true);
-		$this->load->view(INCLUDE_PATH . 'header', $data);
-		$this->load->view('tests/inc/manage_test', $data);
-		$this->load->view('tests/preview_test', $data);
-		$this->load->view(INCLUDE_PATH . 'footer', $data);	
-		
-	}
-
-	/* Preview Test
-	// 
+	/* 
+	// Questions in Test
 	*/
 	public function questions ($coaching_id=0, $category_id=0, $test_id=0, $offset='' ) {
 
@@ -244,30 +191,30 @@ class Tests extends MX_Controller {
 		$data['test_id'] = $test_id;
 		
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
-		if (!empty ($questions)) {
-			$num_questions = count($questions);
-		} else {
-			$num_questions = 0;			
-		}
+		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
 
-		$questionTime = $this->tests_model->getTestQuestionTime ($coaching_id, $questions);
+		if (!empty($questions)) {
+			$num_test_questions = count ($questions);
+		} else {
+			$num_test_questions = 0;
+		}
+		$data['test_marks'] = $testMarks;
+		$data['num_test_questions'] = $num_test_questions;
+
+		// Get heading questions
 		$result = array ();
 		if ( ! empty($questions)) {
-			foreach ($questions as $id) {
-				$row = $this->qb_model->getQuestionDetails ($id);
+			foreach ($questions as $row) {
 				$parent_id = $row['parent_id'];
 				$parent_row = $this->qb_model->getQuestionDetails ($parent_id);
 				$result[$parent_id]['parent'] = $parent_row;
-				$result[$parent_id]['questions'][$id] = $row;
+				$result[$parent_id]['questions'][] = $row;
 			}
 		}
 		$data['results'] = $result;
-		$data['questionTimeSeconds'] = $questionTime;
-		$data['questionTime'] = date("H:i", mktime(0,0, $questionTime,0,0,0));
 
 		/* --==// Back Link //==-- */
-		//$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
-		$data['bc'] = array ('Manage Test'=>'coaching/tests/index/'.$coaching_id.'/'.$category_id);
+		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
 		
 		/* --==// Sidebar //==-- */ 
 		$data['page_title'] = 'Questions'; 
@@ -283,8 +230,147 @@ class Tests extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'footer', $data);	
 		
 	}	
+
+
+	// Create new question group
+	/* CREATE QUESTION GROUP
+		Function to create question group
+	*/	
+	public function question_group_create ($coaching_id=0, $category_id=0, $test_id=0, $question_id=0) {
+		
+		$data['page_title'] 	= 'Create/Edit Section';
+		$data['coaching_id'] 	= $coaching_id;
+		$data['category_id'] 	= $category_id;
+		$data['question_id'] 	= $question_id;
+		$data['test_id'] 		= $test_id;
+
+		$data['test'] = $test = $this->tests_model->view_tests ($test_id);
+
+		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);		
+		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
+		
+		if (!empty($questions)) {
+			$num_test_questions = count ($questions);
+		} else {
+			$num_test_questions = 0;
+		}
+		$data['test_marks'] = $testMarks;
+		$data['num_test_questions'] = $num_test_questions;
+
+		/* Breadcrumbs */
+		$data['bc'] = array ('Questions'=>'coaching/tests/questions/'.$coaching_id.'/'.$category_id.'/'.$test_id);		
+
+		// Get Question Details
+		$data['result'] = $this->qb_model->getQuestionDetails ($question_id);
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		
+		$data['script'] 	= $this->load->view ('tests/scripts/question_group_create', $data, true);
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('tests/inc/manage_test', $data);
+		$this->load->view('tests/question_group_create', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
+    }
+	
+	
+	/* function for Create/Edit question */
+	public function question_create ($coaching_id=0, $category_id=0, $test_id=0, $parent_id=0, $question_id=0, $question_type=QUESTION_MCSC	) {
+				
+		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id, $parent_id);
+		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
+		
+		if (! empty($questions)) {
+			$num_test_questions = count ($questions);
+		} else {
+			$num_test_questions = 0;
+		}
+		$data['test_marks'] = $testMarks;
+		$data['num_test_questions'] = $num_test_questions;
+
+		/* Back Link */
+		$data['bc'] = array ('Question Group'=>'coaching/tests/question_group_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id);
+
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+
+		$data['question_type']	= $question_type;
+		$data['coaching_id'] 	= $coaching_id;
+		$data['category_id']	= $category_id;
+		$data['parent_id'] 		= $parent_id;
+		$data['question_id']	= $question_id;
+		$data['test_id']		= $test_id;
+		$data['questions'] 		= $questions;
+		$data['template'] 		= 'create_'.$question_type;
+		$data['page_title'] 	= 'Add/Edit Question';
+		$data['data']			= $data;
+
+		$data['test'] 			= $test = $this->tests_model->view_tests ($test_id);
+		$data['question_group'] = $this->qb_model->getQuestionDetails ($parent_id);
+		$data['result'] 		= $this->qb_model->getQuestionDetails ($question_id);
+
+		$data['question_types'] = $this->common_model->get_sys_parameters (SYS_QUESTION_TYPES);
+		$data['question_categories']   = $this->common_model->get_sys_parameters (SYS_QUESTION_CATEGORIES);
+		$data['question_difficulties'] = $this->common_model->get_sys_parameters (SYS_QUESTION_DIFFICULTIES);
+
+		$data['script'] 	= $this->load->view ('tests/scripts/question_create', $data, true);		
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('tests/inc/manage_test', $data);
+		$this->load->view('tests/question_create', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
+	}
+	// end create edit question	
+
+
+	/* Preview Test
+	// 
+	*/
+	public function preview_test ($coaching_id=0, $category_id=0, $test_id=0, $offset='' ) {
+
+		$data['test'] = $test = $this->tests_model->view_tests ($test_id);
+
+		$data['coaching_id'] = $coaching_id;
+		$data['category_id'] = $category_id;
+		$data['test_id'] = $test_id;
+		
+		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
+		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
+
+		if (!empty($questions)) {
+			$num_test_questions = count ($questions);
+		} else {
+			$num_test_questions = 0;
+		}
+		$data['test_marks'] = $testMarks;
+		$data['num_test_questions'] = $num_test_questions;
+
+		// Get heading questions
+		$result = array ();
+		if ( ! empty($questions)) {
+			foreach ($questions as $row) {
+				$parent_id = $row['parent_id'];
+				$parent_row = $this->qb_model->getQuestionDetails ($parent_id);
+				$result[$parent_id]['parent'] = $parent_row;
+				$result[$parent_id]['questions'][] = $row;
+			}
+		}
+		$data['results'] = $result;
+		
+		/* --==// Back Link //==-- */
+		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+		
+		$data['page_title'] = 'Preview Test'; 
+		
+		/* --==// Toolbar //==-- */ 
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		
+		$data['script'] = $this->load->view ('tests/scripts/preview_test', $data, true);
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('tests/inc/manage_test', $data);
+		$this->load->view('tests/preview_test', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);	
+		
+	}
+
 	/*---=== ENROLMENT ===---*/
-	public function enrolments ($coaching_id=0, $category_id=0, $test_id=0, $role_id=0, $class_id=0, $type=ENROLED_IN_TEST, $batch_id=0, $status='-1') {
+	public function enrolments ($coaching_id=0, $category_id=0, $test_id=0, $type=ENROLED_IN_TEST, $role_id=0, $class_id=0, $batch_id=0, $status='-1') {
 		
 		$data['page_title'] 	= 'Enrolments';
 		$data['coaching_id'] 	= $coaching_id;
@@ -378,7 +464,17 @@ class Tests extends MX_Controller {
 		$data['results'] = $results;
 		$data['test'] 	= $this->tests_model->view_tests ($test_id);
 		
+		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
+		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
 		
+		if (! empty($questions)) {
+			$num_test_questions = count ($questions);
+		} else {
+			$num_test_questions = 0;
+		}
+		$data['test_marks'] = $testMarks;
+		$data['num_test_questions'] = $num_test_questions;
+
 		$role_lvl 		 		= $this->session->userdata ('role_lvl');	
 		$admin 					= FALSE;
 		$data['roles']	 		= $this->users_model->get_user_roles ($admin, $role_lvl);
@@ -395,89 +491,6 @@ class Tests extends MX_Controller {
 	}
 	
 	
-	// Create new question group
-	/* CREATE QUESTION GROUP
-		Function to create question group
-	*/	
-	public function question_group_create ($coaching_id=0, $category_id=0, $test_id=0, $question_id=0) {
-		
-		$data['page_title'] 	= 'Create/Edit Section';
-		$data['coaching_id'] 	= $coaching_id;
-		$data['category_id'] 	= $category_id;
-		$data['question_id'] 	= $question_id;
-		$data['test_id'] 		= $test_id;
-		//$data['script'] 		= $this->load->view (SCRIPT_PATH . 'tinymce', $data, TRUE);
-
-		$data['test'] = $test = $this->tests_model->view_tests ($test_id);
-
-		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);		
-		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id, $questions);
-		
-		/* Breadcrumbs */
-		$data['bc'] = array ('Questions'=>'coaching/tests/questions/'.$coaching_id.'/'.$category_id.'/'.$test_id);
-
-		// All Question Types
-		$data['question_types'] = $this->common_model->get_sys_parameters (SYS_QUESTION_TYPES);
-		
-		$data['questions'] = $this->qb_model->get_heading_questions ($coaching_id, $category_id);
-
-		// Get Question Details
-		$result = $this->qb_model->getQuestionDetails ($question_id);
-		
-		// Selected Question Type
-		if ($question_id > 0) {
-			$data['question_type'] = $this->common_model->sys_parameter_name (SYS_QUESTION_TYPES, $result['type']);
-		}
-		$data['result'] = $result;
-		$data['toolbar_buttons'] = $this->toolbar_buttons;
-		
-		$data['script'] 	= $this->load->view ('tests/scripts/question_group_create', $data, true);
-		$this->load->view(INCLUDE_PATH . 'header', $data);
-		$this->load->view('tests/inc/manage_test', $data);
-		$this->load->view('tests/question_group_create', $data);
-		$this->load->view(INCLUDE_PATH . 'footer', $data);
-    }
-	
-	
-	/* function for Create/Edit question */
-	public function question_create ($coaching_id=0, $category_id=0, $test_id=0, $parent_id=0, $question_id=0, $lang_id=0) {
-		
-		/* --==// Toolbar Menus //==-- */
-		$data['lang_id']	=	$lang_id;
-		$data['coaching_id'] 	= $coaching_id;
-		$data['classifications'] = $this->common_model->get_sys_parameters (SYS_QUESTION_CLASSIFICATION);			
-		$data['question_types'] = $this->common_model->get_sys_parameters (SYS_QUESTION_TYPES);
-		$data['test'] = $test = $this->tests_model->view_tests ($test_id);
-		$questions 			= $this->qb_model->get_sub_questions (0, $parent_id);
-		//$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
-		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id, $questions);
-
-		/* Back Link */
-		$data['bc'] = array ('Question Group'=>'coaching/tests/question_group_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id);
-
-		$data['toolbar_buttons'] = $this->toolbar_buttons;
-
-		/* Page Related Statistics */
-
-		$data['category_id']	= $category_id;
-		$data['parent_id'] 		= $parent_id;
-		$data['question_id']	= $question_id;
-		$data['test_id']		= $test_id;
-		$data['question_group'] = $this->qb_model->getQuestionDetails ($parent_id);
-		$data['result'] 		= $this->qb_model->getQuestionDetails ($question_id);
-		$data['questions'] 		= $questions;
-		$data['question_categories']   = $this->common_model->get_sys_parameters (SYS_QUESTION_CATEGORIES);
-		$data['question_difficulties'] = $this->common_model->get_sys_parameters (SYS_QUESTION_DIFFICULTIES);
-		$data['page_title'] = 'Add/Edit Question';
-		/* --==// Sidebar //==-- */ 
-		$data['script'] 	= $this->load->view ('tests/scripts/question_create', $data, true);
-		
-		$this->load->view(INCLUDE_PATH . 'header', $data);
-		$this->load->view('tests/inc/manage_test', $data);
-		$this->load->view('tests/question_create', $data);
-		$this->load->view(INCLUDE_PATH . 'footer', $data);
-	}
-	// end create edit question	
 
 	
 	/* VIEW TEST

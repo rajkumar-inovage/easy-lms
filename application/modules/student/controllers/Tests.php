@@ -41,6 +41,26 @@ class Tests extends MX_Controller {
 			$now = time ();
 			if (! empty ($enrolments)) {
 				foreach ($enrolments as $row) {
+					
+	                $questions = $this->tests_model->getTestQuestions ($coaching_id, $row['test_id']);
+	                $testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $row['test_id']);
+
+	                if (! empty ($questions)) {
+	                    $num_test_questions = count ($questions);
+	                } else {
+	                    $num_test_questions = 0;
+	                }
+
+	                $row['test_marks'] = $testMarks;
+	                $row['num_test_questions'] = $num_test_questions;
+
+					$attempts = $this->tests_model->get_attempts ($member_id, $row['test_id']);
+					if (! empty ($attempts)) {
+						$num_attempts = count($attempts);
+					} else {
+						$num_attempts = 0;
+					}
+
 					// On going tests
 					if ( $now >= $row['start_date'] && $now <= $row['end_date']) {
 						$enroled['ongoing'][] = $row;
@@ -54,11 +74,12 @@ class Tests extends MX_Controller {
 				}
 			}
 			$data['tests'] = $enroled;
+			$data['num_attempts'] = $num_attempts;
 		} else {
 			$data['tests'] = $this->tests_model->get_all_tests ($coaching_id, $category_id=0, $test_type);
 		}
 		
-		$data['bc'] 			= array ('Dashboard'=>'student/home/dashboard/'.$coaching_id.'/'.$member_id);
+		$data['bc'] = array ('Dashboard'=>'student/home/dashboard/'.$coaching_id.'/'.$member_id);
 
 		$this->load->view ( INCLUDE_PATH . 'header', $data); 
 		$this->load->view ( 'tests/browse_tests', $data);
@@ -120,11 +141,26 @@ class Tests extends MX_Controller {
 	}
 	
 	public function test_instructions ($coaching_id=0, $member_id=0, $test_id=0, $nav="") {
+		
 		$test = $this->tests_model->view_tests ($test_id);		
-		if($coaching_id==0){
+		
+        $questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
+        $testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
+
+        if (! empty ($questions)) {
+            $num_test_questions = count ($questions);
+        } else {
+            $num_test_questions = 0;
+        }
+
+        $data['test_marks'] = $testMarks;
+        $data['num_test_questions'] = $num_test_questions;
+
+
+		if ($coaching_id == 0) {
             $coaching_id = $this->session->userdata ('coaching_id');
         }
-        if($member_id==0){
+        if ($member_id == 0) {
             $member_id = $this->session->userdata ('member_id');
         }
 		
@@ -141,12 +177,11 @@ class Tests extends MX_Controller {
 		// Check enrolment
 		if ($test['test_type'] == TEST_TYPE_REGULAR) {
 			$now = time ();
-			$enrolment = $this->tests_model->member_enrolment( $coaching_id, $test_id, $member_id);
+			$enrolment = $this->tests_model->get_enrolment_details( $coaching_id, $test_id, $member_id);
 			if ( $now >= $enrolment['start_date'] && $now <= $enrolment['end_date']) {
 				$start_test = true;
 			}
 		}
-
 
 
 		$page = str_replace (':', '/', $nav);
@@ -166,10 +201,10 @@ class Tests extends MX_Controller {
 		//$data['script'] = $this->load->view ('tests/scripts/test_instructions', $data, true);
 		$this->load->view(INCLUDE_PATH  . 'header', $data);
 		$this->load->view('tests/test_instructions',$data);
-		$this->load->view(INCLUDE_PATH  . 'footer', $data);
-		
+		$this->load->view(INCLUDE_PATH  . 'footer', $data);		
 	}
 	
+
 	public function test_verification ($coaching_id=0, $member_id=0, $test_id=0) {
 		
 		/* Check for valid test session */
@@ -267,7 +302,8 @@ class Tests extends MX_Controller {
 		/* Perpare an array in form of subject->question_group->question */
 		$collect = array ();
 		if ( ! empty ($all_questions)) {					
-			foreach ($all_questions as $qid) {
+			foreach ($all_questions as $row) {
+				$qid = $row['question_id'];
 				// get details
 				$details = $this->qb_model->getQuestionDetails ($qid);
 				$parent_id = $details['parent_id'];
@@ -328,7 +364,7 @@ class Tests extends MX_Controller {
 	}	
 	
 	
-	public function test_submitted ($coaching_id=0, $member_id=0, $test_id=0, $attempt_id=0) {
+	public function test_submitted ($coaching_id=0, $test_id=0, $member_id=0, $attempt_id=0) {
 		
 		$data['page_title'] 		= "Test Submitted";
 
@@ -336,13 +372,17 @@ class Tests extends MX_Controller {
 		$data['member_id']			= $member_id;
 		$data['test_id']			= $test_id;
 		$data['attempt_id']		    = $attempt_id;
+		$data['bc']					= ['Test Taken'=>'student/tests/tests_taken/'.$coaching_id.'/'.$test_id.'/'.$member_id];
+
+		$enrolment = $this->tests_model->get_enrolment_details ($coaching_id, $test_id, $member_id);
+		if ($enrolment['release_result'] == RELEASE_EXAM_NEVER) {
+			$this->message->set ('Test submitted successfully. Result will be declared on a later date', 'success', true);
+			redirect ('student/tests/tests_taken/'.$coaching_id.'/'.$member_id);
+		}
 
 		$data['test_marks'] 		= $this->tests_model->getTestquestionMarks ($coaching_id, $test_id);
 		$ob = $this->tests_reports->calculate_obtained_marks ($test_id, $attempt_id, $member_id);
-		//$data['score']				= $this->tests_reports->obtained_marks ($test_id, $attempt_id, $data['member_id']);
-
 		$data['score'] = $ob;
-		$data['bc']					= ['Test Taken'=>'student/tests/tests_taken/'.$coaching_id.'/'.$member_id.'/'.$test_id];
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('tests/test_submitted', $data);

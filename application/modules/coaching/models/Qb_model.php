@@ -356,24 +356,25 @@ class Qb_model extends CI_Model {
 	}
 
 	/* QUESTION FUNCTIONS */
-	public function save_group ($coaching_id, $lesson_id, $question_id) {
+	public function save_group ($coaching_id=0, $chapter_id=0, $question_id=0) {
 		$marks 			= $this->input->post ('marks');
-		$type 			= $this->input->post ('type');
-		$category_id 	= $this->input->post ('category');
+		$category_id 	= 0;
+		$type 			= 0;
 		$time 			= 0;
 		$negmarks 		= 0;
+		$lang 			= 0;
 		$data = array(
 					'coaching_id'			=>$coaching_id,
-					'lang_id'				=>$this->input->post('language'),
+					'lang_id'				=>$lang,
 					'type'					=>$type,
-					'marks'					=>$marks,  
+					'marks'					=>$marks,
 					'time'					=>$time,
-					'negmarks'				=>$negmarks, 
-					'question_feedback'		=>'',  
-					'answer_feedback'		=>'',  
-					'chapter_id'			=>$lesson_id, 
-					'category_id'			=>$category_id, 
-					'question'				=>ascii_to_entities($this->input->post('question')), 
+					'negmarks'				=>$negmarks,
+					'chapter_id'			=>$chapter_id,
+					'category_id'			=>$category_id,
+					'question'				=>ascii_to_entities($this->input->post('question')),
+					'question_feedback'		=>'',
+					'answer_feedback'		=>'',
 					'parent_id'				=>'0',
 					'choice_1'				=>'',  
 					'choice_2'				=>'',
@@ -397,27 +398,13 @@ class Qb_model extends CI_Model {
 		
 		if ($question_id > 0) {
 			$this->db->where('question_id', $question_id);
-			$this->db->update('coaching_questions', $data);
-			
-			// Update Sub Questions
-			$this->db->set ('category_id', $category_id);
-			$this->db->set ('type', $type);
-			$this->db->set ('marks', $marks);
-			$this->db->set ('time', $time);
-			$this->db->set ('negmarks', $negmarks);
-			$this->db->where ('parent_id', $question_id);
-			$this->db->update('coaching_questions');
-			
+			$this->db->update('coaching_questions', $data);			
 			return $question_id ;
 		} else {
 			$data['creation_date'] = time ();
 			$data['created_by'] = $this->session->userdata ('member_id');
-			$id = $this->db->insert('coaching_questions', $data);
-			if ($id) {
-				return $this->db->insert_id();
-			} else {
-				return false;
-			}
+			$this->db->insert('coaching_questions', $data);
+			return $this->db->insert_id();			
 		}
 	}
 
@@ -425,7 +412,7 @@ class Qb_model extends CI_Model {
 	public function save_question ( $coaching_id=0, $lesson_id=0, $parent_id=0, $question_id=0 ) {
 		$choices    = $this->input->post('choice');		
 		$answers    = $this->input->post('answer');
-		$type 		= $this->input->post('type_id');
+		$type 		= $this->input->post ('question_type');
 		$option     = $this->input->post('option');	
 		
 		switch ($type) {
@@ -487,15 +474,16 @@ class Qb_model extends CI_Model {
 						$answer[$i] = 0;
 					}
 				}			
-			break;
-			
+			break;			
 		}
+
 		$data = array (
 					'coaching_id'		=>$coaching_id,
 					'category_id'		=>$this->input->post('category'), 
 					'clsf_id' 			=>$this->input->post('classification'),
 					'diff_id' 			=>$this->input->post('difficulty'),
 					'lang_id' 			=>$this->input->post('language'),
+					'question'			=>ascii_to_entities ($this->input->post('question')), 
 					'chapter_id'		=>$lesson_id,
 					'type'				=>$type,
 					'answer_1'			=> ($answer[1]),
@@ -516,11 +504,10 @@ class Qb_model extends CI_Model {
 					'option_4'			=>ascii_to_entities ($option[4]),
 					'option_5'			=>ascii_to_entities ($option[5]), 
 					'option_6'			=>ascii_to_entities ($option[6]),
-					'properties'		=>($this->input->post('properties')), 
+					'properties'		=>0, 
 					'marks'				=>$this->input->post('marks'), 
 					'time'				=>$this->input->post('time'), 
 					'negmarks'			=>$this->input->post('negmarks'), 
-					'question'			=>ascii_to_entities ($this->input->post('question')), 
 					'question_feedback'	=>ascii_to_entities ($this->input->post('question_feedback')), 
 					'answer_feedback'	=>ascii_to_entities ($this->input->post('answer_feedback')), 
 					'parent_id'			=>$parent_id,

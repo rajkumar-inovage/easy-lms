@@ -92,7 +92,7 @@
 			?> 
 			<div style="display: none" id="page<?php echo $confirm_div; ?>" class="pages page<?php echo $confirm_div; ?>" >
 				
-				<div class="card bg-info paper-shadow">
+				<div class="card border-danger paper-shadow">
 					<div class="card-header">
 						<h4>Test Complete</h4>
 					</div>

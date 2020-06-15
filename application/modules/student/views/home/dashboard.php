@@ -66,54 +66,84 @@
 	<div class="card-header ">
 		<h4>My Tests</h4>
 	</div>
-	<ul class="list-group ">
-		<?php 
-		$i=1;
-        if (! empty ($tests['ongoing'])) {
-            echo '<ul class="list-group list-group-flush ">';
-                foreach ($tests['ongoing'] as $row) {
-                    ?>
-                    <li class="list-group-item ">
-                        <div class="media v-middle ">
-                          <div class="media-left">
-                            <span class="icon-block half bg-red-400 rounded-circle text-white" title="Report">
-                              <i class="fa fa-superscript"></i>
-                            </span>
-                          </div>
-                          <div class="media-body">
-                            <h4 class=""><?php echo $row['title']; ?></h4>
-                            <div class="">
-                                <span class="badge badge-success">
-                                	Active Test
-                                </span>
-                                <p class="text-muted">
-                                	Started On: <?php echo date ('d M Y', $row['start_date']); ?><br>
-                                	Ending On: <?php echo date ('d M Y', $row['end_date']); ?>
-                                </p>
-                            </div>
+	<?php 
+	$i=1;
+	$now = time ();
+    if (! empty ($enrolments)) {
+        echo '<ul class="list-group list-group-flush ">';
+            foreach ($enrolments as $row) {
+                ?>
+                <li class="list-group-item ">
+                    <div class="media v-middle ">
+                      <div class="media-left">
+		                <?php if ( $now >= $row['start_date'] && $now <= $row['end_date']) { ?>
+                            <span class="icon-block half bg-success rounded-circle ">
+	                          <i class="fa fa-superscript"></i>
+	                        </span>
+	                	<?php } else if ($now < $row['start_date'] && $now < $row['end_date']) { ?>
+                            <span class="icon-block half bg-warning rounded-circle ">
+	                          <i class="fa fa-superscript"></i>
+	                        </span>
+                        <?php } else { ?>
+                            <span class="icon-block half bg-grey-200 rounded-circle">
+	                          <i class="fa fa-superscript"></i>
+	                        </span>
+	                    <?php } ?>
+                      </div>
+                      <div class="media-body">
+                        <h4 class=""><?php echo $row['title']; ?></h4>
+                        <div class="">
+			                <?php if ( $now >= $row['start_date'] && $now <= $row['end_date']) { ?>
+	                            <span class="badge badge-success">Ongoing Test</span>
+		                	<?php } else if ($now < $row['start_date'] && $now < $row['end_date']) { ?>
+	                            <span class="badge badge-warning">Upcoming Test</span>
+	                        <?php } else { ?>
+	                            <span class="badge badge-default bg-grey-200">Archived Test</span>
+	                        <?php } ?>
+	                        <div>
+	                        	QUESTIONS: <?php echo $row['num_test_questions']; ?><br>
+	                        	MM: <?php echo $row['test_marks']; ?>
+	                        </div>
 
-                            <?php echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$row['test_id'], 'Take Test', ['class'=>'btn btn-primary']); ?>
-                          </div>
+                            <div class="text-muted">
+                            	Started On: <?php echo date ('d M, Y H:i A', $row['start_date']); ?><br>
+                            	Ending On: <?php echo date ('d M, Y H:i A', $row['end_date']); ?>
+                            </div>
                         </div>
-                    </li>
-                    
-                    <?php
-	       			$i++;
-					if ($i >= 3) {
-						break;
-					}		
-                }
-            echo '</ul>';
-        } else {
-            ?>
-            <div class="text-danger my-4 mx-2">
-                No tests right now 
-            </div>
-            <?php
-        }
+                      </div>
+
+                      <div class="media-right">
+                        <?php 
+		                if ( ($now >= $row['start_date'] && $now <= $row['end_date']) && ($row['attempts'] == 0  || $row['num_attempts'] < $row['attempts']) ) {
+		                	// Ongoing Tests
+	                        echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$row['test_id'], 'Take Test', ['class'=>'btn btn-success']);
+		                } else if ($now < $row['start_date'] && $now < $row['end_date']) {
+			                // Up coming tests
+		                } else if ($row['release_result'] == RELEASE_EXAM_IMMEDIATELY) {
+                			echo anchor ('student/reports/test_report/'.$coaching_id.'/'.$member_id.'/0/'.$row['test_id'], 'Report', ['class'=>'btn btn-default btn-outline-secondary']);
+		                }
+		                ?>
+                      </div>
+                    </div>
+                </li>
+                
+                <?php
+       			$i++;
+				if ($i >= 3) {
+					break;
+				}		
+	        }
+        echo '</ul>';
+	} else {
         ?>
-	</ul>
+        <div class="text-danger my-4 mx-2">
+            No tests right now 
+        </div>
+        <?php
+    }
+    ?>
 	<div class="card-footer text-right">
+		<?php echo anchor ('student/tests/index/'.$coaching_id.'/'.$member_id.'/'.TEST_TYPE_PRACTICE, '<i class="fa fa-superscript"></i> Practice Tests', ['class'=>'btn btn-primary mr-1']); ?>
 		<?php echo anchor ('student/tests/index/'.$coaching_id.'/'.$member_id, '<i class="fa fa-superscript"></i> All Tests', ['class'=>'btn btn-link mr-1']); ?>
 	</div>
 </div>

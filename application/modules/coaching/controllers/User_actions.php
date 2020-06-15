@@ -48,7 +48,7 @@ class User_actions extends MX_Controller {
 			if ( ($num_users > $free_users) && $member_id == 0) {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'User limit reached. You can create a maximum of '.$free_users.' user accounts in Free Subscription plan. Upgrade your plan to create more users' )));
-			} else if (($this->users_model->coaching_contact_exists ($contact, $coaching_id) == true)) {
+			} else if (($this->users_model->coaching_contact_exists ($contact, $coaching_id, $member_id) == true)) {
 				// Check if already exists
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'This mobile number is already in use with another account' )));

@@ -45,7 +45,15 @@
 									<?php echo $questions['question']; ?>
 								</td>
 								<td>
-									<?php echo $questions['om']; ?>/<?php echo $questions['marks']; ?>
+									<?php 
+									if ($type == TQ_CORRECT_ANSWERED) {
+										echo $question['marks'].'/'.$question['marks'];
+									} else if ($type == TQ_WRONG_ANSWERED) {
+										echo '0/'.$question['marks'];
+									} else {
+										echo '0/'.$question['marks'];
+									}
+									?>
 								</td>
 								<td>
 								<?php

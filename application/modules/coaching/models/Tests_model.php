@@ -52,6 +52,9 @@ class Tests_model extends CI_Model {
 		$sql = $this->db->delete ('coaching_test_categories');
 	}
 
+	/*--------------- // Category // ----------------------*/
+
+
 	//=========== Model for list tests =======================
 	public function get_latest_tests ($limit=5) {
 		$this->db->where ('coaching_id', $coaching_id);
@@ -82,40 +85,28 @@ class Tests_model extends CI_Model {
 		$this->db->order_by ('creation_date', 'DESC');
 		
 		$query = $this->db->get ("coaching_tests");
-		$results = $query->result_array();		
-		return $results;
-		echo $this->db->last_query ();
-	}
+		$results = $query->result_array();	
+		$data = [];
+		if (! empty ($results))	{
+			foreach ($results as $row) {
+                $questions = $this->getTestQuestions ($coaching_id, $row['test_id']);
+                $testMarks = $this->getTestQuestionMarks ($coaching_id, $row['test_id']);
 
-	//=========== Model for list tests =======================
-	public function get_test ($test_id=0) {
-		$this->db->where ('test_id', $test_id);
-		return $this->db->get ("coaching_tests")->row();
+                if (! empty ($questions)) {
+                    $num_test_questions = count ($questions);
+                } else {
+                    $num_test_questions = 0;
+                }
+
+                $row['test_marks'] = $testMarks;
+                $row['num_test_questions'] = $num_test_questions;
+
+                $data[] = $row;
+			}
+		}
+		return $data;
 	}
 	
-	//=========== Model for list tests =======================
-	public function list_test ($category_id=0, $type=0, $finalized=0) {
-		
-		if ($type > 0) {
-			$this->db->where ('test_type', $type);
-		}
-		if ($category_id > 0) {
-			$this->db->where ('category_id', $category_id);
-		}
-		$this->db->where ('coaching_id', $coaching_id);
-		$this->db->order_by ('creation_date', 'DESC');
-		$this->db->where ('finalized', $finalized);
-		$query = $this->db->get ("coaching_tests");
-		if ($query->num_rows() > 0)	{
-			// prepare the array with key value to be displayed
-			foreach ($query->result_array() as $row) {
-				$results[ $row['test_id'] ] = $row;
-			}
-			return $results;
-		} else {
-			return false;
-		}
-	}
 	
 	//=========== Model for search tests =======================
 	public function search_tests ($coaching_id=0) {
@@ -136,52 +127,9 @@ class Tests_model extends CI_Model {
 		$this->db->where ('coaching_id', $coaching_id);
 		$query = $this->db->get ("coaching_tests");
 		return $query->result_array();
-	}
-	
-	//=========== Model for get test questions with pagination =======================
-	public function get_test_questions_pagination ($test_id=0, $offset='') {
-		
-		$config = $this->config->item ('pagination');
-		$limit = $config['per_page'];
-		
-		$this->db->select('question_id');
-		$this->db->where ('test_id', $test_id);
-		$this->db->where ('coaching_id', $coaching_id);
-		
-		if ( ! empty($offset)) {
-			$this->db->limit ($limit, $offset);			
-		}
-		$query = $this->db->get ("coaching_test_questions");
-		if ($query->num_rows() > 0)	{
-			foreach ($query->result_array() as $row ) {
-				$ids[] = $row['question_id'];
-			}
-			return $ids;
-		} else {
-			return 0;
-		}
-	}
+	}	
 	
 	
-	//=========== Browsw All Tests =======================
-	public function browse_tests ($category_id=0, $type=TEST_TYPE_PRACTICE) {
-		//$this->db->where ('finalized', 1);
-		$this->db->where ('test_type', $type);
-		if ( ! empty ($category_id) ) {
-			$this->db->where_in ('category_id', $category_id);			
-		}
-		$query = $this->db->get ("coaching_tests");
-		if ($query->num_rows() > 0)	{
-			// prepare the array with key value to be displayed
-			foreach ($query->result_array() as $row) {
-				$results[ $row['test_id'] ] = $row;
-			}
-			return $results;
-		} else {
-			return false;
-		}
-	}
-
 	//=========== Model for View a details of test =====================
 	public function view_tests ($tid=0) {
 		//$this->db->where ('coaching_id', $coaching_id);		
@@ -215,7 +163,6 @@ class Tests_model extends CI_Model {
 		if ($tid > 0) {
 			$this->db->where ('test_id', $tid);
 			$this->db->update ('coaching_tests', $data);
-			return $tid;
 		} else {
 			$data['num_takes']			= 0;
 			$data['result_release']		= RELEASE_EXAM_NEVER;
@@ -223,15 +170,12 @@ class Tests_model extends CI_Model {
 			$data['created_by']	  		= intval ($this->session->userdata('member_id'));
 			$data['creation_date']	  	= $now;
 			$this->db->insert('coaching_tests', $data); 
-			return $this->db->insert_id();
+			$tid = $this->db->insert_id();
 		}
-	}
-	
-	public function set_method ($tid, $method) {
-		$data = array ('method' => $method);
-		$this->db->where('test_id', $tid);
-		$this->db->update('coaching_tests', $data);	
-	}
+
+		$return = ['test_id'=>$tid, 'category_id'=>$category_id];
+		return $return;
+	}	
 	
 	
 	//============ Model for ` test==============================
@@ -272,43 +216,27 @@ class Tests_model extends CI_Model {
 		
 	}
 	
-	public function saveQuestionsSimple ($coaching_id, $question_id, $test_id) {
+	public function add_to_test ($coaching_id=0, $question_id=0, $test_id=0) {
 		$data = array (	'test_id'		=>	$test_id,
+						'coaching_id'	=>	$coaching_id,
 						'question_id'	=>	$question_id,
-						'instructor'	=>	$this->session->userdata ('member_id')
-					  );					  
-		$data['coaching_id']	 	= $coaching_id;
-		$data['plan_id']	 		= intval ($this->session->userdata ('plan_id'));
+					  );
 
-		$this->db->select('question_id');
-		$this->db->where ('question_id', $question_id );
-		$this->db->where ('test_id', $test_id );
+		$this->db->where ($data);
 		$query = $this->db->get ('coaching_test_questions');
 		if ($query->num_rows () == 0) {
 			$this->db->insert("coaching_test_questions", $data);
-			return true;
 		}
 	} 
 	
 	//============ Model for release results of a test==============================
-	public function release_test ($tid, $member_id) {
-		$data = array('release_result' =>1);
-		$this->db->where('test_id', $tid);
-		$this->db->where('member_id', $member_id);
-		$this->db->update('coaching_test_enrolments', $data);	
-	}
-	
-	
-	// Get tests in which a user is enroled
-	public function enroled_in_tests ($member_id) {
-		$q = $this->db->get_where ("coaching_test_enrolments", array ("member_id"=>$member_id));
-		if ($q->num_rows () > 0 ) {
-			return $q->result_array();
-		} else {
-			return false;
-		}
-	}
-	
+	public function release_result ($coaching_id=0, $test_id=0) {
+		$this->db->set('release_result', RELEASE_EXAM_IMMEDIATELY);
+		$this->db->where('coaching_id', $coaching_id);
+		$this->db->where('test_id', $test_id);
+		$this->db->update('coaching_test_enrolments');
+	}	
+
 
 	// checks if a question is already present in a test
 	public function questionInTest ($test_id, $question_id = 0) {
@@ -322,41 +250,45 @@ class Tests_model extends CI_Model {
 		}
 	}
 	
+
 	// returns an array of questions added in to a test
-	public function getTestQuestions ($coaching_id=0, $test_id=0) {
-		$this->db->select('question_id');
-		$this->db->where ('coaching_id', $coaching_id);
-		$this->db->where ('test_id', $test_id);
-		$query = $this->db->get ('coaching_test_questions');
-		if ($query->num_rows() > 0)	{
-			foreach ($query->result_array() as $row ) {
-				$ids[] = $row['question_id'];
-			}
-			return $ids;
-		} else {
-			return 0;
+	public function getTestQuestions ($coaching_id=0, $test_id=0, $parent_id=0) {
+		$this->db->select('CQ.*');
+		$this->db->from('coaching_test_questions CTQ');
+		$this->db->join('coaching_questions CQ', 'CTQ.question_id=CQ.question_id');
+		$this->db->where ('CTQ.coaching_id', $coaching_id);
+		$this->db->where ('CTQ.test_id', $test_id);
+		if ($parent_id > 0) {
+			$this->db->where ('CQ.parent_id', $parent_id);
 		}
+		$query = $this->db->get ();
+		return $query->result_array();
 	}	
 	
 	
 	// gives total marks of the added questions in a test
-	public function getTestQuestionMarks ($coaching_id, $test_id, $questions=0 ) {
+	public function getTestQuestionMarks ($coaching_id=0, $test_id=0) {
+		$marks = 0;
+		$data = [];
 		$questions = $this->getTestQuestions ($coaching_id, $test_id);
-		if ( is_array ($questions) ) {
-			$this->db->select_sum('marks');
+		//print_r ($questions);
+		if ( ! empty ($questions) ) {
+			foreach ($questions as $row) {
+				$data[] = $row['question_id'];
+			}
+			$this->db->select_sum ('marks');
 			$this->db->where ('coaching_id', $coaching_id);
-			$this->db->where_in( 'question_id', $questions);
+			$this->db->where_in( 'question_id', $data);
 			$query = $this->db->get( 'coaching_questions');
-			if ($query->num_rows() > 0)	{
-				$result = $query->result_array();
-			}			
-			return $result[0];
-		} else {
-			return $result['marks'] = 0;
+			$result = $query->row_array ();
+			$marks = $result['marks'];		
 		}
+
+		return $marks;
 	}
 
-	// gives time of added questions 
+
+	// gives total time of added questions 
 	public function getTestQuestionTime( $coaching_id, $questions ) {
 		$this->db->select_sum('time');
 		$this->db->where_in( 'question_id', $questions);
@@ -368,7 +300,7 @@ class Tests_model extends CI_Model {
 	}
 	
 	
-	public function finaliseTest($coaching_id=0, $test_id, $marks) {
+	public function finaliseTest($coaching_id=0, $test_id=0, $marks=0) {
 		$time = $this->input->post ('set_exam_time');
 		if ($time == 0) {
 			$update =  array ('finalized'=>1, 'max_marks'=>$marks);
@@ -390,63 +322,81 @@ class Tests_model extends CI_Model {
 	}
 	
 	
-	public function resetTest($coaching_id=0, $test_id) {
+	public function resetTest($coaching_id=0, $test_id=0) {
 		// delete all questions from test
-		$this->db->where ('coaching_id', $coaching_id);
-		
-		$this->db->delete('coaching_test_questions', array ('test_id'=>$test_id)); 
+		$this->db->where ('coaching_id', $coaching_id);		
+		$this->db->where ('test_id', $test_id);		
+		$this->db->delete('coaching_test_questions'); 
+
 		// set status as unfinalized
-		$this->db->where ('coaching_id', $coaching_id);
-		
-		$this->db->where('test_id', $test_id);  
-		return $this->db->update('coaching_tests', array ('finalized'=>0, 'method'=>0)); 	
+		$this->db->where ('coaching_id', $coaching_id);		
+		$this->db->where('test_id', $test_id);
+		return $this->db->update ('coaching_tests', array ('finalized'=>0)); 	
 	}
 	
 	// delete a question from test
-	public function deleteTestQuestion($test_id, $id) {
+	public function deleteTestQuestion($test_id=0, $id=0) {
 		// delete all questions from test
 		$this->db->delete('coaching_test_questions', array ('test_id'=>$test_id, 'question_id'=>$id)); 
 	}
 		
 	
 	// Model for enroling member	
-	public function enrol_member ($coaching_id, $member_id, $test_id) {
+	public function enrol_member ($coaching_id=0, $member_id=0, $test_id=0) {
+
 		$attempts 	= $this->input->post ('num_takes');
+
 		$start_date = $this->input->post ('start_date');
-		list ($sy, $sm, $sd) = explode ('-', $start_date);
-		$st = mktime (0, 0, 0, $sm, $sd, $sy);
-		
-		$end_date 	= $this->input->post ('end_date');
-		list ($ey, $em, $ed) = explode ('-', $end_date);
-		$et = mktime (0, 0, 0, $em, $ed, $ey);
+		list ($sy, $sm, $sd) = explode ("-", $start_date);
+		$shh = $this->input->post ('start_time_hh');
+		$smm = $this->input->post ('start_time_mm');
+		$start_date = mktime ($shh, $smm, 0, $sm, $sd, $sy);
+
+		$end_date = $this->input->post ('end_date');
+		list ($ey, $em, $ed) = explode ("-", $end_date);
+		$ehh = $this->input->post ('end_time_hh');
+		$emm = $this->input->post ('end_time_mm');
+		$end_date = mktime ($ehh, $emm, 0, $em, $ed, $ey);
 		
 		$result_release = $this->input->post ('result_release');
 		$extra_time = intval ($this->input->post ('extra_time'));
 		
 		
-		$data = array (	'member_id'	=>	$member_id,
-						'test_id'	=>	$test_id,
-						'start_date'=>	$st,
-						'end_date'	=>	$et,
+		$data = array (	
+						'start_date'=>	$start_date,
+						'end_date'	=>	$end_date,
 						'release_result' => $result_release,
 						'attempts' => $attempts,
 						'extra_time' => $extra_time,
-						'coaching_id'=> $coaching_id
 					 );
+		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('test_id', $test_id);
 		$this->db->where ('member_id', $member_id);
 		$sql = $this->db->get ('coaching_test_enrolments');
 		if ($sql->num_rows () == 0 ) {
+			$data['member_id']	= $member_id;
+			$data['test_id']	= $test_id;
+			$data['coaching_id']	= $coaching_id;
 			$this->db->insert('coaching_test_enrolments', $data);
 		} else {
-			$this->db->where ('test_id', $test_id);
 			$this->db->where ('coaching_id', $coaching_id);
+			$this->db->where ('test_id', $test_id);
 			$this->db->where ('member_id', $member_id);
-			$this->db->update ('coaching_test_enrolments', $data);			
+			$this->db->update ('coaching_test_enrolments', $data);
 		}
 	}
 	
+	// Get tests in which a user is enroled
+	public function enroled_in_tests ($member_id) {
+		$q = $this->db->get_where ("coaching_test_enrolments", array ("member_id"=>$member_id));
+		if ($q->num_rows () > 0 ) {
+			return $q->result_array();
+		} else {
+			return false;
+		}
+	}
 	
+
 	// Model for listing enrolled member
 	public function enrolled_member ($test_id, $member_id) {
 		$query = $this->db->get_where ("coaching_test_enrolments", array ('test_id'=>$test_id, 'member_id'=>$member_id));
@@ -699,7 +649,7 @@ class Tests_model extends CI_Model {
 	}
 	
 	public function all_question_group ($test_id) {
-		$this->db->where("test_id", $test_id);
+		$this->db->where ("test_id", $test_id);
 		$this->db->where ('coaching_id', $coaching_id);
 		
 		$query = $this->db->get("coaching_test_questions");
@@ -709,7 +659,6 @@ class Tests_model extends CI_Model {
 		} else {
 			return false;
 		}
-			
 	}
 	
 	
@@ -741,7 +690,7 @@ class Tests_model extends CI_Model {
 		$category = $test_category['title'];
 		$result = array ('category'=>$category, 'subject'=>$subject);
 		return $result;
-	}	
+	}
 
 	public function get_monthly_test ($year, $month) {
 

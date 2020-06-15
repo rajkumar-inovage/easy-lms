@@ -2,14 +2,15 @@
 
 $config['config_coachings'] = '';
 
-define ('INCLUDE_PATH', 			    'coaching/layout/');
+if (! defined ('INCLUDE_PATH')) define ('INCLUDE_PATH', 			    'coaching/layout/');
 
 define ('COACHING_ID_PREFIX1', 			'EA');
 define ('COACHING_ID_PREFIX2', 			date ('Y'));
 define ('COACHING_ID_INCREMENT', 		1);
 define ('COACHING_ID_PADDING', 			4);
 
-define ('FREE_SUBSCRIPTION_PLAN_ID', 	1);
+define ('FREE_SUBSCRIPTION_PLAN_ID', 	1);		// Fixed 
+define ('FREE_SUBSCRIPTION_PERIOD', 	30);	// 30 Days
 
 // Coaching Account Status
 define ('COACHING_ACCOUNT_ACTIVE', 		1);

@@ -116,7 +116,7 @@
 									<input type="date" class="form-control required" name="start_date" value="<?php echo set_value('start_date', $start_date); ?>" id="start_date_text" <?php if ($class['start_date'] > 0 ) echo ''; else echo 'disabled'; ?> />
 								</div>
 
-								<div class="col-md-3">						
+								<div class="col-md-3">
 									<?php echo form_label('Time (HH)', '', array('class'=>'control-label')); ?>
 									<select name="start_time_hh " id="start_time_hh" class="form-control" <?php if ($class['start_date'] > 0 ) echo ''; else echo 'disabled="true"'; ?>>
 										<option value="-1">HH</option>

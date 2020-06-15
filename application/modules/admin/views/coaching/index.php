@@ -1,50 +1,17 @@
-<div class="card card-default">
-	<div class="table-responsive">
-	<table class="table  mb-0 table-hover ">
-		<thead>
-			<tr>
-				<th width="5%">#</th>
-				<th width="60%"><?php echo 'Coaching Name'; ?></th>
-				<th><?php echo 'Subscription Plan'; ?></th>
-				<th><?php echo 'Admin Email'; ?></th>
-				<th><?php echo 'Creation Date'; ?></th>
-				<th><?php echo 'Actions'; ?></th>
-			</tr>
-		</thead>
-		<tbody>
-		<?php
-		$i = 1;
-        if ( ! empty ($results)) { 
-			foreach ($results as $row) {
-				?>
-				<tr>
-				    <td><?php echo $i; ?></td>
-					<td>
-						<a href="<?php echo site_url ('coaching/home/dashboard/'.$row['id']); ?>" title='Dashboard', class=''><?php echo $row['coaching_name']; ?></a><br>
-						<?php echo $row['reg_no']; ?>
-					</td>
-					
-					<td><?php echo $row['title']; ?></td>
-					<td><?php echo $row['email']; ?></td>
-					<td><?php echo date ('d M Y', $row['creation_date']); ?></td>
-                    <td>
-                        <?php 
-                            echo anchor ('admin/coaching/manage/'.$row['id'], 'Manage', array('class'=>'btn btn-primary'));
-                        ?>
-                    </td>
-				</tr>
-				<?php 
-				$i++;
-			} // foreach 
-        } else {
-            ?>
-            <tr>
-                <td colspan="4"><span class="text-danger">No coaching accounts created yet </td>
-            </tr>
-            <?php
-        }
-		?>
-		</tbody>
-	</table>
+<div class="card mb-2 d-none">
+	<div class="card-body">
+		<?php echo form_open ('admin/coaching_actions/search_coaching', ['id'=>'search-form']); ?>
+			<div class="row">
+				<div class="col-md-6">
+					<input type="text" name="search_text">
+					<input type="submit" name="search" value="Search">
+				</div>
+				
+			</div>
+		</form>
 	</div>
+</div>
+
+<div id="coaching-list">
+	<?php echo $this->load->view ('coaching/inc/index', $data); ?>
 </div>

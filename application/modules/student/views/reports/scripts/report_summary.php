@@ -85,7 +85,7 @@ var briefChart = new Chart(ctx, {
 				},
 				ticks: {
 					min: 0,
-					max: (<?php echo $testMarks['marks']; ?> + 1),
+					max: (<?php echo $testMarks; ?> + 1),
 					stepSize: 1,
               	}
 			}]

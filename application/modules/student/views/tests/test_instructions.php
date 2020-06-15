@@ -5,9 +5,9 @@
 	<div class="card-body">
 		<ol class="pl-4">
 			<li>Test Duration: <strong><span class="completeDuration"><?php echo $test['time_min']; ?></span> </strong>minutes.</li>
-			<li>Questions: <span class="completeDuration"><?php echo $test['time_min']; ?></span> </li>
-			<li>Marks: <span class="completeDuration"><?php echo $test['time_min']; ?></span> </li>
-			<li>Pass Marks: <span class="completeDuration"><?php echo $test['time_min']; ?></span> </li>
+			<li>Questions: <span class="completeDuration"><?php echo $num_test_questions; ?></span> </li>
+			<li>Marks: <span class="completeDuration"><?php echo $test_marks; ?></span> </li>
+			<li>Pass Percentage: <span class="completeDuration"><?php echo $test['pass_marks']; ?>%</span> </li>
 			<li>Timer and Test Submission: The clock will show you the remaining time to complete the examination. </li>
 			<li>The Question Palette displayed on the right side of screen will show the status of each question using one of the following symbols:
 			<table class="table">

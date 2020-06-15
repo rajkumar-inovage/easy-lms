@@ -105,7 +105,7 @@
                         <li class="nav-item ">
                             <a class="nav-link " href="<?php echo site_url ($link); ?>">
                                 <div class="text-blue-400"><?php echo $menu['icon_img']; ?></div>
-                                <div class="text-blue-400"><?php echo $menu['menu_desc']; ?></div>                        
+                                <div class="text-blue-400"><?php echo $menu['menu_desc']; ?></div>
                             </a>
                         </li>
                         <?php

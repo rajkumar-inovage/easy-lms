@@ -32,7 +32,7 @@ class Home extends MX_Controller {
 
         $data['coaching_id'] = $coaching_id;
         $data['member_id'] = $member_id;
-        $data['role_id'] = $role_id;
+        $data['role_id'] = $role_id; 
 
         $data['my_classrooms'] = $this->virtual_class_model->my_classroom ($coaching_id, $member_id);
 
@@ -41,18 +41,30 @@ class Home extends MX_Controller {
         $now = time ();
         if (! empty ($enrolments)) {
             foreach ($enrolments as $row) {
-                // On going tests
-                if ( $now >= $row['start_date'] && $now <= $row['end_date']) {
-                    $enroled['ongoing'][] = $row;
-                } else if ($now < $row['start_date'] && $now < $row['end_date']) {
-                // Up coming tests
-                    $enroled['upcoming'][] = $row;
+                $questions = $this->tests_model->getTestQuestions ($coaching_id, $row['test_id']);
+                $testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $row['test_id']);
+
+                if (! empty ($questions)) {
+                    $num_test_questions = count ($questions);
                 } else {
-                // Archived tests
-                    $enroled['archived'][] = $row;
+                    $num_test_questions = 0;
                 }
+
+                $row['test_marks'] = $testMarks;
+                $row['num_test_questions'] = $num_test_questions;
+
+                $attempts = $this->tests_model->get_attempts ($member_id, $row['test_id']);
+                if (! empty ($attempts)) {
+                    $num_attempts = count($attempts);
+                } else {
+                    $num_attempts = 0;
+                }
+
+                $row['num_attempts'] = $num_attempts;
+                $enroled[] = $row;
             }
         }
+        $data['enrolments'] = $enroled;
         $data['tests'] = $enroled;
 
         $data['annc'] = $this->announcements_model->get_announcements ($coaching_id);

@@ -94,7 +94,7 @@
 		  <div class="modal-body">
 			<div class="form-group">
 				<label class="control-label">Category Title</label>
-				<input type="text" value="" class="form-control" name="title">
+				<input type="text" value="" class="form-control" name="title" autofocus="true">
 			</div>
 		  </div>
 		  <div class="modal-footer">

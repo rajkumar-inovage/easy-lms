@@ -41,16 +41,14 @@ class Plans extends MX_Controller {
 		$result = [];
 		$plans = $this->plans_model->test_plans ($category_id);
 		if (! empty ($plans)) {
-			foreach ($plans as $p) {
+			foreach ($plans as $p) {				
 				$tests = $this->plans_model->tests_in_plan ($p['plan_id']); 
-				if (!empty($tests)) {
+				if (! empty($tests)) {
 					$num_tests = count ($tests);
-				} else {
-					$num_tests = 0;
+					$p['tests_in_plan'] = $num_tests;
+					$p['tests'] = $tests;
+					$result[] = $p;
 				}
-				$p['tests_in_plan'] = $num_tests;
-				$p['tests'] = $tests;
-				$result[] = $p;
 			}
 		}
 		$data['plans'] = $result;	

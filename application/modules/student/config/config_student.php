@@ -42,6 +42,11 @@ define ('TEST_ERROR_OFFLINE_TEST',			3);
 define ('TEST_ERROR_UNPUBLISHED', 			4);
 define ('TEST_ERROR_NO_QUESTION',			5);
 
+define ('RELEASE_EXAM_NEVER',                           1);
+define ('RELEASE_EXAM_ONDATE',                          2);
+define ('RELEASE_EXAM_IMMEDIATELY',                     3);
+define ('RELEASE_EXAM_ALLMARKED',                       4); 
+
 /* QTYPE = question types: */
 define ('QUESTION_MCSC',       				1);
 define ('QUESTION_TF',   	  			2);

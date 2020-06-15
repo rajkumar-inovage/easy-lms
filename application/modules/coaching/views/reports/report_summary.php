@@ -3,31 +3,23 @@
 		<canvas id="briefChart" width="100%" ></canvas>
 	</div>
 	<div class="card-footer">
-		<ul class="nav nav-pills nav-fill" id="tabs_2">
-			<li class="nav-item">
-				<h4 class="nav-link ">
+		<div class="d-flex justify-content-between text-center">
+				<p class="nav-link mb-0">
 					<span class="badge bg-primary rounded-circle height-30 width-30 d-flex align-items-center justify-content-center mx-auto"> <?php echo $num_questions; ?></span>
 					<span class="display mt-4">Questions</span>
-				</h4>
-			</li>
-			<li class="nav-item">
-				<h4 class="nav-link mb-0">
-					<span class="badge bg-dark rounded-circle height-30 width-30 d-flex align-items-center justify-content-center mx-auto text-white"> <?php echo $testMarks['marks']; ?></span>
+				</p>
+				<p class="nav-link mb-0">
+					<span class="badge bg-dark rounded-circle height-30 width-30 d-flex align-items-center justify-content-center mx-auto text-white"> <?php echo $testMarks; ?></span>
 					<span class="display mt-4">Test Marks</span>
-				</h4>
-			</li>
-			<li class="nav-item">
-				<h4 class="nav-link mb-0">
+				</p>
+				<p class="nav-link mb-0">
 					<span class="badge bg-orange-500 rounded-circle height-30 width-30 d-flex align-items-center justify-content-center mx-auto"> <?php echo $ob_marks[$attempt_id]['obtained']; ?></span>
-					<span class="display mt-4">Score in this attempt</span>
-				</h4>
-			</li>
-			<li class="nav-item ">
-				<h4 class="nav-link mb-0">
+					<span class="display mt-4">Current Score</span>
+				</p>
+				<p class="nav-link mb-0">
 					<span class="badge bg-primary rounded-circle height-30 width-30 d-flex align-items-center justify-content-center mx-auto"> <?php echo $max_marks; ?></span>
-					<span class="display mt-4">Maximum Score in this test</span>
-				</h4>
-			</li>
-		</ul>
+					<span class="display mt-4">Maximum Score </span>
+				</p>
+		</div>
 	</div>
 </div>

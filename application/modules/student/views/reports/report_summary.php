@@ -9,7 +9,7 @@
 					<span class="display mt-4">Questions</span>
 				</p>
 				<p class="nav-link mb-0">
-					<span class="badge bg-dark rounded-circle height-30 width-30 d-flex align-items-center justify-content-center mx-auto text-white"> <?php echo $testMarks['marks']; ?></span>
+					<span class="badge bg-dark rounded-circle height-30 width-30 d-flex align-items-center justify-content-center mx-auto text-white"> <?php echo $testMarks; ?></span>
 					<span class="display mt-4">Test Marks</span>
 				</p>
 				<p class="nav-link mb-0">

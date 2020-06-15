@@ -21,6 +21,7 @@ $config['coaching_logo']				= 'logo.png';
 $config['profile_picture_path']			= 'contents/profile_images/';
 
 define ('THEME_PATH', 			    	'themes/default/');
+define ('ANSWER_TEMPLATE', 			    'templates/answer_choices/');
 define ('SMS_TEMPLATE', 			    'templates/sms/');
 define ('EMAIL_TEMPLATE', 			    'templates/email/');
 
@@ -75,3 +76,5 @@ define ('SORT_ALPHA_ASC', 					1);
 define ('SORT_ALPHA_DESC', 					2);
 define ('SORT_CREATION_ASC', 				3);
 define ('SORT_CREATION_DESC', 				4);
+
+@date_default_timezone_set('ASIA/KOLKATA');

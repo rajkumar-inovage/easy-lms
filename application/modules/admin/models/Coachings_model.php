@@ -6,6 +6,22 @@ class Coachings_model extends CI_Model {
 	var $count_free_tests = 0;
 	
 
+	public function search_coaching () {		
+
+		$this->db->select ('C.*, CS.starting_from, CS.ending_on, CS.created_by, SP.title');
+		$this->db->from ('coachings C, coaching_subscriptions CS, subscription_plans SP');
+		if ($this->input->post ('search_text')) {
+			$search_text = $this->input->post ('search_text');
+			$this->db->like ('C.coaching_name', $search_text);
+			$this->db->or_like ('C.reg_no', $search_text);			
+		}
+		$this->db->where('CS.coaching_id=C.id');
+		$this->db->where('SP.id=CS.plan_id');		
+		$this->db->order_by ('creation_date', 'DESC');
+		$sql = $this->db->get ();
+		return $sql->result_array ();
+	}
+
 	public function get_all_coachings ($status='') {
 		$this->db->select ('C.*, CS.starting_from, CS.ending_on, CS.created_by, SP.title');
 		$this->db->from ('coachings C, coaching_subscriptions CS, subscription_plans SP');

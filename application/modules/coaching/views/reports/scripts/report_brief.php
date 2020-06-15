@@ -39,7 +39,7 @@ $(document).ready (function () {
 		options: {
 			responsive: true,
 			legend: {
-				display: false,
+				display: true,
 				position: 'top',
 			},
 			title: {
