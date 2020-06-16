@@ -3,7 +3,7 @@
 		<strong>Search</strong>
 		<?php echo form_open('coaching/tests_actions/search_tests/'.$coaching_id, array('class'=>"", 'id'=>'search-form')); ?>
 			<div class="form-group row mb-2">
-				<div class="col-md-4 mb-2">
+				<div class="col-md-3 mb-2">
 					<select name="category" class="form-control" id="search-category" >
 						<option value="0">All Categories</option>
 			            <?php
@@ -20,7 +20,7 @@
 					
 				</div>
 
-				<div class="col-md-4 mb-2">
+				<div class="col-md-3 mb-2">
 					<select name="status" class="form-control" id="search-status" >
 						<option value="-1">All Status</option>
 						<option value="<?php echo TEST_STATUS_PUBLISHED; ?>" <?php if ($status == TEST_STATUS_PUBLISHED) echo 'selected="selected"'; ?> >Published</option>
@@ -28,7 +28,15 @@
 					</select>
 				</div>
 
-				<div class="col-md-4">
+				<div class="col-md-3 mb-2">
+					<select name="type" class="form-control" id="search-type" >
+						<option value="0">Test Type</option>
+						<option value="<?php echo TEST_TYPE_REGULAR; ?>" <?php if ($type == TEST_TYPE_REGULAR) echo 'selected="selected"'; ?> >Enrolment Tests</option>
+						<option value="<?php echo TEST_TYPE_PRACTICE; ?>"  <?php if ($type == TEST_TYPE_PRACTICE) echo 'selected="selected"'; ?>>Practice Tests</option>
+					</select>
+				</div>
+
+				<div class="col-md-3">
 					<div class="input-group ">
 						<input name="search_text" class="form-control " type="search" placeholder="Search" aria-label="Search Test" aria-describedby="search-button">
 						<div class="input-group-append">

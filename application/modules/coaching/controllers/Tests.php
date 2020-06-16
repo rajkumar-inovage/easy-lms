@@ -70,16 +70,17 @@ class Tests extends MX_Controller {
 		$this->load->view(INCLUDE_PATH  . 'footer', $data);	    
 	}
 	
-	public function index ($coaching_id=0, $category_id=0, $status='-1') { 
+	public function index ($coaching_id=0, $category_id=0, $status='-1', $type=0) { 
 
 		$data['coaching_id'] = $coaching_id;
 		$data['category_id'] = $category_id;
 		$data['status'] 	 = $status;
-		$data['member_id'] = $member_id = $this->session->userdata ('member_id');
-		$data['categories'] = $this->tests_model->test_categories ($coaching_id);
+		$data['type'] 	 	 = $type;
+		$data['member_id'] 	 = $member_id = $this->session->userdata ('member_id');
+		$data['categories']  = $this->tests_model->test_categories ($coaching_id);
 
 		/*---=== Coaching Tests ===---*/
-		$data['tests'] = $tests = $this->tests_model->get_all_tests ($coaching_id, $category_id, $status);
+		$data['tests'] = $tests = $this->tests_model->get_all_tests ($coaching_id, $category_id, $status, $type);
 		$data['plans'] = $this->test_plans_model->coaching_test_plans ($coaching_id);
 		
 		if ( ! empty ($tests)) {
@@ -307,7 +308,7 @@ class Tests extends MX_Controller {
 		$data['result'] 		= $this->qb_model->getQuestionDetails ($question_id);
 
 		$data['question_types'] = $this->common_model->get_sys_parameters (SYS_QUESTION_TYPES);
-		$data['question_categories']   = $this->common_model->get_sys_parameters (SYS_QUESTION_CATEGORIES);
+		$data['question_categories']   = $this->common_model->get_sys_parameters (SYS_QUESTION_CLASSIFICATION);
 		$data['question_difficulties'] = $this->common_model->get_sys_parameters (SYS_QUESTION_DIFFICULTIES);
 
 		$data['script'] 	= $this->load->view ('tests/scripts/question_create', $data, true);		

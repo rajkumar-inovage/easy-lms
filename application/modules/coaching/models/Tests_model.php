@@ -72,13 +72,16 @@ class Tests_model extends CI_Model {
 	}
 	
 	//=========== Model for list tests =======================
-	public function get_all_tests ($coaching_id=0, $category_id=0, $status='-1') {
+	public function get_all_tests ($coaching_id=0, $category_id=0, $status='-1', $type=0) {
 		
 		if ( $status > '-1' ) {
 			$this->db->where ('finalized', $status);
 		}
 		if ( $category_id > 0 ) {
 			$this->db->where ('category_id', $category_id);
+		}
+		if ( $type > 0 ) {
+			$this->db->where ('test_type', $type);
 		}
 		
 		$this->db->where ('coaching_id', $coaching_id);

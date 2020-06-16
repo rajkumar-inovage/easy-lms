@@ -71,7 +71,6 @@
 
 						<div class="col-md-3">
 							<select name="start_time_hh" id="start_time_hh" class="form-control" >
-								<option value="-1">HH</option>
 								<?php for ($i=0; $i<=23; $i++) { ?>
 									<option value="<?php echo $i; ?>" ><?php echo str_pad($i, 1, '0', STR_PAD_LEFT); ?></option>
 								<?php } ?>
@@ -81,7 +80,6 @@
 
 						<div class="col-md-3">
 							<select name="start_time_mm" id="start_time_mm" class="form-control" >
-								<option value="-1">MM</option>
 								<?php for ($i=0; $i<60; $i=$i+15) { ?>
 									<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 								<?php } ?>
@@ -99,9 +97,8 @@
 
 						<div class="col-md-3">
 							<select name="end_time_hh" id="end_time_hh" class="form-control" >
-								<option value="-1">HH</option>
 								<?php for ($i=0; $i<=23; $i++) { ?>
-									<option value="<?php echo $i; ?>" ><?php echo str_pad($i, 1, '0', STR_PAD_LEFT); ?></option>
+									<option value="<?php echo $i; ?>" ><?php echo $i; ?></option>
 								<?php } ?>
 							</select>
 							<?php echo form_label('Hours', '', array('class'=>'control-label')); ?>
@@ -109,7 +106,6 @@
 
 						<div class="col-md-3">
 							<select name="end_time_mm" id="end_time_mm" class="form-control" >
-								<option value="-1">MM</option>
 								<?php for ($i=0; $i<60; $i=$i+15) { ?>
 									<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 								<?php } ?>

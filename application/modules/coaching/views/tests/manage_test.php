@@ -7,9 +7,11 @@
 		  <li class="list-inline-item">
 		  	<a class="" href="<?php echo site_url ('coaching/tests/questions/'.$coaching_id.'/'.$category_id.'/'.$test_id); ?>">Questions</a>
 		  </li>
-		  <li class="list-inline-item ml-4">
-	      	<a class="" href="<?php echo site_url ('coaching/tests/question_group_create/'.$coaching_id.'/'.$category_id.'/'.$test_id); ?>">Add Question</a>
-	      </li>
+		  <?php if ($test['finalized'] == 0) { ?>
+			  <li class="list-inline-item ml-4">
+		      	<a class="" href="<?php echo site_url ('coaching/tests/question_group_create/'.$coaching_id.'/'.$category_id.'/'.$test_id); ?>">Add Question</a>
+		      </li>
+		  <?php } ?>
 
 		  <li class="list-inline-item ml-4">
 		  	<a class="" href="<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id); ?>">Enrolments</a>

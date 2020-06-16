@@ -442,11 +442,7 @@ class Tests_reports extends CI_Model {
 		$this->db->where ('question_id', $question_id);
 		$this->db->where ('attempt_id', $attempt_id);
 		$sql = $this->db->get('coaching_test_answers');
-		if ($sql->num_rows() > 0) {
-			return $sql->row_array ();			
-		} else {
-			return false;
-		}
+		return $sql->row_array ();
 	}
 	
 	// check question
@@ -460,21 +456,22 @@ class Tests_reports extends CI_Model {
 		$question = $this->qb_model->getQuestionDetails ($question_id);
 		// get user answer details
 		$answer = $this->test_answer ($attempt_id, $test_id, $question_id, $member_id);
-		if ( ! empty ($answer)) {
-			// Attempted
-			for ($i=1; $i <=5; $i++) {
+
+		// Attempted
+		if ( ! empty ($answer)) {			
+			for ($i=1; $i <=QB_NUM_ANSWER_CHOICES; $i++) {
 				if ($question['answer_'.$i] > 0) {
-					$correct[$i] = $question['answer_'.$i];				
+					$correct[$i] = $question['answer_'.$i];
 				}
 				if ($answer['answer_'.$i] > 0) {
-					$user[$i] = $answer['answer_'.$i];				
+					$user[$i] = $answer['answer_'.$i];		
 				}
 			}
-			if (array_values($correct) === array_values($user)) {				
-				$response['answered'] 		= 2;					// Correct Answer
+			if (array_values($correct) === array_values($user)) {
+				$response['answered'] 		= TQ_CORRECT_ANSWERED;		// Correct Answer
 				$response['om'] 			= $question['marks'];		// Marks 
 			} else {
-				$response['answered'] 		= 1;					// Wrong Answer
+				$response['answered'] 		= TQ_WRONG_ANSWERED;		// Wrong Answer
 				$response['om'] 			= 0;					// Marks
 			}
 			$response['user_answer']   		= $user;				// User Answer
@@ -484,7 +481,7 @@ class Tests_reports extends CI_Model {
 			$response['user_answer']   		= false;				// User Answer
 			$response['om'] 				= 0;					// Marks
 			$response['correct_answer'] 	= $correct;				// User Answer
-			$response['answered'] 			= 0;					// Not Answered
+			$response['answered'] 			= TQ_NOT_ANSWERED;		// Not Answered
 		}
 		
 		return $response;

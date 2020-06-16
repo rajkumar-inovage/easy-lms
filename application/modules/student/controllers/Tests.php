@@ -76,7 +76,7 @@ class Tests extends MX_Controller {
 			$data['tests'] = $enroled;
 			$data['num_attempts'] = $num_attempts;
 		} else {
-			$data['tests'] = $this->tests_model->get_all_tests ($coaching_id, $category_id=0, $test_type);
+			$data['tests'] = $this->tests_model->get_all_tests ($coaching_id, $category_id=0, TEST_TYPE_PRACTICE);
 		}
 		
 		$data['bc'] = array ('Dashboard'=>'student/home/dashboard/'.$coaching_id.'/'.$member_id);

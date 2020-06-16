@@ -1,8 +1,15 @@
 <script>
 $(document).ready (function () {
+
 	$('#search-status').on ('change', function () {
 		var status = $(this).val ();
 		var url = '<?php echo site_url ('coaching/tests/index/'.$coaching_id.'/'.$category_id); ?>/'+status;
+		$(location).attr('href', url);
+	});
+
+	$('#search-type').on ('change', function () {
+		var type = $(this).val ();
+		var url = '<?php echo site_url ('coaching/tests/index/'.$coaching_id.'/'.$category_id.'/'.$status); ?>/'+type;
 		$(location).attr('href', url);
 	});
 
