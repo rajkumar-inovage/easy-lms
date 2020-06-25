@@ -7,7 +7,8 @@
 						<?php echo form_checkbox(array('name'=>'chk', 'class'=>'check-all', 'id'=>'check-all')); ?>
 					</th>
 					<th class="text-right" width="3%">#</th>
-					<th width="60%"><?php echo 'Name'; ?></th>
+					<th width="40%"><?php echo 'Name'; ?></th>
+					<th width=""><?php echo 'Role '; ?></th>
 					<th width=""><?php echo 'Start Date'; ?></th>
 					<th width=""><?php echo 'End Date'; ?></th>
 					<th><?php echo 'Actions'; ?></th>
@@ -30,10 +31,11 @@
 							<?php echo ($row['first_name']) .' '. ($row['second_name']) .' '. ($row['last_name']); ?><br>
 							<?php echo $row['adm_no']; ?>
 						</td>
-						<td class="text-right" ><?php echo date ('d-m-Y H:i A', $row['start_date']); ?></td>
-						<td class="text-right" ><?php echo date ('d-m-Y H:i A', $row['end_date']); ?></td>
+						<td class="" ><?php echo $row['description']; ?></td>
+						<td class="" ><?php echo date ('d-m-Y H:i A', $row['start_date']); ?></td>
+						<td class="" ><?php echo date ('d-m-Y H:i A', $row['end_date']); ?></td>
 						<td> 
-							<a href="javascript: void ()" onclick="show_confirm ('Un-enroll this user?', '<?php echo site_url ('coaching/tests_actions/unenrol_user/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type.'/'.$batch_id.'/'.$status.'/'.$row['member_id'].'/1'); ?>')"><i class="fa fa-trash"></i></a>
+							<a href="javascript: void ()" onclick="show_confirm ('Un-enroll this user?', '<?php echo site_url ('coaching/tests_actions/unenrol_user/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$type.'/'.$role_id.'/'.$class_id.'/'.$batch_id.'/'.$status.'/'.$row['member_id'].'/1'); ?>')"><i class="fa fa-trash"></i></a>
 						</td>
 					</tr>
 					<?php 
@@ -41,7 +43,7 @@
 			} else {
 				?>
 				<tr>
-					<td colspan="4" class="text-danger ">No users enroled in this test <?php echo anchor ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.NOT_ENROLED_IN_TEST.'/'.$batch_id, 'Enrol Now'); ?></td>
+					<td colspan="7" class="text-danger ">No users found <?php echo anchor ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.NOT_ENROLED_IN_TEST, 'Enrol Now'); ?></td>
 				</tr>
 				<?php
 			}

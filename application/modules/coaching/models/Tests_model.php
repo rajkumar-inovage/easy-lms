@@ -1,3 +1,4 @@
+
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 class Tests_model extends CI_Model {	
@@ -206,17 +207,18 @@ class Tests_model extends CI_Model {
 		$this->db->delete('coaching_tests'); 	
 	}
 	
-	public function delete_attempt ($attempt_id=0, $member_id=0, $test_id=0) {
+	public function delete_attempt ($coaching_id=0, $attempt_id=0, $member_id=0, $test_id=0) {
 		$this->db->where ('id', $attempt_id);
+		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('member_id', $member_id);
 		$this->db->where ('test_id', $test_id);
 		$this->db->delete ('coaching_test_attempts');
 		
 		$this->db->where ('attempt_id', $attempt_id);
+		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('member_id', $member_id);
 		$this->db->where ('test_id', $test_id);
-		$this->db->delete ('coaching_test_answers');
-		
+		$this->db->delete ('coaching_test_answers');		
 	}
 	
 	public function add_to_test ($coaching_id=0, $question_id=0, $test_id=0) {
@@ -548,11 +550,11 @@ class Tests_model extends CI_Model {
 
 		$prefix = $this->db->dbprefix; 
 
-  		$query = 'SELECT M.*, TE.attempts, TE.start_date, TE.end_date FROM '.$prefix.'members M, '.$prefix.'coaching_test_enrolments TE';
+  		$query = 'SELECT M.*, SR.description, TE.attempts, TE.start_date, TE.end_date FROM '.$prefix.'members M, '.$prefix.'coaching_test_enrolments TE, '.$prefix.'sys_roles SR ';
 		if ($batch_id > 0) {
 		    $query .= ', '.$prefix.'coaching_batch_users BU';
 		}
-  		$query .= ' WHERE TE.coaching_id='.$coaching_id.' AND TE.test_id='.$test_id;
+  		$query .= ' WHERE TE.coaching_id='.$coaching_id.' AND TE.test_id='.$test_id.' AND SR.role_id=M.role_id';
 		if ($batch_id > 0) {
 		    $query .= ' AND M.member_id=BU.member_id AND BU.batch_id='.$batch_id;
 		}
@@ -575,11 +577,12 @@ class Tests_model extends CI_Model {
 	public function get_users_not_in_test ( $coaching_id=0, $test_id=0, $role_id=0, $class_id=0, $category_id=0, $batch_id=0, $status='-1') {
 
 		$prefix = $this->db->dbprefix; 
-		$query = 'SELECT M.* FROM '.$prefix.'members M ';
+		$query = 'SELECT M.*, SR.description FROM '.$prefix.'sys_roles SR, '.$prefix.'members M ';
 		if ($batch_id > 0) {
 		    $query .= ' INNER JOIN '.$prefix.'coaching_batch_users BU ON M.member_id=BU.member_id';
 		}
 		$query .= ' WHERE M.coaching_id='.$coaching_id;
+		$query .= ' AND M.role_id=SR.role_id';
 		if ($batch_id > 0) {
 		    $query .= ' AND BU.batch_id='.$batch_id;
 		}

@@ -1,4 +1,4 @@
-0<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 class Cart extends MX_Controller {	
 
@@ -47,4 +47,28 @@ class Cart extends MX_Controller {
 	public function checkout ($coaching_id=0, $plan_id) {
 		redirect ('coaching/subscription_actions/change_plan/'.$coaching_id.'/'.$plan_id);
 	}
+	
+	public function make_payment () {
+		
+		$data['page_title'] = "Make Payment";
+		
+		$data['coaching_id']= $this->input->post ('coaching_id');
+		$data['plan_id']	= $this->input->post ('plan_id');
+		$data['amount']		= $this->input->post ('amount');
+		$data['gst']		= $this->input->post ('gst');
+		
+		$data['bc'] 		= array ('Cart'=>'coaching/cart/cart_items/'.$coaching_id.'/'.$plan_id);
+
+		$member_id 			= intval($this->session->userdata('member_id'));
+		$data['user'] 		= $this->users_model->get_user ($member_id);
+		
+		$data['plan_id'] 	= $plan_id = $this->session->userdata ('cart');
+		$data['plan'] 		= $plan = $this->subscription_model->subscription_plan ($plan_id);
+		
+		//$data['script']			= $this->load->view ('cart/scripts/cart_items', $data, true);
+		$this->load->view(INCLUDE_PATH  . 'header', $data);
+		$this->load->view('cart/make_payment', $data);
+		$this->load->view(INCLUDE_PATH  . 'footer', $data);		
+	}
+	
 }

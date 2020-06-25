@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
 	<div class="col-md-12">
 		<?php
-		echo form_open ('payment/page/checkout/', array ('class'=>''));
+		echo form_open ('coaching/cart/make_payment', array ('class'=>''));
 		echo form_hidden ('owner_name', $user['first_name'] . " " . $user['last_name']);
 		echo form_hidden ('email', $user['email']);
 		echo form_hidden ('contact', $user['primary_contact']);
@@ -51,7 +51,7 @@
 								$total_amount = round ($total_amount, 2);
 								?>
 								<i class="fa fa-rupee-sign"></i> <span id="price_html"><?php echo $price; ?></span>  per month
-								<input type="" name="price" value="<?php echo $price; ?>" id="price" >
+								<input type="hidden" name="price" value="<?php echo $price; ?>" id="price" >
 							</td>
 						</tr>
 						<tr>
@@ -60,7 +60,7 @@
 							</th>
 							<th class="justify-content-left">
 								<i class="fa fa-rupee-sign"></i> <span id="amount_html"><?php echo $amount; ?></span>
-								<input type="" name="gst" value="<?php echo $amount; ?>" id="amount" >
+								<input type="hidden" name="gst" value="<?php echo $amount; ?>" id="amount" >
 							</th>
 						<tr>
 						<tr>
@@ -69,7 +69,7 @@
 							</th>
 							<th class="justify-content-left">
 								<i class="fa fa-rupee-sign"></i> <span id="gst_html"><?php echo $gst; ?></span>
-								<input type="" name="gst" value="<?php echo $gst; ?>" id="gst" >
+								<input type="hidden" name="gst" value="<?php echo $gst; ?>" id="gst" >
 							</th>
 						<tr>
 						<tr>
@@ -78,7 +78,7 @@
 							</th>
 							<th class="justify-content-left">
 								<i class="fa fa-rupee-sign"></i> <span id="total_amount_html"><?php echo $total_amount; ?></span>
-								<input type="" name="amount" value="<?php echo $total_amount; ?>" id="total_amount" >
+								<input type="hidden" name="amount" value="<?php echo $total_amount; ?>" id="total_amount" >
 							</th>
 						<tr>
 						<tr>

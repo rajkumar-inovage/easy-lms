@@ -1,4 +1,4 @@
-<?php
+<?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tests extends MX_Controller {
@@ -267,12 +267,12 @@ class Tests extends MX_Controller {
 		$this->test_verification ($coaching_id, $member_id, $test_id);
 
 		$test = $this->tests_model->view_tests ($test_id);
-		$test_duration = ($test['time_hour'] * 60 * 60) + ($test['time_min'] * 60);
+		$test_duration = ($test['time_hour'] * 3600) + ($test['time_min'] * 60);
 		
-		if($coaching_id==0){
+		if ($coaching_id==0) {
             $coaching_id = $this->session->userdata ('coaching_id');
         }
-        if($member_id==0){
+        if ($member_id==0) {
             $member_id = $this->session->userdata ('member_id');
         }
 		$data['user'] = $this->users_model->get_user ($member_id);
@@ -285,36 +285,32 @@ class Tests extends MX_Controller {
 		// Settings for the first time test starts 
 
 		// All test questions
-		$all_questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
+		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
+		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
 		/* If randomize ALL questions
 		if ($test['randomize_all_questions'] == 1) {
 			shuffle ($all_questions);
 		}
 		
 		*/
-		if (! empty ($all_questions)) {
-			$data['total_questions'] = count ($all_questions);
+
+		if (! empty($questions)) {
+			$num_test_questions = count ($questions);
 		} else {
-			$data['total_questions'] = 0;			
+			$num_test_questions = 0;
 		}
-		$confirm_div = $data['total_questions'] + 1;
-		$data['confirm_div'] = ($confirm_div);
+		$data['test_marks'] = $testMarks;
+		$data['total_questions'] = $num_test_questions;
+		$data['confirm_div'] = $num_test_questions + 1;
+
 		/* Perpare an array in form of subject->question_group->question */
-		$collect = array ();
-		if ( ! empty ($all_questions)) {					
-			foreach ($all_questions as $row) {
-				$qid = $row['question_id'];
-				// get details
-				$details = $this->qb_model->getQuestionDetails ($qid);
-				$parent_id = $details['parent_id'];
-				
-				// Chapter ID
-				$chapter_id = $details['chapter_id'];
-				
-				$chapter = $this->common_model->node_details ($chapter_id, SYS_TREE_TYPE_QB);
-				$subject_id = $chapter['parent_id'];
-				
-				$collect[$subject_id][$parent_id][] = $qid;
+		$result = array ();
+		if ( ! empty($questions)) {
+			foreach ($questions as $row) {
+				$parent_id = $row['parent_id'];
+				$parent_row = $this->qb_model->getQuestionDetails ($parent_id);
+				$result[$parent_id]['parent'] = $parent_row;
+				$result[$parent_id]['questions'][] = $row;
 			}
 		} else {
 			redirect ('student/tests/test_error/'.$coaching_id.'/'.$member_id.'/'.$test_id.'/'.TEST_ERROR_NO_QUESTION);
@@ -323,38 +319,17 @@ class Tests extends MX_Controller {
 		// save current attempt log
 		$now = time ();
 		//$attempt_id = 0;
-		$attempt_id = $this->tests_model->save_attempt ($coaching_id, $test_id, $member_id, $now);
-		
-		$prepare_questions = array ();			
-		$subject_wise = array ();
-		$count = 1;
-		foreach ( $collect as $subject_id=>$question_group) {
-			$subject = $this->common_model->node_details ($subject_id, SYS_TREE_TYPE_QB);
-			$subject_wise[$subject_id] = $subject['title'];
-			if ( is_array ($question_group)) { 
-				$question_group_ids = array_keys ($question_group);
-				/* If randomize questions within subjects
-				if ($test['randomize_w_subject'] == 1) {
-					shuffle ($question_group_ids);
-				}
-				*/
-				foreach ($question_group_ids as $qgids) {
-					$prepare_questions[$subject_id][$qgids] = $question_group[$qgids];
-				}
-			}
-		}
-		
+		$attempt_id = $this->tests_model->save_attempt ($coaching_id, $test_id, $member_id, $now);		
 		
 		$data['test'] 					= $test;
 		$data['test_id'] 				= $test_id;
 		$data['coaching_id'] 			= $coaching_id;
 		$data['attempt_id'] 			= $attempt_id;
 		$data['member_id'] 				= $member_id;
-		$data['all_questions'] 			= $prepare_questions;
-		$data['subject_wise'] 			= $subject_wise;
+		$data['results'] 				= $result;
 		$data['test_duration'] 			= $test_duration;
 		$data['hide_left_sidebar'] 		= true;
-		$data['data']	 = $data;
+		$data['data']	 				= $data;
 		$data['page_title'] 			= $test['title'];
 
 		$data['script'] = $this->load->view ('tests/scripts/start_test', $data, true);
@@ -372,7 +347,7 @@ class Tests extends MX_Controller {
 		$data['member_id']			= $member_id;
 		$data['test_id']			= $test_id;
 		$data['attempt_id']		    = $attempt_id;
-		$data['bc']					= ['Test Taken'=>'student/tests/tests_taken/'.$coaching_id.'/'.$test_id.'/'.$member_id];
+		$data['bc']					= ['Test Taken'=>'student/tests/tests_taken/'.$coaching_id.'/'.$member_id];
 
 		$enrolment = $this->tests_model->get_enrolment_details ($coaching_id, $test_id, $member_id);
 		if ($enrolment['release_result'] == RELEASE_EXAM_NEVER) {

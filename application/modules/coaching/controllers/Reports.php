@@ -40,6 +40,7 @@ class Reports extends MX_Controller {
 		$results = array ();
 		if ( ! empty($submissions)) {
 			foreach ($submissions as $member_id) {
+				$compare = [];
 				$member = $this->users_model->get_user ($member_id);
 				// Get all attempts and maximum marks from them
 				$attempts = $this->tests_reports->get_attempts ($member_id, $test_id);

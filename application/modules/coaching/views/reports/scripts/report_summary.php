@@ -71,7 +71,8 @@ var briefChart = new Chart(ctx, {
 					display: true,
 					labelString: 'Marks Obtained'
 				},
-				max: <?php echo $testMarks; ?>
+				max: <?php echo $testMarks; ?>,
+				min: 0
 			}]
 		}
     }

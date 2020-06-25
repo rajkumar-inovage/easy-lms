@@ -105,17 +105,22 @@ class Tests_actions extends MX_Controller {
 
 	}
 	
-	public function submit_test ($coaching_id=0, $member_id=0, $test_id=0) {
+	public function submit_test ($coaching_id=0, $member_id=0, $test_id=0) { 
 		$questions  = $this->input->post('questions');
 		$attempt_id = $this->input->post('attempt_id');
 		$ans 		= $this->input->post('ans');
-    
-		foreach ($ans as $qid=>$answer) {
-			if ( ! empty ($answer) ) {
-				$this->tests_model->insert_answers ($member_id, $test_id, $qid, $answer);
-			}
-			unset($answer);
+
+    	if (! empty($ans)) {    		
+			foreach ($ans as $qid=>$answer) {
+				if ( ! empty ($answer) ) {
+					$this->tests_model->insert_answers ($coaching_id, $member_id, $test_id, $qid, $answer);
+				}
+				unset($answer);
+	    	}
 		}
+
+		$this->tests_model->update_submission_time ($coaching_id, $attempt_id, $test_id, $member_id);
+
 		$this->message->set ('You have successfully completed your test. Now you can review your scores', 'success', true);
 		redirect ('student/tests/test_submitted/'.$coaching_id.'/'.$test_id.'/'.$member_id.'/'.$attempt_id);
 	}

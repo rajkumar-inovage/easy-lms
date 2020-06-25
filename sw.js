@@ -8,19 +8,19 @@
 
 'use strict';
 
-const appPath = '/repos/easycoachingapp/';
+
+const rootPath = '/repos/easycoachingapp/';
 
 const staticAssets = [
-	appPath,
-	appPath + 'themes/default/assests/css/',
-	appPath + 'themes/default/assests/js/',
-	appPath + 'themes/default/assests/img/',
+	rootPath,
+	rootPath + 'themes/default/assests/css/',
+	rootPath + 'themes/default/assests/js/',
+	rootPath + 'themes/default/assests/img/',
 ];
 
 self.addEventListener ('install', async event => {
 	const cache = await caches.open ('EasyCoaching-V1');
 	cache.addAll (staticAssets);
-	console.log ('ServiceWorker Installed');
 });
 
 self.addEventListener ('fetch', event => {
@@ -32,7 +32,6 @@ self.addEventListener ('fetch', event => {
 	} else {
 		event.respondWith (networkFirst(request));		
 	}	
-	console.log ('ServiceWorker Fetch');
 });
 
 async function cacheFirst (request) { 

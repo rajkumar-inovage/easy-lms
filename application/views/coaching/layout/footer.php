@@ -20,8 +20,11 @@
 	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/toastr.min.js'); ?>"></script>
 	<!-- ChartJS -->
 	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/chart.bundle.min.js'); ?>"></script>
+
+	<!-- Default JS (Must be loaded befaore app.js) -->
+	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/default.js'); ?>"></script>
 	<!-- Application JS -->
-	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/app.js?ver=1.3'); ?>"></script>
+	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/app.js?ver=1.4'); ?>"></script>
 	<!-- Custom JS (Dynamically included) -->
 	<?php
 	if (isset ($script)) {

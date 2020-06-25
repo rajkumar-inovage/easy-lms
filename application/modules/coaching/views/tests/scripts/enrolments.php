@@ -1,37 +1,41 @@
-<script>
+ <script>
 $(document).ready (function () {
 	$(".digits").bind("mousewheel", function (event,delta,nbr){});
 	$('#search-status').on ('change', function () {
 		var status = $(this).val ();
-		var url = '<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type.'/'.$batch_id); ?>/'+status;
+		var url = '<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$type.'/'.$role_id.'/'.$class_id.'/'.$batch_id); ?>/'+status;
 		$(location).attr('href', url);
 	});
 
 	$('#search-role').on ('change', function () {
 		var role_id = $(this).val ();
-		var url = '<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id); ?>/'+role_id+'/<?php echo $class_id.'/'.$type.'/'.$batch_id.'/'.$status; ?>';
+		var url = '<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$type); ?>/'+role_id+'/<?php echo $class_id.'/'.$batch_id.'/'.$status; ?>';
 		$(location).attr('href', url);
 	});
 	$('#search-batch').on ('change', function () {
 		var batch_id = $(this).val ();
-		var url = '<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type); ?>/'+batch_id+'/<?php echo $status; ?>';
+		var url = '<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$type.'/'.$role_id.'/'.$class_id); ?>/'+batch_id+'/<?php echo $status; ?>';
 		$(location).attr('href', url);
 	});
+
 	function toggleEnrolmentSetting(){
-		if($('.check:checked').length){
+		if ($('.check:checked').length) {
 			$('#set_enrolment').removeAttr('disabled');
-		}else{
+		} else {
 			$('#set_enrolment').attr('disabled', true);
 		}
 	}
-	$("#check-all").click(function(){
+
+	$("#check-all").click (function() {
 		$('.check').not(this).prop('checked', this.checked);
 		toggleEnrolmentSetting();
 	});
+
 	$(".check").click(function(){
 		toggleEnrolmentSetting();
 	});
 });
+
 </script>
 
 <script>

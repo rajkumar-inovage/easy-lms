@@ -354,14 +354,13 @@ class Tests_model extends CI_Model {
 	}
 	
 	//insert the time stamp when student starts for test
-	public function	save_attempt ($coaching_id, $tid, $member_id, $time){
+	public function	save_attempt ($coaching_id=0, $tid=0, $member_id=0, $time=0){
 		$data = array(
+					   'coaching_id'=>	$coaching_id,
 					   'test_id' 	=> $tid ,
 					   'member_id' 	=> $member_id,
 					   'loggedon'	=>	$time,
-					   'coaching_id'	=>	$coaching_id,
-					   'plan_id'	=>	intval ($this->session->userdata ('plan_id')),
-					   'obtained'	=>	0
+					   'submit_time'=>	0
 					);
 		$this->db->insert('coaching_test_attempts', $data);		
 		return $this->db->insert_id();
@@ -398,19 +397,25 @@ class Tests_model extends CI_Model {
 	}
 	
 	//Insert the answer of a student given by a specific student
-	public function insert_answers ($member_id, $test_id, $qid, $answer) {
+	public function insert_answers ($coaching_id=0, $member_id=0, $test_id=0, $qid=0, $answer='') {
+
+		$now = time ();
 		$question = $this->qb_model->getQuestionDetails ($qid);
 		$type = $question['type'];
+		$attempt_id = $this->input->post('attempt_id');
+
 		$data = array(
-					   'attempt_id' => $this->input->post('attempt_id'),
+					   'coaching_id' => $coaching_id,
+					   'attempt_id' => $attempt_id,
 					   'test_id' 	=> $test_id ,
 					   'question_id'=> $qid,
 					   'member_id' 	=> $member_id
 					);
-		//save answer for Question type Multiple choice single correct			
-		if($type == QUESTION_MCSC) {
-			for($i=1; $i<=6; $i++){
-				if($i == $answer){
+
+		//save answer for Question type Multiple choice single correct
+		if ($type == QUESTION_MCSC) {
+			for ($i=1; $i<=QB_NUM_ANSWER_CHOICES; $i++) {
+				if ($i == $answer) {
 					$data['answer_'.$i] = $answer;	
 				}	
 			}
@@ -421,23 +426,38 @@ class Tests_model extends CI_Model {
 		}
 		//save answer for Question type Multiple choice multi correct
 		if( $type == QUESTION_MCMC ) {
-			for($i=1; $i<=6; $i++) {
+			for($i=1; $i<=QB_NUM_ANSWER_CHOICES; $i++) {
 				if( isset ($answer[$i]) ) {
 					$data['answer_'.$i] = $answer[$i];
 				}
 			}
 		}
 		//save answer for Question type True False
-		if($type == QUESTION_TF){
+		if ($type == QUESTION_TF) {
 			$data['answer_1'] = $answer;	
 		}
 		//save answer for Question type MATCH THE FOLLOWING
-		if($type == QUESTION_MATCH) {
-			for ($i=1; $i<=6; $i++) {
+		if ($type == QUESTION_MATCH) {
+			for ($i=1; $i<=QB_NUM_ANSWER_CHOICES; $i++) {
 				$data['answer_'.$i] = $answer[$i];	
 			}			
 		}
-		
-		$this->db->insert('coaching_test_answers', $data); 
-	}	
+
+		$sql = $this->db->get_where ('coaching_test_answers', $data);
+		if ($sql->num_rows () == 0) {
+			// Should not add duplicate data
+			$this->db->insert('coaching_test_answers', $data);
+		}
+	}
+
+	public function update_submission_time ($coaching_id=0, $attempt_id=0, $test_id=0, $member_id=0) {
+		$now = time ();
+		// Update submission time
+		$this->db->set ('submit_time', $now);
+		$this->db->where ('id', $attempt_id);
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('test_id', $test_id);
+		$this->db->where ('member_id', $member_id);
+		$this->db->update ('coaching_test_attempts');
+	}
 }

@@ -15,11 +15,9 @@
 									<option value="<?php echo $attempt['id']; ?>" <?php if ($attempt_id == $attempt['id']) echo 'selected="selected"'; ?> ><?php echo date('d F, Y h:i A', $attempt['loggedon']); ?></option>
 								<?php } ?>
 							</select>
-							<?php if ($this->session->userdata ('is_admin') == TRUE) { ?>
 							<div class="input-group-append">
 								<a href="#" class="btn btn-sm btn-danger" title="Delete Attempt" onclick="show_confirm ('Delete this attempt and all reports?', '<?php echo site_url ('coaching/tests_actions/delete_attempt/'.$coaching_id.'/'.$attempt_id.'/'.$member_id.'/'.$test_id); ?>')"><i class="fas fa-trash"></i></a>
 							</div>
-							<?php } ?>
 						</div>
 
 

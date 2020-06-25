@@ -7,7 +7,9 @@
 					<th class="text-center" width="3%">
 						<?php echo form_checkbox(array('name'=>'chk', 'class'=>'check-all', 'id'=>'check-all', 'title'=>'Select All')); ?>
 					</th>
-					<th width="85%"><?php echo 'Name'; ?></th>
+					<th width="50%"><?php echo 'Name'; ?></th>
+					<th width=""><?php echo 'S No'; ?></th>
+					<th width=""><?php echo 'Role'; ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -26,7 +28,9 @@
 						<td>
 							<?php echo ($row['first_name']) .' '. ($row['second_name']) .' '. ($row['last_name']); ?><br>
 							<?php echo $row['adm_no']; ?>
-						</td>						
+						</td>
+						<td><?php echo $row['sr_no']; ?></td>
+						<td><?php echo $row['description']; ?></td>
 					</tr>
 					<?php 
 					$i++;
@@ -34,7 +38,7 @@
 			} else {
 				?>
 				<tr>
-					<td colspan="3" class="text-danger">No users found</td>
+					<td colspan="6" class="text-danger">No users found</td>
 				</tr>
 				<?php
 			}

@@ -1,39 +1,28 @@
-<div class="bg-white d-flex justify-content-between">
-	<div class="">
-	</div>
-	<div class="">
+<div class="card "> 
+	<div class="card-header">
 		<script src="<?php echo base_url (THEME_PATH . 'assets/js/countdown.min.js'); ?>"></script>
 		<script language="javascript">
 			// Function for submit form when time is over.	
 			function countdownComplete() {
-				/*
-				var pageSelectors = document.getElementsByClassName ('pages');
-				var i;
-				for (i = 0; i < pageSelectors.length; i++) {
-					const pageSelector = pageSelectors[i];
-					pageSelector.style.display ('none');
-
-				}
-				*/
-				document.getElementById ('time-up').style.display = 'block';
-				document.getElementById ('quick-links').style.display = 'none';
-				document.getElementById ('question-block').style.display = 'none';
+				alert ('Time is up. Press OK to submit the test');
+				document.getElementById("test_form").submit();
 			}
+
 			// === *** SHOW TIMER *** === //
 			var test2 = new Countdown( {  
-									time: '<?php echo $test_duration; ?>', 
-									rangeHi : 'hour',
-									width:200, 
-									height:40,
-									hideLine	: true,
-									numbers		: 	{
-										color	: "#000000",
-										bkgd	: "#ffffff",
-										rounded	: 0.15,				// percentage of size
-									},											
-									onComplete	: countdownComplete
-								} );			
-			
+							time: '5', 
+							rangeHi : 'hour',
+							width:200, 
+							height:40,
+							hideLine	: true,
+							numbers		: 	{
+								color	: "#000000",
+								bkgd	: "#ffffff",
+								rounded	: 0.15,				// percentage of size
+							},
+							onComplete	: countdownComplete
+						} );
+	
 		</script>
 	</div>
 </div>
@@ -42,44 +31,39 @@
 	<div class="row" id="question-block">
 		<div class="col-md-12">
 			<?php 
-			if ( ! empty ($all_questions)) {
+			if ( ! empty ($results)) {
 				$count_tabs = 1;
 				$num_question = 0;
 				$num_heading  = 0;
 				
-				foreach ( $all_questions as $subject_id=>$question_group ) {
-					//shuffle ($question_group);
-					foreach ($question_group as $group_id=>$questions) {
-						$heading = $this->qb_model->getQuestionDetails ($group_id);
-						$num_heading++;
-						foreach ($questions as $question_id) {
-							
-							// Get question details
-							$row_items = $this->qb_model->getQuestionDetails ($question_id );
-							
+				foreach ( $results as $parent_id=>$all_questions) {
+					$parent 	= $all_questions['parent'];
+					$questions 	= $all_questions['questions'];
+
+					$num_heading++;
+
+					if ( ! empty($questions)) {
+						foreach ($questions as $id=>$row) {
 							$num_question++;
 							?>
 							<div style="display: none" id="page<?php echo $num_question; ?>" class="pages page<?php echo $num_question; ?> " >
 				
 								<div class="card card-default paper-shadow ">
-									<div class="card-header">
-										<h4>Question <?php echo $num_question; ?> of <?php echo $total_questions; ?></h4>
+									<div class="card-header justify-content-between">
+										<strong>Question <?php echo $num_question; ?> of <?php echo $total_questions; ?></strong>
 									</div>
 									<div class="card-body ">
-										<?php echo $heading['question']; ?>
-										<?php echo $row_items['question']; ?>
-										<?php
-											$data['num'] = $num_question; 
-											$data['row'] = $row_items; 
-											$this->load->view ('include/answer_choices', $data);
-										?> 
+										<?php echo $parent['question']; ?>
 									</div>
 
-									<div class="card-footer bg-white d-flex justify-content-between fixed-bottom">
-										<input type="submit" name="submitBtn" value="Submit Test" class="btn btn-success btn-sm" >
-										<button type="button" class="btn btn-primary btn-sm previous"><i class="fa fa-arrow-left"></i> Previous </button>
-										<button type="button" class="btn btn-primary btn-sm next">Next <i class="fa fa-arrow-right"></i> </button>
-									</div>
+									<div class="card-body ">
+										<?php echo $row['question']; ?>
+										<?php
+											$data['num'] = $num_question; 
+											$data['row'] = $row; 
+											$this->load->view ('include/answer_choices', $data);
+										?> 
+									</div>									
 								</div>
 							</div>
 							<?php 
@@ -90,21 +74,20 @@
 			}
 			$confirm_div = $num_question + 1;
 			?> 
-			<div style="display: none" id="page<?php echo $confirm_div; ?>" class="pages page<?php echo $confirm_div; ?>" >
+
+			<div id="page<?php echo $confirm_div; ?>" class="mt-4 pages page<?php echo $confirm_div; ?>" >
 				
 				<div class="card border-danger paper-shadow">
 					<div class="card-header">
 						<h4>Test Complete</h4>
 					</div>
 					<div class="card-body">
-						<p>No more questions in this test. You can review your questions or sumbit the test.</p>
+						<p class="text-danger">No more questions in this test. You can review your questions or sumbit the test.</p>
 					</div>
-					<div class="card-footer d-flex justify-content-between">								
-						<input type="submit" name="submitBtn" value="Submit Test" class="btn btn-success">
-						<button type="button" class="btn btn-secondary" onclick="show_first ();">REVIEW TEST</button>
+					<div class="card-footer d-flex justify-content-between">
+						<button type="button" class="btn btn-danger" onclick="show_first ();">REVIEW TEST</button>
 					</div>
-				</div>
-					
+				</div>					
 			</div>
 
 			<input type="hidden" id="num_question" value="1">
@@ -124,38 +107,34 @@
 		        </div>
 		    	<div class="card-body max-height-150 height-150-lg overflow-auto">
 		    		<?php
-		    		if ( ! empty ($all_questions)) {
 		    			$count_tabs = 1;
 		    			$y = 0;
-		    			foreach ( $all_questions as $subject_id=>$question_group ) {
-		    				//echo heading ($subject_wise[$subject_id], 5);
-		    				foreach ($question_group as $group_id=>$questions) {
-		    					foreach ($questions as $question_id) {
-		    						$y++;
-		    					if (strlen ($y) < 2) {
-		    							$y_text = '0'.$y;
-		    						} else {
-		    							$y_text = $y;
-		    						}
-		    						?>
-		    						<a class="btn btn-sm btn-secondary text-white" href="javascript:void(0)" onclick="display_question (<?php echo $y; ?>)" style="margin-top:5px" id="btn_<?php echo $y; ?>"><?php echo $y_text; ?></a> 
-		    						<?php 
-		    					}
-		    				}
+	    				for ($i=1; $i<=$num_question; $i++) {
+    						$y++;
+	    					if (strlen ($y) < 2) {
+    							$y_text = '0'.$y;
+    						} else {
+    							$y_text = $y;
+    						}
+    						?>
+    						<a class="btn btn-sm btn-secondary text-white" href="javascript:void(0)" onclick="display_question (<?php echo $y; ?>)" style="margin-top:5px" id="btn_<?php echo $y; ?>"><?php echo $y_text; ?></a> 
+    						<?php
 		    			}
-		    		}
 		    		?>
 		    	</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="card border-danger mt-2" id="time-up" style="visibility:hidden">
-		<div class="card-header">
-			<h4 class="text-danger">Time's Up</h4>
-		</div>
-		<div class="card-body text-center">
-			<input type="submit" name="submit" value="Submit Test" class="btn btn-success">
+	<div class="card fixed-bottom mt-4">
+		<div class="card-body">
+			<div class=" d-flex justify-content-between ">				
+				<input type="submit" name="submitBtn" value="Submit Test" class="btn btn-success btn-sm submit-button" >
+				<div>
+					<button type="button" class="btn btn-primary btn-sm previous"><i class="fa fa-arrow-left"></i> Previous </button>
+					<button type="button" class="btn btn-primary btn-sm next">Next <i class="fa fa-arrow-right"></i> </button>
+				</div>
+			</div>
 		</div>
 	</div>
 

@@ -109,6 +109,13 @@ $(document).ready (function () {
 			e.preventDefault ();
 		}
 	});
+
+	$('.submit-button').on ('click', function (e) {
+		///e.preventDefault ();
+		//$(this).prop ('disabled', true);
+		//$('#test_form').submit ();
+	});
+
 });
 /*Multi Select questions checkboxes toggle*/
 function mcmc_deselect (blankid, qid) {
