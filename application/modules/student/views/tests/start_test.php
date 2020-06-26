@@ -1,18 +1,17 @@
-<div class="card "> 
+<div class="card ">
 	<div class="card-header text-center">
-		<h3 class="card-title">Time Remaining</h3>
-		<div class="d-flex justify-content-center">
+		<div class="d-flex justify-content-end">
 			<div class="p-2">
-				<h2 id="hours"></h2>
-				<h4 class="mb-0">HOURS</h4>
+				<h5 id="hours"><?php echo ($test['time_hour']<10)?"0".$test['time_hour']:$test['time_hour']; ?></h5>
+				<h6 class="mb-0">HOURS</h6>
 			</div>
 			<div class="p-2">
-				<h2 id="minutes"></h2>
-				<h4 class="mb-0">MINUTES</h4>
+				<h5 id="minutes"><?php echo ($test['time_min']<10)?"0".$test['time_min']:$test['time_min']; ?></h5>
+				<h6 class="mb-0">MINUTES</h6>
 			</div>
 			<div class="p-2">
-				<h2 id="seconds"></h2>
-				<h4 class="mb-0">SECONDS</h4>
+				<h5 id="seconds">00</h5>
+				<h6 class="mb-0">SECONDS</h6>
 			</div>
 		</div>
 	</div>

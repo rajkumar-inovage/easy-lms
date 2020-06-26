@@ -1,38 +1,39 @@
 <script>
 $(document).ready (function () {
 	/*Hide All Questions on First Load and show only section 1*/
-	$(".pages").hide ();
+	$(".pages,nav").hide ();
 	$("#page1").show ();
-	const countDownTill = Date.now() + (<?php echo $test_duration; ?> * 1000);
-	const fiveMinutesBefore = (300 * 1000);
-	const oneMinutesBefore =  (60 * 1000);
-	var x = setInterval(function() {
+	const finishTime = Date.now() + (<?php echo $test_duration; ?> * 1000);
+	const fiveMinutesBefore = ((<?php echo $test_duration; ?> - 300) * 1000);
+	const oneMinutesBefore =  ((<?php echo $test_duration; ?> - 60) * 1000);
+	var x = setInterval(()=>{
 		// Get current unix timestamp time
 		const now = Date.now();
-		// Find the distance between now and the count down date
-		const distance = countDownTill - now;
-		const notifyFirst = distance - fiveMinutesBefore;
-		const notifySecond = distance - oneMinutesBefore;
+		// Find the timeRemain between now and the time finishTime
+		const timeRemain = finishTime - now;
 
-		if(notifyFirst <= 1000 && notifyFirst >= 0){
-			toastr.warning('Only 5 minutes remaining');
-		}
-		if(notifySecond <= 1000 && notifySecond >= 0){
-			toastr.error('Hurry up, 1 minute remaining');
-		}
-		if (distance < 0) {
+		if (timeRemain < 0) {
 		    clearInterval(x);
 			$("#submit-test").trigger('click').prop('disabled', true);
 			toastr.success('Time is up. Submitting test now.');
 		    return false;
 		}
-		const hoursRemain = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		const minutesRemain = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		const secondsRemain = Math.floor((distance % (1000 * 60)) / 1000);
-		$("#hours").text(hoursRemain);
-		$("#minutes").text(minutesRemain);
-		$("#seconds").text(secondsRemain);
+		const hoursRemain = Math.floor((timeRemain % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		const minutesRemain = Math.floor((timeRemain % (1000 * 60 * 60)) / (1000 * 60));
+		const secondsRemain = Math.floor((timeRemain % (1000 * 60)) / 1000);
+		$("#hours").text((hoursRemain<10)?`0${hoursRemain}`:hoursRemain);
+		$("#minutes").text((minutesRemain<10)?`0${minutesRemain}`:minutesRemain);
+		$("#seconds").text((secondsRemain<10)?`0${secondsRemain}`:secondsRemain);
 	}, 1000);
+
+	if(fiveMinutesBefore > 0){
+		setTimeout(() => {
+		  toastr.warning('Only 5 minutes remaining');
+		}, fiveMinutesBefore);
+	}
+	setTimeout(() => {
+	  toastr.error('Hurry up, 1 minute remaining');
+	}, oneMinutesBefore);
 	$(".next").click(function() {
 		
 		/*Hide/Show question blocks*/
@@ -59,10 +60,8 @@ $(document).ready (function () {
 			/*Change color*/
 			document.getElementById("btn_"+id).className="btn btn-sm btn-danger";
 		}	
-
 	});
 
-	
 	$(".previous").click(function() {
 		
 		/*Hide/Show question blocks*/
@@ -94,18 +93,16 @@ $(document).ready (function () {
 		if (document.getElementById("visitlater_"+id).checked == true ) {
 			/*Change color*/
 			document.getElementById("btn_"+id).className="btn btn-sm btn-danger";
-		}
-	
+		}	
 	});	
-	
+
 	$('.visitlater').click (function() { 
 		var id = $(this).attr ('data-id');
 		if ($(this).is(':checked')) {
 			$("#btn_"+id).addClass ("btn btn-sm btn-danger");		
 		} else {
 			$("#btn_"+id).removeClass ("btn-danger");		
-		}
-		
+		}		
 	});
 
 	$('.answer_choices').click (function() {
@@ -115,7 +112,6 @@ $(document).ready (function () {
 		} else {
 			$("#btn_"+id).removeClass ("btn-success");		
 		}
-		
 	});
 
 	$('.leaveblank').click (function() {
@@ -125,8 +121,7 @@ $(document).ready (function () {
 			$("#btn_"+id).addClass ("btn-warning");
 		} else {
 			$("#btn_"+id).removeClass ("btn-warning");		
-		}
-		
+		}		
 	});
 
 	/*Enable/Disable Timer*/
@@ -140,9 +135,9 @@ $(document).ready (function () {
 	});
 
 	$('.submit-button').on ('click', function (e) {
-		///e.preventDefault ();
-		//$(this).prop ('disabled', true);
-		//$('#test_form').submit ();
+		// e.preventDefault ();
+		// $(this).prop ('disabled', true);
+		// $('#test_form').submit ();
 	});
 
 });
