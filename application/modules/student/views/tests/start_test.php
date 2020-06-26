@@ -1,20 +1,29 @@
 <div class="card "> 
-	<div class="card-header text-center">
-		<h3 class="card-title">Time Remaining</h3>
-		<div class="d-flex justify-content-center">
-			<div class="p-2">
-				<h2 id="hours"></h2>
-				<h4 class="mb-0">HOURS</h4>
-			</div>
-			<div class="p-2">
-				<h2 id="minutes"></h2>
-				<h4 class="mb-0">MINUTES</h4>
-			</div>
-			<div class="p-2">
-				<h2 id="seconds"></h2>
-				<h4 class="mb-0">SECONDS</h4>
-			</div>
-		</div>
+	<div class="card-header">
+		<script src="<?php echo base_url (THEME_PATH . 'assets/js/countdown.min.js'); ?>"></script>
+		<script language="javascript">
+			// Function for submit form when time is over.	
+			function countdownComplete() {
+				alert ('Time is up. Press OK to submit the test');
+				document.getElementById("test_form").submit();
+			}
+
+			// === *** SHOW TIMER *** === //
+			var test2 = new Countdown( {  
+							time: '5', 
+							rangeHi : 'hour',
+							width:200, 
+							height:40,
+							hideLine	: true,
+							numbers		: 	{
+								color	: "#000000",
+								bkgd	: "#ffffff",
+								rounded	: 0.15,				// percentage of size
+							},
+							onComplete	: countdownComplete
+						} );
+	
+		</script>
 	</div>
 </div>
 
@@ -120,7 +129,7 @@
 	<div class="card fixed-bottom mt-4">
 		<div class="card-body">
 			<div class=" d-flex justify-content-between ">				
-				<input type="submit" name="submitBtn" value="Submit Test" id="submit-test" class="btn btn-success btn-sm submit-button" >
+				<input type="submit" name="submitBtn" value="Submit Test" class="btn btn-success btn-sm submit-button" >
 				<div>
 					<button type="button" class="btn btn-primary btn-sm previous"><i class="fa fa-arrow-left"></i> Previous </button>
 					<button type="button" class="btn btn-primary btn-sm next">Next <i class="fa fa-arrow-right"></i> </button>
