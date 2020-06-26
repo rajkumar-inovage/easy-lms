@@ -1,7 +1,7 @@
 <script>
 $(document).ready (function () {
 	/*Hide All Questions on First Load and show only section 1*/
-	$(".pages").hide ();
+	$(".pages,nav").hide ();
 	$("#page1").show ();
 	const finishTime = Date.now() + (<?php echo $test_duration; ?> * 1000);
 	const fiveMinutesBefore = ((<?php echo $test_duration; ?> - 300) * 1000);
