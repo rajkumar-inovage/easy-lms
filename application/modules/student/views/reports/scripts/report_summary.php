@@ -42,12 +42,12 @@ var briefChart = new Chart(ctx, {
         datasets: [{
             data: obtained_marks,
             fill: false,
-   borderColor: "#43c115",
-   backgroundColor: "#43c115",
-   pointBackgroundColor: "#42a5f5",
-   pointBorderColor: "#42a5f5",
-   pointHoverBackgroundColor: "#42a5f5",
-   pointHoverBorderColor: "#42a5f5",
+			borderColor: "#43c115",
+			backgroundColor: "#43c115",
+			pointBackgroundColor: "#42a5f5",
+			pointBorderColor: "#42a5f5",
+			pointHoverBackgroundColor: "#42a5f5",
+			pointHoverBorderColor: "#42a5f5",
    			label: 'Marks Obtained',
         }]
     },
@@ -85,7 +85,7 @@ var briefChart = new Chart(ctx, {
 				},
 				ticks: {
 					min: 0,
-					max: (<?php echo $testMarks; ?> + 1),
+					
 					stepSize: 1,
               	}
 			}]

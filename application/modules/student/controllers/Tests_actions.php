@@ -121,7 +121,7 @@ class Tests_actions extends MX_Controller {
 
 		$this->tests_model->update_submission_time ($coaching_id, $attempt_id, $test_id, $member_id);
 
-		$this->message->set ('You have successfully completed your test. Now you can review your scores', 'success', true);
+		//$this->message->set ('You have successfully completed your test. Now you can review your scores', 'success', true);
 		redirect ('student/tests/test_submitted/'.$coaching_id.'/'.$test_id.'/'.$member_id.'/'.$attempt_id);
 	}
 

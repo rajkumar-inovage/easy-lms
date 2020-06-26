@@ -110,9 +110,6 @@
                             	Ending On: <?php echo date ('d M, Y H:i A', $row['end_date']); ?>
                             </div>
                         </div>
-                      </div>
-
-                      <div class="media-right">
                         <?php 
 		                if ( ($now >= $row['start_date'] && $now <= $row['end_date']) && ($row['attempts'] == 0  || $row['num_attempts'] < $row['attempts']) ) {
 		                	// Ongoing Tests
@@ -120,10 +117,10 @@
 		                } else if ($now < $row['start_date'] && $now < $row['end_date']) {
 			                // Up coming tests
 		                } else if ($row['release_result'] == RELEASE_EXAM_IMMEDIATELY) {
-                			echo anchor ('student/reports/test_report/'.$coaching_id.'/'.$member_id.'/0/'.$row['test_id'], 'Report', ['class'=>'btn btn-default btn-outline-secondary']);
 		                }
 		                ?>
                       </div>
+                     
                     </div>
                 </li>
                 

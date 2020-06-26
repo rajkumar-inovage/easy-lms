@@ -6,36 +6,7 @@ class Tests_reports extends CI_Model {
 		parent::__construct();
 	}
 
-	// get all members who attempted this test
-	public function users_submitted_test ( $test_id, $members=false ) {
 		
-		$this->db->select ('member_id');
-		$this->db->where ('test_id', $test_id);
-		if ( $members != false ) {
-			$this->db->where_in ('member_id', $members);
-		}
-		$this->db->group_by ('member_id');
-		$query = $this->db->get ('coaching_test_attempts');
-		if ($query->num_rows() > 0 ) {
-			foreach ($query->result_array() as $row) {
-				$results[] =  $row['member_id'];
-			}
-			return $results;
-		} else {
-			// no member attempted this test
-			return false;	
-		}		
-	}
-	
-	public function show_students ($mid) {
-		$query = $this->db->get_where ("members",  array ('member_id'=>$mid));
-		if ($query->num_rows() > 0 ) {
-			return $query->row_array();			
-		} else {
-			return false;
-		}
-	}
-
 	public function get_attempts ($mid, $tid, $order='DESC') {
 		$this->db->order_by ('loggedon', $order);
 		$query = $this->db->get_where ("coaching_test_attempts", array ('member_id'=>$mid, 'test_id'=>$tid));
@@ -103,173 +74,8 @@ class Tests_reports extends CI_Model {
 			// didnt answered any question
 			return false; 
 		}
-	}
+	}	
 	
-	//Model for get test mark obtained by a student==========
-	public function get_test_mark ($tid, $mid) {
-		$query = $this->db->select ('obtained_marks' );
-		$query = $this->db->get_where ('test_answers_offline', array('test_id'=>$tid,  'member_id'=>$mid) );
-		if ($query->num_rows() > 0 ) {
-			$row = $query->row();
-			return $row->obtained_marks;
-		} else {
-			return 0;
-		}
-		
-	}
-	//Model for get question mark obtained by a student in each question in Test==========
-	public function get_ques_mark ($tid, $mid) {
-		$query = $this->db->select ('obtained_marks' );
-		$query = $this->db->get_where ('test_answers_offline', array('test_id'=>$tid,  'member_id'=>$mid) );
-		if ($query->num_rows() > 0 ) {
-			$row = $query->row();
-			return $row->obtained_marks;
-		} else {
-			return 0;
-		}
-		
-	}
-	
-	//Count how many students are marked==========
-	public function count_marked_student ($tid) {
-		$query = $this->db->get_where ('test_answers_offline', array('test_id'=>$tid) );
-		if ($query->num_rows() > 0 ) {
-			return $query->num_rows();
-		} else {
-			return 0;
-		}
-	}
-
-	//Model for get marking type TESTWISE OR QUESTIONWISE========================================
-	public function get_marking_type($tid) {
-		$query = $this->db->get_where ('test_answers_offline', array('test_id'=>$tid) );
-		if ($query->num_rows() > 0 ) {
-			$res = $query->row_array();
-			return $res['marking_type']; 
-		}else{
-			return FALSE;
-		}
-	}
-	
-	//Model for save mark By Test wise====================================
-	public function save_test_marks($tid, $mid, $mark, $type) {
-		$query = $this->db->get_where ('test_answers_offline', array('test_id'=>$tid,  'member_id'=>$mid) );
-		
-		$data = array (	'test_id'		=>	$tid,
-						'member_id'		=>	$mid,
-						'obtained_marks'=>	$mark,
-						'marking_type'	=>	$type,
-						  );
-		//if entry is first time				  	
-		if ($query->num_rows() == 0 ) {
-							  
-			if($this->db->insert("test_answers_offline", $data)){
-				return true;
-			}else{
-				return false;
-				}
-		//if entry exist then update it.		
-		}else{
-			$this->db->where('test_id', $tid);
-			$this->db->where('member_id', $mid);
-			return $this->db->update('test_answers_offline', $data); 
-
-			
-			}
-	}
-	//Model for save mark By Question Wise =====================================
-	public function save_ques_marks($tid, $mid, $obt_mark, $type) {
-		
-		$query = $this->db->get_where ('test_answers_offline', array('test_id'=>$tid,  'member_id'=>$mid) );
-		
-		$data = array (	'test_id'		=>	$tid,
-						'member_id'		=>	$mid,
-						'obtained_marks'=>	$obt_mark,
-						'marking_type'	=>	$type,
-					  );
-		//if entry is first time				  	
-		if ($query->num_rows() == 0 ) {
-			if ($this->db->insert("test_answers_offline", $data)) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			// if entry exist then update it.		
-			$this->db->where('test_id', $tid);
-			$this->db->where('member_id', $mid);
-			return $this->db->update('test_answers_offline', $data);
-		}	
-	}
-	
-	//Model for get details of Student======================================
-	public function get_member_info($id){
-		$query = $this->db->get_where ('members', array('member_id'=>$id) );
-		if ($query->num_rows() > 0 ) {
-			$result = $query->row_array();
-			return $result['login'];
-		} else {
-			return FALSE;
-		}
-	}
-	
-	
-	//Model for Reset method of Marksheet QUESTION WISE OR TESTWISE=================
-	public function reset_marksheets($tid) {		
-		return $this->db->delete('test_answers_offline', array('test_id' => $tid)); 		
-	}
-	
-	// function to return a list of students who attempted a particular attempt of a test
-	public function get_this_attempt ($test_id, $attempt) {
-		
-		$result = array ();
-		$students = array ();
-		
-		$this->db->select ('member_id');
-		$this->db->order_by ('loggedon');
-		$this->db->group_by ('member_id');
-		$this->db->where ('test_id', $test_id);
-		$sql = $this->db->get ('coaching_test_attempts');
-		if ($sql->num_rows () > 0 ) {
-			foreach ( $sql->result_array() as $row) {
-				$result[] = $row['member_id'];
-			}			
-			//	$result is a list of students who attempted this test			
-			foreach ( $result as $member_id ) {
-				$this->db->order_by ('loggedon');
-				$this->db->where ('test_id', $test_id);
-				$this->db->where ('member_id', $member_id);
-				$query = $this->db->get ('coaching_test_attempts');
-				if ( $query->num_rows () > 0 ) {				
-					$num_attempts = count ($query->result_array ($attempt));
-					// return only the n'th ($attempt) row 
-					if ( $num_attempts >= $attempt) {
-						$row = $query->row_array ($attempt);
-						$students[] =  $row;
-					}
-				}
-			}
-			return $students;
-		} else {
-			return false;
-		}
-	}
-	
-	// function to return a list of students who attempted a particular attempt of a test
-	public function obtained_marks ($test_id, $attempt, $member_id) {
-		$obtained_marks = 0;
-		$this->db->select ('id');
-		$this->db->order_by ('loggedon');
-		$this->db->where ('member_id', $member_id);
-		$this->db->where ('test_id', $test_id);
-		$sql = $this->db->get ('coaching_test_attempts');
-		if ($sql->num_rows () > 0 ) {
-			$result = $sql->row_array ($attempt);
-			$attempt_id = $result['id'];
-			$obtained_marks = $this->calculate_obtained_marks ($test_id, $attempt_id, $member_id) ;
-		}		
-		return $obtained_marks;
-	}
 	
 	
 	public function calculate_obtained_marks ($test_id, $attempt_id, $member_id) {
@@ -416,25 +222,6 @@ class Tests_reports extends CI_Model {
 				} // end foreach
 			} // end esle
 			return $obtainedMarks ;
-	}	
-	
-	 
-	public function cheked_test($mid, $tid) {
-		$this->db->where('test_id', $tid);
-		$this->db->where('member_id', $mid);
-		$qry = $this->db->get('test_answers_offline');
-		return $qry->num_rows();
-	}
-	
-	public function max_attempt ($mid, $tid) {
-		$q = $this->db->query("Select MAX(loggedon) as grt_atmp,  id  as attempt_id  from lm_coaching_test_attempts where  test_id = $tid AND member_id = $mid");
-		if($q->num_rows() > 0 ){
-			$r = $q->result_array();
-			//print_r($r);die();
-			return $r[0]['attempt_id'];
-		}else{
-			return FALSE;
-		}
 	}
 	
 	public function test_answer ($attempt_id, $test_id, $question_id, $member_id) {
@@ -491,89 +278,8 @@ class Tests_reports extends CI_Model {
 		return $response;
 	} 
 	
-	public function report_category_wise ($attempt_id, $test_id, $member_id, $type=SYS_QUESTION_CATEGORIES) {
-
-		$cats   = array ();
-		$output = array ();
-		$total_questions = 0;
-		$results = $this->tests_model->getTestQuestions ($test_id);
-		if ( is_array ($results)) {
-			$total_questions = count ($results);
-			foreach ( $results as $question_id) {
-				$question = $this->qb_model->getQuestionDetails ($question_id);
-				if ($type == SYS_QUESTION_DIFFICULTIES) {
-					$cat_id = $question['clsf_id'];
-				} else {
-					$cat_id = $question['category_id'];
-				}
-				$cats[$cat_id][] =  $question_id;
-			}
-		}
-		
-		if ( ! empty ($cats)) {
-			foreach ($cats as $cat_id=>$questions) {
-				$cat = $this->common_model->sys_parameter_name ($type, $cat_id); 
-				$answered 		= 0;
-				$not_answered 	= 0;
-				$correct 		= 0;
-				$not_correct 	= 0;
-				$num_questions 	= 0;
-				if ( ! empty ($questions)) {
-					$num_questions = count ($questions);
-					foreach ($questions as $ids) {									
-						$response = $this->check_test_question ($attempt_id, $test_id, $ids, $member_id);
-						if ($response['answered'] == 2) {
-							$correct  = $correct + 1;
-							$answered = $answered + 1;
-						} else if ($response['answered'] == 1) {
-							$not_correct  = $not_correct + 1;
-							$answered 	  = $answered + 1;
-						} else if ($response['answered'] == 0) {
-							$not_answered 	  = $not_answered + 1;
-						}
-					}								
-				}
-				
-				$output[$cat['paramval']] = array ('Answered'=>$answered, 'Correct'=>$correct, 'Wrong'=>$not_correct, 'Not Answered'=>$not_answered, 'Total Questions'=>$num_questions);
-			}
-		}
-		
-		return $output;
-	}
 	
 	
-	public function report_topic_wise ($test_id=0, $member_id=0) {
-
-		// All test questions
-		$all_questions = $this->tests_model->getTestQuestions ($test_id);
-		/* Perpare an array in form of subject->question_group->question */
-		$collect = array ();
-		if ( ! empty ($all_questions)) {					
-			foreach ($all_questions as $qid) {
-				// get details
-				$details = $this->qb_model->getQuestionDetails ($qid);
-				$chapter_id = $details['chapter_id'];
-				$parent_id = $details['parent_id'];
-				// get subject
-				// $subject_id = $this->tests_model->get_subject_id ($chapter_id);
-				$collect[$chapter_id][$parent_id][] = $qid;
-			}
-		}
-		
-		$prepare_questions = array ();
-		foreach ( $collect as $chapter_id=>$question_group) {
-			if ( is_array ($question_group)) {
-				$question_group_ids = array_keys ($question_group);
-				foreach ($question_group_ids as $qgids) {
-					$prepare_questions[$chapter_id][$qgids] = $question_group[$qgids];
-				}
-			}
-		}
-		
-		return $prepare_questions;
-		
-	}
-
 	public function test_taken_by_member ($member_id=0, $attempt=0) {
 		$this->db->where ('member_id', $member_id);
 		$this->db->group_by ('test_id');
@@ -600,6 +306,15 @@ class Tests_reports extends CI_Model {
 			return 0;
 		}
 		
+	}
+
+	public function test_submitted ($coaching_id=0, $test_id=0, $attempt_id=0, $member_id=0) {
+		$this->db->where ('test_id', $test_id);
+		$this->db->where ('member_id', $member_id);
+		$this->db->where ('attempt_id', $attempt_id);
+		$this->db->where ('coaching_id', $coaching_id);
+		$sql = $this->db->get ('coaching_test_answers');
+		return $sql->result_array ();		
 	}
 	
 }

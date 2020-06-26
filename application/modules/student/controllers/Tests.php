@@ -54,7 +54,7 @@ class Tests extends MX_Controller {
 	                $row['test_marks'] = $testMarks;
 	                $row['num_test_questions'] = $num_test_questions;
 
-					$attempts = $this->tests_model->get_attempts ($member_id, $row['test_id']);
+					$attempts = $this->tests_model->get_attempts ($coaching_id, $member_id, $row['test_id']);
 					if (! empty ($attempts)) {
 						$num_attempts = count($attempts);
 					} else {

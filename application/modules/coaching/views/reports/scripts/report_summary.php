@@ -45,10 +45,6 @@ var briefChart = new Chart(ctx, {
     },
     options: {
         responsive: true,
-		title: {
-			display: true,
-			text: 'Summary Report'
-		},
 		tooltips: {
 			mode: 'index',
 			intersect: false,

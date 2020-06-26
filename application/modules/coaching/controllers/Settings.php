@@ -33,7 +33,7 @@ class Settings extends MX_Controller {
 		$data['page_title'] = 'General Settings';
 		/* Back Link */
 		
-		$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard');
+		$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
 		$coaching = $this->coaching_model->get_coaching ($coaching_id);
 		$settings = $this->settings_model->get_settings ($coaching_id);
 		

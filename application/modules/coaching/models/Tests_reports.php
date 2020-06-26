@@ -570,6 +570,19 @@ class Tests_reports extends CI_Model {
 		
 	}
 
+	public function test_taken ($coaching_id=0, $test_id=0) {
+		$select = 'CTA.loggedon, CTA.submit_time, CTA.id AS attempt_id, M.first_name, M.last_name, M.member_id, M.adm_no, M.sr_no';
+		$this->db->select ($select);
+		$this->db->from ('members M, coaching_test_attempts CTA');
+		$this->db->where ('M.member_id=CTA.member_id');
+		$this->db->where ('CTA.coaching_id', $coaching_id);
+		$this->db->where ('CTA.test_id', $test_id);
+		$this->db->group_by ('CTA.member_id');
+		$this->db->order_by ('CTA.loggedon', 'DESC');
+		$sql = $this->db->get ();
+		return $sql->result_array ();
+	}
+	
 	public function test_taken_by_member ($member_id=0, $attempt=0) {
 		$this->db->where ('member_id', $member_id);
 		$this->db->group_by ('test_id');
@@ -594,8 +607,26 @@ class Tests_reports extends CI_Model {
 			return $attempt_id;
 		} else {
 			return false;
+		}		
+	}
+
+	public function delete_submissions($coaching_id=0, $test_id=0) {
+		$users = $this->input->post ('users');
+		if (! empty ($users)) {
+			foreach ($users as $member_id) {
+				// Delete attempts
+				$this->db->where ('coaching_id', $coaching_id);
+				$this->db->where ('test_id', $test_id);
+				$this->db->where ('member_id', $member_id);
+				$this->db->delete ('coaching_test_attempts');
+
+				// Delete Submissions
+				$this->db->where ('coaching_id', $coaching_id);
+				$this->db->where ('test_id', $test_id);
+				$this->db->where ('member_id', $member_id);
+				$this->db->delete ('coaching_test_answers');
+			}
 		}
-		
 	}
 	
 }

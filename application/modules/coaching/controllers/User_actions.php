@@ -153,10 +153,11 @@ class User_actions extends MX_Controller {
 		$this->users_model->remove_profile_image ($member_id);
 		$this->message->set ('Profile image removed successfully', 'success', true);
 	    if ($member_id == $this->session->userdata ('member_id')) {
-            $redirect = site_url ('coaching/users/my_account/'.$coaching_id.'/'.$member_id);
+            $redirect =  ('coaching/users/my_account/'.$coaching_id.'/'.$member_id);
 	    } else {
-	        redirect ('coaching/users/create/'.$coaching_id.'/'.$user['role_id'].'/'.$member_id);
+	        $redirect =  ('coaching/users/create/'.$coaching_id.'/'.$user['role_id'].'/'.$member_id);
 	    }
+        redirect ($redirect);
 	}
 	
 	

@@ -3,14 +3,14 @@
 		<table class="table table-bordered table-hover table-checkable datatable mb-0">
 			<thead>
 				<tr>
-					<th class="text-center" width="3%">
+					<th class="text-center" width="2%">
 						<?php echo form_checkbox(array('name'=>'chk', 'class'=>'check-all', 'id'=>'check-all')); ?>
 					</th>
-					<th class="text-right" width="3%">#</th>
-					<th width="40%"><?php echo 'Name'; ?></th>
+					<th class="text-right" width="2%">#</th>
+					<th width=""><?php echo 'Name'; ?></th>
 					<th width=""><?php echo 'Role '; ?></th>
-					<th width=""><?php echo 'Start Date'; ?></th>
-					<th width=""><?php echo 'End Date'; ?></th>
+					<th class="d-none d-md-table-cell"><?php echo 'Start Date'; ?></th>
+					<th class="d-none d-md-table-cell"><?php echo 'End Date'; ?></th>
 					<th><?php echo 'Actions'; ?></th>
 				</tr>
 			</thead>
@@ -32,8 +32,8 @@
 							<?php echo $row['adm_no']; ?>
 						</td>
 						<td class="" ><?php echo $row['description']; ?></td>
-						<td class="" ><?php echo date ('d-m-Y H:i A', $row['start_date']); ?></td>
-						<td class="" ><?php echo date ('d-m-Y H:i A', $row['end_date']); ?></td>
+						<td class="d-none d-md-table-cell"><?php echo date ('d-m-Y H:i A', $row['start_date']); ?></td>
+						<td class="d-none d-md-table-cell"><?php echo date ('d-m-Y H:i A', $row['end_date']); ?></td>
 						<td> 
 							<a href="javascript: void ()" onclick="show_confirm ('Un-enroll this user?', '<?php echo site_url ('coaching/tests_actions/unenrol_user/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$type.'/'.$role_id.'/'.$class_id.'/'.$batch_id.'/'.$status.'/'.$row['member_id'].'/1'); ?>')"><i class="fa fa-trash"></i></a>
 						</td>
@@ -55,7 +55,7 @@
 			<div class="card-footer">
 				<div class="form-inline">
 						<a id="set_enrolment" class="btn btn-info d-none"  href="javascript: void ()" disabled>Set Enrollment Period <i class="fa fa-arrow-right"></i> </a>
-						<select name="actions" class="form-control w-25">
+						<select name="actions" class="form-control w-50">
 							<option value="">With selected</option>
 							<option value="archive">Archive</option>
 							<option value="unenrol">Un-Enrol</option>
