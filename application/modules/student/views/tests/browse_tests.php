@@ -2,13 +2,14 @@
     <?php if ($test_type == TEST_TYPE_REGULAR) { ?>
       <ul class="list-group ">
         <li class="list-group-item">On Going Tests</li>
-        <?php if (! empty ($tests['ongoing'])) { ?>
-          <?php foreach ($tests['ongoing'] as $row) { ?>
+        <?php
+        $i = 1;
+        if (! empty ($tests['ongoing'])) {
+          foreach ($tests['ongoing'] as $row) { 
+            ?>
             <li class="list-group-item media -v-middle">
               <div class="media-left">
-                  <span class="icon-block half bg-success rounded-circle ">
-                    <i class="fa fa-superscript"></i>
-                  </span>
+                <?php echo $i; ?>
               </div>
               <div class="media-body">
                 <h4 class=""><?php echo $row['title']; ?></h4>
@@ -22,22 +23,21 @@
                       Started On: <?php echo date ('d M, Y H:i A', $row['start_date']); ?><br>
                       Ending On: <?php echo date ('d M, Y H:i A', $row['end_date']); ?>
                     </p>
-                </div>
-
-              </div>
-
-              <div class="media-right">
+                </div>              
                 <?php 
                 if ($row['attempts'] == 0  || $num_attempts < $row['attempts'] ) {
                   echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$row['test_id'], 'Take Test', ['class'=>'btn btn-success']); 
                 } else {
-                  echo '<span class="">All attempts taken</span>';
+                  echo '<span class="badge badge-danger">All attempts taken</span>';
                 }
                 ?>
               </div>
             </li>
-          <?php } ?>
-        <?php } else { ?>
+            <?php
+            $i++;
+          }
+        } else {
+          ?>
           <li class="list-group-item text-danger">
               No tests right now 
           </li>
@@ -88,11 +88,6 @@
         <?php if (! empty ($tests['archived'])) { ?>
           <?php foreach ($tests['archived'] as $row) { ?>
             <li class="list-group-item media -v-middle">
-              <div class="media-left">
-                <span class="icon-block half bg-grey-200 rounded-circle " title="Report">
-                  <i class="fa fa-superscript"></i>
-                </span>
-              </div>
               <div class="media-body">
                 <h4 class=""><?php echo $row['title']; ?></h4>
                 <div class="">
@@ -107,15 +102,7 @@
                       Ended On: <?php echo date ('d M, Y H:i A', $row['end_date']); ?>
                     </div>
                 </div>
-              </div>
-
-              <div class="media-right">
-                <?php 
-                if ($row['release_result'] == RELEASE_EXAM_IMMEDIATELY) {
-                  echo anchor ('student/reports/test_report/'.$coaching_id.'/'.$member_id.'/0/'.$row['test_id'], 'Report', ['class'=>'btn btn-default']); 
-                }
-                ?>
-              </div>
+              </div>              
             </li>
           <?php } ?>
         <?php } else { ?>

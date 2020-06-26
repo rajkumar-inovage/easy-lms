@@ -45,6 +45,9 @@ class Tests extends MX_Controller {
 		$data['sub_title'] = 'Test Categories';
 		$data['coaching_id'] = $coaching_id;
 		
+		/* --==// Toolbar //==-- */
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+
 		$data['categories'] = $this->tests_model->test_categories ($coaching_id);
 
 		$this->load->view(INCLUDE_PATH  . 'header', $data);
@@ -63,6 +66,9 @@ class Tests extends MX_Controller {
 		$data['category_id'] = $category_id;
 		$data['coaching_id'] = $coaching_id;
 		$data['category'] = $this->tests_model->get_category ($category_id);
+
+		/* --==// Toolbar //==-- */
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
 		//$data['script'] = $this->load->view(SCRIPT_PATH  . 'plans/create_category', $data, true);
 		$this->load->view(INCLUDE_PATH  . 'header', $data);

@@ -63,7 +63,7 @@
 	</div>
 </div>
 
-<div class="card border-danger mb-3 ">
+<div class="card  mb-3 ">
 	<div class="card-header">
 		<p class="card-title font-weight-bold">Delete</p>
 	</div>
@@ -73,7 +73,7 @@
 			<a class="" href="javascript:void(0)" onclick="javascript:show_confirm ('This will delete all questions in this test. Continue?', '<?php echo site_url('coaching/tests_actions/reset_test/'.$coaching_id.'/'.$category_id.'/'.$test_id); ?>')" title="Reset Test">Reset</a>
 		  </li>
 		  <li class="list-inline-item ml-4">
-			<a class="" href="javascript:void(0)" onclick="javascript:show_confirm ('Are you sure you want to delete this test?', '<?php echo site_url('coaching/tests_actions/delete_test/'.$coaching_id.'/'.$category_id.'/'.$test_id); ?>')" title="Delete Test" >Delete</a>
+			<a class="btn btn-danger" href="javascript:void(0)" onclick="javascript:show_confirm ('Are you sure you want to delete this test?', '<?php echo site_url('coaching/tests_actions/delete_test/'.$coaching_id.'/'.$category_id.'/'.$test_id); ?>')" title="Delete Test" >Delete</a>
 	      </li>
 		</ul>
 

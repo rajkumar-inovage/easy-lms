@@ -367,20 +367,31 @@ class Tests_model extends CI_Model {
 	}
 	
 	
-	//model for get how many attempts done by a student.
-	public function get_attempts ($member_id, $tid) {
-		$this->db->where ("test_id", $tid);
-		$this->db->order_by ("loggedon", 'DESC');
+	// model for get how many attempts done by a student.
+	public function get_attempts ($coaching_id=0, $member_id=0, $test_id=0) {
+		$this->db->where ("coaching_id", $coaching_id);
 		$this->db->where ("member_id", $member_id);		
+		$this->db->where ("test_id", $test_id);
+		$this->db->order_by ("loggedon", 'DESC');
 		$sql = $this->db->get ("coaching_test_attempts");
+
+		$result = [];
 		if ($sql->num_rows () > 0 ) {
-			return $sql->result_array ();
-		} else {
-			return false;
+			foreach ($sql->result_array () as $row) {
+				$attempt_id = $row['id'];
+				$submitted = $this->tests_reports->test_submitted ($coaching_id, $test_id, $attempt_id, $member_id);
+				if ( ! empty ($submitted)) {
+					$row['submitted'] = 1;
+				} else {
+					$row['submitted'] = 0;
+				}
+				$result[] = $row;
+			}
 		}
+		return $result;
 	}
 
-	//All tests taken by a user
+	// All tests taken by a user
 	public function test_taken_by_member ($member_id=0, $attempt=0) {
 		$this->db->select ('T.*, TA.loggedon, TA.id AS attempt_id');
 		$this->db->from ('coaching_test_attempts TA');

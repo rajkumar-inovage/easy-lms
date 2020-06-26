@@ -5,12 +5,17 @@
 			// Function for submit form when time is over.	
 			function countdownComplete() {
 				alert ('Time is up. Press OK to submit the test');
+				document.getElementById("question-block").style ('display') = 'none';
+				document.getElementById("quick-links").style ('display') = 'none';
+				document.getElementById("test-nav-buttons").style ('display') = 'none';				
+				document.getElementById("test-nav-buttons").style ('display') = 'none';
+
 				document.getElementById("test_form").submit();
 			}
 
 			// === *** SHOW TIMER *** === //
 			var test2 = new Countdown( {  
-							time: '5', 
+							time: '60', 
 							rangeHi : 'hour',
 							width:200, 
 							height:40,
@@ -130,11 +135,18 @@
 		<div class="card-body">
 			<div class=" d-flex justify-content-between ">				
 				<input type="submit" name="submitBtn" value="Submit Test" class="btn btn-success btn-sm submit-button" >
-				<div>
+				<div id="test-nav-buttons">
 					<button type="button" class="btn btn-primary btn-sm previous"><i class="fa fa-arrow-left"></i> Previous </button>
 					<button type="button" class="btn btn-primary btn-sm next">Next <i class="fa fa-arrow-right"></i> </button>
 				</div>
 			</div>
+		</div>
+	</div>
+
+	<div class="card bg-danger pages text-white mt-4">
+		<div class="card-body">
+			<p class="font-weight-bold">Time is up</p>
+			<p class="">Press SUBMIT button to submit test. Please not that test will not be evaluated/checked if not submitted</p>
 		</div>
 	</div>
 

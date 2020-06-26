@@ -54,8 +54,6 @@
 								}
 								?>
 							</p>
-						  </div>
-						  <div class="media-right text-center">
 							<?php 
 							if ($enrolment['release_result'] == RELEASE_EXAM_IMMEDIATELY) {
 								$pass_marks = ($row['pass_marks'] * $test_marks) / 100;
@@ -71,6 +69,8 @@
 								<div class="text-display-1 <?php echo $result_class; ?>"><?php echo $latest_marks; ?></div>
 								<span class="caption <?php echo $result_class; ?>"><?php echo $result_text; ?></span>
 								<?php
+							} else {
+								echo '<span class="badge badge-danger">Result will be release later</span>';
 							}
 							?>
 						  </div>

@@ -1,10 +1,10 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');  
 
 class Reports extends MX_Controller {
 		
 	/* Crumb Buttons */
 	var $crumb_buttons;
-	var $autoload = array ();
+	var $toolbar = array ();
 
 	public function __construct () { 
 		$config = ['config_coaching'];
@@ -29,37 +29,27 @@ class Reports extends MX_Controller {
 		
 		$test = $this->tests_model->view_tests ($test_id);
 
-		$data['page_title'] = 'Submissions';
+		$data['page_title'] = 'Test Attempts';
 		$data['sub_title']  = $test['title'];
+
 		/* Breadcrumbs */
-		$data['bc'] = array ('Manage Tests'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
-		
+		$data['bc'] = array ('Manage Tests'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);		
+
+		$test_taken = $this->tests_reports->test_taken ($coaching_id, $test_id);
+
 		$submissions = $this->tests_reports->users_submitted_test ($test_id);
 		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
 		
-		$results = array ();
-		if ( ! empty($submissions)) {
-			foreach ($submissions as $member_id) {
-				$compare = [];
-				$member = $this->users_model->get_user ($member_id);
-				// Get all attempts and maximum marks from them
-				$attempts = $this->tests_reports->get_attempts ($member_id, $test_id);
-				$ob_marks = array ();
-				$max_marks = 0;
-				if ( ! empty ($attempts)) {
-					foreach ($attempts as $atm) {
-						$ob = $this->tests_reports->calculate_obtained_marks ($test_id, $atm['id'], $member_id);
-						$compare[] = $ob;
-						$loggedon = $atm['loggedon'];
-					}
-					$max_marks = max ($compare);
-					$member['ob_marks'] = $max_marks;
-					$member['loggedon'] = $loggedon;
-				}
-				$results[$member_id] = $member;
+		$results = [];
+		if ( ! empty($test_taken)) {
+			foreach ($test_taken as $row) {
+				$ob = $this->tests_reports->calculate_obtained_marks ($test_id, $row['attempt_id'], $row['member_id']);
+				$row['ob_marks'] = $ob;
+				$results[] = $row;
 			}
 		}
-		$data['submissions'] = $results;
+
+		$data['submissions'] 	= $results;
 		// get selected node level
 		$data['level']    		= 0;
 		$data['test'] 			= $test;
