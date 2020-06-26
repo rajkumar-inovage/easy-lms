@@ -208,14 +208,14 @@ class Tests_model extends CI_Model {
 	}
 	
 	public function delete_attempt ($coaching_id=0, $attempt_id=0, $member_id=0, $test_id=0) {
-		$this->db->where ('id', $attempt_id);
 		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('id', $attempt_id);
 		$this->db->where ('member_id', $member_id);
 		$this->db->where ('test_id', $test_id);
 		$this->db->delete ('coaching_test_attempts');
 		
-		$this->db->where ('attempt_id', $attempt_id);
 		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('attempt_id', $attempt_id);
 		$this->db->where ('member_id', $member_id);
 		$this->db->where ('test_id', $test_id);
 		$this->db->delete ('coaching_test_answers');		

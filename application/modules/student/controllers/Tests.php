@@ -88,44 +88,22 @@ class Tests extends MX_Controller {
     }
 	
 	public function tests_taken ($coaching_id=0, $member_id=0, $category_id=0, $type=0, $offset=0) {
-		if($coaching_id==0){
+		if ($coaching_id==0) {
             $coaching_id = $this->session->userdata ('coaching_id');
         }
-        if($member_id==0){
+        if ($member_id==0) {
             $member_id = $this->session->userdata ('member_id');
         }
+
         $data['coaching_id'] = $coaching_id;
 		$data['member_id'] = $member_id;
 		$data['category_id'] = $category_id;
 		$data['type'] 		 = $type;		
+		$data['page_title'] 	= 'Tests Taken';
+		$data['bc'] 			= array ('Dashboard'=>'student/home/dashboard/'.$coaching_id.'/'.$member_id);		
 
 		// We have to call the same method again to get ALL records. Notice fourth parameter is set true
-		$test_taken = $this->tests_model->test_taken_by_member ($member_id);
-		$test_cats = [];
-		$num_tests = 0;
-		if (! empty($test_taken)) {
-			foreach ($test_taken as $t) {
-				$test_cats[] = $t['category_id'];
-			}
-			$num_tests = count ($test_taken);
-		}
-		$data['top_levels'] = $this->common_model->get_top_levels ($test_cats, TREE_TYPE_TEST);
-
-		$data['category_id'] 	= $category_id;
-		$data['type'] 		 	= $type;
-		$data['member_id'] 		= $member_id;		
-		$data['num_tests'] 		= $num_tests;		
-		$data['page_title'] 	= 'Tests Taken';
-		$data['sub_title'] 	= 'Tests Taken';
-		$data['bc'] 			= array ('Dashboard'=>'student/home/dashboard/'.$coaching_id.'/'.$member_id);
-
-		/* Pagination */
-		$this->load->library('pagination');
-		$config['base_url'] 	= site_url('student/tests/tests_taken/'.$coaching_id.'/'.$member_id.'/'.$category_id.'/'.$type);
-		$config['total_rows'] 	= $num_tests;
-		$config['per_page'] 	= RECORDS_PER_PAGE; 
-		$data['offset'] 		= $offset;
-		$this->pagination->initialize($config);
+		$test_taken = $this->tests_model->test_taken_by_member ($coaching_id, $member_id);
 
 		$data['test_taken'] = $test_taken;
 

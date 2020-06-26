@@ -392,19 +392,38 @@ class Tests_model extends CI_Model {
 	}
 
 	// All tests taken by a user
-	public function test_taken_by_member ($member_id=0, $attempt=0) {
-		$this->db->select ('T.*, TA.loggedon, TA.id AS attempt_id');
-		$this->db->from ('coaching_test_attempts TA');
+	public function test_taken_by_member ($coaching_id=0, $member_id=0, $attempt=0) {
+		$this->db->select ('T.test_id, T.title, T.pass_marks, TA.loggedon, TA.submit_time, TA.id AS attempt_id, TE.start_date, TE.end_date, TE.attempts, TE.release_result');
+		$this->db->from ('coaching_test_attempts TA, coaching_test_enrolments TE');
 		$this->db->join ('coaching_tests T', 'T.test_id=TA.test_id');
 		$this->db->where ('TA.member_id', $member_id);
+		$this->db->where ('TE.member_id=TA.member_id AND TE.test_id=TA.test_id');
 		$this->db->order_by ('TA.loggedon', 'DESC');
 		$this->db->group_by ('TA.test_id');
 		$sql = $this->db->get ();
+		
+		$result = [];
 		if ($sql->num_rows () > 0 ) {
-			return $sql->result_array ();
-		} else {
-			return false;
+			foreach ($sql->result_array () as $row) {
+				$attempt_id = $row['attempt_id'];
+				// Submission
+				$submitted = $this->tests_reports->test_submitted ($coaching_id, $row['test_id'], $attempt_id, $member_id);
+				if ( ! empty ($submitted)) {
+					$row['submitted'] = 1;
+				} else {
+					$row['submitted'] = 0;
+				}
+
+				// Obtained Marks
+				$row['obtained_marks'] = $this->tests_reports->calculate_obtained_marks ($row['test_id'], $attempt_id, $member_id);
+
+				// Test marks
+				$row['test_marks'] = $this->getTestquestionMarks ($coaching_id, $row['test_id']);
+
+				$result[] = $row;
+			}
 		}
+		return $result;
 	}
 	
 	//Insert the answer of a student given by a specific student

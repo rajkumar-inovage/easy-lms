@@ -579,7 +579,7 @@ class Tests_actions extends MX_Controller {
 	}
 	
 	public function delete_attempt ($coaching_id=0, $attempt_id=0, $member_id=0, $test_id=0) {
-		$this->tests_model->delete_attempt ($attempt_id, $member_id, $test_id);
+		$this->tests_model->delete_attempt ($coaching_id, $attempt_id, $member_id, $test_id);
 		$this->message->set ('Attempt deleted successfully', 'success', true);
 		redirect ('coaching/reports/all_reports/'.$coaching_id.'/0/'.$member_id.'/'.$test_id);
 	}

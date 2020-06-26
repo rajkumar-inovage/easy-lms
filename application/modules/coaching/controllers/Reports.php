@@ -33,23 +33,14 @@ class Reports extends MX_Controller {
 		$data['sub_title']  = $test['title'];
 
 		/* Breadcrumbs */
-		$data['bc'] = array ('Manage Tests'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);		
+		$data['bc'] = array ('Manage Tests'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
 
-		$test_taken = $this->tests_reports->test_taken ($coaching_id, $test_id);
+		// $test_taken = $this->tests_reports->test_taken ($coaching_id, $test_id);
 
-		$submissions = $this->tests_reports->users_submitted_test ($test_id);
-		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
-		
-		$results = [];
-		if ( ! empty($test_taken)) {
-			foreach ($test_taken as $row) {
-				$ob = $this->tests_reports->calculate_obtained_marks ($test_id, $row['attempt_id'], $row['member_id']);
-				$row['ob_marks'] = $ob;
-				$results[] = $row;
-			}
-		}
+		$submissions = $this->tests_reports->test_attempts ($coaching_id, $test_id);
+		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);	
 
-		$data['submissions'] 	= $results;
+		$data['submissions'] 	= $submissions;
 		// get selected node level
 		$data['level']    		= 0;
 		$data['test'] 			= $test;
@@ -57,7 +48,6 @@ class Reports extends MX_Controller {
 		$data['coaching_id'] 	= $coaching_id;
 		$data['category_id'] 	= $category_id;
 		$data['test_id']  		= $test_id;
-		$data['class_id']  		= $class_id = 0;
 		
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('reports/submission', $data);
@@ -66,17 +56,21 @@ class Reports extends MX_Controller {
 
 	public function all_reports ($coaching_id=0, $attempt_id=0, $member_id=0, $test_id=0, $type=SUMMARY_REPORT, $nav='' ) {
 		
+		// Get latest attempt
+		if ($attempt_id == 0) {
+			$attempt_id = $this->tests_reports->last_attempt ($test_id, $member_id);
+		}
+
+		if ($attempt_id == 0) {
+			redirect ('coaching/reports/submissions/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+		}
+
 		// Get member_id
 		if ($member_id == 0) {
 			$member_id = $this->session->userdata ('member_id');
 		}
 		
 		$role_id = $this->session->userdata ('role_id');
-		
-		// Get latest attempt
-		if ($attempt_id == 0) {
-			$attempt_id = $this->tests_reports->last_attempt ($test_id, $member_id);
-		}		
 		
 		$reports = array (
 			SUMMARY_REPORT =>array ('title'=>'Summary Report', 'report_file'=>'report_summary', 'script_file'=>'report_summary'),
