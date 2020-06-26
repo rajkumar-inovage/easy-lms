@@ -3,7 +3,36 @@ $(document).ready (function () {
 	/*Hide All Questions on First Load and show only section 1*/
 	$(".pages").hide ();
 	$("#page1").show ();
-	
+	const countDownTill = Date.now() + (<?php echo $test_duration; ?> * 1000);
+	const fiveMinutesBefore = (300 * 1000);
+	const oneMinutesBefore =  (60 * 1000);
+	var x = setInterval(function() {
+		// Get current unix timestamp time
+		const now = Date.now();
+		// Find the distance between now and the count down date
+		const distance = countDownTill - now;
+		const notifyFirst = distance - fiveMinutesBefore;
+		const notifySecond = distance - oneMinutesBefore;
+
+		if(notifyFirst <= 1000 && notifyFirst >= 0){
+			toastr.warning('Only 5 minutes remaining');
+		}
+		if(notifySecond <= 1000 && notifySecond >= 0){
+			toastr.error('Hurry up, 1 minute remaining');
+		}
+		if (distance < 0) {
+		    clearInterval(x);
+			$("#submit-test").trigger('click').prop('disabled', true);
+			toastr.success('Time is up. Submitting test now.');
+		    return false;
+		}
+		const hoursRemain = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		const minutesRemain = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+		const secondsRemain = Math.floor((distance % (1000 * 60)) / 1000);
+		$("#hours").text(hoursRemain);
+		$("#minutes").text(minutesRemain);
+		$("#seconds").text(secondsRemain);
+	}, 1000);
 	$(".next").click(function() {
 		
 		/*Hide/Show question blocks*/
