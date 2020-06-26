@@ -26,7 +26,14 @@
 						</div>
 						
 						<div class="media-body">
-							<?php echo anchor('coaching/reports/all_reports/'.$coaching_id.'/0/'.$row['member_id'].'/'.$test_id, $row['first_name'] . ' ' .$row['last_name']);?><br>
+							<?php 
+							$user_name = $row['first_name'] . ' ' .$row['last_name'];
+							if ($row['submitted'] == 1 || ($row['submitted'] == 0 && $row['submit_time'] > 0)) {
+								echo anchor('coaching/reports/all_reports/'.$coaching_id.'/'.$row['attempt_id'].'/'.$row['member_id'].'/'.$test_id, $user_name);
+							} else {
+								echo $user_name;
+							}
+							?>
 							<div><?php echo $row['adm_no'];?></div>
 							<div><?php if ($row['sr_no'] != '') echo $row['sr_no']; ?></div>
 							<div><?php echo date('d F, Y H:i a', $row['loggedon']);?></div>
@@ -34,7 +41,7 @@
 							<?php
 								$attempt_time = $row['loggedon'];
 								$submit_time = $row['submit_time'];
-								if ($submit_time > 0) {
+								if ($row['submitted'] == 1 || ($row['submitted'] == 0 && $row['submit_time'] > $attempt_time)) {
 									$time_taken = $submit_time - $attempt_time;
 									$hours = floor($time_taken / 3600);
 									$mins = floor($time_taken / 60 % 60);
@@ -42,24 +49,27 @@
 									$timeFormat = sprintf('%02d:%02d:%02d', $hours, $mins, $secs);
 									echo 'Time Taken: <span class="badge badge-success">'.$timeFormat.' secs</span>';
 								}
-							?>
+								?>
 							</div>
 						</div>
 						<div class="media-right">
 							<?php 
-								$row['ob_marks'];
-								$pass_marks = ($test['pass_marks'] * $test_marks) / 100;
+							if ($row['submitted'] == 1 || ($row['submitted'] == 0 && $row['submit_time'] > 0)) {
+								$pass_marks = ($row['pass_marks'] * $test_marks) / 100;
 								
-								if ($row['ob_marks'] < $pass_marks) {
+								if ($row['obtained_marks'] < $pass_marks) {
 									$result_class = 'text-danger';
 									$result_text = 'Fail';
 								} else {
 									$result_class = 'text-success';
 									$result_text = 'pass';
-								}
+								}									
+								echo '<div class="text-display-1 '.$result_class.'">'.$row['obtained_marks'].'</div>';
+								echo '<span class="caption '.$result_class.'">'.$result_text.'</span>';
+							} else {
+								echo '<span class="badge badge-danger">Not Submitted</span>';
+							}
 							?>
-							<div class="text-display-1 <?php echo $result_class; ?>"><?php echo $row['ob_marks']; ?></div>
-							<span class="caption <?php echo $result_class; ?>"><?php echo $result_text; ?></span>
 						</div>
 					</li>
 					<?php 
@@ -75,7 +85,7 @@
 			?>
 		</ul>
 		<div class="card-footer">
-			<input type="submit" name="submit" class="btn btn-danger" value="Delete Submissions">
+			<input type="submit" name="submit" class="btn btn-danger" value="Delete Attempts">
 		</div>
 	<?php echo form_close();?>
 

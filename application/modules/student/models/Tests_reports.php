@@ -314,7 +314,7 @@ class Tests_reports extends CI_Model {
 		$this->db->where ('attempt_id', $attempt_id);
 		$this->db->where ('coaching_id', $coaching_id);
 		$sql = $this->db->get ('coaching_test_answers');
-		return $sql->result_array ();		
+		return $sql->result_array ();
 	}
 	
 }

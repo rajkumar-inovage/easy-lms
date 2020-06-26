@@ -7,24 +7,36 @@ class Tests_reports extends CI_Model {
 	}
 
 	// get all members who attempted this test
-	public function users_submitted_test ( $test_id, $members=false ) {
+	public function test_attempts ( $coaching_id=0, $test_id=0 ) {
+		$this->db->select ('T.test_id, T.pass_marks, TA.member_id, MAX(TA.loggedon) AS loggedon, MAX(TA.submit_time) AS submit_time, MAX(TA.id) AS attempt_id, TE.start_date, TE.end_date, TE.attempts, TE.release_result, M.first_name, M.last_name, M.adm_no, M.sr_no');
+		$this->db->from ('coaching_test_attempts TA, coaching_test_enrolments TE, members M, coaching_tests T');
+		$this->db->where ('TA.coaching_id', $coaching_id);
+		$this->db->where ('TA.test_id', $test_id);
+		$this->db->where ('TA.member_id=M.member_id AND TA.test_id=T.test_id');
+		$this->db->order_by ('TA.loggedon', 'DESC');
+		$this->db->group_by ('TA.member_id');
+		$sql = $this->db->get ();
 		
-		$this->db->select ('member_id');
-		$this->db->where ('test_id', $test_id);
-		if ( $members != false ) {
-			$this->db->where_in ('member_id', $members);
-		}
-		$this->db->group_by ('member_id');
-		$query = $this->db->get ('coaching_test_attempts');
-		if ($query->num_rows() > 0 ) {
-			foreach ($query->result_array() as $row) {
-				$results[] =  $row['member_id'];
+		$result = [];
+		if ($sql->num_rows () > 0 ) {
+			foreach ($sql->result_array () as $row) {
+				$attempt_id = $row['attempt_id'];
+				$member_id = $row['member_id'];
+				// Submission
+				$submitted = $this->test_submitted ($coaching_id, $test_id, $attempt_id, $member_id);
+				if ($submitted) {
+					$row['submitted'] = 1;
+				} else {
+					$row['submitted'] = 0;
+				}
+
+				// Obtained Marks
+				$row['obtained_marks'] = $this->calculate_obtained_marks ($test_id, $attempt_id, $member_id);
+
+				$result[] = $row;
 			}
-			return $results;
-		} else {
-			// no member attempted this test
-			return false;	
-		}		
+		}
+		return $result;
 	}
 	
 	public function show_students ($mid) {
@@ -606,7 +618,7 @@ class Tests_reports extends CI_Model {
 			$attempt_id = $row['id'];
 			return $attempt_id;
 		} else {
-			return false;
+			return 0;
 		}		
 	}
 
@@ -626,6 +638,19 @@ class Tests_reports extends CI_Model {
 				$this->db->where ('member_id', $member_id);
 				$this->db->delete ('coaching_test_answers');
 			}
+		}
+	}
+
+	public function test_submitted ($coaching_id=0, $test_id=0, $attempt_id=0, $member_id=0) {
+		$this->db->where ('test_id', $test_id);
+		$this->db->where ('member_id', $member_id);
+		$this->db->where ('attempt_id', $attempt_id);
+		$this->db->where ('coaching_id', $coaching_id);
+		$sql = $this->db->get ('coaching_test_answers');
+		if ($sql->num_rows () > 0) {
+			return $sql->result_array ();
+		} else {
+			return false;
 		}
 	}
 	
