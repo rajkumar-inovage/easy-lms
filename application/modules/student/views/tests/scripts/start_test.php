@@ -3,29 +3,29 @@ $(document).ready (function () {
 	/*Hide All Questions on First Load and show only section 1*/
 	$(".pages").hide ();
 	$("#page1").show ();
-	const countDownTill = Date.now() + (<?php echo $test_duration; ?> * 1000);
-	const fiveMinutesBefore = ((<?php echo $test_duration; ?> * 1000) - (300 * 1000));
-	const oneMinutesBefore =  ((<?php echo $test_duration; ?> * 1000) - (60 * 1000));
+	const finishTime = Date.now() + (<?php echo $test_duration; ?> * 1000);
+	const fiveMinutesBefore = ((<?php echo $test_duration; ?> - 300) * 1000);
+	const oneMinutesBefore =  ((<?php echo $test_duration; ?> - 60) * 1000);
 	var x = setInterval(()=>{
 		// Get current unix timestamp time
 		const now = Date.now();
-		// Find the distance between now and the count down date
-		const distance = countDownTill - now;
+		// Find the timeRemain between now and the time finishTime
+		const timeRemain = finishTime - now;
 
-		if (distance < 0) {
+		if (timeRemain < 0) {
 		    clearInterval(x);
 			$("#submit-test").trigger('click').prop('disabled', true);
 			toastr.success('Time is up. Submitting test now.');
 		    return false;
 		}
-		const hoursRemain = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		const minutesRemain = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		const secondsRemain = Math.floor((distance % (1000 * 60)) / 1000);
+		const hoursRemain = Math.floor((timeRemain % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		const minutesRemain = Math.floor((timeRemain % (1000 * 60 * 60)) / (1000 * 60));
+		const secondsRemain = Math.floor((timeRemain % (1000 * 60)) / 1000);
 		$("#hours").text((hoursRemain<10)?`0${hoursRemain}`:hoursRemain);
 		$("#minutes").text((minutesRemain<10)?`0${minutesRemain}`:minutesRemain);
 		$("#seconds").text((secondsRemain<10)?`0${secondsRemain}`:secondsRemain);
 	}, 1000);
-	
+
 	if(fiveMinutesBefore > 0){
 		setTimeout(() => {
 		  toastr.warning('Only 5 minutes remaining');
