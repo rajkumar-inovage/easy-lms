@@ -54,7 +54,7 @@
 						</div>
 						<div class="media-right">
 							<?php 
-							if ($row['submitted'] == 1 || ($row['submitted'] == 0 && $row['submit_time'] > 0)) {
+							if ($row['submitted'] == 1 || ($row['submitted'] == 0 && $row['submit_time'] > $attempt_time)) {
 								$pass_marks = ($row['pass_marks'] * $test_marks) / 100;
 								
 								if ($row['obtained_marks'] < $pass_marks) {

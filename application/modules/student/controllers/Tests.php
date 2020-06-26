@@ -51,8 +51,6 @@ class Tests extends MX_Controller {
 	                    $num_test_questions = 0;
 	                }
 
-	                $row['test_marks'] = $testMarks;
-	                $row['num_test_questions'] = $num_test_questions;
 
 					$attempts = $this->tests_model->get_attempts ($coaching_id, $member_id, $row['test_id']);
 					if (! empty ($attempts)) {
@@ -60,6 +58,10 @@ class Tests extends MX_Controller {
 					} else {
 						$num_attempts = 0;
 					}
+
+	                $row['test_marks'] = $testMarks;
+	                $row['num_test_questions'] = $num_test_questions;
+					$row['num_attempts'] = $num_attempts;
 
 					// On going tests
 					if ( $now >= $row['start_date'] && $now <= $row['end_date']) {
@@ -74,7 +76,6 @@ class Tests extends MX_Controller {
 				}
 			}
 			$data['tests'] = $enroled;
-			$data['num_attempts'] = $num_attempts;
 		} else {
 			$data['tests'] = $this->tests_model->get_all_tests ($coaching_id, $category_id=0, TEST_TYPE_PRACTICE);
 		}
@@ -144,21 +145,26 @@ class Tests extends MX_Controller {
 		
 		$start_test = true;
 		
-		// Check attempts
-		$attempt = $this->tests_model->check_attempt ($coaching_id, $test_id, $member_id);
-		if ( $test['num_takes'] > 0) {
-			if ( $attempt > $test['num_takes'] ) {
-				$start_test = false;
-			} 
-		}
-
 		// Check enrolment
 		if ($test['test_type'] == TEST_TYPE_REGULAR) {
 			$now = time ();
 			$enrolment = $this->tests_model->get_enrolment_details( $coaching_id, $test_id, $member_id);
 			if ( $now >= $enrolment['start_date'] && $now <= $enrolment['end_date']) {
 				$start_test = true;
+			} else {				
+				$this->message->set ('This test is not active', 'danger', true);
+				redirect ('student/tests/test_error/'.$coaching_id.'/'.$member_id.'/'.$test_id);
 			}
+	
+			// Check attempts
+			$attempt = $this->tests_model->check_attempt ($coaching_id, $test_id, $member_id);
+			if ( $enrolment['attempts'] > 0) {
+				if ( $attempt > $enrolment['attempts']) {
+					$this->message->set ('You have taken all attempts of this test.', 'danger', true);
+					redirect ('student/tests/test_error/'.$coaching_id.'/'.$member_id.'/'.$test_id.'/'.TEST_ERROR_MAX_ATTEMPT_REACHED);
+				} 
+			}
+
 		}
 
 
@@ -176,7 +182,6 @@ class Tests extends MX_Controller {
 		
 		$data['bc']			= array ('Dashboard'=>'student/tests/index/'.$coaching_id.'/'.$member_id);
 
-		//$data['script'] = $this->load->view ('tests/scripts/test_instructions', $data, true);
 		$this->load->view(INCLUDE_PATH  . 'header', $data);
 		$this->load->view('tests/test_instructions',$data);
 		$this->load->view(INCLUDE_PATH  . 'footer', $data);		
@@ -194,17 +199,29 @@ class Tests extends MX_Controller {
 
 		if ( $test['finalized'] == 0) {
 			redirect ('student/tests/test_error/'.$coaching_id.'/'.$member_id.'/'.$test_id.'/'.TEST_ERROR_UNPUBLISHED);
-		} 
-		
-		// test attempt
-		$attempt = $this->tests_model->check_attempt ($coaching_id, $test_id, $member_id);
-		// not for tests with unlimited attempts
-		if ( $test['num_takes'] > 0) {
-			if ( $attempt > $test['num_takes'] ) {
-				redirect ('student/tests/test_error/'.$coaching_id.'/'.$member_id.'/'.$test_id.'/'.TEST_ERROR_MAX_ATTEMPT_REACHED);
-			} 
 		}		
 		
+		// Check enrolment
+		if ($test['test_type'] == TEST_TYPE_REGULAR) {
+			$now = time ();
+			$enrolment = $this->tests_model->get_enrolment_details( $coaching_id, $test_id, $member_id);
+			if ( $now >= $enrolment['start_date'] && $now <= $enrolment['end_date']) {
+				$start_test = true;
+			} else {				
+				$this->message->set ('This test is not active', 'danger', true);
+				redirect ('student/tests/test_error/'.$coaching_id.'/'.$member_id.'/'.$test_id);
+			}
+	
+			// Check attempts
+			$attempt = $this->tests_model->check_attempt ($coaching_id, $test_id, $member_id);
+			if ( $enrolment['attempts'] > 0) {
+				if ( $attempt > $enrolment['attempts']) {
+					redirect ('student/tests/test_error/'.$coaching_id.'/'.$member_id.'/'.$test_id.'/'.TEST_ERROR_MAX_ATTEMPT_REACHED);
+				} 
+			}
+
+		}
+
 		// Recently Taken?
 		// Check if this test has been recently taken (within test duration time)
 		/*

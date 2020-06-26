@@ -16,6 +16,7 @@ class Virtual_class extends MX_Controller {
         $this->toolbar_buttons['<i class="fa fa-list"></i> All Classes']= 'coaching/virtual_class/index/'.$cid;
         if ($this->session->userdata ('role_id') <> USER_ROLE_TEACHER ) {
         	$this->toolbar_buttons['<i class="fa fa-plus-circle"></i> Create Class']= 'coaching/virtual_class/create_class/'.$cid;
+        	$this->toolbar_buttons['<i class="fa fa-circle"></i> Categories']= 'coaching/virtual_class/categories/'.$cid;
         }
         
         if ($this->session->userdata ('is_admin') == TRUE) {
@@ -37,25 +38,46 @@ class Virtual_class extends MX_Controller {
         }
 	}
 
-	public function index ($coaching_id=0) {
+	// Categories
+	public function categories ($coaching_id=0) {
+		/* Breadcrumbs */ 
+		$data['bc'] = array ('Dashboard'=>'coaching/virtual_class/index/'.$coaching_id);
+
+		$data['page_title'] = 'Categories';
+		$data['coaching_id'] = $coaching_id;
+		
+		/* --==// Toolbar //==-- */
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+
+		$data['categories'] = $this->virtual_class_model->get_categories ($coaching_id);
+
+		$this->load->view(INCLUDE_PATH  . 'header', $data);
+		$this->load->view('virtual_class/categories', $data);
+		$this->load->view(INCLUDE_PATH  . 'footer', $data);	    
+	}
+
+	public function index ($coaching_id=0, $category_id=0) {
 		
 		$data['coaching_id'] = $coaching_id;
+		$data['category_id'] = $category_id;
 		$member_id = $this->session->userdata ('member_id');
 		$data['bc'] = array('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		if ($this->session->userdata ('role_id') == USER_ROLE_TEACHER) {
-			$data['class'] = $this->virtual_class_model->my_classroom ($coaching_id, $member_id);
+			$data['class'] = $this->virtual_class_model->my_classroom ($coaching_id, $member_id, $category_id);
 		} else {
-			$data['class'] = $this->virtual_class_model->get_all_classes ($coaching_id);
+			$data['class'] = $this->virtual_class_model->get_all_classes ($coaching_id, $category_id);
 		}
 
-        //$data['script'] = $this->load->view('attendance/scripts/index', $data, true);
+		$data['categories'] = $this->virtual_class_model->get_categories ($coaching_id);
+
+        $data['script'] = $this->load->view('virtual_class/scripts/index', $data, true);
         $this->load->view(INCLUDE_PATH . 'header', $data);
         $this->load->view('virtual_class/index', $data);
         $this->load->view(INCLUDE_PATH . 'footer', $data);		
 	}
 
-	public function create_class ($coaching_id=0, $class_id=0) {
+	public function create_class ($coaching_id=0, $class_id=0, $category_id=0) {
 		
         if ($this->session->userdata ('role_id') == USER_ROLE_TEACHER ) {
         	$this->message->set ('Not allowed', 'danger', true);
@@ -65,11 +87,18 @@ class Virtual_class extends MX_Controller {
 		$data['coaching_id'] = $coaching_id;
 		$data['class_id'] = $class_id;
 		$data['page_title'] = 'Create Classroom';
-
 		$data['bc'] = array('Dashboard'=>'coaching/virtual_class/index/'.$coaching_id);
+
 		$data['class'] = $this->virtual_class_model->get_class ($coaching_id, $class_id);
+		$data['categories'] = $this->virtual_class_model->get_categories ($coaching_id);
 		$data['attendee_pwd'] = random_string ('numeric', 4);
 		$data['moderator_pwd'] = random_string ('numeric', 4);
+
+		if ($class_id > 0) {
+			$data['category_id'] = $data['class']['category_id'];
+		} else {
+			$data['category_id'] = $category_id;
+		}
 
         $data['script'] = $this->load->view('virtual_class/scripts/create_class', $data, true);
         $this->load->view(INCLUDE_PATH . 'header', $data);
@@ -90,15 +119,22 @@ class Virtual_class extends MX_Controller {
 		$data['users'] = $this->users_model->get_users ($coaching_id, $role_id, USER_STATUS_ENABLED, $batch_id);
 		$data['roles'] = $this->users_model->get_user_roles (0, 0, $roles);
 		$data['batches'] = $this->users_model->get_batches ($coaching_id);
+		$participants = $this->virtual_class_model->get_participants ($coaching_id, $class_id);
+		if (! empty($participants)) {
+			$num_participants = count($participants);
+		} else {
+			$num_participants = 0;
+		}
 
 		$data['coaching_id'] = $coaching_id;
 		$data['class_id'] = $class_id;
 		$data['role_id'] = $role_id;
 		$data['batch_id'] = $batch_id;
+		$data['num_participants'] = $num_participants;
 		$data['page_title'] = 'Add Participants';
 		$data['bc'] = array('Dashboard'=>'coaching/virtual_class/participants/'.$coaching_id.'/'.$class_id);
 
-        //$data['script'] = $this->load->view('attendance/scripts/index', $data, true);
+        $data['script'] = $this->load->view ('virtual_class/scripts/add_participants', $data, true);
         $this->load->view(INCLUDE_PATH . 'header', $data);
         $this->load->view('virtual_class/add_participants', $data);
         $this->load->view(INCLUDE_PATH . 'footer', $data);		
@@ -109,7 +145,13 @@ class Virtual_class extends MX_Controller {
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		$data['class'] = $this->virtual_class_model->get_class ($coaching_id, $class_id);
 		$data['participants'] = $this->virtual_class_model->get_participants ($coaching_id, $class_id);
+		if (! empty($data['participants'])) {
+			$num_participants = count($data['participants']);
+		} else {
+			$num_participants = 0;
+		}
 
+		$data['num_participants'] = $num_participants;
 		$data['coaching_id'] = $coaching_id;
 		$data['class_id'] = $class_id;
 		$data['page_title'] = 'Participants';

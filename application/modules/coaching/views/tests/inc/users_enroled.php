@@ -9,6 +9,7 @@
 					<th class="text-right" width="2%">#</th>
 					<th width=""><?php echo 'Name'; ?></th>
 					<th width=""><?php echo 'Role '; ?></th>
+					<th class="d-none d-md-table-cell"><?php echo 'Num Attempts'; ?></th>
 					<th class="d-none d-md-table-cell"><?php echo 'Start Date'; ?></th>
 					<th class="d-none d-md-table-cell"><?php echo 'End Date'; ?></th>
 					<th><?php echo 'Actions'; ?></th>
@@ -32,6 +33,15 @@
 							<?php echo $row['adm_no']; ?>
 						</td>
 						<td class="" ><?php echo $row['description']; ?></td>
+						<td class="d-none d-md-table-cell" >
+							<?php
+							if ($row['attempts'] == 0) {
+								echo '<span class="badge badge-primary">Unlimited</span>';
+							} else {
+								echo $row['attempts'];
+							}
+							?>							
+						</td>
 						<td class="d-none d-md-table-cell"><?php echo date ('d-m-Y H:i A', $row['start_date']); ?></td>
 						<td class="d-none d-md-table-cell"><?php echo date ('d-m-Y H:i A', $row['end_date']); ?></td>
 						<td> 

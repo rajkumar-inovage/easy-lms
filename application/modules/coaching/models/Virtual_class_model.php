@@ -2,12 +2,57 @@
 
 class Virtual_class_model extends CI_Model {
 
-	public function get_all_classes ($coaching_id=0, $class_id=0) {
+	/* VC Categories */
+	public function get_categories ($coaching_id=0, $status='-1') {
+		if ($status > '-1') {
+			$this->db->where ('status', $status);
+		}
+		$this->db->where ('coaching_id', $coaching_id);
+		$sql = $this->db->get ('virtual_class_categories');
+		return $sql->result_array ();
+	}
+
+	public function get_category ($category_id=0) {
+		$this->db->where ('id', $category_id);
+		$sql = $this->db->get ('virtual_class_categories');
+		return $sql->row_array ();
+	}
+
+	public function create_category ($coaching_id=0, $category_id=0) {
+
+		$data['title'] 				= $this->input->post ('title');
+		
+		if ($category_id > 0 ) {
+			$this->db->where ('coaching_id', $coaching_id);
+			$this->db->where ('id', $category_id);
+			$this->db->update ('virtual_class_categories', $data);
+		} else {
+			$data['status'] 		= 1;
+			$data['coaching_id'] 	= $coaching_id;
+			$data['creation_date'] = time ();
+			$data['created_by'] = $this->session->userdata ('member_id');
+			$this->db->insert ('virtual_class_categories', $data);
+			$category_id = $this->db->insert_id ();
+		}		
+		return $category_id;		
+	}
+
+	// Add ITS Categories to a plan
+	public function remove_category ($coaching_id=0, $category_id=0) {
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('id', $category_id);
+		$sql = $this->db->delete ('virtual_class_categories');
+	}
+
+	/*--------------- // Category // ----------------------*/
+	public function get_all_classes ($coaching_id=0, $category_id='-1') {
 		$result = [];
 		$this->db->select ('VC.*');
 		$this->db->from ('virtual_classroom VC');
-		//$this->db->join ('virtual_classroom_participants VCP', 'VC.coaching_id=VCP.coaching_id', 'left');
 		$this->db->where ('VC.coaching_id', $coaching_id);
+		if ($category_id > '-1') {
+			$this->db->where ('VC.category_id', $category_id);
+		}
 		$sql = $this->db->get ();
 		foreach ($sql->result_array () as $row) {
 			$row['running'] = $this->is_meeting_running ($coaching_id, $row['class_id']);
@@ -17,9 +62,12 @@ class Virtual_class_model extends CI_Model {
 	}
 
 	public function get_class ($coaching_id=0, $class_id=0) {
-		$this->db->where ('coaching_id', $coaching_id);
-		$this->db->where ('class_id', $class_id);
-		$sql = $this->db->get ('virtual_classroom');
+		$this->db->select ('VC.*, VCC.title');
+		$this->db->from ('virtual_classroom VC, virtual_class_categories VCC');
+		$this->db->where ('VC.category_id=VCC.id');
+		$this->db->where ('VC.coaching_id', $coaching_id);
+		$this->db->where ('VC.class_id', $class_id);
+		$sql = $this->db->get ();
 		return $sql->row_array ();
 	}
 
@@ -27,6 +75,7 @@ class Virtual_class_model extends CI_Model {
 
 		// 1. Basic settings
 		$class_name = $this->input->post ('class_name');
+		$category = $this->input->post ('category');
 		$description = $this->input->post ('description');
 		$meeting_id = $this->get_meeting_id ($coaching_id, $class_id);
 		$pwd = $this->get_password ($coaching_id, $class_id);
@@ -166,6 +215,7 @@ class Virtual_class_model extends CI_Model {
 		// Prepare for database
 		$data['meeting_id'] 		= $meeting_id;
 		$data['class_name'] 		= $class_name;
+		$data['category_id'] 		= $category;
 		$data['description'] 		= $description;
 		$data['welcome_message']	= str_replace('+', ' ', $welcome_message);
 		$data['wait_for_moderator'] = $wait_for_moderator;
@@ -303,7 +353,6 @@ class Virtual_class_model extends CI_Model {
 			if ($sql->num_rows () == 0) {
 				$this->db->insert ('virtual_classroom_participants', $data);
 			}
-
 
 			// Send SMS to user
 			$user = $this->users_model->get_user ($member_id);
@@ -515,13 +564,16 @@ class Virtual_class_model extends CI_Model {
 	}
 
 
-	public function my_classroom ($coaching_id=0, $member_id=0) {
+	public function my_classroom ($coaching_id=0, $member_id=0, $category_id='-1') {
 		$result = [];
 		$this->db->select ('VC.*, VCP.meeting_url, VCP.role');
 		$this->db->from ('virtual_classroom VC');
 		$this->db->join ('virtual_classroom_participants VCP', 'VC.class_id=VCP.class_id');
 		$this->db->where ('VCP.coaching_id', $coaching_id);
 		$this->db->where ('VCP.member_id', $member_id);
+		if ($category_id > '-1') {
+			$this->db->where ('VC.category_id', $category_id);
+		}
 		$sql = $this->db->get ();
 		$sql_array = $sql->result_array ();
 		if (! empty ($sql_array)) {

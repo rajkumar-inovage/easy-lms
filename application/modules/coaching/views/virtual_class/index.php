@@ -1,3 +1,26 @@
+<div class="card">
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-6">
+				<?php echo form_label('Category', '', array('class'=>'control-label')); ?>
+				<select class="form-control required " name="category" id="category">
+					<option value="-1" >----All Categories----</option>
+					<?php 
+					if (! empty($categories)) {
+						foreach ($categories as $cat) {
+							?>
+							<option value="<?php echo $cat['id']; ?>" <?php if ($category_id == $cat['id']) echo 'selected="selected"'; ?> ><?php echo $cat['title']; ?></option>
+							<?php
+						}
+					}
+					?>
+					<option value="0" <?php if ($category_id==0) echo 'selected="selected"'; ?>>Uncategorized</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="card card-default">
 	<ul class="list-group">	
 		<?php 

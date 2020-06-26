@@ -1,16 +1,49 @@
-<div class="card d-none">
-	<div class="row">
-		<div class="col-md-4">
-
+ <div class="card ">
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-3 mb-2">
+				<dt>Class Name</dt>
+				<dd><?php echo $class['class_name']; ?></dd>
+			</div>
+			<div class="col-md-3 mb-2">
+				<dt>Category</dt>
+				<dd><?php echo $class['title']; ?></dd>
+			</div>
+			<div class="col-md-3 mb-2">
+				<dt>Participants</dt>
+				<dd><?php echo $num_participants; ?></dd>
+			</div>
 		</div>
-		<div class="col-md-4">
 
+		<div class="row">
+			<div class="col-md-3 mb-2">
+				<select name="search_role" class="form-control" id="search-role">
+					<option value="0">All Roles</option>
+					<?php foreach ($roles as $role) { ?>
+						<option value="<?php echo $role['role_id']; ?>" <?php if ($role_id ==$role['role_id']) echo 'selected="selected"'; ?> ><?php echo $role['description']; ?></option>
+					<?php } ?>
+				</select>
+			</div>
+			<div class="col-md-3 mb-2">
+				<select name="search_batch" class="form-control" id="search-batch">
+					<option value="0">All Batches</option>
+					<?php
+					if (! empty ($batches)) {
+						foreach ($batches as $batch) { 
+						    ?>
+							<option value="<?php echo $batch['batch_id']; ?>" <?php if ($batch['batch_id']==$batch_id) echo 'selected="selected"'; ?>><?php echo $batch['batch_name']; ?></option>
+						    <?php
+						}  
+					}
+					?>
+				</select>
+			</div>
 		</div>
 	</div>
 </div>
 
 <div class="row">
-	<div class="col-md-9">
+	<div class="col-md-12">
 		<div class="card">
 			<?php echo form_open ('coaching/virtual_class_actions/add_participants/'.$coaching_id.'/'.$class_id, ['id'=>'validate-1']); ?>
 				<table class="table">
@@ -65,74 +98,10 @@
 						<option value="<?php echo VM_PARTICIPANT_ATTENDEE; ?>">Attendee</option>
 						<option value="<?php echo VM_PARTICIPANT_MODERATOR; ?>">Moderator</option>
 					</select>
-					<input type="submit" name="">
+					<input type="submit" name="submit" value="Save" class="btn btn-primary">
 				</div>
 			</form>
 		</div>
-	</div>
-
-	<div class="col-md-3">
-		
-		<div class="card mb-3">
-			<div class="card-header">
-				<h4>Class Details</h4>
-			</div>
-			<div class="card-body">
-				<dl>
-					<dt>Class Name</dt>
-					<dd><?php echo $class['class_name']; ?></dd>
-
-					<dt>Meeting ID</dt>
-					<dd><?php echo $class['meeting_id']; ?></dd>
-
-				</dl>
-			</div>
-		</div>
-		
-		<div class="card mb-2">
-			<div class="card-header">
-				<h4 class="">Roles</h4>
-			</div>
-			<div class="list-group list-group-flush">
-				<?php 
-				if (! empty ($roles)) {
-					foreach ($roles as $role) {	
-						if ($role_id == $role['role_id']) {
-							$class = 'active';
-						} else {
-							$class = '';
-						}
-						echo anchor ('coaching/virtual_class/add_participants/'.$coaching_id.'/'.$class_id.'/'.$role['role_id'].'/'.$batch_id, $role['description'], ['class'=>'list-group-item '.$class]);
-					}
-				}
-				?>
-			</div>
-		</div>
-
-		<div class="card mb-2">
-			<div class="card-header">
-				<h4 class="">Batches</h4>
-			</div>
-			<div class="list-group list-group-flush">
-				<?php 
-				if (! empty ($batches)) {
-					foreach ($batches as $batch) {
-						if ($batch_id == $batch['batch_id']) {
-							$class = 'active';
-						} else {
-							$class = '';
-						}
-						echo anchor ('coaching/virtual_class/add_participants/'.$coaching_id.'/'.$class_id.'/'.$role_id.'/'.$batch['batch_id'], $batch['batch_name'], ['class'=>'list-group-item '.$class]);
-					}
-				} else {
-					?>
-					<li class="list-group-item text-danger">No groups created</li>
-					<?php
-				}
-				?>
-			</div>
-		</div>
-
-	</div>
+	</div>	
 
 </div>

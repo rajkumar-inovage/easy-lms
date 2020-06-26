@@ -1,6 +1,25 @@
+ <div class="card ">
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-3 mb-2">
+				<dt>Class Name</dt>
+				<dd><?php echo $class['class_name']; ?></dd>
+			</div>
+			<div class="col-md-3 mb-2">
+				<dt>Category</dt>
+				<dd><?php echo $class['title']; ?></dd>
+			</div>
+			<div class="col-md-3 mb-2">
+				<dt>Participants</dt>
+				<dd><?php echo $num_participants; ?></dd>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="row justify-content-center">
 
-	<div class="col-md-9">
+	<div class="col-md-12">
 		<div class="card mb-2">
 			<?php echo form_open ('coaching/virtual_class_actions/remove_participants/'.$coaching_id.'/'.$class_id, ['id'=>'validate-1']); ?>
 				<table class="table">
@@ -57,25 +76,6 @@
 				</div>
 			</form>
 		</div>
-	</div>
-
-	<div class="col-md-3">
-		<div class="card">
-			<div class="card-header">
-				<h4>Class Details</h4>
-			</div>
-			<div class="card-body">
-				<dl>
-					<dt>Class Name</dt>
-					<dd><?php echo $class['class_name']; ?></dd>
-
-					<dt>Meeting ID</dt>
-					<dd><?php echo $class['meeting_id']; ?></dd>
-
-				</dl>
-			</div>
-		</div>
-	</div>
-
+	</div>	
 
 </div>

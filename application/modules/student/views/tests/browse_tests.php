@@ -25,7 +25,7 @@
                     </p>
                 </div>              
                 <?php 
-                if ($row['attempts'] == 0  || $num_attempts < $row['attempts'] ) {
+                if ($row['attempts'] == 0  || $row['num_attempts'] < $row['attempts'] ) {
                   echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$row['test_id'], 'Take Test', ['class'=>'btn btn-success']); 
                 } else {
                   echo '<span class="badge badge-danger">All attempts taken</span>';

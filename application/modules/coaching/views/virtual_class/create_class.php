@@ -9,6 +9,24 @@
 						<input type="text" class="form-control required" name="class_name" value="<?php echo set_value('class_name', $class['class_name']); ?>" />
 					</div>
 					
+					<div class="form-group row">
+						<div class="col-md-6">
+							<?php echo form_label('Category', '', array('class'=>'control-label')); ?>
+							<select class="form-control required " name="category">
+								<option value="0" <?php if ($category_id==0) echo 'selected="selected"'; ?>>Uncategorized</option>
+								<?php 
+								if (! empty($categories)) {
+									foreach ($categories as $cat) {
+										?>
+										<option value="<?php echo $cat['id']; ?>" <?php if ($category_id == $cat['id']) echo 'selected="selected"'; ?> ><?php echo $cat['title']; ?></option>
+										<?php
+									}
+								}
+								?>
+							</select>
+						</div>
+					</div>
+					
 					<div class="form-group ">
 						<?php echo form_label('Description (Optional)','', array('class'=>'control-label')); ?>
 						<textarea name="description" class="form-control" rows="3" max_length="200"><?php echo set_value('description', $class['description']); ?></textarea>
@@ -35,7 +53,7 @@
 
 					<div class="form-group ">
 						<div class="custom-control custom-switch">
-						  <input type="checkbox" name="mute_mic" class="custom-control-input" id="mute_mic" value="1" <?php if ($class['mute_all_mics'] == 'true' ) echo 'checked';?> >
+						  <input type="checkbox" name="mute_mic" class="custom-control-input" id="mute_mic" value="1" <?php if ($class['mute_all_mics'] == 'true' ) echo 'checked';?> checked >
 						  <label class="custom-control-label" for="mute_mic">Mute all mics on start <br>
 						  <span class="text-muted">(User mic will be muted on joining. User(s) can un-mute themselves anytime during the class)</span></label>
 						</div>
@@ -43,7 +61,7 @@
 
 					<div class="form-group ">
 						<div class="custom-control custom-switch">
-						  <input type="checkbox" name="lock_mic" class="custom-control-input" id="lock_mic" value="1" <?php if ($class['join_listen_only'] == 'true' ) echo 'checked';?> >
+						  <input type="checkbox" name="lock_mic" class="custom-control-input" id="lock_mic" value="1" <?php if ($class['join_listen_only'] == 'true' ) echo 'checked';?> checked >
 						  <label class="custom-control-label" for="lock_mic">Users can join in 'Listen Only' mode <br>
 						  <span class="text-muted">(Moderators can control when to allow users to speak. User(s) cannot un-mute themselves)</span></label>
 						</div>
@@ -52,7 +70,7 @@
 
 					<div class="form-group ">
 						<div class="custom-control custom-switch">
-						  <input type="checkbox" name="webcam_for_moderator" class="custom-control-input" id="webcam_for_moderator" value="1" <?php if ($class['webcam_for_moderator'] == 'true' ) echo 'checked';?> >
+						  <input type="checkbox" name="webcam_for_moderator" class="custom-control-input" id="webcam_for_moderator" value="1" <?php if ($class['webcam_for_moderator'] == 'true' ) echo 'checked';?> checked >
 						  <label class="custom-control-label" for="webcam_for_moderator">Disable attendee webcam(s) <br>
 						  <span class="text-muted">(Only moderators can use/share their webcam during class)</span></label>
 						</div>

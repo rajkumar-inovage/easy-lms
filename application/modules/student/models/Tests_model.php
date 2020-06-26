@@ -330,10 +330,10 @@ class Tests_model extends CI_Model {
 	public function check_attempt ($coaching_id, $tid, $member_id) {
 		$this->db->where ("test_id", $tid);
 		$this->db->where ("member_id", $member_id);
-		$this->db->where ('coaching_id', $coaching_id);
-		
-		$this->db->from ("coaching_test_attempts");		
-		return $this->db->count_all_results ();
+		$this->db->where ('coaching_id', $coaching_id);		
+		$this->db->from ("coaching_test_attempts");
+		$sql = $this->db->get ();
+		return $sql->num_rows ();
 	}
 	
 	//check for valid test session
@@ -374,7 +374,6 @@ class Tests_model extends CI_Model {
 		$this->db->where ("test_id", $test_id);
 		$this->db->order_by ("loggedon", 'DESC');
 		$sql = $this->db->get ("coaching_test_attempts");
-
 		$result = [];
 		if ($sql->num_rows () > 0 ) {
 			foreach ($sql->result_array () as $row) {
@@ -390,6 +389,7 @@ class Tests_model extends CI_Model {
 		}
 		return $result;
 	}
+
 
 	// All tests taken by a user
 	public function test_taken_by_member ($coaching_id=0, $member_id=0, $attempt=0) {

@@ -26,7 +26,7 @@ class Report_actions extends MX_Controller {
 		
 		if ($this->form_validation->run () == true) {				
 			$id = $this->tests_reports->delete_submissions ($coaching_id, $test_id);
-			$message = 'Submissions deleted successfully';
+			$message = 'Attempt deleted successfully';
 			$redirect = site_url('coaching/reports/submissions/'.$coaching_id.'/'.$category_id.'/'.$test_id);
 			$this->message->set ($message, 'success', true) ;
 			$this->output->set_content_type("application/json");
