@@ -108,6 +108,10 @@ class Virtual_class_actions extends MX_Controller {
 		}
 	}
 
-
+	public function get_running_meetings ($coaching_id=0) {
+		$meetings = $this->virtual_class_model->get_running_meetings ($coaching_id);
+		$this->output->set_content_type("application/json");
+        $this->output->set_output(json_encode(array('status'=>true, 'data'=>$meetings )));
+	}
 
 }

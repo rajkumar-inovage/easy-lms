@@ -53,7 +53,7 @@
 
 					<div class="form-group ">
 						<div class="custom-control custom-switch">
-						  <input type="checkbox" name="mute_mic" class="custom-control-input" id="mute_mic" value="1" <?php if ($class['mute_all_mics'] == 'true' ) echo 'checked';?> checked >
+						  <input type="checkbox" name="mute_mic" class="custom-control-input" id="mute_mic" value="1" <?php if ($class['mute_all_mics'] == 'true' ) echo 'checked';?>  >
 						  <label class="custom-control-label" for="mute_mic">Mute all mics on start <br>
 						  <span class="text-muted">(User mic will be muted on joining. User(s) can un-mute themselves anytime during the class)</span></label>
 						</div>
@@ -61,7 +61,7 @@
 
 					<div class="form-group ">
 						<div class="custom-control custom-switch">
-						  <input type="checkbox" name="lock_mic" class="custom-control-input" id="lock_mic" value="1" <?php if ($class['join_listen_only'] == 'true' ) echo 'checked';?> checked >
+						  <input type="checkbox" name="lock_mic" class="custom-control-input" id="lock_mic" value="1" <?php if ($class['join_listen_only'] == 'true' ) echo 'checked';?>  >
 						  <label class="custom-control-label" for="lock_mic">Users can join in 'Listen Only' mode <br>
 						  <span class="text-muted">(Moderators can control when to allow users to speak. User(s) cannot un-mute themselves)</span></label>
 						</div>
@@ -75,7 +75,6 @@
 						  <span class="text-muted">(Only moderators can use/share their webcam during class)</span></label>
 						</div>
 					</div>
-
 					
 					<!--
 					<div class="form-group ">

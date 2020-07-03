@@ -42,6 +42,11 @@ class Virtual_class_model extends CI_Model {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('id', $category_id);
 		$sql = $this->db->delete ('virtual_class_categories');
+
+		$this->db->set ('category_id', 0);
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('category_id', $category_id);
+		$sql = $this->db->update ('virtual_classroom');
 	}
 
 	/*--------------- // Category // ----------------------*/
@@ -62,9 +67,9 @@ class Virtual_class_model extends CI_Model {
 	}
 
 	public function get_class ($coaching_id=0, $class_id=0) {
-		$this->db->select ('VC.*, VCC.title');
-		$this->db->from ('virtual_classroom VC, virtual_class_categories VCC');
-		$this->db->where ('VC.category_id=VCC.id');
+		$this->db->select ('VC.*');
+		$this->db->from ('virtual_classroom VC');
+		//$this->db->join ('virtual_class_categories VCC', 'VC.category_id=VCC.id');
 		$this->db->where ('VC.coaching_id', $coaching_id);
 		$this->db->where ('VC.class_id', $class_id);
 		$sql = $this->db->get ();
@@ -583,6 +588,18 @@ class Virtual_class_model extends CI_Model {
 			}			
 		}
 		return $result;
+	}
+
+	public function get_running_meetings ($coaching_id=0) {
+		$meeting = [];
+		$this->db->where ('coaching_id', $coaching_id);
+		$sql = $this->db->get ('virtual_classroom');
+		if ($sql->num_rows () > 0) {
+			foreach ($sql->result_array () as $row) {
+				$meeting[$row['class_id']] = $this->is_meeting_running ($coaching_id, $row['class_id']);
+			}
+		}
+		return $meeting;
 	}
 
 }

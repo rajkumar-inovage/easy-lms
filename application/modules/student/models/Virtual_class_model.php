@@ -122,4 +122,5 @@ class Virtual_class_model extends CI_Model {
 
 		return $running;
 	}
+
 }

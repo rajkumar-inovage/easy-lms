@@ -206,6 +206,7 @@ class Coaching_model extends CI_Model {
 		$result = $sql->result_array ();
 		return $result;
 	}
+
 	public function get_coaching_announcements ($coaching_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
 		$sql = $this->db->get ('coaching_announcements');
@@ -261,4 +262,27 @@ class Coaching_model extends CI_Model {
 		return $result;
 	}
 	
+	public function num_users ($coaching_id=0, $role_id=0, $status='-1') {
+		if ($role_id > 0) {
+			$this->db->where ('role_id', $role_id);
+		}
+		if ($status > '-1') {
+			$this->db->where ('status', $status);
+		}
+		$this->db->where ('coaching_id', $coaching_id);
+		$sql = $this->db->get ('members');
+		return $sql->num_rows ();
+	}
+
+	public function num_tests ($coaching_id=0, $type=0, $status='-1') {
+		if ($type > 0) {
+			$this->db->where ('test_type', $type);
+		}
+		if ($status > '-1') {
+			$this->db->where ('finalized', $status);
+		}
+		$this->db->where ('coaching_id', $coaching_id);
+		$sql = $this->db->get ('coaching_tests');
+		return $sql->num_rows ();
+	}
 }

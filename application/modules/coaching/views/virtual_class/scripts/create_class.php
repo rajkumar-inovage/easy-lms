@@ -34,7 +34,7 @@
 			method: 'GET',
 			mode: 'no-cors',
 		}).then (function (response) {
-			console.log (response);
+			// console.log (response);
 		})
 	}
 </script>

@@ -31,7 +31,7 @@
 				<div class="col-md-3 mb-2">
 					<select name="type" class="form-control" id="search-type" >
 						<option value="0">Test Type</option>
-						<option value="<?php echo TEST_TYPE_REGULAR; ?>" <?php if ($type == TEST_TYPE_REGULAR) echo 'selected="selected"'; ?> >Enrolment Tests</option>
+						<option value="<?php echo TEST_TYPE_REGULAR; ?>" <?php if ($type == TEST_TYPE_REGULAR) echo 'selected="selected"'; ?> >Regular Tests</option>
 						<option value="<?php echo TEST_TYPE_PRACTICE; ?>"  <?php if ($type == TEST_TYPE_PRACTICE) echo 'selected="selected"'; ?>>Practice Tests</option>
 					</select>
 				</div>

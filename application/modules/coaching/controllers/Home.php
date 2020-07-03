@@ -47,8 +47,24 @@ class Home extends MX_Controller {
 		$data['tests'] = $this->coaching_model->get_coaching_tests ($coaching_id);
 		$data['users'] = $this->coaching_model->get_coaching_users ($coaching_id);
 		$data['announcements'] = $this->coaching_model->get_coaching_announcements ($coaching_id);
-		$data['cats_added'] = array ();		
 
+		// Users
+		$users['total'] = $this->coaching_model->num_users ($coaching_id);
+		$users['num_teachers'] = $this->coaching_model->num_users ($coaching_id, USER_ROLE_TEACHER);
+		$users['num_students'] = $this->coaching_model->num_users ($coaching_id, USER_ROLE_STUDENT);
+		$users['num_active'] = $this->coaching_model->num_users ($coaching_id, 0, USER_STATUS_ENABLED);
+		$users['num_disabled'] = $this->coaching_model->num_users ($coaching_id, 0, USER_STATUS_DISABLED);
+		$users['num_pending'] = $this->coaching_model->num_users ($coaching_id, 0, USER_STATUS_UNCONFIRMED);
+
+		// Tests
+		$tests['total'] = $this->coaching_model->num_tests ($coaching_id);
+		$tests['num_regular'] = $this->coaching_model->num_tests ($coaching_id, TEST_TYPE_REGULAR);
+		$tests['num_practice'] = $this->coaching_model->num_tests ($coaching_id, TEST_TYPE_PRACTICE);
+		$tests['num_published'] = $this->coaching_model->num_tests ($coaching_id, 0, TEST_STATUS_PUBLISHED);
+		$tests['num_unpublished'] = $this->coaching_model->num_tests ($coaching_id, 0, TEST_STATUS_UNPUBLISHED);
+
+		$data['users'] = $users;
+		$data['tests'] = $tests;
 		$data['page_title'] = 'Dashboard';
 
         //$data['bc'] = array ('Coachings'=>'admin/coaching/index');

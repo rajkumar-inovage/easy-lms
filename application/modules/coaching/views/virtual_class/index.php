@@ -31,7 +31,7 @@
 					<li class="list-group-item media">
 						<div class="media-left">
 							<?php if ($row['running'] == 'true') { ?>
-								<span class="icon-block half bg-green-200 rounded-circle" title="Meeting is running">
+								<span class="icon-block half bg-green-500 rounded-circle" title="Meeting is running">
 								</span>
 							<?php } else { ?>
 								<span class="icon-block half bg-grey-200 rounded-circle" title="Meeting is not running">
@@ -57,11 +57,15 @@
 								?>
 							</p>
 							<hr>
-							<div class="">
+							<div class="btn-group">
 								<?php 
 								$member_id = $this->session->userdata ('member_id');
-								echo anchor ('coaching/virtual_class/join_class/'.$coaching_id.'/'.$row['class_id'].'/'.$member_id, '<i class="fa fa-plus"></i> Start and Join', ['class'=>'btn btn-primary mr-1']); 
-								echo anchor ('coaching/virtual_class/participants/'.$coaching_id.'/'.$row['class_id'], '<i class="fa fa-users"></i> Participants', ['class'=>'btn btn-info']); 
+								if ($row['running'] == 'true') {
+									echo anchor ('coaching/virtual_class/join_class/'.$coaching_id.'/'.$row['class_id'].'/'.$member_id, '<i class="fa fa-plus"></i> Start Class', ['class'=>'btn btn-success mr-1']);
+								} else {
+									echo anchor ('coaching/virtual_class/join_class/'.$coaching_id.'/'.$row['class_id'].'/'.$member_id, '<i class="fa fa-plus"></i> Start Class', ['class'=>'btn btn-default mr-1']);									
+								}
+								echo anchor ('coaching/virtual_class/participants/'.$coaching_id.'/'.$row['class_id'], '<i class="fa fa-users"></i> Participants', ['class'=>'btn btn-default']); 
 								echo anchor ('coaching/virtual_class/recordings/'.$coaching_id.'/'.$row['class_id'].'/'.$row['meeting_id'], '<i class="fa fa-play"></i> Recordings', ['class'=>'btn btn-info-outline']); 
 								if ($this->session->userdata ('role_id') == USER_ROLE_TEACHER) {
 								} else {

@@ -7,7 +7,7 @@
 			</div>
 			<div class="col-md-3 mb-2">
 				<dt>Category</dt>
-				<dd><?php echo $class['title']; ?></dd>
+				<dd><?php if (isset ($class['title'])) echo $class['title']; else echo 'Uncategorized'; ?></dd>
 			</div>
 			<div class="col-md-3 mb-2">
 				<dt>Participants</dt>

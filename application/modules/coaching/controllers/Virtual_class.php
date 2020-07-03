@@ -56,7 +56,7 @@ class Virtual_class extends MX_Controller {
 		$this->load->view(INCLUDE_PATH  . 'footer', $data);	    
 	}
 
-	public function index ($coaching_id=0, $category_id=0) {
+	public function index ($coaching_id=0, $category_id='-1') {
 		
 		$data['coaching_id'] = $coaching_id;
 		$data['category_id'] = $category_id;
@@ -87,7 +87,7 @@ class Virtual_class extends MX_Controller {
 		$data['coaching_id'] = $coaching_id;
 		$data['class_id'] = $class_id;
 		$data['page_title'] = 'Create Classroom';
-		$data['bc'] = array('Dashboard'=>'coaching/virtual_class/index/'.$coaching_id);
+		$data['bc'] = array('Virtual Class'=>'coaching/virtual_class/index/'.$coaching_id);
 
 		$data['class'] = $this->virtual_class_model->get_class ($coaching_id, $class_id);
 		$data['categories'] = $this->virtual_class_model->get_categories ($coaching_id);
@@ -132,7 +132,7 @@ class Virtual_class extends MX_Controller {
 		$data['batch_id'] = $batch_id;
 		$data['num_participants'] = $num_participants;
 		$data['page_title'] = 'Add Participants';
-		$data['bc'] = array('Dashboard'=>'coaching/virtual_class/participants/'.$coaching_id.'/'.$class_id);
+		$data['bc'] = array('Participants'=>'coaching/virtual_class/participants/'.$coaching_id.'/'.$class_id);
 
         $data['script'] = $this->load->view ('virtual_class/scripts/add_participants', $data, true);
         $this->load->view(INCLUDE_PATH . 'header', $data);
@@ -267,7 +267,7 @@ class Virtual_class extends MX_Controller {
 			// User is a participant in this classroom
 			$meeting_url = $join['meeting_url'];
 			$api_join_url = $api_setting['join_url'];
-		echo	$join_url = $api_join_url . $meeting_url;
+			$join_url = $api_join_url . $meeting_url;
 
 			$is_running = $this->virtual_class_model->is_meeting_running ($coaching_id, $class_id);
 
@@ -294,7 +294,7 @@ class Virtual_class extends MX_Controller {
 		$data['coaching_id'] = $coaching_id;
 		$data['class_id'] = $class_id;
 		$data['page_title'] = 'Classroom Error';
-		$data['bc'] = array('Virtual Classroom'=>'coaching/virtual_class/index/'.$coaching_id.'/'.$member_id);
+		$data['bc'] = array('Virtual Classroom'=>'coaching/virtual_class/index/'.$coaching_id);
 		
 		$data['error'] = $error;
 

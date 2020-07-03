@@ -8,7 +8,7 @@
 					<li class="list-group-item media">
 						<div class="media-left">
 							<?php if ($row['running'] == 'true') { ?>
-								<span class="icon-block s25 rounded-circle bg-success">
+								<span class="icon-block half rounded-circle bg-success">
 									<i class="fa fa-video"></i>
 								</span>
 							<?php } else { ?>
