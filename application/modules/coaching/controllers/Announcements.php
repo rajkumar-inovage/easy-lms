@@ -38,7 +38,8 @@ class Announcements extends MX_Controller {
 		
 		/* --==// Toolbar //==-- */
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
-	
+		
+		$data['script'] = $this->load->view('announcements/scripts/index', $data, true);
 		$this->load->view ( INCLUDE_PATH  . 'header', $data);
 		$this->load->view ( 'announcements/index', $data);
 		$this->load->view ( INCLUDE_PATH  . 'footer', $data);	

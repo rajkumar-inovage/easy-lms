@@ -134,12 +134,10 @@ $(document).ready (function () {
 		}
 	});
 
-	$('.submit-button').on ('click', function (e) {
-		// e.preventDefault ();
-		// $(this).prop ('disabled', true);
-		// $('#test_form').submit ();
+	$('#submit-test').on ('click', function (e) {
+		e.preventDefault ();
+		$(this).val('Submitting...').prop ('disabled', true).parents("#test_form").trigger('submit');
 	});
-
 });
 /*Multi Select questions checkboxes toggle*/
 function mcmc_deselect (blankid, qid) {

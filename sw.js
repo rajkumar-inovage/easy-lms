@@ -8,8 +8,11 @@
 
 'use strict';
 
-
+const appPath = 'http://localhost/repos/easycoachingapp/';
 const rootPath = '/repos/easycoachingapp/';
+const appTitle = 'EasyCoaching';
+const notifyIcon = `${rootPath}themes/default/assets/img/touch/app-icon192.png`;
+const notifyBadge = `${rootPath}themes/default/assets/img/notification-badge.png`;
 
 const staticAssets = [
 	rootPath,
@@ -50,3 +53,35 @@ async function networkFirst (request) {
 		return cachedResponse || await caches.match (appPath + 'fallback.json');
 	}
 }
+
+self.addEventListener('push', function(event) {
+  console.log('[Service Worker] Push Received.');
+  let data = event.data.json();
+  console.log(`[Service Worker] Push had this data:`, data);
+  const title = data.title;
+  const options = {
+    body: data.content,
+    data: {
+      click_url: (data.link!=='')? data.link : ''
+    },
+    icon: notifyIcon,
+    badge: notifyBadge
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('notificationclick', function(event) {
+  console.log('[Service Worker] Notification click received.',appPath, event);
+  event.notification.close();
+  if(event.notification.data.click_url!==''){
+  	event.waitUntil(clients.matchAll({ type: 'window' }).then(clientsArr => {
+    // If a Window tab matching the targeted URL already exists, focus that;
+    const hadWindowToFocus = clientsArr.some(windowClient => windowClient.url === event.notification.data.url ? (windowClient.focus(), true) : false);
+    // Otherwise, open a new tab to the applicable URL and focus it.
+    if (!hadWindowToFocus){
+    	clients.openWindow(`${appPath}${event.notification.data.click_url}`).then(windowClient => windowClient ? windowClient.focus() : null);
+    }
+	}));
+  }
+});
