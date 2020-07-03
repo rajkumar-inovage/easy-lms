@@ -63,7 +63,7 @@
             <div class="container">
                 <!-- Sidebar Toggler -->
                 <button class="navbar-toggle" type="button" id="toggle_sidebar_left">
-                    <span class="navbar-toggler-icon"></span>
+                    <i class="fa fa-bars"></i>
                 </button>
                 <!-- /Sidebar Toggler -->
 
@@ -176,6 +176,11 @@
 				}
 			}
 			?>
+            <li>
+                <a class="enable-notification py-0 pr-0 text-left text-decoration-none btn btn-link" href="javascript:void(0);">
+                    <span><i class="far fa-bell"></i> Enable Notification</span>
+                </a>
+            </li>
 		</ul>
 
         <div class="sidebar-block">

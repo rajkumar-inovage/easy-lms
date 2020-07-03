@@ -2,14 +2,164 @@
 window.addEventListener ('load', async e => {
 	// Register Servie-worker
 	if ('serviceWorker' in navigator) {
-		try {
-			navigator.serviceWorker.register (appPath + 'sw.js');
-		} catch (error) {
-			console.log ('ServiceWorker registration failed');		
-		}
+		navigator.serviceWorker.register(`${appPath}sw.js`)
+		.then(function(swReg) {
+			console.log('Service Worker is registered');
+			swRegistration = swReg;
+			initializeUI();
+		})
+		.catch(function(error) {
+			console.error('Service Worker Error', error);
+		});
 	}
 });
 
+function initializeUI() {
+  if(notifyButton !== null){
+	notifyButton.addEventListener('click', function() {
+	  notifyButton.classList.add('disabled');
+	  console.log(isSubscribed);
+	  if (isSubscribed) {
+	  	unsubscribeUser();
+	  } else {
+	  	subscribeUser();
+	  }
+	});
+  }
+  // Set the initial subscription value
+  swRegistration.pushManager.getSubscription()
+  .then(function(subscription) {
+    isSubscribed = !(subscription === null);
+    console.log(isSubscribed);
+    if (isSubscribed) {
+      console.log('User IS subscribed.');
+    } else {
+      console.log('User is NOT subscribed.');
+    }
+    if(notifyButton !== null){
+      updateBtn();
+	}
+  });
+}
+
+function unsubscribeUser() {
+  swRegistration.pushManager.getSubscription()
+  .then(function(subscription) {
+    if (subscription) {
+      return subscription.unsubscribe();
+    }
+  })
+  .catch(function(error) {
+    console.log('Error unsubscribing', error);
+  })
+  .then(function() {
+    updateSubscriptionOnServer(null);
+
+    console.log('User is unsubscribed.');
+    isSubscribed = false;
+
+    if(notifyButton !== null){
+      updateBtn();
+	}
+  });
+}
+
+function subscribeUser() {
+  const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+  swRegistration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: applicationServerKey
+  })
+  .then(function(subscription) {
+    console.log('User is subscribed.');
+
+    updateSubscriptionOnServer(subscription);
+
+    isSubscribed = true;
+
+    if(notifyButton !== null){
+      updateBtn();
+	}
+  })
+  .catch(function(error) {
+    console.error('Failed to subscribe the user: ', error);
+    if(notifyButton !== null){
+      updateBtn();
+	}
+  });
+}
+
+function updateSubscriptionOnServer(subscription) {
+  // TODO: Send subscription to application server
+  if (subscription) {
+  	fetch(`${appPath}notification/action/subscribe/`,{
+	    method: 'POST',
+	    headers:{
+	        'Content-Type':'application/json'
+	    },
+	    body: JSON.stringify(subscription)
+	}).then((response) => {
+	    response.json().then((result) => {
+	        if(result.status){
+		        toastr.success (result.message);
+	        }
+	    });
+	})
+  	localStorage.setItem('subscription', JSON.stringify(subscription));
+  } else {
+  	fetch(`${appPath}notification/action/unsubscribe/`,{
+	    method: 'POST',
+	    headers:{
+	        'Content-Type':'application/json'
+	    },
+	    body: JSON.stringify({
+	        'endpoint': "",
+	        'expirationTime': null,
+	        'keys': {
+	            'auth': "",
+	            'p256dh': ""
+	        }
+	    })
+	}).then((response) => {
+	    response.json().then((result) => {
+	        if(result.status){
+		        toastr.error(result.message);
+	        }
+	    });
+	})
+  	localStorage.removeItem('subscription');
+  }
+}
+
+function urlB64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+function updateBtn() {
+  if (Notification.permission === 'denied') {
+  	notifyButton.innerHTML = '<span><i class="fas fa-bell-slash"></i> Notification Blocked</span>';
+    notifyButton.classList.add('disabled');
+    updateSubscriptionOnServer(null);
+    return;
+  }
+  if (isSubscribed) {
+  	notifyButton.innerHTML = '<span><i class="far fa-bell-slash"></i> Disable Notification</span>';
+  } else {
+    notifyButton.innerHTML = '<span><i class="far fa-bell"></i> Enable Notification</span>';
+  }
+  notifyButton.classList.remove('disabled');
+}
 
 var submitFormSelector = document.getElementById ('validate-1');
 if (submitFormSelector) {	
