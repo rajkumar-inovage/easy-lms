@@ -209,6 +209,7 @@ class Coaching_model extends CI_Model {
 
 	public function get_coaching_announcements ($coaching_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->order_by ('start_date', 'ASC');
 		$sql = $this->db->get ('coaching_announcements');
 		$result = $sql->result_array ();
 		return $result;

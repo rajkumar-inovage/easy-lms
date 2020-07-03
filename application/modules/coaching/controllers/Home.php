@@ -42,11 +42,25 @@ class Home extends MX_Controller {
 		$data['dashboard_menu'] = $this->common_model->load_acl_menus ($role, 0, MENUTYPE_DASHBOARD);
 
 		$data['coaching'] = $this->coaching_model->get_coaching ($coaching_id);
-		$data['subscriptions'] = $this->subscription_model->get_coaching_subscription ($coaching_id);
-		$data['test_packages'] = $this->coaching_model->coaching_plans ($coaching_id);
-		$data['tests'] = $this->coaching_model->get_coaching_tests ($coaching_id);
-		$data['users'] = $this->coaching_model->get_coaching_users ($coaching_id);
+		$data['subscription'] = $this->subscription_model->get_coaching_subscription ($coaching_id);
 		$data['announcements'] = $this->coaching_model->get_coaching_announcements ($coaching_id);
+		
+		$start_date = time ();
+		// seven days from today
+		$num_days = 7 * 24 * 3600;
+		$end_date = $start_date - $num_days;
+		$data['user_registration'] = $this->users_model->user_registration_between ($coaching_id, $start_date, $end_date);
+
+		// Virtual Class
+		$data['virtual_class'] = $this->virtual_class_model->get_all_classes ($coaching_id);
+		if (! empty($data['virtual_class'])) {
+			$num_vc = count($data['virtual_class']);
+		} else {
+			$num_vc = 0;
+		}
+		$data['num_vc'] = $num_vc;
+		
+		$data['tests'] = $this->coaching_model->get_coaching_tests ($coaching_id);
 
 		// Users
 		$users['total'] = $this->coaching_model->num_users ($coaching_id);

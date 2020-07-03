@@ -480,14 +480,34 @@ class Users_model extends CI_Model {
 
 
 	// tests taken within range
-	public function user_registration_between ($start_date=0) {
+	public function user_registration_between ($coaching_id=0, $start_date=0, $end_date=0) {
 		
 		$result = array ();		
 		
 		// current timestamp
 		$today = time ();
 		
+		if ($start_date == 0) {
+			$start_date = $today;
+		}
+
+		if ($end_date == 0) {
+			$end_date = $today;
+		}
+
+		$this->db->where ('coaching_id', $coaching_id );
+		$this->db->where ('creation_date <=',  $start_date);
+		$this->db->where ('creation_date >=',  $end_date);
+		$sql = $this->db->get ('members');
+		if ($sql->num_rows () > 0) {
+			return $sql->result_array ();
+		} else {
+			return false;
+		}
+
+
 		// start date
+		/*
 		if ($start_date == 0) {
 			$end_date = time ();
 			// 7 days tests from today
@@ -517,6 +537,7 @@ class Users_model extends CI_Model {
 			$count = $sql->num_rows ();
 			$result[$end_date] = $count;
 		}
+		*/
 		
 	}
 	

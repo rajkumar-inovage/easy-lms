@@ -59,7 +59,7 @@
         $member_id = $this->session->userdata ('member_id');
     ?>
 	<header class="">
-        <nav class="navbar navbar-dark bg-primary">
+        <nav class="navbar bg-cyan-500 text-white border-bottom">
             <div class="container">
                 <!-- Sidebar Toggler -->
                 <button class="navbar-toggle" type="button" id="toggle_sidebar_left">
@@ -93,7 +93,7 @@
         </nav>
     </header>
 
-    <div class="bg-white shadow-sm  ">
+    <div class="bg-white shadow py-2 ">
         <div class="container">
             <div class="d-flex justify-content-between">
                 <div class="">
@@ -129,7 +129,7 @@
     </div>
 	
 	<!-- Sidebar left -->
-	<div id="sidebar-left" class="sidebar sidebar-skin-dark left">
+	<div id="sidebar-left" class="sidebar bg-blue-500 left">
 		<div class="sidebar-block">
             <div class="">
 				<?php 
@@ -149,11 +149,12 @@
                     <?php echo $this->session->userdata ('role_name'); ?>
                 </div>
                 <div class="sidebar-text">
-                    <?php echo $this->session->userdata ('access_code'); ?>
+                    Access Code: <?php echo strtoupper($this->session->userdata ('access_code')); ?>
                 </div>
             </div>
     	</div>
-        
+
+
 		<ul class="sidebar-menu">
 			<?php
 			$main_menu = $this->session->userdata ('MAIN_MENU');
@@ -167,7 +168,7 @@
                     }
 					?>
 					<li class="">
-						<a class="" href="<?php echo site_url($link); ?>">
+						<a class="text-white" href="<?php echo site_url($link); ?>">
 							<?php echo $menu['icon_img']; ?>
 							<?php echo $menu['menu_desc']; ?>
 						</a>

@@ -61,6 +61,13 @@ class Virtual_class_model extends CI_Model {
 		$sql = $this->db->get ();
 		foreach ($sql->result_array () as $row) {
 			$row['running'] = $this->is_meeting_running ($coaching_id, $row['class_id']);
+			$participants = $this->get_participants ($coaching_id, $row['class_id']);
+			if (! empty($participants)) {
+				$num_participants = count($participants);
+			} else {
+				$num_participants = 0;
+			}
+			$row['num_participants'] = $num_participants;
 			$result[] = $row;
 		}
 		return $result;
