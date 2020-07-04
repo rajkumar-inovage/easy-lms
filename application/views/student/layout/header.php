@@ -28,7 +28,11 @@
 	<title><?php if (isset($page_title)) echo $page_title . ': '; echo $this->session->userdata ('site_title'); ?></title>
     
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet">
+    <!-- 
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+     -->
     <!-- Bootstrap core CSS -->
     <link type="text/css" href="<?php echo base_url(THEME_PATH . 'assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <!-- Font-awesome CSS -->
@@ -55,8 +59,8 @@
 </head>
 <body class="<?php if (isset($body_class)) echo $body_class; ?>">
 	
-	<header class="">
-        <nav class="navbar navbar-dark bg-primary">
+	<header class="fixed-top">
+        <nav class="navbar navbar-dark bg-primary px-0">
             <div class="container">
                 <!-- Sidebar Toggler -->
                 <button class="navbar-toggle" type="button" id="toggle_sidebar_left">
@@ -64,7 +68,7 @@
                 </button>
                 <!-- /Sidebar Toggler -->
 
-                <span class="nav-text font-weight-bold"><?php echo $this->session->userdata ('site_title'); ?></span>
+                <span class="nav-text font-oswald fs-3 absolute-center-h"><?php echo $this->session->userdata ('site_title'); ?></span>
 
                 <div class="profile-button">
                   <?php 
@@ -92,30 +96,7 @@
 
             </div>
         </nav>
-
-        <nav class="bg-white border-bottom">
-            <ul class="nav nav-tabs nav-justified ">
-                <?php 
-                $role_id = $this->session->userdata ('role_id');
-                $footer_menu = $this->common_model->load_acl_menus ($role_id, 0, MENUTYPE_FOOTER);
-                if (! empty ($footer_menu)) {
-                    foreach ($footer_menu as $menu) {
-                        $link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id.'/'.$member_id;
-                        ?>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="<?php echo site_url ($link); ?>">
-                                <div class="text-blue-400"><?php echo $menu['icon_img']; ?></div>
-                                <div class="text-blue-400"><?php echo $menu['menu_desc']; ?></div>
-                            </a>
-                        </li>
-                        <?php
-                    }
-                }
-                ?>
-            </ul>
-        </nav>
-
-        <div class="bg-white shadow-sm  ">
+        <div class="bg-white shadow-sm <?php echo (isset ($bc))? "position-relative":""; ?>">
             <div class="container">
                 <div class="d-flex justify-content-between">
                     <div class="">
@@ -128,8 +109,8 @@
                         ?>
                     </div>
 
-                    <div class="py-2 font-weight-bold">
-                        <strong><?php if (isset($page_title)) echo $page_title; ?> </strong>
+                    <div class="py-2 font-weight-bold <?php echo (isset ($bc))? "h-100 absolute-center-h":""; ?>">
+                        <strong class="m-0"><?php if (isset($page_title)) echo $page_title; ?></strong>
                     </div>
 
                     <div class="right-toolbar">
@@ -215,38 +196,27 @@
         <div class="sidebar-block">
             <a class="link-text-color " href="<?php echo BRANDING_URL; ?>"><?php echo BRANDING_TEXT; ?></a>
         </div>
-
 	</div>
 	<!--// Sidebar left -->
 
-    <!-- Sidebar right -->
-    <div id="sidebar-right" class="sidebar right sidebar-skin-blue">
-        <div class="sidebar-block">            
-            <div class="profile text-center">
-                
-            </div>
-        </div>        
-    </div>
-    <!--// Sidebar right -->
-
 	<main id="content" role="main">
-		<div class="container pt-4">
-           <?php if (! empty ($annc)) { ?>
-            <div class="alert alert-info">
-              <marquee>
-              <ul class="list-inline">
-              <?php foreach ($annc as $row) { ?>
-                <li class="list-inline-item">
-                    <?php echo anchor ('student/announcements/view/'.$coaching_id.'/'.$row['announcement_id'], $row['title']); ?>
-                </li>
-              <?php } ?>
-              </ul>
-              </marquee>
-            </div>
-           <?php } ?>
+        <div class="pt-4">
+            <div class="container">
+               <?php if (! empty ($annc)) { ?>
+                  <?php foreach ($annc as $row) { ?>
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        <h4 class="alert-heading d-inline"><?php echo anchor ('student/announcements/view/'.$coaching_id.'/'.$row['announcement_id'], $row['title'], array('class'=>'text-decoration-none') ); ?></h4>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <hr class="my-1">
+                        <p class="mb-0"><?php echo $row['description']; ?></p>
+                    </div>
+                  <?php } ?>
+               <?php } ?>
 
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-4 col-sm-8">
-                  <?php $this->message->display (); ?>
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-4 col-sm-8">
+                      <?php $this->message->display (); ?>
+                    </div>
                 </div>
-            </div>

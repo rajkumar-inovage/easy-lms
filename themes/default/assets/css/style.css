@@ -1,7 +1,7 @@
 /*
  * Sidebar
  */
-.sidebar {
+.sidebar{
     position:fixed;
     top:0px;
     bottom:0;
@@ -29,15 +29,43 @@
 #sidebar-right.sidebar-open{
     margin-right:250px
 }
+.font-raleway{
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+}
+.font-oswald{
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+}
+.font-montserrat{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+}
+.fs-1{
+    font-size: 1rem !important;
+}
+.fs-2{
+    font-size: 1.25rem !important;
+}
+.fs-3{
+    font-size: 1.5rem !important;
+}
+.fs-4{
+    font-size: 2rem !important;
+}
+.fs-5{
+    font-size: 2.5rem !important;
+}
 .navbar-toggle {
     position: relative;
     float: right;
     padding: 5px 12px;
     background-color: transparent;
     background-image: none;
-    border: 1px solid transparent;
+    border: 1px solid #ffffff;
+    border-radius: 2px;
     max-height: 30px;
-    color: #000000;
+    color: #ffffff;
     font-size: 1.3rem;
 }
 .navbar-toggle:hover, .navbar-toggle:focus {
@@ -303,6 +331,18 @@ table td p {
     top: 1px;
     bottom: 1px;
     box-shadow: inset 0px 0px 5px #ffffff;
+}
+.absolute-center-v,
+.absolute-center-h{
+    position: absolute;
+}
+.absolute-center-h{
+    left: 50%;
+    transform: translateX(-50%);
+}
+.absolute-center-v{
+    top: 50%;
+    transform: translateY(-50%);
 }
 /*14-10-2019 by Raj*/
 /* Extra small devices (phones, 600px and down) */

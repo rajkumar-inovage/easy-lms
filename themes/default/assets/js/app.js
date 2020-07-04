@@ -372,7 +372,10 @@ window.addEventListener('appinstalled', (evt) => {
 	//document.querySelector('#installBanner').style.display = 'none';
 	$('#installBanner').hide ();
 });
-
+$("main#content").css({
+  "padding-top": `${$("header").height()}px`,
+  "padding-bottom": `${$("footer").height()}px`,
+});
 /* ===== Side Menu Toggler ===== */ 
 $('#toggle_sidebar').on ('click', function (e) {
     e.stopPropagation ();

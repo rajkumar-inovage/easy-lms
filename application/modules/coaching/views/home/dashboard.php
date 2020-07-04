@@ -158,14 +158,14 @@
 </div>
 
 <div class="card fixed-bottom">
-	<ul class="nav nav-pills nav-fill">
+	<ul class="nav nav-pills nav-fill flex-nowrap overflow-auto">
 		<?php
 		if (! empty ($dashboard_menu)) {
 			foreach ($dashboard_menu as $menu) {
 				$link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id;
 				?>
 				<li class="nav-item">					
-					<a href="<?php echo site_url ($link); ?>" class="nav-link text-grey-600">
+					<a href="<?php echo site_url ($link); ?>" class="nav-link text-grey-600 text-nowrap">
 						<span class="d-block"><?php echo $menu['icon_img']; ?></span>
 						<span><?php echo $menu['menu_desc']; ?></span>
 					</a>
