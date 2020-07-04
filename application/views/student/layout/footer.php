@@ -1,12 +1,29 @@
-		</div>    	
+			</div>
+		</div>
 	</main>
 	
-	<footer class="light-footer mt-4">
-		<div class="container">
-		  <div class="d-flex justify-content-center">
-			<p class="footer-info">
-			</p>
-		</div>
+	<footer class="fixed-bottom mt-0">
+		<nav class="bg-white border-top">
+            <ul class="nav nav-tabs nav-justified ">
+                <?php 
+                $role_id = $this->session->userdata ('role_id');
+                $footer_menu = $this->common_model->load_acl_menus ($role_id, 0, MENUTYPE_FOOTER);
+                if (! empty ($footer_menu)) {
+                    foreach ($footer_menu as $menu) {
+                        $link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id.'/'.$member_id;
+                        ?>
+                        <li class="nav-item ">
+                            <a class="nav-link px-0 border-top-0 rounded-0<?php echo ($this->router->fetch_class() == $menu['controller_nm'])?' active':'';?>" href="<?php echo site_url ($link); ?>">
+                                <div class="<?php echo ($this->router->fetch_class() == $menu['controller_nm'])?'text-blue-400':'text-grey-600';?>"><?php echo $menu['icon_img']; ?></div>
+                                <div class="<?php echo ($this->router->fetch_class() == $menu['controller_nm'])?'text-blue-400':'text-grey-600';?>"><?php echo $menu['menu_desc']; ?></div>
+                            </a>
+                        </li>
+                        <?php
+                    }
+                }
+                ?>
+            </ul>
+        </nav>
 	</footer>
 
 	<div id="loader">

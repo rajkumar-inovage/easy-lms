@@ -1,11 +1,13 @@
 <div class="card mb-4 shadow-sm">
 	<div class="card-header ">
-		<h4>My Classrooms</h4>
+		<h4 class="my-1">My Classrooms</h4>
 	</div>
-	<ul class="list-group ">
 		<?php 
 		$i=1;
 		if (! empty ($my_classrooms)) {
+			?>
+			<ul class="list-group ">
+			<?php
 			foreach($my_classrooms as $row) { 
 				?>
 				<li class="list-group-item media">
@@ -47,16 +49,19 @@
 				if ($i >= 3) {
 					break;
 				}
-			}
+			}?>
+		</ul>
+		<?php
 		} else {
         	?>
-            <div class="text-danger my-4 mx-2">
+        <div class="card-body">
+            <div class="alert alert-danger mb-0">
                 You are not enroled in any class
             </div>
+        </div>
             <?php
         }
 		?>
-	</ul>
 	<div class="card-footer text-right">
 		<?php echo anchor ('student/virtual_class/index/'.$coaching_id.'/'.$member_id, '<i class="fa fa-video"></i> All Classrooms', ['class'=>'btn btn-link mr-1']); ?>
 	</div>
@@ -64,7 +69,7 @@
 
 <div class="card mb-4 shadow-sm">
 	<div class="card-header ">
-		<h4>My Tests</h4>
+		<h4 class="my-1">My Tests</h4>
 	</div>
 	<?php 
 	$i=1;
@@ -133,8 +138,10 @@
         echo '</ul>';
 	} else {
         ?>
-        <div class="text-danger my-4 mx-2">
-            No tests right now 
+        <div class="card-body">
+            <div class="alert alert-danger mb-0">
+                No tests right now 
+            </div>
         </div>
         <?php
     }
@@ -151,10 +158,10 @@
 			foreach ($dashboard_menu as $menu) {
 				$link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id.'/'.$member_id;				
 				?>
-				<div class="col mb-4">
+				<div class="col-6 col-sm mb-4">
 					<div class="card bg-primary ">
 						<div class="card-body text-center">
-							<a href="<?php echo site_url ($link); ?>" class="text-white">
+							<a href="<?php echo site_url ($link); ?>" class="text-white text-decoration-none stretched-link">
 								<?php echo $menu['icon_img']; ?><br>
 								<?php echo $menu['menu_desc']; ?>
 							</a>

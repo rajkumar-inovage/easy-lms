@@ -82,14 +82,19 @@
 			</table> 
 		</div>
 
-		<div class="card-footer">
-			<select name="action">
-				<option value="0">---With Selected---</option>
-				<option value="delete">Delete</option>
-				<option value="enable">Enable Account</option>
-				<option value="disable">Disable Account</option>
-			</select>
-
-			<input type="submit" name="Submit" value="Change" class="btn btn-primary btn-sm">
+		<div class="card-footer px-2">
+			<div class="px-1">
+				<div class="input-group">
+					<select name="action" class="custom-select w-auto">
+						<option value="0">---With Selected---</option>
+						<option value="delete">Delete</option>
+						<option value="enable">Enable Account</option>
+						<option value="disable">Disable Account</option>
+					</select>
+					<div class="input-group-append">
+						<input type="submit" name="Submit" value="Change" class="btn btn-primary btn-sm" />
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>

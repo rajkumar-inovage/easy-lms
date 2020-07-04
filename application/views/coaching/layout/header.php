@@ -28,7 +28,11 @@
 	<title><?php if (isset($page_title)) echo $page_title . ': '; echo $this->session->userdata ('site_title'); ?></title>
     
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet">
+    <!-- 
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+     -->
     <!-- Bootstrap core CSS -->
     <link type="text/css" href="<?php echo base_url(THEME_PATH . 'assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <!-- Font-awesome CSS -->
@@ -58,8 +62,8 @@
         $coaching_id = $this->session->userdata ('coaching_id');
         $member_id = $this->session->userdata ('member_id');
     ?>
-	<header class="">
-        <nav class="navbar bg-cyan-500 text-white border-bottom">
+	<header class="fixed-top">
+        <nav class="navbar bg-cyan-500 text-white border-bottom px-0">
             <div class="container">
                 <!-- Sidebar Toggler -->
                 <button class="navbar-toggle" type="button" id="toggle_sidebar_left">
@@ -67,7 +71,7 @@
                 </button>
                 <!-- /Sidebar Toggler -->
 
-                <span class="nav-text font-weight-bold"><?php echo $this->session->userdata ('site_title'); ?></span>
+                <span class="nav-text font-oswald fs-3 absolute-center-h"><?php echo $this->session->userdata ('site_title'); ?></span>
 
                 <div class="profile-button">
                   <?php if ($this->session->userdata ('profile_image')) { ?>
@@ -91,42 +95,41 @@
 
             </div>
         </nav>
-    </header>
+        <div class="bg-white shadow-sm <?php echo (isset ($bc))? "position-relative":""; ?>">
+            <div class="container">
+                <div class="d-flex justify-content-between">
+                    <div class="">
+                        <?php 
+                          if (isset ($bc)) {
+                              $bc_link = current ($bc);
+                              $bc_title  = key ($bc);
+                              echo anchor ($bc_link, '<i class="fa fa-long-arrow-alt-left link-text-color"></i> ', array('class'=>'btn btn-link', 'title'=>'Back To '.$bc_title)); 
+                          }
+                        ?>
+                    </div>
 
-    <div class="bg-white shadow py-2 ">
-        <div class="container">
-            <div class="d-flex justify-content-between">
-                <div class="">
-                    <?php 
-                      if (isset ($bc)) {
-                          $bc_link = current ($bc);
-                          $bc_title  = key ($bc);
-                          echo anchor ($bc_link, '<i class="fa fa-long-arrow-alt-left link-text-color"></i> ', array('class'=>'btn btn-link', 'title'=>'Back To '.$bc_title)); 
-                      }
-                    ?>
-                </div>
+                    <div class="py-2 font-weight-bold <?php echo (isset ($bc))? "h-100 absolute-center-h":""; ?>">
+                        <strong><?php if(isset($page_title)) echo $page_title; ?> </strong>
+                    </div>
 
-                <div class="py-2 font-weight-bold">
-                    <strong><?php if(isset($page_title)) echo $page_title; ?> </strong>
-                </div>
-
-                <div class="right-toolbar">
-                    <?php if (! empty ($toolbar_buttons)) { ?>
-                        <div class="dropdown show h-100 d-flex align-items-center">
-                          <a class="btn btn-success dropdown-toggler p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-ellipsis-v"></i>
-                          </a>
-                          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                            <?php foreach ($toolbar_buttons as $title=>$url) { ?>
-                                <a class="dropdown-item" href="<?php echo site_url ($url); ?>"><?php echo $title; ?></a>
-                            <?php } ?>
-                          </div>
-                        </div>
-                    <?php } ?>
+                    <div class="right-toolbar">
+                        <?php if (! empty ($toolbar_buttons)) { ?>
+                            <div class="dropdown show h-100 d-flex align-items-center">
+                              <a class="btn btn-success dropdown-toggler p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v"></i>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                <?php foreach ($toolbar_buttons as $title=>$url) { ?>
+                                    <a class="dropdown-item" href="<?php echo site_url ($url); ?>"><?php echo $title; ?></a>
+                                <?php } ?>
+                              </div>
+                            </div>
+                        <?php } ?>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </header>
 	
 	<!-- Sidebar left -->
 	<div id="sidebar-left" class="sidebar bg-blue-500 left">
@@ -178,7 +181,7 @@
 			}
 			?>
             <li>
-                <a class="enable-notification py-0 pr-0 text-left text-decoration-none btn btn-link" href="javascript:void(0);">
+                <a class="enable-notification text-white py-0 pr-0 text-left text-decoration-none btn btn-link" href="javascript:void(0);">
                     <span><i class="far fa-bell"></i> Enable Notification</span>
                 </a>
             </li>
@@ -193,25 +196,14 @@
         <div class="sidebar-block">
             <a class="link-text-color " href="<?php echo BRANDING_URL; ?>"><?php echo BRANDING_TEXT; ?></a>
         </div>
-
-
 	</div>
 	<!--// Sidebar left -->
 
-    <!-- Sidebar right -->
-    <div id="sidebar-right" class="sidebar right sidebar-skin-blue">
-        <div class="sidebar-block">            
-            <div class="profile text-center">
-                
-            </div>
-        </div>        
-    </div>
-    <!--// Sidebar right -->  
-
 	<main id="content" role="main">
-		<div class="container pt-4">          
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-4 col-sm-8">
-                  <?php $this->message->display (); ?>
+        <div class="pt-4">
+            <div class="container">         
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-4 col-sm-8">
+                      <?php $this->message->display (); ?>
+                    </div>
                 </div>
-            </div>
