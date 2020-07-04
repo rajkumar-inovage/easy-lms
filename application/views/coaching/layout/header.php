@@ -200,7 +200,7 @@
 	<!--// Sidebar left -->
 
 	<main id="content" role="main">
-        <div class="pt-4">
+        <div class="py-4">
             <div class="container">         
                 <div class="row justify-content-center">
                     <div class="col-md-6 col-lg-4 col-sm-8">

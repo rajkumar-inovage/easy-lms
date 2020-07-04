@@ -332,6 +332,17 @@ table td p {
     bottom: 1px;
     box-shadow: inset 0px 0px 5px #ffffff;
 }
+.tests-taken {
+    
+}
+.primary-banner {
+    background-image: linear-gradient(to right top,#0062cc,#128ef2,#42a5f5);
+    transition: .5s;
+    background-size: 200% auto;
+}
+.primary-banner:hover {
+    background-position: right top;
+}
 .absolute-center-v,
 .absolute-center-h{
     position: absolute;

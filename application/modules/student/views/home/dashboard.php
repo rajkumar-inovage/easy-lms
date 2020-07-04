@@ -152,18 +152,18 @@
 	</div>
 </div>
 
-<div class="row row-cols-1 row-cols-xs-2 justify-content-center">
+<div class="row no-gutters mx-n2 flex-nowrap overflow-auto">
 	<?php
 		if (! empty ($dashboard_menu)) {
-			foreach ($dashboard_menu as $menu) {
+			foreach ($dashboard_menu as $i => $menu) {
 				$link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id.'/'.$member_id;				
 				?>
-				<div class="col-6 col-sm mb-4">
-					<div class="card bg-primary ">
-						<div class="card-body text-center">
+				<div class="col-7 col-sm px-2 mb-4">
+					<div class="card primary-banner">
+						<div class="card-body text-center <?php echo strtolower(str_replace(" ","-",$menu['menu_desc']));?>">
 							<a href="<?php echo site_url ($link); ?>" class="text-white text-decoration-none stretched-link">
 								<?php echo $menu['icon_img']; ?><br>
-								<?php echo $menu['menu_desc']; ?>
+								<?php echo $menu['menu_desc'];?>
 							</a>
 						</div>
 					</div>

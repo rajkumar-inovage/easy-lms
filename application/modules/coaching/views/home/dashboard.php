@@ -105,7 +105,7 @@
 		</div>
 	</div>
 
-	<div class="col-md-3">
+	<div class="col-md-3 mb-5">
 		<!----// Plan //-->
 		<div class="card shadow">
 			<div class="card-body">
@@ -126,7 +126,7 @@
 		</div>
 
 		<!----// Announcements //-->
-		<div class="card mt-3 shadow-sm">
+		<div class="card my-3 shadow-sm">
 			<div class="card-header">
 				<h4>Announcements</h4>
 			</div>

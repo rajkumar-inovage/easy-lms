@@ -200,7 +200,7 @@
 	<!--// Sidebar left -->
 
 	<main id="content" role="main">
-        <div class="pt-4">
+        <div class="py-4">
             <div class="container">
                <?php if (! empty ($annc)) { ?>
                   <?php foreach ($annc as $row) { ?>
