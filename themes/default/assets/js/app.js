@@ -176,8 +176,11 @@ if (submitFormSelector) {
 		}).then(function(result) {
 			toastr.clear ();
 			if (result.status == true) {
+				submitFormSelector.reset();
 				toastr.success (result.message);
-				document.location = result.redirect;
+				if(result.redirect!==undefined){
+					document.location = result.redirect;
+				}
 			} else {
 				var message = result.error.replace('/[\n\r]/g', '');
 				toastr.error (message);

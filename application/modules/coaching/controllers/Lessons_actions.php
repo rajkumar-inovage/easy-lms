@@ -1,7 +1,5 @@
- <?php if (!defined('BASEPATH')) {
-	exit('No direct script access allowed');
-}
-
+ <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 class Lessons_actions extends MX_Controller {
 	public function __construct() {
 		// Load Config and Model files required throughout Users sub-module

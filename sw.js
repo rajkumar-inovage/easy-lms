@@ -8,8 +8,8 @@
 
 'use strict';
 
-const appPath = 'http://localhost/repos/easylms/';
-const rootPath = '/repos/easylms/';
+const appPath = 'http://localhost/repos/easycoachingapp/';
+const rootPath = '/repos/easycoachingapp/';
 const appTitle = 'EasyCoaching';
 const notifyIcon = `${rootPath}themes/default/assets/img/touch/app-icon192.png`;
 const notifyBadge = `${rootPath}themes/default/assets/img/notification-badge.png`;
@@ -29,12 +29,13 @@ self.addEventListener ('install', async event => {
 self.addEventListener ('fetch', event => {
 	const request = event.request;
 	const url = new URL (request.url);
-
-	if (url.origin == location.origin) {
-		event.respondWith (cacheFirst(request));		
-	} else {
-		event.respondWith (networkFirst(request));		
-	}	
+	if(request.url.search("chrome-extension:") < 0){
+		if (url.origin == location.origin) {
+			event.respondWith (cacheFirst(request));		
+		} else {
+			event.respondWith (networkFirst(request));		
+		}
+	}
 });
 
 async function cacheFirst (request) { 
@@ -44,13 +45,15 @@ async function cacheFirst (request) {
 
 async function networkFirst (request) {
 	const cache = await caches.open ('EasyCoaching-V1-dynamic');
-	try {
-		const response = await fetch(request);
-		cache.put (request, response.clone());
-		return response;
-	} catch (error) {
-		const cachedResponse = await cache.match (request);
-		return cachedResponse || await caches.match (appPath + 'fallback.json');
+	if(request.url.search("chrome-extension:") < 0){
+		try {
+			const response = await fetch(request);
+			cache.put (request, response.clone());
+			return response;
+		} catch (error) {
+			const cachedResponse = await cache.match (request);
+			return cachedResponse || await caches.match (appPath + 'fallback.json');
+		}
 	}
 }
 
