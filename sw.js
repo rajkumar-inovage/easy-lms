@@ -8,8 +8,8 @@
 
 'use strict';
 
-const appPath = 'http://localhost/repos/easycoachingapp/';
-const rootPath = '/repos/easycoachingapp/';
+const appPath = 'http://localhost/repos/easylms/';
+const rootPath = '/repos/easylms/';
 const appTitle = 'EasyCoaching';
 const notifyIcon = `${rootPath}themes/default/assets/img/touch/app-icon192.png`;
 const notifyBadge = `${rootPath}themes/default/assets/img/notification-badge.png`;

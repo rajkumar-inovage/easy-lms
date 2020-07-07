@@ -1,6 +1,27 @@
 <div class="row justify-content-center mb-10">
 	<div class="col-md-3">
+		
+		<!----// Plan //-->
+		<div class="card shadow mb-3">
+			<div class="card-body">
+				<div class="media">
+					<div class="media-left ">
+						<?php if ($subscription['ending_on'] > time ()) { ?>
+							<span class="icon-block half bg-success"><i class="fa fa-check "></i></span>
+						<?php } else { ?>
+							<span class="icon-block half bg-danger"><i class="fa fa-times "></i></span>
+						<?php } ?>
+					</div>
+					<div class="media-body ml-2">
+						<h6><?php echo anchor ('coaching/subscription/index/'.$coaching_id.'/'.$subscription['sp_id'], $subscription['title'], ['class'=>'link-streched']); ?></h6>
+						<p>Ending On: <?php echo date ('d M, Y', $subscription['ending_on']); ?></p>
+					</div>
+				</div>
+			</div>
+		</div>
 
+		
+		<!----// Users //-->
 		<div class="card mb-3 shadow-sm">
 			<div class="card-header ">
 				<h4 class="d-flex justify-content-between">
@@ -31,8 +52,8 @@
 				</li>
 			</ul>
 		</div>
-		<!-- // Users // -->
 
+		<!-- // Tests // -->
 		<div class="card mb-3 shadow-sm">
 			<div class="card-header ">
 				<h4 class="d-flex justify-content-between">
@@ -55,6 +76,8 @@
 	</div>
 
 	<div class="col-md-6">
+
+		<!----// Class //-->
 		<div class="card mb-4 shadow">
 			<div class="card-header">
 				<h4 class="d-flex justify-content-between">
@@ -99,34 +122,24 @@
 						break;
 					}
 				}
+			} else {
+				?>
+				<div class="card-body">
+					<div class="alert alert-danger">
+						No class created
+					</div>
+				</div>
+				<?php
 			}
 			?>
 			</div>
 		</div>
 	</div>
 
-	<div class="col-md-3 mb-5">
-		<!----// Plan //-->
-		<div class="card shadow">
-			<div class="card-body">
-				<div class="media">
-					<div class="media-left ">
-						<?php if ($subscription['ending_on'] > time ()) { ?>
-							<span class="icon-block half bg-success"><i class="fa fa-check "></i></span>
-						<?php } else { ?>
-							<span class="icon-block half bg-danger"><i class="fa fa-times "></i></span>
-						<?php } ?>
-					</div>
-					<div class="media-body ml-2">
-						<h6><?php echo anchor ('coaching/subscription/index/'.$coaching_id.'/'.$subscription['sp_id'], $subscription['title'], ['class'=>'link-streched']); ?></h6>
-						<p>Ending On: <?php echo date ('d M, Y', $subscription['ending_on']); ?></p>
-					</div>
-				</div>
-			</div>
-		</div>
+	<div class="col-md-3">		
 
 		<!----// Announcements //-->
-		<div class="card my-3 shadow-sm">
+		<div class="card mt-3 shadow-sm">
 			<div class="card-header">
 				<h4>Announcements</h4>
 			</div>
@@ -158,14 +171,14 @@
 </div>
 
 <div class="card fixed-bottom">
-	<ul class="nav nav-pills nav-fill flex-nowrap overflow-auto">
+	<ul class="nav nav-pills nav-fill">
 		<?php
 		if (! empty ($dashboard_menu)) {
 			foreach ($dashboard_menu as $menu) {
 				$link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id;
 				?>
 				<li class="nav-item">					
-					<a href="<?php echo site_url ($link); ?>" class="nav-link text-grey-600 text-nowrap">
+					<a href="<?php echo site_url ($link); ?>" class="nav-link text-grey-600">
 						<span class="d-block"><?php echo $menu['icon_img']; ?></span>
 						<span><?php echo $menu['menu_desc']; ?></span>
 					</a>

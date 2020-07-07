@@ -77,10 +77,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'indiatests.in',
-	'username' => 'indiatests_production',
-	'password' => 'Product@1234',
-	'database' => 'indiatests_staging_itsc_app',
+	'hostname' => 'appsandprojects.com',
+	'username' => 'appsadmin_develop',
+	'password' => 'Develop@1234',
+	'database' => 'appsadmin_dev_easylms',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => 'pwa_',
 	'pconnect' => FALSE,
