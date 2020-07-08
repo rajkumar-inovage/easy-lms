@@ -50,13 +50,18 @@
 	      <div class="modal-body">
 	
 			<div class="form-group">
-				<label for="youtube">Youtube Video URL</label>
-				<input type="text" class="form-control" id="youtube" name="content" placeholder="Title of the Page">
+				<label for="youtube">Attachment Title</label>
+				<input type="text" class="form-control" name="att_title" placeholder="Resource Title">
 			</div>
 
 			<div class="form-group">
-				<label for="external">External Video URL</label>
-				<input type="text" class="form-control" id="external" name="content" placeholder="Title of the Page">
+				<label for="youtube">Youtube Video URL</label>
+				<input type="text" class="form-control" name="youtube_url" placeholder="Youtube URL">
+			</div>
+
+			<div class="form-group">
+				<label for="external">External Resource Link</label>
+				<input type="text" class="form-control" name="content" placeholder="Title of the Page">
 			</div>
 
 	      </div>

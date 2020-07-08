@@ -22,7 +22,6 @@ class Lessons extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('lessons/index', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
-	}
 
 
 	public function create ($coaching_id=0, $course_id=0, $lesson_id=0) {
@@ -66,7 +65,5 @@ class Lessons extends MX_Controller {
 		$this->load->view("lessons/add_page", $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
-
-
 
 }
