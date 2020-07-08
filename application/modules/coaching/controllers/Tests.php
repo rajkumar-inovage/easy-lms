@@ -271,7 +271,7 @@ class Tests extends MX_Controller {
 		$data['result'] = $this->qb_model->getQuestionDetails ($question_id);
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		
-		$data['script'] 	= $this->load->view ('tests/scripts/question_group_create', $data, true);
+		//$data['script'] 	= $this->load->view ('tests/scripts/question_group_create', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/question_group_create', $data);
@@ -317,7 +317,7 @@ class Tests extends MX_Controller {
 		$data['question_categories']   = $this->common_model->get_sys_parameters (SYS_QUESTION_CLASSIFICATION);
 		$data['question_difficulties'] = $this->common_model->get_sys_parameters (SYS_QUESTION_DIFFICULTIES);
 
-		$data['script'] 	= $this->load->view ('tests/scripts/question_create', $data, true);		
+		//$data['script'] 	= $this->load->view ('tests/scripts/question_create', $data, true);		
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/question_create', $data);

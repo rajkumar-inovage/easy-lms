@@ -4,8 +4,8 @@ class Courses extends MX_Controller {
 
 	public function __construct() {
 		// Load Config and Model files required throughout Users sub-module
-		$config = ['config_course'];
-		$models = ['coaching_model, courses_model'];
+		$config = ['config_coaching', 'config_course'];
+		$models = ['coaching_model', 'courses_model'];
 		$this->common_model->autoload_resources ($config, $models);
 	}
 

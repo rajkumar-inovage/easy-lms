@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-md-12">
-		<?php echo form_open('', array('class' => 'card', 'id' => 'validate-1')); ?>
+		<?php echo form_open ('', array('class' => 'card', 'id' => 'validate-1')); ?>
 			<div class="card-header">
 				<h4 class="card-title text-center mb-0"><?php echo $sub_title; ?></h4>
 			</div>
@@ -11,7 +11,7 @@
 				</div>
 				<div class="form-group">
 					<label for="description">Description</label>
-					<textarea class="form-control" id="description" rows="4" placeholder="How you describe this course?"></textarea>
+					<textarea class="form-control" id="description" rows="4" placeholder="Course overview"></textarea>
 				</div>
 				<div class="form-group">
 					<label for="price">Price</label>
