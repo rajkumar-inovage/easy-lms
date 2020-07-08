@@ -49,8 +49,10 @@ class Courses_actions extends MX_Controller {
 			if ($this->courses_model->add_course($coaching_id, $category_id, $course_id, COURSE_STATUS_ACTIVE)) {
 				if ($course_id > 0) {
 					$message = 'Course updated successfully';
+					$redirect = 'coaching/courses/index/' . $coaching_id;
 				} else {
 					$message = 'Course created successfully';
+					$redirect = 'coaching/courses/index/' . $coaching_id;
 				}
 				$this->message->set($message, 'success', true);
 				$this->output->set_content_type("application/json");
@@ -59,6 +61,7 @@ class Courses_actions extends MX_Controller {
 						array(
 							'status' => true,
 							'message' => $message,
+							'redirect' => site_url($redirect),
 						)
 					)
 				);

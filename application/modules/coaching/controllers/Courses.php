@@ -5,11 +5,22 @@ class Courses extends MX_Controller {
 	public function __construct() {
 		// Load Config and Model files required throughout Users sub-module
 		$config = ['config_coaching', 'config_course'];
-		$models = ['coaching_model', 'courses_model'];
+		$models = ['coaching_model', 'courses_model', 'users_model'];
 		$this->common_model->autoload_resources($config, $models);
 	}
 
-	public function index($coaching_id = 0) {
+	public function index($coaching_id = 0, $cat_id = 0) {
+		$data['page_title'] = 'Courses';
+		$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
+		$data['cat_id'] = $cat_id;
+		$data['coaching_id'] = $coaching_id;
+		$data['categories']  = $this->courses_model->course_categories ($coaching_id);
+		$data['courses']  = $this->courses_model->courses($coaching_id, $cat_id);
+		$data['toolbar_buttons'] = array('<i class="fa fa-plus-circle"></i> New Course' => 'coaching/courses/create/'.$coaching_id.'/'.$cat_id);
+		$data['script'] = $this->load->view ('courses/scripts/index', $data, true);
+		$this->load->view ( INCLUDE_PATH  . 'header', $data);
+		$this->load->view ( 'courses/index', $data);
+		$this->load->view ( INCLUDE_PATH  . 'footer', $data);
 	}
 
 	public function edit($coaching_id = 0, $cat_id = 0, $course_id = 0) {
@@ -23,6 +34,7 @@ class Courses extends MX_Controller {
 		$data['submit_title'] = ($this->router->fetch_method() == "create") ? 'Create New Course' : 'Update This Course';
 		$data['cat_id'] = $cat_id;
 		$data['coaching_id'] = $coaching_id;
+		$data['course_id'] = $course_id;
 		if ($course_id > 0) {
 			$data['course'] = $this->courses_model->get_course_by_id($course_id);
 		}
