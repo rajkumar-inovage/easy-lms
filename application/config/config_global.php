@@ -78,3 +78,5 @@ define ('SORT_CREATION_ASC', 				3);
 define ('SORT_CREATION_DESC', 				4);
 
 @date_default_timezone_set('ASIA/KOLKATA');
+
+$config['allowed_mime_types']	=	[ 'csv', 'psd', 'so', 'sea', 'oda', 'pdf', 'ai', 'eps', 'ps', 'smi', 'smil', 'mif', 'xls', 'ppt', 'pptx', 'wbxml', 'wmlc', 'dcr', 'dir', 'dxr', 'dvi', 'gtar', 'gz', 'gzip', 'swf', 'zip', 'rar', 'mid', 'midi', 'mpga', 'mp2', 'mp3', 'aif', 'aiff', 'aifc', 'ram', 'rm', 'rpm', 'ra', 'rv', 'wav', 'bmp', 'gif', 'jpeg', 'jpg', 'jpe', 'jp2', 'j2k', 'jpf', 'jpg2', 'jpx', 'jpm', 'mj2', 'mjp2', 'png', 'tiff', 'tif', 'txt', 'text', 'rtx', 'rtf', 'xsl', 'mpeg', 'mpg', 'mpe', 'qt', 'mov', 'avi', 'movie', 'doc', 'docx', 'xlsx', '3g2', '3gp', 'mp4', 'm4a', 'f4v', 'flv', 'webm', 'aac', 'm4u', 'm3u', 'vlc', 'wmv', 'au', 'ac3', 'ogg', 'wma', 'ico', 'odc', 'otc', 'odf', 'otf', 'odg', 'otg', 'odi', 'oti', 'odp', 'otp', 'ods', 'ots', 'odt', 'odm', 'ott', 'oth'];
