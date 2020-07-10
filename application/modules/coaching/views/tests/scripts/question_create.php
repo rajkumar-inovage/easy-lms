@@ -60,7 +60,7 @@ function tinymce_cleanup_callback(type,value) {
 <script type="text/javascript">
 	const loaderSelector = document.getElementById('loader');
 	const outputSelector = document.getElementById ('answer-choices');
-	const templateURL = '<?php echo site_url ('coaching/tests/question_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id.'/'.$question_id); ?>';
+	const templateURL = '<?php echo site_url ('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id.'/'.$question_id); ?>';
 	$('#question-type').on ('change', function () {
 		var qt = $(this).val ();
 		document.location = templateURL + '/' + qt;

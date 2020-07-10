@@ -19,19 +19,28 @@ class Tests_model extends CI_Model {
 		return $sql->result_array ();
 	}
 
-	public function get_category ($category_id=0) {
-		$this->db->where ('id', $category_id);
+	public function coaching_courses ($coaching_id=0, $plan_id=0, $status='-1') {
+		if ($status > '-1') {
+			$this->db->where ('status', $status);
+		}
+		$this->db->where ('coaching_id', $coaching_id);
+		$sql = $this->db->get ('coaching_courses');
+		return $sql->result_array ();
+	}
+
+	public function get_category ($course_id=0) {
+		$this->db->where ('id', $course_id);
 		$sql = $this->db->get ('coaching_test_categories');
 		return $sql->row_array ();
 	}
 
-	public function create_category ($coaching_id=0, $category_id=0) {
+	public function create_category ($coaching_id=0, $course_id=0) {
 
 		$data['title'] 				= $this->input->post ('title');
 		
-		if ($category_id > 0 ) {
+		if ($course_id > 0 ) {
 			$this->db->where ('coaching_id', $coaching_id);
-			$this->db->where ('id', $category_id);
+			$this->db->where ('id', $course_id);
 			$this->db->update ('coaching_test_categories', $data);
 		} else {
 			$data['level'] 			= 0;
@@ -41,15 +50,15 @@ class Tests_model extends CI_Model {
 			$data['creation_date'] = time ();
 			$data['created_by'] = $this->session->userdata ('member_id');
 			$this->db->insert ('coaching_test_categories', $data);
-			$category_id = $this->db->insert_id ();
+			$course_id = $this->db->insert_id ();
 		}		
-		return $category_id;		
+		return $course_id;		
 	}
 
 	// Add ITS Categories to a plan
-	public function remove_category ($coaching_id=0, $category_id=0) {
+	public function remove_category ($coaching_id=0, $course_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
-		$this->db->where ('id', $category_id);
+		$this->db->where ('id', $course_id);
 		$sql = $this->db->delete ('coaching_test_categories');
 	}
 
@@ -73,13 +82,13 @@ class Tests_model extends CI_Model {
 	}
 	
 	//=========== Model for list tests =======================
-	public function get_all_tests ($coaching_id=0, $category_id=0, $status='-1', $type=0) {
+	public function get_all_tests ($coaching_id=0, $course_id=0, $status='-1', $type=0) {
 		
 		if ( $status > '-1' ) {
 			$this->db->where ('finalized', $status);
 		}
-		if ( $category_id > 0 ) {
-			$this->db->where ('category_id', $category_id);
+		if ( $course_id > 0 ) {
+			$this->db->where ('course_id', $course_id);
 		}
 		if ( $type > 0 ) {
 			$this->db->where ('test_type', $type);
@@ -116,7 +125,7 @@ class Tests_model extends CI_Model {
 	public function search_tests ($coaching_id=0) {
 		
 		$status 	= $this->input->post ('status');
-		$category_id = $this->input->post ('category');
+		$course_id = $this->input->post ('category');
 		$search 	= $this->input->post ('search_text');
 				
 		if ($search != '') {
@@ -125,8 +134,8 @@ class Tests_model extends CI_Model {
 		if ($status > '-1') {
 			$this->db->where ('finalized', $status);
 		}
-		if ($category_id > 0) {
-			$this->db->where ('category_id', $category_id);
+		if ($course_id > 0) {
+			$this->db->where ('course_id', $course_id);
 		}
 		$this->db->where ('coaching_id', $coaching_id);
 		$query = $this->db->get ("coaching_tests");
@@ -149,7 +158,7 @@ class Tests_model extends CI_Model {
 	}
 	
 	//=========== Model for Create/Edit tests =======================
-	public function create_test ($coaching_id, $category_id=0, $tid=0) {
+	public function create_test ($coaching_id, $course_id=0, $tid=0) {
 		$now = time ();
 		$test_type = $this->input->post ('test_type');
 		$test_mode = TEST_MODE_ONLINE;
@@ -159,7 +168,7 @@ class Tests_model extends CI_Model {
 				'time_min'	      	=>$this->input->post('time_min'),
 				'max_marks'  	  	=>0, 
 				'pass_marks'      	=>$this->input->post('pass_marks'),
-				'category_id'      	=>$this->input->post('category'),
+				'course_id'      	=>$this->input->post('course'),
 				'test_mode'      	=>$test_mode,
 				'test_type'      	=>$test_type,
             );
@@ -177,7 +186,7 @@ class Tests_model extends CI_Model {
 			$tid = $this->db->insert_id();
 		}
 
-		$return = ['test_id'=>$tid, 'category_id'=>$category_id];
+		$return = ['test_id'=>$tid, 'course_id'=>$course_id];
 		return $return;
 	}	
 	
@@ -469,7 +478,7 @@ class Tests_model extends CI_Model {
 				$output = array ();
 				$result = array ();
 				$this->db->select ('question_id');
-				$this->db->where ('category_id', $cat_id);
+				$this->db->where ('course_id', $cat_id);
 				$this->db->where ('parent_id >', 0);
 				$this->db->where ('coaching_id', $coaching_id);
 				
@@ -546,7 +555,7 @@ class Tests_model extends CI_Model {
 	
 	
 	// get all enroled users in a test
-	public function get_users_in_test ($coaching_id=0, $test_id=0, $role_id=0, $class_id=0, $category_id=0, $batch_id=0, $status='-1') {
+	public function get_users_in_test ($coaching_id=0, $test_id=0, $role_id=0, $class_id=0, $course_id=0, $batch_id=0, $status='-1') {
 
 		$prefix = $this->db->dbprefix; 
 
@@ -574,7 +583,7 @@ class Tests_model extends CI_Model {
 		return $sql->result_array ();
 	}
 	
-	public function get_users_not_in_test ( $coaching_id=0, $test_id=0, $role_id=0, $class_id=0, $category_id=0, $batch_id=0, $status='-1') {
+	public function get_users_not_in_test ( $coaching_id=0, $test_id=0, $role_id=0, $class_id=0, $course_id=0, $batch_id=0, $status='-1') {
 
 		$prefix = $this->db->dbprefix; 
 		$query = 'SELECT M.*, SR.description FROM '.$prefix.'sys_roles SR, '.$prefix.'members M ';
@@ -603,7 +612,7 @@ class Tests_model extends CI_Model {
 	}
 	
 	// get all enroled users in a test
-	public function get_archived_students ($coaching_id=0, $test_id=0, $role_id=0, $class_id=0, $category_id=0, $batch_id=0, $status='-1') {		
+	public function get_archived_students ($coaching_id=0, $test_id=0, $role_id=0, $class_id=0, $course_id=0, $batch_id=0, $status='-1') {		
 		
 		$prefix = $this->db->dbprefix; 
 		
@@ -884,9 +893,9 @@ class Tests_model extends CI_Model {
 
 	}
 	
-	public function tests_in_category ($coaching_id, $category_id, $type=0, $status='') {
+	public function tests_in_category ($coaching_id, $course_id, $type=0, $status='') {
 		$ids = array ();
-		$categories = $this->common_model->all_children ($category_id, SYS_TREE_TYPE_TEST);
+		$categories = $this->common_model->all_children ($course_id, SYS_TREE_TYPE_TEST);
 		if ($type > 0) {
 			$this->db->where ("test_type", $type);			
 		}
@@ -895,9 +904,9 @@ class Tests_model extends CI_Model {
 		}
 		
 		if ( ! empty ($categories)) {		
-			$this->db->where_in ("category_id", $categories); 
+			$this->db->where_in ("course_id", $categories); 
 		} else {
-			$this->db->where ("category_id", $category_id);
+			$this->db->where ("course_id", $course_id);
 		}
 		$this->db->where ('coaching_id', $coaching_id);
 		//
@@ -1139,16 +1148,16 @@ class Tests_model extends CI_Model {
 	
 	/* SUBSCRIPTION */
 	// Category Subscription
-	public function subscribe_category ($category_id, $plan_id, $member_id) {
+	public function subscribe_category ($course_id, $plan_id, $member_id) {
 		
-		$data = array ('member_id'=>$member_id, 'plan_id'=>intval ($this->session->userdata ('plan_id')), 'category_id'=>$category_id);
+		$data = array ('member_id'=>$member_id, 'plan_id'=>intval ($this->session->userdata ('plan_id')), 'course_id'=>$course_id);
 		$plan_details = $this->get_plan (intval ($this->session->userdata ('plan_id')));
 		$duration = $plan_details['duration']; 		// in months
 		$data['price'] = $plan_details['price'];
 		
 		// Get current subscription details
 		$this->db->where ('member_id', $member_id);
-		$this->db->where ('category_id', $category_id);
+		$this->db->where ('course_id', $course_id);
 		$query = $this->db->get ('tests_category_subscriptions');
 		if ($query->num_rows() > 0) {
 			$row = $query->row_array ();
@@ -1169,7 +1178,7 @@ class Tests_model extends CI_Model {
 			$data['start_date'] = $st;
 			$data['end_date'] = $et;
 
-			$this->db->where ('category_id', $category_id);
+			$this->db->where ('course_id', $course_id);
 			$this->db->where ('member_id', $member_id);
 			$this->db->update ('tests_category_subscriptions', $data);
 		} else {
@@ -1183,8 +1192,8 @@ class Tests_model extends CI_Model {
 		
 	}
 	 
-	public function unsubscribe_category ($category_id=0, $member_id) {
-		$data = array ('member_id'=>$member_id, 'category_id'=>$category_id);
+	public function unsubscribe_category ($course_id=0, $member_id) {
+		$data = array ('member_id'=>$member_id, 'course_id'=>$course_id);
 		$sql = $this->db->get_where ('tests_category_subscriptions', $data);
 		if ($sql->num_rows () > 0) {
 			$this->db->where ($data);
@@ -1195,10 +1204,10 @@ class Tests_model extends CI_Model {
 		}
 	}
 	
-	public function check_category_subscription ($category_id, $member_id) {
+	public function check_category_subscription ($course_id, $member_id) {
 		$now = time ();
 		$this->db->where ('member_id', $member_id);
-		$this->db->where ('category_id', $category_id);
+		$this->db->where ('course_id', $course_id);
 		$this->db->where ('end_date >=', $now);
 		$sql = $this->db->get ('tests_category_subscriptions');
 		if ($sql->num_rows () > 0) {
@@ -1208,10 +1217,10 @@ class Tests_model extends CI_Model {
 		}
 	}
 
-	public function get_subscription_details ($category_id, $member_id) {
+	public function get_subscription_details ($course_id, $member_id) {
 		$now = time ();
 		$this->db->where ('member_id', $member_id);
-		$this->db->where ('category_id', $category_id);
+		$this->db->where ('course_id', $course_id);
 		$sql = $this->db->get ('tests_category_subscriptions');
 		if ($sql->num_rows () > 0) {
 			return $sql->row_array ();
@@ -1272,7 +1281,7 @@ class Tests_model extends CI_Model {
 		return $data;
 	}
 	
-	// Select test plans from a given category_id
+	// Select test plans from a given course_id
 	public function test_plans ($status='') {
 		if ($status != '') {
 			$this->db->where ('status', $status);
@@ -1352,7 +1361,7 @@ class Tests_model extends CI_Model {
 	}
 	
 	
-	// Select test plans from a given category_id
+	// Select test plans from a given course_id
 	public function get_test_cats ($its_category=array()) {
 		
 		// Create a new connection to MASTER DB
@@ -1480,11 +1489,11 @@ class Tests_model extends CI_Model {
 		$sql = $this->db->delete ('subscription_plans');
 	}
 
-	public function manage_test_toolbar ($coaching_id=0, $category_id=0, $test_id=0) {
+	public function manage_test_toolbar ($coaching_id=0, $course_id=0, $test_id=0) {
 		$toolbar['Prepare'] = [
-			'<i class="fa fa-list"></i> Manage'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id,
-			'<i class="fa fa-search"></i> Preview'=>'coaching/tests/preview_test/'.$coaching_id.'/'.$category_id.'/'.$test_id,
-			'<i class="fa fa-superscript"></i> Questions'=>'coaching/tests/preview_test/'.$coaching_id.'/'.$category_id.'/'.$test_id,
+			'<i class="fa fa-list"></i> Manage'=>'coaching/tests/manage/'.$coaching_id.'/'.$course_id.'/'.$test_id,
+			'<i class="fa fa-search"></i> Preview'=>'coaching/tests/preview_test/'.$coaching_id.'/'.$course_id.'/'.$test_id,
+			'<i class="fa fa-superscript"></i> Questions'=>'coaching/tests/preview_test/'.$coaching_id.'/'.$course_id.'/'.$test_id,
 		];
 
 		return $toolbar;

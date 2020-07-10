@@ -43,7 +43,7 @@
 		?>	
 		<div class="alert alert-danger">
 			<h4> <?php echo 'No questions were found in this test'; ?></h4>
-			<p>You need to <?php echo anchor('tests/admin/select_method/'.$category_id.'/'.$test_id, '<strong>Add Questions</strong>', array ('class'=>'btn btn-success') ); ?> in this test.
+			<p>You need to <?php echo anchor('tests/admin/select_method/'.$course_id.'/'.$test_id, '<strong>Add Questions</strong>', array ('class'=>'btn btn-success') ); ?> in this test.
 			</p>
 		</div>
 		<?php 

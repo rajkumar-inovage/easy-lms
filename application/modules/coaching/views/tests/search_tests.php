@@ -18,7 +18,7 @@
 							<tr>
 								<td><?php echo $i++; ?></td>
 								<td>
-									<?php echo anchor('coaching/tests/preview_test/'.$row['category_id'].'/'.$row['test_id'], $row['title']); ?>
+									<?php echo anchor('coaching/tests/preview_test/'.$row['course_id'].'/'.$row['test_id'], $row['title']); ?>
 									<p class="text-caption margin-none">
 										<?php 
 										// Test Marks
@@ -43,7 +43,7 @@
 								
 								<td>
 									<div class="btn-group">
-										<a href="<?php echo site_url ('coaching/tests/manage/'.$row['category_id'].'/'.$row['test_id']); ?>" onclick="" class="btn btn-xs btn-info" title="Manage Test"><i class="fa fa-cog"></i> Manage </a>
+										<a href="<?php echo site_url ('coaching/tests/manage/'.$row['course_id'].'/'.$row['test_id']); ?>" onclick="" class="btn btn-xs btn-info" title="Manage Test"><i class="fa fa-cog"></i> Manage </a>
 									</div>											
 								</td> 
 							</tr>
@@ -62,7 +62,7 @@
 	<div class="card-footer">
 		<div class="btn-toolbar">
 			<?php 
-			echo anchor ('coaching/tests/index/'.$category_id, '<i class="fa fa-arrow-left"></i> Back', array('class'=>'btn btn-default'));
+			echo anchor ('coaching/tests/index/'.$course_id, '<i class="fa fa-arrow-left"></i> Back', array('class'=>'btn btn-default'));
 			?>
 		</div>
 	</div>

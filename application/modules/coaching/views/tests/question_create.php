@@ -20,7 +20,7 @@
 							$qn = strip_tags ($q['question']); 
 							$qn = character_limiter ($qn, 100);
 							?>
-							<a href="<?php echo site_url ('coaching/tests/question_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$q['parent_id'].'/'.$q['question_id'].'/'.$q['type']); ?>" class="<?php if ($q['question_id'] == $question_id) echo 'text-danger'; ?>"><?php echo $qn; ?></a>
+							<a href="<?php echo site_url ('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$q['parent_id'].'/'.$q['question_id'].'/'.$q['type']); ?>" class="<?php if ($q['question_id'] == $question_id) echo 'text-danger'; ?>"><?php echo $qn; ?></a>
 						</div>
 						
 					</li>
@@ -43,7 +43,7 @@
 	<div class="col-md-9">
 		<div class="card">
 			<div class="card-body">
-				<?php echo form_open ('coaching/tests_actions/validate_question_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id.'/'.$question_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') ); ?>
+				<?php echo form_open ('coaching/tests_actions/validate_question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id.'/'.$question_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') ); ?>
 
 					<div class="form-group row">
 						<div class="col-md-6">
@@ -73,7 +73,7 @@
 						<div class="">
 							<textarea name="question" class="form-control required tinyeditor " rows="5"  autofocus="true"><?php echo set_value ('question', $result['question']); ?></textarea>
 						</div>
-						<input type="hidden" name="category" value="<?php echo $question_group['category_id']; ?>" >
+						<input type="hidden" name="course_id" value="<?php echo $course_id; ?>" >
 					</div>					
 
 					<div class="form-group row">
@@ -165,7 +165,7 @@
 						echo form_button (array ('name'=>'save_new', 'value'=>'save_new', 'type'=>'submit', 'class'=>'btn btn-secondary mr-1', 'accesskey'=>'n', 'content'=>'Save As New', 'id'=>'save_new' )); 
 					?>
 					<?php if ($question_id > 0) { ?>
-						<a href="#" onclick="show_confirm ('Delete this question?', '<?php echo site_url ('coaching/tests_actions/remove_question/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id.'/'.$question_id); ?>')" class="btn btn-danger">Delete</a>
+						<a href="#" onclick="show_confirm ('Delete this question?', '<?php echo site_url ('coaching/tests_actions/remove_question/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id.'/'.$question_id); ?>')" class="btn btn-danger">Delete</a>
 						<input type="hidden" name="question_type" value="<?php echo $result['type']; ?>">
 					<?php } ?>
 					<input type="hidden" name="negmarks" value="<?php echo $question_group['negmarks']; ?>">

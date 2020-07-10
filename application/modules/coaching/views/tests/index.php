@@ -10,7 +10,7 @@
 			              if (! empty($categories)) {
 			                foreach ($categories as $cat) {
 			                 ?>
-							 <option value="<?php echo $cat['id']; ?>" <?php if ($category_id == $cat['id']) echo 'selected="selected"'; ?>><?php echo $cat['title']; ?></option>
+							 <option value="<?php echo $cat['id']; ?>" <?php if ($course_id == $cat['id']) echo 'selected="selected"'; ?>><?php echo $cat['title']; ?></option>
 			                <?php
 			                }
 			              }
@@ -72,7 +72,7 @@
                       if (!empty($cats)) {
                         foreach ($cats as $cat) {
                           ?>
-                	      <li class="list-group-item <?php if ($category_id == $cat['id']) echo 'active'; ?>">
+                	      <li class="list-group-item <?php if ($course_id == $cat['id']) echo 'active'; ?>">
                             <a href="<?php echo site_url ('coaching/tests/index/'.$coaching_id.'/'.$cat['id']); ?>"><i class="fa fa-chevron-right fa-fw"></i> <?php echo $cat['title']; ?> </a>
                           </li>
                           <?php

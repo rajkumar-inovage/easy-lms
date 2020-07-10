@@ -181,7 +181,7 @@
 								// ---=====---
 								if ($isQuestion) {
 									$message = 'Remove this question from test?';
-									$url = site_url ('tests/functions/remove_question/'.$category_id.'/'.$test_id.'/'.$row['question_id'].'/'.$lesson_id.'/'.$cat_ids.'/'.$diff_ids.'/'.$exclude);
+									$url = site_url ('tests/functions/remove_question/'.$course_id.'/'.$test_id.'/'.$row['question_id'].'/'.$lesson_id.'/'.$cat_ids.'/'.$diff_ids.'/'.$exclude);
 									?>
 									<a href="javascript: void ()" onclick="show_confirm_ajax ('<?php echo $url; ?>', '<?php echo $message; ?>')" class="bs-tooltip " data-toggle="tooltip" data-placement="top" title="Delete"><i class="icon icon-trash"></i> </a>
 									<?php
@@ -213,7 +213,7 @@
 					<div class="btn-toolbar-demo"> 
 					<?php 
 					echo form_submit ( array ('name'=>'submit', 'value'=>'Save', 'class'=>'btn btn-success'));
-					echo anchor ( 'tests/page/manage/'.$category_id.'/'.$test_id, 'Cancel', array ('class'=>'btn btn-default'));
+					echo anchor ( 'tests/page/manage/'.$course_id.'/'.$test_id, 'Cancel', array ('class'=>'btn btn-default'));
 					?>
 					</div>
 				</div>

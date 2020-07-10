@@ -11,16 +11,19 @@ class Courses extends MX_Controller {
 
 	public function index($coaching_id = 0, $cat_id = 0) {
 		$data['page_title'] = 'Courses';
-		$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
+		$data['bc'] = array('Dashboard' => 'coaching/home/dashboard/' . $coaching_id);
 		$data['cat_id'] = $cat_id;
 		$data['coaching_id'] = $coaching_id;
-		$data['categories']  = $this->courses_model->course_categories ($coaching_id);
-		$data['courses']  = $this->courses_model->courses($coaching_id, $cat_id);
-		$data['toolbar_buttons'] = array('<i class="fa fa-plus-circle"></i> New Course' => 'coaching/courses/create/'.$coaching_id.'/'.$cat_id);
-		$data['script'] = $this->load->view ('courses/scripts/index', $data, true);
-		$this->load->view ( INCLUDE_PATH  . 'header', $data);
-		$this->load->view ( 'courses/index', $data);
-		$this->load->view ( INCLUDE_PATH  . 'footer', $data);
+		$data['categories'] = $this->courses_model->course_categories($coaching_id);
+		$data['courses'] = $this->courses_model->courses($coaching_id, $cat_id);
+		$data['toolbar_buttons'] = array(
+			'<i class="fa fa-plus-circle"></i> New Course' => 'coaching/courses/create/' . $coaching_id . '/' . $cat_id,
+			'<i class="fa fa-plus-circle"></i> New Category' => 'coaching/courses/create_category/' . $coaching_id . '/' . $cat_id,
+		);
+		$data['script'] = $this->load->view('courses/scripts/index', $data, true);
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('courses/index', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 
 	public function edit($coaching_id = 0, $cat_id = 0, $course_id = 0) {

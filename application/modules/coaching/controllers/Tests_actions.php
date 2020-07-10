@@ -11,13 +11,13 @@ class Tests_actions extends MX_Controller {
 
 
 	/*-----===== Test Categories =====-----*/
-	public function add_category ($coaching_id=0, $category_id=0) {
+	public function add_category ($coaching_id=0, $course_id=0) {
 
 		$this->form_validation->set_rules ('title', 'Title', 'required');
 
 		if ($this->form_validation->run () == true) {
-			$id = $this->tests_model->create_category ($coaching_id, $category_id);
-			if ($category_id > 0) {
+			$id = $this->tests_model->create_category ($coaching_id, $course_id);
+			if ($course_id > 0) {
 				$message = 'Category updated successfully';
 				$redirect = 'coaching/tests/categories/'.$coaching_id;
 			} else {
@@ -34,9 +34,9 @@ class Tests_actions extends MX_Controller {
 	}
 	
 	// Delete Test Plan
-	public function remove_category ($coaching_id=0, $category_id=0) {
+	public function remove_category ($coaching_id=0, $course_id=0) {
 		// Check if this plan is given to any coaching
-		$this->tests_model->remove_category ($coaching_id, $category_id);
+		$this->tests_model->remove_category ($coaching_id, $course_id);
 		$this->message->set ('Category deleted successfully', 'success', true);
 		redirect ('coaching/tests/categories/'.$coaching_id);
 	}
@@ -45,7 +45,7 @@ class Tests_actions extends MX_Controller {
     public function search_tests ($coaching_id=0) {
 		$tests = $this->tests_model->search_tests ($coaching_id);
 		$data['coaching_id'] = $coaching_id;
-		$data['category_id'] = $this->input->post ('category');
+		$data['course_id'] = $this->input->post ('category');
 		$data['status'] = $this->input->post ('status');
 		$data['tests'] = $tests;
 		$tests = $this->load->view ('tests/inc/index', $data, true);
@@ -53,14 +53,14 @@ class Tests_actions extends MX_Controller {
 		$this->output->set_output(json_encode(array('status'=>true, 'data'=>$tests)));
 	}
 	
-	public function create_test ($coaching_id=0, $category_id=0, $test_id=0) {
+	public function create_test ($coaching_id=0, $course_id=0, $test_id=0) {
 
 		$this->form_validation->set_rules ('title', 'Title', 'required|trim');
 		$this->form_validation->set_rules ('pass_marks', 'Passing Percentage', 'required|trim|less_than[100]');
 		$this->form_validation->set_rules ('time_min', 'Test Duration', 'required|trim');
 		if ( $this->form_validation->run () == true )  {
-			$data = $this->tests_model->create_test ($coaching_id, $category_id, $test_id);
-			$redirect = 'coaching/tests/manage/'.$coaching_id.'/'.$data['category_id'].'/'.$data['test_id'];
+			$data = $this->tests_model->create_test ($coaching_id, $course_id, $test_id);
+			$redirect = 'coaching/tests/manage/'.$coaching_id.'/'.$data['course_id'].'/'.$data['test_id'];
 			
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Test created successfully.', 'redirect'=>site_url($redirect) )));
@@ -71,20 +71,20 @@ class Tests_actions extends MX_Controller {
 	}
 	
 	
-	public function set_method ($category_id=0, $test_id=0, $method=0) {
+	public function set_method ($course_id=0, $test_id=0, $method=0) {
 		$this->tests_model->set_method ($test_id, $method);
 		if ($method == TEST_ADDQ_QB) {
-			redirect('coaching/tests/add_test_questions/'.$category_id.'/'.$test_id);
+			redirect('coaching/tests/add_test_questions/'.$course_id.'/'.$test_id);
 		} elseif ($method == TEST_ADDQ_CREATE) {
-			redirect('coaching/tests/question_group_create/'.$category_id.'/'.$test_id);			 
+			redirect('coaching/tests/question_group_create/'.$course_id.'/'.$test_id);			 
 		} elseif ($method == TEST_ADDQ_UPLOAD) {
-			redirect('coaching/tests/upload_test_questions/'.$category_id.'/'.$test_id);			 
+			redirect('coaching/tests/upload_test_questions/'.$course_id.'/'.$test_id);			 
 		} else {
-			redirect('coaching/tests/select_method/'.$category_id.'/'.$test_id);
+			redirect('coaching/tests/select_method/'.$course_id.'/'.$test_id);
 		}
 	}
 
-	public function save_test_questions ($category_id=0, $test_id=0, $lesson_id=0, $cat_ids=0, $diff_ids=0, $exclude=0) {
+	public function save_test_questions ($course_id=0, $test_id=0, $lesson_id=0, $cat_ids=0, $diff_ids=0, $exclude=0) {
 		
 		$this->form_validation->set_rules ('mycheck[]', 'Questions', 'required');
 		$this->form_validation->set_message ('required', 'You must select question(s) before using this button');
@@ -100,7 +100,7 @@ class Tests_actions extends MX_Controller {
 			}
 			$this->message->set ("Questions added to test. Select a lesson to add more questions.", 'success', true);
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Questions added successfully.', 'redirect'=>site_url('coaching/tests/add_test_questions/'.$category_id.'/'.$test_id.'/'.$lesson_id.'/'.$cat_ids.'/'.$diff_ids.'/'.$exclude) )));
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Questions added successfully.', 'redirect'=>site_url('coaching/tests/add_test_questions/'.$course_id.'/'.$test_id.'/'.$lesson_id.'/'.$cat_ids.'/'.$diff_ids.'/'.$exclude) )));
 		} else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
@@ -111,7 +111,7 @@ class Tests_actions extends MX_Controller {
 	/* 
 	// 	Remove Multiple Test Question
 	*/
-	public function remove_questions ($category_id=0, $test_id=0) {
+	public function remove_questions ($course_id=0, $test_id=0) {
 		
 		$this->form_validation->set_rules ('questions[]', 'Question', 'required');
 		
@@ -125,7 +125,7 @@ class Tests_actions extends MX_Controller {
 			}
 			$this->message->set ("<strong>$i</strong> Question(s) removed from test.", 'success', true);
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Question(s) removed successfully from test.', 'redirect'=>site_url('coaching/tests/preview_test/'.$category_id.'/'.$test_id) )));
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Question(s) removed successfully from test.', 'redirect'=>site_url('coaching/tests/preview_test/'.$course_id.'/'.$test_id) )));
 		} else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>'Select Questions To Delete' )));	
@@ -134,29 +134,29 @@ class Tests_actions extends MX_Controller {
 	
 	
 	// Remove Individual Questions
-	public function remove_question ($coaching_id=0, $category_id=0, $test_id=0, $parent_id=0, $question_id=0, $cat_ids=0, $diff_ids=0, $exclude=0) {
+	public function remove_question ($coaching_id=0, $course_id=0, $test_id=0, $parent_id=0, $question_id=0, $cat_ids=0, $diff_ids=0, $exclude=0) {
 		$result = $this->tests_model->deleteTestQuestion ($test_id, $question_id);
 		$this->message->set('Question removed from this test', 'success', true);
 		redirect ('coaching/tests/preview_test/'.$coaching_id.'/'.$test_id);
 	}	
 	
 	// Remove Individual Questions From Add Questions PAge
-	public function remove_added_question ($category_id=0, $test_id=0, $id=0, $lesson_id=0, $cat_ids=0, $diff_ids=0, $exclude=0) {
+	public function remove_added_question ($course_id=0, $test_id=0, $id=0, $lesson_id=0, $cat_ids=0, $diff_ids=0, $exclude=0) {
 		$result = $this->tests_model->deleteTestQuestion ($test_id, $id);
-		redirect ('coaching/tests/add_questions/'.$category_id.'/'.$test_id.'/'.$lesson_id.'/'.$cat_ids.'/'.$diff_ids.'/'.$exclude);
+		redirect ('coaching/tests/add_questions/'.$course_id.'/'.$test_id.'/'.$lesson_id.'/'.$cat_ids.'/'.$diff_ids.'/'.$exclude);
 	}
 	
 	// Reset Test	
-	public function reset_test ($coaching_id=0, $category_id=0, $test_id=0 ) {
+	public function reset_test ($coaching_id=0, $course_id=0, $test_id=0 ) {
 		$this->tests_model->resetTest ($coaching_id, $test_id);
 		$this->message->set('All questions removed from this test', 'success', true);
-		redirect ('coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+		redirect ('coaching/tests/manage/'.$coaching_id.'/'.$course_id.'/'.$test_id);
 	}
 	
 	/* Finalise Test
 	// 
 	*/
-	public function finalise_test ($coaching_id=0, $category_id=0, $test_id) {
+	public function finalise_test ($coaching_id=0, $course_id=0, $test_id) {
 
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
 		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
@@ -173,38 +173,38 @@ class Tests_actions extends MX_Controller {
 			$result = $this->tests_model->finaliseTest ($coaching_id, $test_id, $testMarks);
 			$this->message->set('Test published successfully', 'success', true);
 		}
-		redirect ('coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+		redirect ('coaching/tests/manage/'.$coaching_id.'/'.$course_id.'/'.$test_id);
 	}
 	
 	/* UnFinalise Test
 	// 
 	*/
-	public function unfinalise_test ($coaching_id=0, $category_id=0, $test_id=0) {
+	public function unfinalise_test ($coaching_id=0, $course_id=0, $test_id=0) {
 		$result = $this->tests_model->unfinaliseTest ($coaching_id, $test_id);
 		$this->message->set('Test Unpublished successfully. You can now add/remove questions or users.', 'success', true);
-		redirect ('coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+		redirect ('coaching/tests/manage/'.$coaching_id.'/'.$course_id.'/'.$test_id);
 	}
 	
 	/* Release Result
 	// 
 	*/
-	public function release_result ($coaching_id=0, $category_id=0, $test_id=0) {
+	public function release_result ($coaching_id=0, $course_id=0, $test_id=0) {
 		$result = $this->tests_model->release_result ($coaching_id, $test_id);
 		$this->message->set('Result released successfully. Users will be able to see result now', 'success', true);
-		redirect ('coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+		redirect ('coaching/tests/manage/'.$coaching_id.'/'.$course_id.'/'.$test_id);
 	}
 	
 	
 	/* DELETE TEST
 		Function to delete existing test
 	*/
-	public function delete_test ($coaching_id, $category_id, $test_id)	{		
+	public function delete_test ($coaching_id, $course_id, $test_id)	{		
 		$this->tests_model->delete_tests ($test_id);	
 		$this->message->set("Test deleted successfully", "success", TRUE);
-		redirect("coaching/tests/index/".$coaching_id.'/'.$category_id);
+		redirect("coaching/tests/index/".$coaching_id.'/'.$course_id);
 	}
 	
-	public function export_pdf ($coaching_id=0, $category_id=0, $test_id=0) {
+	public function export_pdf ($coaching_id=0, $course_id=0, $test_id=0) {
 
 		$this->load->helper ('tcpdf');
 		tcpdf();
@@ -232,7 +232,7 @@ class Tests_actions extends MX_Controller {
 		$obj_pdf->setFontSubsetting(false);
 		$obj_pdf->AddPage();
 
-		$data['category_id'] = $category_id;
+		$data['course_id'] = $course_id;
 		$data['test_id'] 	 = $test_id;
 		
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
@@ -293,7 +293,7 @@ class Tests_actions extends MX_Controller {
 		*/
 		
 		//$this->output->set_content_type("application/json");
-		//$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Your file is being downloaded', 'redirect'=>site_url('coaching/tests/preview_test/'.$coaching_id.'/'.$category_id.'/'.$test_id) )));
+		//$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Your file is being downloaded', 'redirect'=>site_url('coaching/tests/preview_test/'.$coaching_id.'/'.$course_id.'/'.$test_id) )));
 
 				// create new PDF document
 		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -420,7 +420,7 @@ class Tests_actions extends MX_Controller {
 
 
 	// Ajax enrol users
-	public function enrol_users ($coaching_id=0, $category_id=0, $test_id=0, $type=0, $role_id=0, $class_id=0, $batch_id=0, $status='-1') {		
+	public function enrol_users ($coaching_id=0, $course_id=0, $test_id=0, $type=0, $role_id=0, $class_id=0, $batch_id=0, $status='-1') {		
 		
 		$this->form_validation->set_rules('users[]', 'Users', 'required');
 		if ( $this->form_validation->run () == true ) {
@@ -429,7 +429,7 @@ class Tests_actions extends MX_Controller {
 				$this->tests_model->enrol_member ($coaching_id, $member_id, $test_id);
 			}
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'User(s) enroled in test', 'redirect'=>site_url('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$type.'/'.$role_id.'/'.$class_id.'/'.$batch_id.'/'.$status) )));
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'User(s) enroled in test', 'redirect'=>site_url('coaching/tests/enrolments/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$type.'/'.$role_id.'/'.$class_id.'/'.$batch_id.'/'.$status) )));
 		} else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
@@ -437,7 +437,7 @@ class Tests_actions extends MX_Controller {
 	}
 
 	// Ajax unenrol users
-	public function unenrol_users ($coaching_id=0, $category_id=0, $test_id=0, $type=0, $role_id=0, $class_id=0, $batch_id=0, $status='-1') {
+	public function unenrol_users ($coaching_id=0, $course_id=0, $test_id=0, $type=0, $role_id=0, $class_id=0, $batch_id=0, $status='-1') {
 		
 		$this->form_validation->set_rules('actions', 'Actions', 'required');
 		if ( $this->form_validation->run () == true ) {			
@@ -448,11 +448,11 @@ class Tests_actions extends MX_Controller {
 					if ($actions == 'archive') {
 						$x = $this->tests_model->archive_member ($test_id, $id);						
 					} else if ($actions == 'unenrol') {
-						$x = $this->unenrol_user ($coaching_id, $category_id, $test_id, $role_id, $class_id, $type, $batch_id, $status, $id, $redirect=0);
+						$x = $this->unenrol_user ($coaching_id, $course_id, $test_id, $role_id, $class_id, $type, $batch_id, $status, $id, $redirect=0);
 					}
 				}
 				$this->output->set_content_type("application/json");
-				$this->output->set_output(json_encode(array('status'=>true, 'message'=>'User(s) un-enroled from test', 'redirect'=>site_url('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$type.'/'.$role_id.'/'.$class_id.'/'.$batch_id.'/'.$status) )));
+				$this->output->set_output(json_encode(array('status'=>true, 'message'=>'User(s) un-enroled from test', 'redirect'=>site_url('coaching/tests/enrolments/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$type.'/'.$role_id.'/'.$class_id.'/'.$batch_id.'/'.$status) )));
 			} else {
 				$this->output->set_content_type("application/json");
 				$this->output->set_output(json_encode(array('status'=>false, 'error'=>'Select one or more users to complete this action' )));
@@ -463,16 +463,16 @@ class Tests_actions extends MX_Controller {
 		}
 	}
 	// Ajax unenrol user
-	public function unenrol_user ($coaching_id=0, $category_id=0, $test_id=0, $type=0, $role_id=0, $class_id=0, $batch_id=0, $status='-1', $member_id=0, $redirect=1) { 
+	public function unenrol_user ($coaching_id=0, $course_id=0, $test_id=0, $type=0, $role_id=0, $class_id=0, $batch_id=0, $status='-1', $member_id=0, $redirect=1) { 
 		$this->tests_model->unenrol_member ($coaching_id, $member_id, $test_id); 
 		if ($redirect == 1) {
 			$this->message->set ('User un-enroled from test', 'success', true);
-			redirect ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$type.'/'.$role_id.'/'.$class_id.'/'.$batch_id.'/'.$status);
+			redirect ('coaching/tests/enrolments/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$type.'/'.$role_id.'/'.$class_id.'/'.$batch_id.'/'.$status);
 		}
 	}
 	
 	// Ajax validation question group
-	public function validate_question_group_create ($coaching_id=0, $category_id=0, $test_id=0, $question_id=0) {
+	public function validate_question_group_create ($coaching_id=0, $course_id=0, $test_id=0, $question_id=0) {
 		$this->form_validation->set_rules('question', 'Question Group Title', 'required|trim');
 		$this->form_validation->set_rules('marks', 'Marks', 'required|is_natural|trim|max_length[3]');
 		//$this->form_validation->set_rules('negmarks', 'Negative Marks', 'is_natural|trim|max_length[2]');
@@ -481,7 +481,7 @@ class Tests_actions extends MX_Controller {
 			$id = $this->qb_model->save_group ($coaching_id, 0, $question_id);
 			$this->message->set ("Question heading created. Now add questions to it", 'success', true);
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Question created successfully', 'redirect'=>site_url('coaching/tests/question_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$id) )));
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Question created successfully', 'redirect'=>site_url('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$id) )));
 		} else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
@@ -490,7 +490,7 @@ class Tests_actions extends MX_Controller {
 	
 	
 	// Ajax validation question 
-	public function validate_question_create ($coaching_id=0, $category_id=0, $test_id=0, $parent_id=0, $question_id=0) {
+	public function validate_question_create ($coaching_id=0, $course_id=0, $test_id=0, $parent_id=0, $question_id=0) {
 		
 		$type = $this->input->post ('question_type');
 		$this->form_validation->set_rules('classification', 'Classification', 'required');
@@ -563,7 +563,7 @@ class Tests_actions extends MX_Controller {
 			}
 			$this->message->set ($msg, 'success', true);
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$msg, 'redirect'=>site_url('coaching/tests/question_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id) )));
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$msg, 'redirect'=>site_url('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id) )));
 		} else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
@@ -585,7 +585,7 @@ class Tests_actions extends MX_Controller {
 	}
 	
 	/*****************************************/
-	public function submit_test ($category_id, $test_id) {
+	public function submit_test ($course_id, $test_id) {
 		$questions  = $this->input->post('questions');
 		$attempt_id = $this->input->post('attempt_id');
 		$member_id  = $this->session->userdata('member_id');

@@ -10,28 +10,28 @@ class Tests extends MX_Controller {
 	    $models = ['coaching_model', 'subscription_model', 'tests_model', 'test_plans_model', 'qb_model', 'users_model'];
 
 	    $this->common_model->autoload_resources ($config, $models);
-	    
-	    $cid = $this->uri->segment (4);
-        $this->toolbar_buttons['<i class="fa fa-puzzle-piece"></i> All Tests']= 'coaching/tests/index/'.$cid;
-        $this->toolbar_buttons['<i class="fa fa-plus-circle"></i> New Test']= 'coaching/tests/create_test/'.$cid;
-        $this->toolbar_buttons['<i class="fa fa-list"></i> Test Categories']= 'coaching/tests/categories/'.$cid;
+	    $coaching_id = $this->uri->segment (4);
+	    $course_id = $this->uri->segment (5);
+        $this->toolbar_buttons['<i class="fa fa-puzzle-piece"></i> All Tests']= 'coaching/tests/index/'.$coaching_id.'/'.$course_id;
+        $this->toolbar_buttons['<i class="fa fa-plus-circle"></i> New Test']= 'coaching/tests/create_test/'.$coaching_id.'/'.$course_id;
+        //$this->toolbar_buttons['<i class="fa fa-list"></i> Test Categories']= 'coaching/tests/categories/'.$coaching_id.'/'.$course_id;
         
         if ($this->session->userdata ('is_admin') == TRUE) {
         } else {
 
         	// Security step to prevent unauthorized access through url
-            if ($cid == true && $this->session->userdata ('coaching_id') <> $cid) {
+            if ($coaching_id == true && $this->session->userdata ('coaching_id') <> $coaching_id) {
                 $this->message->set ('Direct url access not allowed', 'danger', true);
                 redirect ('coaching/home/dashboard');
             }
 
         	// Check subscription plan expiry
-            $coaching = $this->subscription_model->get_coaching_subscription ($cid);
+            $coaching = $this->subscription_model->get_coaching_subscription ($coaching_id);
             $today = time ();
             $current_plan = $coaching['subscription_id'];
             if ($today > $coaching['ending_on']) {
             	$this->message->set ('Your subscription has expired. Choose a plan to upgrade', 'danger', true);
-            	redirect ('coaching/subscription/browse_plans/'.$cid.'/'.$current_plan);
+            	redirect ('coaching/subscription/browse_plans/'.$coaching_id.'/'.$current_plan);
             }
         }
 	}
@@ -57,15 +57,15 @@ class Tests extends MX_Controller {
 	}
 	
 	// Create/Edit Category
-	public function add_category ($coaching_id=0, $category_id=0) {
+	public function add_category ($coaching_id=0, $course_id=0) {
 		/* Breadcrumbs */ 
 		$data['bc'] = array ('Categories'=>'coaching/tests/categories/'.$coaching_id);
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		$data['page_title'] = 'Tests';
 		$data['page_title'] = 'Test Categories';
-		$data['category_id'] = $category_id;
+		$data['course_id'] = $course_id;
 		$data['coaching_id'] = $coaching_id;
-		$data['category'] = $this->tests_model->get_category ($category_id);
+		$data['category'] = $this->tests_model->get_category ($course_id);
 
 		/* --==// Toolbar //==-- */
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
@@ -76,18 +76,18 @@ class Tests extends MX_Controller {
 		$this->load->view(INCLUDE_PATH  . 'footer', $data);	    
 	}
 	
-	public function index ($coaching_id=0, $category_id=0, $status='-1', $type=0) { 
+	public function index ($coaching_id=0, $course_id=0, $status='-1', $type=0) { 
 
 		$data['coaching_id'] = $coaching_id;
-		$data['category_id'] = $category_id;
+		$data['course_id'] = $course_id;
 		$data['status'] 	 = $status;
 		$data['type'] 	 	 = $type;
 		$data['member_id'] 	 = $member_id = $this->session->userdata ('member_id');
-		$data['categories']  = $this->tests_model->test_categories ($coaching_id);
+		$data['courses']  = $this->tests_model->coaching_courses ($coaching_id);
 
 		/*---=== Coaching Tests ===---*/
-		$data['tests'] = $tests = $this->tests_model->get_all_tests ($coaching_id, $category_id, $status, $type);
-		$data['plans'] = $this->test_plans_model->coaching_test_plans ($coaching_id);
+		$data['tests'] = $tests = $this->tests_model->get_all_tests ($coaching_id, $course_id, $status, $type);
+		// $data['plans'] = $this->test_plans_model->coaching_test_plans ($coaching_id);
 		
 		if ( ! empty ($tests)) {
 			$count_tests = count ($tests);
@@ -114,21 +114,21 @@ class Tests extends MX_Controller {
 		$this->load->view ( INCLUDE_PATH  . 'footer', $data);	
 	}
 
-	public function edit($coaching_id=0, $category_id=0, $test_id=0) {
-		$this->create_test ($coaching_id, $category_id, $test_id);
+	public function edit($coaching_id=0, $course_id=0, $test_id=0) {
+		$this->create_test ($coaching_id, $course_id, $test_id);
 	}
 	/* CREATE TEST
 		Function to create new test.
 	*/
-	public function create_test ($coaching_id=0, $category_id=0, $test_id=0) {
+	public function create_test ($coaching_id=0, $course_id=0, $test_id=0) {
 		
 		$data['coaching_id'] 	= $coaching_id;
-		$data['category_id'] 	= $category_id;
+		$data['course_id'] 	= $course_id;
 		$data['test_id'] 	 	= $test_id;		
 		
 		/* Back Link */
 		if($test_id>0){
-			$data['bc'] = array ('Back'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+			$data['bc'] = array ('Back'=>'coaching/tests/manage/'.$coaching_id.'/'.$course_id.'/'.$test_id);
 		}else{
 			$data['bc'] = array ('Back'=>'coaching/tests/index/'.$coaching_id);
 		}
@@ -136,7 +136,7 @@ class Tests extends MX_Controller {
 		/* --==// Toolbar //==-- */
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		
-		$data['categories'] = $this->tests_model->test_categories ($coaching_id);
+		$data['courses']  = $this->tests_model->coaching_courses ($coaching_id);
 		$data['results'] = $this->tests_model->view_tests ($test_id);
 		if ($test_id > 0) {
 			$data['page_title'] = 'Edit Test: ' . $data['results']['title'];
@@ -150,15 +150,15 @@ class Tests extends MX_Controller {
 	}
 	
 	
-	public function manage ($coaching_id=0, $category_id=0, $test_id=0) {
-		//$this->questions ($coaching_id, $category_id, $test_id);
+	public function manage ($coaching_id=0, $course_id=0, $test_id=0) {
+		//$this->questions ($coaching_id, $course_id, $test_id);
 
 		
 		$test = $this->tests_model->view_tests ($test_id);
 
 		$data['page_title'] = 'Manage Test';		
 		$data['coaching_id'] = $coaching_id;
-		$data['category_id'] = $category_id;
+		$data['course_id'] = $course_id;
 		$data['test_id'] 	 = $test_id;
 		$data['test'] 		 = $test;
 		
@@ -189,12 +189,12 @@ class Tests extends MX_Controller {
 	/* 
 	// Questions in Test
 	*/
-	public function questions ($coaching_id=0, $category_id=0, $test_id=0, $offset='' ) {
+	public function questions ($coaching_id=0, $course_id=0, $test_id=0, $offset='' ) {
 
 		$data['test'] = $test = $this->tests_model->view_tests ($test_id);
 
 		$data['coaching_id'] = $coaching_id;
-		$data['category_id'] = $category_id;
+		$data['course_id'] = $course_id;
 		$data['test_id'] = $test_id;
 		
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
@@ -221,7 +221,7 @@ class Tests extends MX_Controller {
 		$data['results'] = $result;
 
 		/* --==// Back Link //==-- */
-		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$course_id.'/'.$test_id);
 		
 		/* --==// Sidebar //==-- */ 
 		$data['page_title'] = 'Questions'; 
@@ -243,11 +243,11 @@ class Tests extends MX_Controller {
 	/* CREATE QUESTION GROUP
 		Function to create question group
 	*/	
-	public function question_group_create ($coaching_id=0, $category_id=0, $test_id=0, $question_id=0) {
+	public function question_group_create ($coaching_id=0, $course_id=0, $test_id=0, $question_id=0) {
 		
 		$data['page_title'] 	= 'Create/Edit Section';
 		$data['coaching_id'] 	= $coaching_id;
-		$data['category_id'] 	= $category_id;
+		$data['course_id'] 	= $course_id;
 		$data['question_id'] 	= $question_id;
 		$data['test_id'] 		= $test_id;
 
@@ -265,7 +265,7 @@ class Tests extends MX_Controller {
 		$data['num_test_questions'] = $num_test_questions;
 
 		/* Breadcrumbs */
-		$data['bc'] = array ('Questions'=>'coaching/tests/questions/'.$coaching_id.'/'.$category_id.'/'.$test_id);		
+		$data['bc'] = array ('Questions'=>'coaching/tests/questions/'.$coaching_id.'/'.$course_id.'/'.$test_id);		
 
 		// Get Question Details
 		$data['result'] = $this->qb_model->getQuestionDetails ($question_id);
@@ -280,7 +280,7 @@ class Tests extends MX_Controller {
 	
 	
 	/* function for Create/Edit question */
-	public function question_create ($coaching_id=0, $category_id=0, $test_id=0, $parent_id=0, $question_id=0, $question_type=QUESTION_MCSC	) {
+	public function question_create ($coaching_id=0, $course_id=0, $test_id=0, $parent_id=0, $question_id=0, $question_type=QUESTION_MCSC	) {
 				
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id, $parent_id);
 		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
@@ -294,13 +294,13 @@ class Tests extends MX_Controller {
 		$data['num_test_questions'] = $num_test_questions;
 
 		/* Back Link */
-		$data['bc'] = array ('Question Group'=>'coaching/tests/question_group_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id);
+		$data['bc'] = array ('Question Group'=>'coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id);
 
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
 		$data['question_type']	= $question_type;
 		$data['coaching_id'] 	= $coaching_id;
-		$data['category_id']	= $category_id;
+		$data['course_id']	= $course_id;
 		$data['parent_id'] 		= $parent_id;
 		$data['question_id']	= $question_id;
 		$data['test_id']		= $test_id;
@@ -329,12 +329,12 @@ class Tests extends MX_Controller {
 	/* Preview Test
 	// 
 	*/
-	public function preview_test ($coaching_id=0, $category_id=0, $test_id=0, $offset='' ) {
+	public function preview_test ($coaching_id=0, $course_id=0, $test_id=0, $offset='' ) {
 
 		$data['test'] = $test = $this->tests_model->view_tests ($test_id);
 
 		$data['coaching_id'] = $coaching_id;
-		$data['category_id'] = $category_id;
+		$data['course_id'] = $course_id;
 		$data['test_id'] = $test_id;
 		
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
@@ -361,7 +361,7 @@ class Tests extends MX_Controller {
 		$data['results'] = $result;
 		
 		/* --==// Back Link //==-- */
-		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$course_id.'/'.$test_id);
 		
 		$data['page_title'] = 'Preview Test'; 
 		
@@ -377,11 +377,11 @@ class Tests extends MX_Controller {
 	}
 
 	/*---=== ENROLMENT ===---*/
-	public function enrolments ($coaching_id=0, $category_id=0, $test_id=0, $type=ENROLED_IN_TEST, $role_id=0, $class_id=0, $batch_id=0, $status='-1') {
+	public function enrolments ($coaching_id=0, $course_id=0, $test_id=0, $type=ENROLED_IN_TEST, $role_id=0, $class_id=0, $batch_id=0, $status='-1') {
 		
 		$data['page_title'] 	= 'Enrolments';
 		$data['coaching_id'] 	= $coaching_id;
-		$data['category_id'] 	= $category_id;
+		$data['course_id'] 	= $course_id;
 		$data['test_id'] 		= $test_id;
 		$data['role_id'] 		= $role_id;
 		$data['class_id'] 		= $class_id;
@@ -389,11 +389,10 @@ class Tests extends MX_Controller {
 		$data['status'] 		= $status;
 		$data['type'] 			= $type;
 		/* Breadcrumbs */
-		$data['bc'] = array ('Manage '=>'coaching/tests/manage/'.$coaching_id.'/'.$category_id.'/'.$test_id);
+		$data['bc'] = array ('Manage '=>'coaching/tests/manage/'.$coaching_id.'/'.$course_id.'/'.$test_id);
 
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 	
-		
 		/*
 		if ($batch_id > 0) {
 			$batch_users 		= $this->users_model->batch_users ($batch_id);
@@ -410,7 +409,7 @@ class Tests extends MX_Controller {
 		*/
 		
 		// Count not enroled users
-		$not_enroled 	= $this->tests_model->get_users_not_in_test ($coaching_id, $test_id, $role_id, $class_id,$category_id, $batch_id, $status);
+		$not_enroled 	= $this->tests_model->get_users_not_in_test ($coaching_id, $test_id, $role_id, $class_id,$course_id, $batch_id, $status);
 
 		// Count not enroled users
 		if ($not_enroled > 0) 
@@ -419,7 +418,7 @@ class Tests extends MX_Controller {
 			$num_not_enroled = 0;
 		
 		// Count enroled users
-		$enroled 		= $this->tests_model->get_users_in_test ($coaching_id, $test_id, $role_id, $class_id,$category_id, $batch_id, $status);
+		$enroled 		= $this->tests_model->get_users_in_test ($coaching_id, $test_id, $role_id, $class_id,$course_id, $batch_id, $status);
 		// Count enroled users
 		if ($enroled > 0) 
 			$num_enroled = count ($enroled);
@@ -427,7 +426,7 @@ class Tests extends MX_Controller {
 			$num_enroled = 0;
 		
 		// Count archived users
-		$archived 		= $this->tests_model->get_archived_students ($coaching_id, $test_id, $role_id, $class_id,$category_id, $batch_id, $status);
+		$archived 		= $this->tests_model->get_archived_students ($coaching_id, $test_id, $role_id, $class_id,$course_id, $batch_id, $status);
 		// Count archived users
 		if ($archived > 0) 
 			$num_archived = count ($archived);
@@ -503,10 +502,10 @@ class Tests extends MX_Controller {
 	/* VIEW TEST
 		Function to view test.
 	*/
-	public function view_test ($category_id, $test_id, $member_id=0, $backlink="") {
+	public function view_test ($course_id, $test_id, $member_id=0, $backlink="") {
 		
 		$data['page_title'] = 'Test Details';
-		$data['category_id'] = $category_id;
+		$data['course_id'] = $course_id;
 		$data['test_id'] = $test_id;
 		$data['results'] = $this->tests_model->view_tests ($test_id);		
 		
@@ -517,7 +516,7 @@ class Tests extends MX_Controller {
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		/* Back Link */
 		if ($backlink == "") {
-			$data['bc'] = array ('Back'=>'coaching/tests/index/'.$category_id);
+			$data['bc'] = array ('Back'=>'coaching/tests/index/'.$course_id);
 			$data['toolbar_buttons'] = $toolbar_buttons;
 		} else {
 			$uri = explode (':', $backlink);
@@ -537,23 +536,23 @@ class Tests extends MX_Controller {
 	
 	
 	
-	public function select_method ($category_id=0, $test_id=0) {
+	public function select_method ($course_id=0, $test_id=0) {
 		
 		$test = $this->tests_model->view_tests ($test_id);
-		$data['category_id'] 	= $category_id;
+		$data['course_id'] 	= $course_id;
 		$data['test_id'] 		= $test_id;
 		$data['test'] 			= $test;
 		$method 				= $test['method'];
 		
 		/* Back Link */
-		$data['bc'] = array ('Back'=>'coaching/tests/index/'.$category_id);
+		$data['bc'] = array ('Back'=>'coaching/tests/index/'.$course_id);
 		
 		/* Page Related Toolbar Buttons */
 		$data['toolbar_buttons'] = array ();
-		if ($category_id > 0) {
+		if ($course_id > 0) {
 			$data['toolbar_buttons'] = array ( 
 					'buttons'=>array ( 
-						anchor ('coaching/tests/create/'.$category_id, '<i class="fa fa-plus"></i> New Test' )
+						anchor ('coaching/tests/create/'.$course_id, '<i class="fa fa-plus"></i> New Test' )
 					));
 		}
 
@@ -561,15 +560,15 @@ class Tests extends MX_Controller {
 		//$page_stats = $this->qb_model->page_stats ('index', $lesson_id);		
 
 		if ($test['finalized'] == 1 ) {
-			redirect ( 'coaching/tests/preview_test/'.$category_id.'/'.$test_id);
+			redirect ( 'coaching/tests/preview_test/'.$course_id.'/'.$test_id);
 		} else {
 			if ($method == TEST_ADDQ_QB) {
-				//redirect('coaching/tests/add_test_questions/'.$category_id.'/'.$test_id);
-				redirect('coaching/tests/question_group_create/'.$category_id.'/'.$test_id);
+				//redirect('coaching/tests/add_test_questions/'.$course_id.'/'.$test_id);
+				redirect('coaching/tests/question_group_create/'.$course_id.'/'.$test_id);
 			} elseif ($method == TEST_ADDQ_CREATE) {
-				redirect('coaching/tests/question_group_create/'.$category_id.'/'.$test_id);
+				redirect('coaching/tests/question_group_create/'.$course_id.'/'.$test_id);
 			} elseif ($method == TEST_ADDQ_UPLOAD) {
-				redirect('coaching/tests/upload_test_questions/'.$category_id.'/'.$test_id);
+				redirect('coaching/tests/upload_test_questions/'.$course_id.'/'.$test_id);
 			} else {
 				$data['page_title'] = 'Select Method To Add Questions';
 				$this->load->view (INCLUDE_PATH . 'header', $data);
@@ -582,7 +581,7 @@ class Tests extends MX_Controller {
 	
 	
 	// Function to list all question of the selected lessons
-	public function add_test_questions ( $category_id=0, $test_id=0, $lesson_id=0, $cat_ids=0, $diff_ids=0, $exclude=0) {
+	public function add_test_questions ( $course_id=0, $test_id=0, $lesson_id=0, $cat_ids=0, $diff_ids=0, $exclude=0) {
 		
 		//$num_questions = $this->main_m->count_all_questions ();
 		$num_questions = 0;		
@@ -598,28 +597,28 @@ class Tests extends MX_Controller {
 			$num_questions = count ($questions);
 		}
 		
-		$data['toolbar_buttons'][] =  anchor('coaching/tests/preview_test/'.$category_id.'/'.$test_id.'/'.$lesson_id, 'Preview Test'); 
+		$data['toolbar_buttons'][] =  anchor('coaching/tests/preview_test/'.$course_id.'/'.$test_id.'/'.$lesson_id, 'Preview Test'); 
 		if ($test['finalized'] == 0 && $testMarks['marks'] > 0) {  
-			$data['toolbar_buttons'][] = '<a href="javascript:void(0)" onclick="javascript:show_confirm ( \'Finalize test at '.$testMarks['marks'].' marks?\', \''.site_url('coaching/tests/finalise_test/'.$category_id.'/'.$test_id).'\')" ><i class="fa fa-star"></i>Publish Test</a>';
+			$data['toolbar_buttons'][] = '<a href="javascript:void(0)" onclick="javascript:show_confirm ( \'Finalize test at '.$testMarks['marks'].' marks?\', \''.site_url('coaching/tests/finalise_test/'.$course_id.'/'.$test_id).'\')" ><i class="fa fa-star"></i>Publish Test</a>';
 		} else if ($test['finalized'] == 1 ) { 
-			$data['toolbar_buttons'][] = '<a href="javascript:void(0)" onclick="javascript:show_confirm ( \'Un-Finalize test?\', \''.site_url('coaching/tests/unfinalise_test/'.$category_id.'/'.$test_id).'\' )" ><i class="fa fa-star-o"></i> Un-Publish Test</a>';
+			$data['toolbar_buttons'][] = '<a href="javascript:void(0)" onclick="javascript:show_confirm ( \'Un-Finalize test?\', \''.site_url('coaching/tests/unfinalise_test/'.$course_id.'/'.$test_id).'\' )" ><i class="fa fa-star-o"></i> Un-Publish Test</a>';
 		}
-		$data['toolbar_buttons'][] =  anchor ('coaching/tests/reset_test/'.$category_id.'/'.$test_id.'/'.$lesson_id, '<i class="fa fa-reorder"></i> Reset Test', array ('id'=>'reset_test') ); 
-		$data['toolbar_buttons'][] = anchor_popup ('coaching/tests/print_test/'.$category_id.'/'.$test_id, '<i class="fa fa-print"></i> Print', array( 'height'=>'800', 'width'=>1024)); 
+		$data['toolbar_buttons'][] =  anchor ('coaching/tests/reset_test/'.$course_id.'/'.$test_id.'/'.$lesson_id, '<i class="fa fa-reorder"></i> Reset Test', array ('id'=>'reset_test') ); 
+		$data['toolbar_buttons'][] = anchor_popup ('coaching/tests/print_test/'.$course_id.'/'.$test_id, '<i class="fa fa-print"></i> Print', array( 'height'=>'800', 'width'=>1024)); 
 		
 		/* Back Link */
-		$data['bc'] = array ('Back'=>'coaching/tests/manage/'.$category_id.'/'.$test_id);
+		$data['bc'] = array ('Back'=>'coaching/tests/manage/'.$course_id.'/'.$test_id);
 		
 		/* Page Related Toolbar Buttons */
 		$data['toolbar_buttons'] = array ();
 		$data['toolbar_buttons'] = array ( 
 				'buttons'=>array ( 
-					anchor ('coaching/tests/preview_test/'.$category_id.'/'.$test_id.'/'.$lesson_id, '<i class="fa fa-search"></i> Preview' ),
+					anchor ('coaching/tests/preview_test/'.$course_id.'/'.$test_id.'/'.$lesson_id, '<i class="fa fa-search"></i> Preview' ),
 				));
 
 		/* Page Related Statistics */
 		$data['page_title'] = $test['title'];
-		$page_stats['subpage_title']  = $this->common_model->get_node_name ($category_id, SYS_TREE_TYPE_TEST);
+		$page_stats['subpage_title']  = $this->common_model->get_node_name ($course_id, SYS_TREE_TYPE_TEST);
 		$page_stats['pst1']  = 'Duration'; 
 		$page_stats['psf1']  = $test['time_min'] . ' mins';
 		$page_stats['pst2']  = 'Test Marks';
@@ -632,7 +631,7 @@ class Tests extends MX_Controller {
 		
 		
 
-		$data['category_id'] 		= $category_id;
+		$data['course_id'] 		= $course_id;
 		$data['test_id'] 			= $test_id;
 		$data['lesson_id'] 			= $lesson_id;
 		$data['cat_ids'] 			= $cat_ids;
@@ -655,13 +654,13 @@ class Tests extends MX_Controller {
 	/* 
 	// Upload Test Questions
 	*/
-	public function upload_test_questions ( $coaching_id=0, $category_id=0, $test_id=0, $lesson_id=0) {
+	public function upload_test_questions ( $coaching_id=0, $course_id=0, $test_id=0, $lesson_id=0) {
 		
 		$data['row'] 		= $test = $this->tests_model->view_tests ($test_id);
 		
 		$data['page_title'] = $test['title'];
 		/*
-		$page_stats['subpage_title']  = $this->common_model->get_node_name ($category_id, SYS_TREE_TYPE_TEST);
+		$page_stats['subpage_title']  = $this->common_model->get_node_name ($course_id, SYS_TREE_TYPE_TEST);
 		$page_stats['pst1']  = 'Duration';
 		$page_stats['psf1']  = $test['time_min'] . ' mins';
 		$page_stats['pst2']  = 'Test Marks';
@@ -672,10 +671,10 @@ class Tests extends MX_Controller {
 		*/
 
 		$data['test_id'] 	 = $test_id;
-		$data['category_id'] = $category_id; 		
+		$data['course_id'] = $course_id; 		
 		
 		/* Breadcrumbs */
-		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$category_id.'/'.$test_id);
+		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$course_id.'/'.$test_id);
 		
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
 		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id, $questions);
@@ -687,26 +686,26 @@ class Tests extends MX_Controller {
 		/* toolbar buttons * /
 		$toolbar_buttons = array ();
 		if ($test['finalized'] == 0) {
-			$toolbar_buttons[] = anchor('coaching/tests/select_method/'.$category_id.'/'.$test_id, '<i class="fa fa-plus"></i> Add questions'); 
+			$toolbar_buttons[] = anchor('coaching/tests/select_method/'.$course_id.'/'.$test_id, '<i class="fa fa-plus"></i> Add questions'); 
 
-			$toolbar_buttons[] = '<a href="javascript:void(0)" onclick="javascript:show_confirm ( \'Publish test at '.$testMarks['marks'].' marks?\', \''.site_url('coaching/tests/finalise_test/'.$category_id.'/'.$test_id).'\')" ><i class="fa fa-star"></i> Publish Test</a>';
+			$toolbar_buttons[] = '<a href="javascript:void(0)" onclick="javascript:show_confirm ( \'Publish test at '.$testMarks['marks'].' marks?\', \''.site_url('coaching/tests/finalise_test/'.$course_id.'/'.$test_id).'\')" ><i class="fa fa-star"></i> Publish Test</a>';
 
-			$toolbar_buttons[] = '<a href="javascript:void(0)" onclick="javascript:show_confirm ( \'This will remove all questions added in test.\', \''.site_url('coaching/tests/reset_test/'.$category_id.'/'.$test_id).'\')"  ><i class="fa fa-reorder"></i> Reset Test</a>';
+			$toolbar_buttons[] = '<a href="javascript:void(0)" onclick="javascript:show_confirm ( \'This will remove all questions added in test.\', \''.site_url('coaching/tests/reset_test/'.$course_id.'/'.$test_id).'\')"  ><i class="fa fa-reorder"></i> Reset Test</a>';
 			
-			$data['toolbar_backlink'] = anchor ('coaching/tests/select_method/'.$category_id.'/'.$test_id, 'Back');
+			$data['toolbar_backlink'] = anchor ('coaching/tests/select_method/'.$course_id.'/'.$test_id, 'Back');
 			
 		} else { 
 			$data['toolbar_backlink'] = anchor ('coaching/tests/index/'.$test_id, 'Back');
-			$toolbar_buttons[] = '<a href="javascript:void(0)" onclick="javascript:show_confirm ( \'This test will not be available to users if it is Un-Published. Un-Publish this test?\', \''.site_url('coaching/tests/unfinalise_test/'.$category_id.'/'.$test_id).'\' )" ><i class="fa fa-star-o"></i> Unpublish Test</a>';
+			$toolbar_buttons[] = '<a href="javascript:void(0)" onclick="javascript:show_confirm ( \'This test will not be available to users if it is Un-Published. Un-Publish this test?\', \''.site_url('coaching/tests/unfinalise_test/'.$course_id.'/'.$test_id).'\' )" ><i class="fa fa-star-o"></i> Unpublish Test</a>';
 		}
 		
-		$toolbar_buttons[] = anchor_popup ('coaching/tests/print_test/'.$category_id.'/'.$test_id, '<i class="fa fa-print"></i> Print', array( 'height'=>'800', 'width'=>1024)); 
+		$toolbar_buttons[] = anchor_popup ('coaching/tests/print_test/'.$course_id.'/'.$test_id, '<i class="fa fa-print"></i> Print', array( 'height'=>'800', 'width'=>1024)); 
 		
 		//-- toolbar buttons
 		$data['toolbar_buttons'] = $toolbar_buttons;
 		/ * */
 		
-		$data['category_id'] 		= $category_id;
+		$data['course_id'] 		= $course_id;
 		$data['test_id'] 			= $test_id;
 		$data['lesson_id'] 			= $lesson_id;
 		
@@ -718,12 +717,12 @@ class Tests extends MX_Controller {
 
 	/* Print Test
 	*/
-	public function print_test ($coaching_id=0, $category_id=0, $test_id=0, $print=true ) { 
+	public function print_test ($coaching_id=0, $course_id=0, $test_id=0, $print=true ) { 
 
 		$data['test'] = $test = $this->tests_model->view_tests ($test_id);
 
 		$data['coaching_id'] = $coaching_id;
-		$data['category_id'] = $category_id;
+		$data['course_id'] = $course_id;
 		$data['test_id'] = $test_id;
 		
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
@@ -791,8 +790,8 @@ class Tests extends MX_Controller {
 	}
 	
 	
-	public function answer_sheet ($category_id=0, $test_id ) { 
-		$data['category_id'] 	= $category_id;
+	public function answer_sheet ($course_id=0, $test_id ) { 
+		$data['course_id'] 	= $course_id;
 		$data['test_id'] 		= $test_id;
 		
 		$data['test'] = $this->tests_model->view_tests ($test_id);

@@ -1,14 +1,14 @@
 <?php 
 if ($type == NOT_ENROLED_IN_TEST) { 
-	echo form_open('coaching/tests_actions/enrol_users/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id, array('class'=>'form-horizontal row-border', 'id'=>'enrol_users') ); 
+	echo form_open('coaching/tests_actions/enrol_users/'.$course_id.'/'.$test_id.'/'.$role_id.'/'.$class_id, array('class'=>'form-horizontal row-border', 'id'=>'enrol_users') ); 
 } else if ($type == ARCHIVED_IN_TEST) {
-	echo form_open('coaching/tests_actions/archive_users/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id, array('class'=>'form-horizontal row-border', 'id'=>'enrol_users') ); 	
+	echo form_open('coaching/tests_actions/archive_users/'.$course_id.'/'.$test_id.'/'.$role_id.'/'.$class_id, array('class'=>'form-horizontal row-border', 'id'=>'enrol_users') ); 	
 } else {
-	echo form_open('coaching/tests_actions/unenrol_users/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id, array('class'=>'form-horizontal row-border', 'id'=>'enrol_users') ); 		
+	echo form_open('coaching/tests_actions/unenrol_users/'.$course_id.'/'.$test_id.'/'.$role_id.'/'.$class_id, array('class'=>'form-horizontal row-border', 'id'=>'enrol_users') ); 		
 }
 ?>
-<input type="hidden" id="goto" value="<?php echo site_url ('tests/page/enrolments/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type); ?>" >
-<input type="hidden" id="confirm_goto" value="<?php echo site_url ('tests/page/enrolments/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type); ?>" >
+<input type="hidden" id="goto" value="<?php echo site_url ('tests/page/enrolments/'.$course_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type); ?>" >
+<input type="hidden" id="confirm_goto" value="<?php echo site_url ('tests/page/enrolments/'.$course_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type); ?>" >
 	<div class="row" id="enrolment_users">
 		<div class="col-md-12">
 			<div class="widget ">			
@@ -66,7 +66,7 @@ if ($type == NOT_ENROLED_IN_TEST) {
 										<?php } ?>
 										<td> 
 										<?php if ($type==ENROLED_IN_TEST) { ?>
-											<a href="javascript: void ()" onclick="show_confirm_ajax ('Un-enroll this user?', '<?php echo site_url ('coaching/tests_actions/unenrol_users/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$row_items['member_id']); ?>')"><i class="fa fa-trash"></i></a>
+											<a href="javascript: void ()" onclick="show_confirm_ajax ('Un-enroll this user?', '<?php echo site_url ('coaching/tests_actions/unenrol_users/'.$course_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$row_items['member_id']); ?>')"><i class="fa fa-trash"></i></a>
 										<?php } ?>
 										</td>
 									</tr>
