@@ -356,9 +356,9 @@ class Qb_model extends CI_Model {
 	}
 
 	/* QUESTION FUNCTIONS */
-	public function save_group ($coaching_id=0, $chapter_id=0, $question_id=0) {
+	public function save_group ($coaching_id=0, $course_id=0, $question_id=0) {
 		$marks 			= $this->input->post ('marks');
-		$category_id 	= 0;
+		$course_id 		= ($course_id==0)?null:$course_id;
 		$type 			= 0;
 		$time 			= 0;
 		$negmarks 		= 0;
@@ -371,7 +371,7 @@ class Qb_model extends CI_Model {
 					'time'					=>$time,
 					'negmarks'				=>$negmarks,
 					'chapter_id'			=>$chapter_id,
-					'category_id'			=>$category_id,
+					'course_id'				=>$course_id,
 					'question'				=>ascii_to_entities($this->input->post('question')),
 					'question_feedback'		=>'',
 					'answer_feedback'		=>'',

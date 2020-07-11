@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-lg-3">
+  <div class="col-lg-3">
     <div class="card card-default mb-2">
       <div class="card-header d-flex justify-content-center">
         <h4 class="card-title">Categories
@@ -28,7 +28,7 @@
       </div>
     </div>
   </div>
-	<div class="col-lg-9">
+  <div class="col-lg-9">
     <?php if (!empty($courses)): ?>
     <div class="card card-default border-bottom-0 mb-2">
       <div class="card-header d-flex justify-content-center">
@@ -89,5 +89,5 @@
       </div>
     </div>
     <?php endif;?>
-	</div>
+  </div>
 </div>

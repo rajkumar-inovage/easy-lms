@@ -88,4 +88,9 @@ class Courses_actions extends MX_Controller {
 			);
 		}
 	}
+	public function delete($coaching_id, $category_id, $course_id)	{		
+		$this->courses_model->delete_course ($course_id);
+		$this->message->set("Course deleted successfully", "success", TRUE);
+		redirect("coaching/courses/index/".$coaching_id.'/'.$category_id);
+	}
 }

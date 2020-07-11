@@ -14,12 +14,13 @@
 			<?php 
 			$i = 1;
 			if ( ! empty ($tests)) { 
-				foreach ($tests as $row) { 
+				foreach ($tests as $row) {
+					$courseId = isset($row['course_id'])?$row['course_id']:0;
 					?>
 					<tr>
 						<td><?php echo $i; ?>
 						<td>
-							<?php echo anchor('coaching/tests/manage/'.$coaching_id.'/'.$row['course_id'].'/'.$row['test_id'], $row['title'], array('title'=>'Plans', 'class'=>'btn-link')); ?><br>
+							<?php echo anchor('coaching/tests/manage/'.$coaching_id.'/'.$courseId.'/'.$row['test_id'], $row['title'], array('title'=>'Plans', 'class'=>'btn-link')); ?><br>
 							<?php echo $row['unique_test_id']; ?>
 						</td>
 						<td>
