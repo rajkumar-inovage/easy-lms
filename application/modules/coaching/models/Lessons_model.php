@@ -53,7 +53,8 @@ class Lessons_model extends CI_Model {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);
 		$this->db->where ('lesson_id', $lesson_id);
-		$this->db->where ('parent_id', 0);
+		$where = '(parent_id=0 OR parent_id="NULL")';
+		$this->db->where ($where);
 		$this->db->order_by ('position', 'ASC');
 		$sql = $this->db->get ('coaching_course_lesson_pages');
 		return $sql->result_array ();

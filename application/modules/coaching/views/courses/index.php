@@ -61,31 +61,8 @@
               <td><?php echo $course['created_by']; ?></td>
               <td><?php echo (intval($course['status']) === CATEGORY_STATUS_ACTIVE)? '<span class="badge badge-pill badge-success">Active</span>':'<span class="badge badge-pill badge-danger">Inactive</span>'; ?></td>
               <td>
-                <div class="d-flex justify-content-center">
-                  <a href="<?php echo site_url ('coaching/courses/edit/'.$coaching_id.'/'.$course['cat_id'].'/'.$course['course_id']); ?>" class="btn btn-primary p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center mr-1"><i class="fa fa-pencil-alt"></i></a>
-                  <a href="#" class="btn btn-danger p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center mr-1"><i class="fa fa-trash"></i></a>
-                  <div class="dropdown show h-100 d-flex align-items-center">
-                    <a class="btn btn-success dropdown-toggler p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fa fa-ellipsis-v">
-                      </i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                      <h6 class="dropdown-header">Manage</h6>
-                      <a class="dropdown-item" href="http://localhost/repos/easylms/coaching/virtual_class/index/1">
-                        <i class="fa fa-list">
-                        </i> Lessons
-                      </a>
-                      <a class="dropdown-item" href="http://localhost/repos/easylms/coaching/virtual_class/create_class/1">
-                        <i class="fa fa-plus-circle">
-                        </i> Classes
-                      </a>
-                      <a class="dropdown-item" href="http://localhost/repos/easylms/coaching/virtual_class/categories/1">
-                        <i class="fa fa-circle">
-                        </i> Tests
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                <a class="btn btn-info btn-sm" href="<?php echo site_url ('coaching/courses/manage/'.$coaching_id.'/'.$course['course_id']); ?>"><i class="fa fa-cog"></i> Manage
+                </a>               
               </td>
             </tr>
             <?php

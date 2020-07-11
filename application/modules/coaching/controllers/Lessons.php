@@ -2,11 +2,18 @@
 
 class Lessons extends MX_Controller {
 
+	var $toolbar_buttons = [];
+
 	public function __construct() {
 		// Load Config and Model files required throughout Users sub-module
 		$config = ['config_coaching', 'config_course'];
 		$models = ['coaching_model', 'courses_model', 'lessons_model'];
 		$this->common_model->autoload_resources ($config, $models);
+
+		// Toolbar
+	    $cid = $this->uri->segment (4);
+        $this->toolbar_buttons['<i class="fa fa-book"></i> All Courses']= 'coaching/courses/index/'.$cid;
+        $this->toolbar_buttons['<i class="fa fa-plus-circle"></i> New Course']= 'coaching/courses/create_course/'.$cid;
 	}
 
 	public function index ($coaching_id=0, $course_id=0) {
@@ -18,6 +25,9 @@ class Lessons extends MX_Controller {
 		$data['lessons'] = $this->lessons_model->get_lessons ($coaching_id, $course_id, $status);
 		$data['data']	= $data;
 		$data['page_title'] = 'Lessons';
+
+		/* --==// Toolbar //==-- */
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('lessons/index', $data);
@@ -31,8 +41,12 @@ class Lessons extends MX_Controller {
 		$data['course_id'] = $course_id;
 		$data['lesson_id'] = $lesson_id;
 
+		/* --==// Toolbar //==-- */
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+
 		$data['lesson'] = $this->lessons_model->get_lesson ($coaching_id, $course_id, $lesson_id);
 		$data['script'] = $this->load->view ("lessons/scripts/create", $data, true);
+
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('lessons/create', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
@@ -46,7 +60,7 @@ class Lessons extends MX_Controller {
 		$data['course_id'] = $course_id;
 		$data['lesson_id'] = $lesson_id;
 
-		$data['pages'] = $this->lessons_model->get_top_pages ($coaching_id, $course_id, $lesson_id);
+		$data['pages'] = $this->lessons_model->get_all_pages ($coaching_id, $course_id, $lesson_id);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view("lessons/pages", $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
