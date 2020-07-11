@@ -48,7 +48,9 @@
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($courses as $course): ?>
+            <?php foreach ($courses as $course): 
+              $category_id = isset($course['cat_id']) ? $course['cat_id'] : $cat_id;
+            ?>
             <tr>
               <th scope="row" class="text-left"><?php echo $course['title']; ?></th>
               <td><span><?php echo date('j<\s\up>S</\s\up> F, Y', $course['created_on']); ?></span></td>
@@ -56,11 +58,11 @@
               <td><?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? '<span class="badge badge-pill badge-success">Active</span>' : '<span class="badge badge-pill badge-danger">Inactive</span>'; ?></td>
               <td>
                 <a class="btn btn-info btn-sm" href="<?php echo site_url ('coaching/courses/manage/'.$coaching_id.'/'.$course['course_id']); ?>"><i class="fa fa-cog"></i> Manage
-                </a>               
+                </a>
                 <div class="d-flex justify-content-center d-none">
-                  <a href="<?php echo site_url('coaching/courses/edit/' . $coaching_id . '/' . $course['cat_id'] . '/' . $course['course_id']); ?>" class="btn btn-primary p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center mr-1" title="Edit"><i class="fa fa-pencil-alt"></i></a>
+                  <a href="<?php echo site_url('coaching/courses/edit/' . $coaching_id . '/' . $category_id . '/' . $course['course_id']); ?>" class="btn btn-primary p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center mr-1" title="Edit"><i class="fa fa-pencil-alt"></i></a>
                   <a href="#" class="btn btn-info p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center mr-1" title="Set Inactive"><i class="fa fa-exchange-alt"></i></a>
-                  <a href="#" class="btn btn-danger p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center mr-1" title="Move to Trash"><i class="fa fa-trash"></i></a>
+                  <a class="btn btn-danger p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center mr-1" title="Delete Course" href="javascript:void(0)" onclick="javascript:show_confirm ('All the content related to this course will be lost. Are you sure you want to delete this course?', '<?php echo site_url('coaching/courses_actions/delete/'.$coaching_id.'/'.$category_id.'/'.$course['course_id']); ?>');" ><i class="fa fa-trash"></i></a>
                   <div class="dropdown show h-100 d-flex align-items-center">
                     <a class="btn btn-success dropdown-toggler p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center" title="More Options" href="javascript:void(0);" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fa fa-ellipsis-v">
