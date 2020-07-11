@@ -2,13 +2,13 @@
 	<div class="col-md-12">
 		<ul class="nav nav-tabs" id="users" role="tablist">
 		  <li class="nav-item">
-			<a class="nav-link <?php if ($type==ENROLED_IN_TEST) echo 'active'; ?>" href="<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.ENROLED_IN_TEST.'/'.$role_id.'/'.$class_id.'/'.$batch_id ) ?>" >Enroled <span class="badge badge-primary"><?php echo $num_enroled; ?></span></a>
+			<a class="nav-link <?php if ($type==ENROLED_IN_TEST) echo 'active'; ?>" href="<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.ENROLED_IN_TEST.'/'.$role_id.'/'.$class_id.'/'.$batch_id ) ?>" >Enroled <span class="badge badge-primary"><?php echo $num_enroled; ?></span></a>
 		  </li>
 		  <li class="nav-item">
-			<a class="nav-link <?php if ($type==NOT_ENROLED_IN_TEST) echo 'active'; ?>" href="<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.NOT_ENROLED_IN_TEST.'/'.$role_id.'/'.$class_id.'/'.$batch_id ) ?>" >Not Enroled <span class="badge badge-primary"><?php echo $num_not_enroled; ?></span></a>
+			<a class="nav-link <?php if ($type==NOT_ENROLED_IN_TEST) echo 'active'; ?>" href="<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.NOT_ENROLED_IN_TEST.'/'.$role_id.'/'.$class_id.'/'.$batch_id ) ?>" >Not Enroled <span class="badge badge-primary"><?php echo $num_not_enroled; ?></span></a>
 		  </li>
 		  <li class="nav-item">
-			<a class="nav-link <?php if ($type==ARCHIVED_IN_TEST) echo 'active'; ?>" href="<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.ARCHIVED_IN_TEST.'/'.$role_id.'/'.$class_id.'/'.$batch_id ) ?>" >Archived <span class="badge badge-primary"><?php echo $num_archived; ?></span></a>
+			<a class="nav-link <?php if ($type==ARCHIVED_IN_TEST) echo 'active'; ?>" href="<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.ARCHIVED_IN_TEST.'/'.$role_id.'/'.$class_id.'/'.$batch_id ) ?>" >Archived <span class="badge badge-primary"><?php echo $num_archived; ?></span></a>
 		  </li>
 		</ul>
 	</div>

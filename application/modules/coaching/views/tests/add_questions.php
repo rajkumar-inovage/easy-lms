@@ -1,4 +1,4 @@
-<?php echo form_open ('coaching/tests_actions/save_test_questions/'.$category_id.'/'.$test_id.'/'.$lesson_id.'/'.$cat_ids.'/'.$diff_ids.'/'.$exclude, array('class'=>'form-horizontal', 'id'=>'validate-1'));	?> 
+<?php echo form_open ('coaching/tests_actions/save_test_questions/'.$course_id.'/'.$test_id.'/'.$lesson_id.'/'.$cat_ids.'/'.$diff_ids.'/'.$exclude, array('class'=>'form-horizontal', 'id'=>'validate-1'));	?> 
 	<div class="row">	
 		
 		<div class="col-md-3">
@@ -164,7 +164,7 @@ function show_questions (id) {
 	//	});
 	
 	var num_questions = 0;
-	var pageURL = '<?php echo site_url ('coaching/tests_actions/question_db/'.$category_id.'/'.$test_id); ?>/'+str_selected+'/'+allCats+'/'+allDiffs+'/'+exclude+'/'+num_questions;	
+	var pageURL = '<?php echo site_url ('coaching/tests_actions/question_db/'.$course_id.'/'.$test_id); ?>/'+str_selected+'/'+allCats+'/'+allDiffs+'/'+exclude+'/'+num_questions;	
 
 	$.ajax ({ 
 		beforeSend: function() {

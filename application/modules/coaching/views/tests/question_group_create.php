@@ -3,7 +3,7 @@
 	<div class="col-md-12">
 		<div class="card card-default">			
 			<div class="card-body">
-				<?php echo form_open('coaching/tests_actions/validate_question_group_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$question_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1')); ?>
+				<?php echo form_open('coaching/tests_actions/validate_question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$question_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1')); ?>
 					
 					<div class="form-group">
 						<?php echo form_label('Question Group Title<span class="required">*</span>', '', array('class'=>' control-label'));	?>

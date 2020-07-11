@@ -3,7 +3,7 @@
 		<div class="card">
 			
 			<div class="card-body">
-				<?php echo form_open('coaching/tests_actions/create_test/'.$coaching_id.'/'.$category_id.'/'.$test_id, array('class'=>'form-horizontal row-border', 'class'=>'validate-form')); ?>		
+				<?php echo form_open('coaching/tests_actions/create_test/'.$coaching_id.'/'.$course_id.'/'.$test_id, array('class'=>'form-horizontal row-border', 'class'=>'validate-form')); ?>		
 					
 					<div class="form-group">
 						<?php echo form_label('Title<span class="required">*</span>', '', array('class'=>'control-label')); ?>
@@ -13,13 +13,13 @@
 					<div class="form-group row">
 						<div class="col-md-6">
 							<?php echo form_label('Category', '', array('class'=>'control-label')); ?>
-							<select class="form-control required " name="category">
-								<option value="0" <?php if ($category_id==0) echo 'selected="selected"'; ?>>Uncategorized</option>
+							<select class="form-control required " name="course">
+								<option value="0" <?php if ($course_id==0) echo 'selected="selected"'; ?>>Uncategorized</option>
 								<?php 
-								if (! empty($categories)) {
-									foreach ($categories as $cat) {
+								if (! empty($courses)) {
+									foreach ($courses as $course) {
 										?>
-										<option value="<?php echo $cat['id']; ?>" <?php if ($category_id == $cat['id']) echo 'selected="selected"'; ?> ><?php echo $cat['title']; ?></option>
+										<option value="<?php echo $course['course_id']; ?>" <?php if ($course_id == $course['course_id']) echo 'selected="selected"'; ?> ><?php echo $course['title']; ?></option>
 										<?php
 									}
 								}

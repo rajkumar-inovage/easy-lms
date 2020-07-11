@@ -2,7 +2,7 @@
 	<div class="col-md-9">
 		<div class="card card-default">
 			<div class="card-body">
-				<?php echo form_open('plans/functions/create_category/'.$category_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1')); ?>
+				<?php echo form_open('plans/functions/create_category/'.$course_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1')); ?>
 					<div class="form-group row">
 						<?php echo form_label('Title<span class="required">*</span>', '', array('class'=>'col-md-2 control-label')); ?>
 						<div class="col-md-9">

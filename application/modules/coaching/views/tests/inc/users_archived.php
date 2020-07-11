@@ -1,4 +1,4 @@
-<?php echo form_open('coaching/tests_actions/unenrol_users/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type.'/'.$batch_id.'/'.$status, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') ); ?>
+<?php echo form_open('coaching/tests_actions/unenrol_users/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type.'/'.$batch_id.'/'.$status, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') ); ?>
 	<div class="card card-default">
 		<div class="card-body table-responsive">
 			<table class="table table-bordered table-hover table-checkable datatable mb-0">
@@ -30,7 +30,7 @@
 								<?php echo $row['adm_no']; ?>
 							</td>
 							<td> 
-								<a href="javascript: void ()" onclick="show_confirm ('Un-enroll this user?', '<?php echo site_url ('tests/ajax_func/unenrol_user/'.$category_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type.'/'.$batch_id.'/'.$status.'/'.$row['member_id'].'/1'); ?>')"><i class="fa fa-trash"></i></a>
+								<a href="javascript: void ()" onclick="show_confirm ('Un-enroll this user?', '<?php echo site_url ('tests/ajax_func/unenrol_user/'.$course_id.'/'.$test_id.'/'.$role_id.'/'.$class_id.'/'.$type.'/'.$batch_id.'/'.$status.'/'.$row['member_id'].'/1'); ?>')"><i class="fa fa-trash"></i></a>
 							</td>
 						</tr>
 						<?php 
@@ -54,7 +54,7 @@
 					<strong>With Selected</strong>
 				</div>
 				<div class="media-left pr-0">
-					<?php //echo anchor ('tests/admin/manage/'.$category_id.'/'.$test_id, '<i class="fa fa-arrow-left"></i> Cancel', array ('class'=>'btn') ); ?>
+					<?php //echo anchor ('tests/admin/manage/'.$course_id.'/'.$test_id, '<i class="fa fa-arrow-left"></i> Cancel', array ('class'=>'btn') ); ?>
 					<a id="set_enrolment" class="btn btn-info d-none"  href="javascript: void ()" disabled>Set Enrollment Period <i class="fa fa-arrow-right"></i> </a>
 					<select name="actions" class="form-control">
 						<option value="">Select an action</option>

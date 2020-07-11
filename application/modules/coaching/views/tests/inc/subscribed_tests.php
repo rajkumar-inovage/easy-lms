@@ -61,7 +61,7 @@
 									if ( ! empty($attempts)) {
 										echo anchor ('tests/reports/all_reports/0/'.$member_id.'/'.$row['test_id'], 'Report', array ('class'=>'btn btn-info btn-sm ')); 
 									}
-									$bc = 'tests-page-subscribed_tests-'.$category_id;
+									$bc = 'tests-page-subscribed_tests-'.$course_id;
 									/*
 									 | Get all chapters of the questions in this test
 									*/

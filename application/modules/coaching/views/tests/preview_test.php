@@ -2,7 +2,7 @@
 	<div class="col-md-12">
 		<?php 
 		if ( ! empty ($results) ) {
-		  echo form_open('coaching/tests_actions/remove_questions/'.$category_id.'/'.$test_id, array('class'=>'form-horizontol', 'id'=>'validate-1') );
+		  echo form_open('coaching/tests_actions/remove_questions/'.$course_id.'/'.$test_id, array('class'=>'form-horizontol', 'id'=>'validate-1') );
 			$num_parent = 1;
 			foreach ( $results as $parent_id=>$all_questions) {
 				$parent 	= $all_questions['parent'];
@@ -21,7 +21,7 @@
 						  <div class="">
 							<?php
 								if ( $test['finalized'] == 0) {
-									echo anchor ('coaching/tests/question_group_edit/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id, $parent['question']);
+									echo anchor ('coaching/tests/question_group_edit/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id, $parent['question']);
 								} else {
 									echo $parent['question'];
 								}
@@ -50,7 +50,7 @@
 									<div class="media-body">
 										<?php 
 										if ( $test['finalized'] == 0) {
-											echo anchor ('coaching/tests/question_edit/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$id, $row['question']);
+											echo anchor ('coaching/tests/question_edit/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$id, $row['question']);
 										} else {
 											echo $row['question'];
 										}
@@ -80,7 +80,7 @@
 							?>
 							<input type="submit" name="delete" value=" Delete " class="btn btn-sm btn-danger">
 							<?php							
-							echo anchor ('coaching/tests/question_create/'.$coaching_id.'/'.$category_id.'/'.$test_id.'/'.$parent_id, '<i class="fa fa-plus"></i> Add Question', array('class'=>'btn btn-info btn-sm ')); 
+							echo anchor ('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id, '<i class="fa fa-plus"></i> Add Question', array('class'=>'btn btn-info btn-sm ')); 
 						}
 						?>
 					</div>
@@ -113,7 +113,7 @@
 		<?php } else { ?>
 			<div class="alert alert-danger">
 				<strong> <?php echo 'No questions found in test'; ?></strong>
-				<p>You can <?php echo anchor('coaching/tests/question_group_create/'.$coaching_id.'/'.$category_id.'/'.$test_id, 'Create Questions', array ('class'=>'btn btn-sm btn-primary') ); ?>  <?php // echo anchor('coaching/tests/upload_test_questions/'.$coaching_id.'/'.$category_id.'/'.$test_id, 'Upload Questions', array ('class'=>'btn btn-sm btn-secondary') ); ?> in this test.
+				<p>You can <?php echo anchor('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id, 'Create Questions', array ('class'=>'btn btn-sm btn-primary') ); ?>  <?php // echo anchor('coaching/tests/upload_test_questions/'.$coaching_id.'/'.$course_id.'/'.$test_id, 'Upload Questions', array ('class'=>'btn btn-sm btn-secondary') ); ?> in this test.
 				</p>
 			</div>
 			<?php 

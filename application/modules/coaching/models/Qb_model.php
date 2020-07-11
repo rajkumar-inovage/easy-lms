@@ -479,7 +479,7 @@ class Qb_model extends CI_Model {
 
 		$data = array (
 					'coaching_id'		=>$coaching_id,
-					'category_id'		=>$this->input->post('category'), 
+					'course_id'		=>$this->input->post('course_id'), 
 					'clsf_id' 			=>$this->input->post('classification'),
 					'diff_id' 			=>$this->input->post('difficulty'),
 					'lang_id' 			=>$this->input->post('language'),

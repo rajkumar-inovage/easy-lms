@@ -19,7 +19,7 @@
 					<tr>
 						<td><?php echo $i; ?>
 						<td>
-							<?php echo anchor('coaching/tests/manage/'.$coaching_id.'/'.$row['category_id'].'/'.$row['test_id'], $row['title'], array('title'=>'Plans', 'class'=>'btn-link')); ?><br>
+							<?php echo anchor('coaching/tests/manage/'.$coaching_id.'/'.$row['course_id'].'/'.$row['test_id'], $row['title'], array('title'=>'Plans', 'class'=>'btn-link')); ?><br>
 							<?php echo $row['unique_test_id']; ?>
 						</td>
 						<td>
@@ -51,7 +51,7 @@
 						<div>
 							<span class="text-danger">No tests found</span>									
 						</div>
-						<?php echo anchor ('coaching/tests/create_test/'.$coaching_id.'/'.$category_id, 'Create Test'); ?>
+						<?php echo anchor ('coaching/tests/create_test/'.$coaching_id.'/'.$course_id, 'Create Test'); ?>
 					</td>
 				</tr>
 				<?php

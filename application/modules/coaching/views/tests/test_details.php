@@ -5,7 +5,7 @@
 				<h4><i class="fa fa-puzzle-piece"></i> <?php echo 'Test Details'; ?></h4>
 			</div>
 			<div class="widget-content">  
-				<?php echo form_open('tests/page/create_test/'.$category_id.'/'.$test_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1')); ?>					
+				<?php echo form_open('tests/page/create_test/'.$course_id.'/'.$test_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1')); ?>					
 					
 					<div class="form-group hidden">
 						<?php echo form_label('Test Id ', '', array('class'=>'col-md-3 control-label')); ?>
