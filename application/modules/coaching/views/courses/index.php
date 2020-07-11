@@ -55,7 +55,9 @@
               <td><?php echo $course['created_by']; ?></td>
               <td><?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? '<span class="badge badge-pill badge-success">Active</span>' : '<span class="badge badge-pill badge-danger">Inactive</span>'; ?></td>
               <td>
-                <div class="d-flex justify-content-center">
+                <a class="btn btn-info btn-sm" href="<?php echo site_url ('coaching/courses/manage/'.$coaching_id.'/'.$course['course_id']); ?>"><i class="fa fa-cog"></i> Manage
+                </a>               
+                <div class="d-flex justify-content-center d-none">
                   <a href="<?php echo site_url('coaching/courses/edit/' . $coaching_id . '/' . $course['cat_id'] . '/' . $course['course_id']); ?>" class="btn btn-primary p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center mr-1" title="Edit"><i class="fa fa-pencil-alt"></i></a>
                   <a href="#" class="btn btn-info p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center mr-1" title="Set Inactive"><i class="fa fa-exchange-alt"></i></a>
                   <a href="#" class="btn btn-danger p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center mr-1" title="Move to Trash"><i class="fa fa-trash"></i></a>

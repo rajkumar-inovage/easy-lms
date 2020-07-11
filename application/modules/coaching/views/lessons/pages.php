@@ -1,4 +1,4 @@
-<div class="card card-default mb-4">
+<div class="card mb-4">
 
 	<ul class="list-group" >
 		<?php 
@@ -13,9 +13,7 @@
 							<?php echo $row['title']; ?>
 						</a>
 						<div class="collapse" id="page<?php echo $row['page_id']; ?>">
-						  <div class="card card-body">
 						    page<?php echo $row['page_id']; ?>
-						  </div>
 						</div>
 						<?php 
 						?>
@@ -35,14 +33,14 @@
 			} 
 		} else {
 			?>
-			<li class="list-group-item media">
-				<div class="media-body" >
-					<span class="text-danger">No page found</span>
-					<?php echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id, 'Add Page'); ?>
-				</div>
+			<li class="list-group-item ">
+				<span class="text-danger">No page found</span>
 			</li>
 			<?php
 		}
 		?>
 	</ul>
+	<div class="card-footer">
+		<?php echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id, 'Add Page', ['class'=>'btn btn-success']); ?>
+	</div>
 </div>

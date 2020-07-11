@@ -14,7 +14,16 @@
 		<div class="form-group">
 			<label for="price">Status</label>
 			<div class="custom-control custom-switch">
-				<input type="checkbox" class="custom-control-input" name="status" id="status" value="1" <?php if ($page['status'] == 1) echo 'checked'; ?> >
+				<?php
+				if ($page_id == 0) {
+					$checked = 'checked';
+				} else if ($page_id > 0 && $page['status'] == 1) {
+					$checked = 'checked';
+				} else {
+					$checked = '';
+				}
+				?>
+				<input type="checkbox" class="custom-control-input" name="status" id="status" value="1" <?php echo $checked; ?> >
 				<label class="custom-control-label" for="status">Publish</label>
 			</div>
 		</div>
@@ -29,24 +38,36 @@
 				foreach ($attachments as $att) {
 					?>
 					<li class="list-group-item media">
-						<div class="media-body">
-							<?php echo $att['title']; ?><br>
-							<a href="<?php echo $att['att_url']; ?>"><?php echo $att['att_url']; ?></a>
+						<div class="media-body">							
+							<a href="<?php echo $att['att_url']; ?>"><?php echo $att['title']; ?></a>
 						</div>
 						<div class="media-right">
+							<?php
+							$msg = 'Delete this attachment?';
+							$url = site_url ('coaching/lesson_actions/delete_attachment/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$page_id.'/'.$att['att_id'].'/'.$att['att_type']);
+							?>
+							<a href="javascript: void ()" onclick="show_confirm ('<?php echo $msg; ?>', '<?php echo $url; ?>')"><i class="fa fa-trash"></i></a>
 						</div>
 					</li>
 					<?php
 				}
+			} else {
+				?>
+				<li class="list-unstyled text-danger">None</li>
+				<?php
 			}
 			?>
 		</ul>
 		<hr>
 
 		<!-- Button trigger modal -->
-		<button type="button" class="btn btn-link" data-toggle="modal" data-target="#add_attachment">
-		  Add Attachment
-		</button>
+		<?php if ($page_id > 0) { ?>
+			<button type="button" class="btn btn-link" data-toggle="modal" data-target="#add_attachment">
+			  Add Attachment
+			</button>
+		<?php } else { ?>
+			<button type="button" class="btn btn-link" data-toggle="" disabled="">Add Attachment</button>
+		<?php } ?>
 
 	</div>
 

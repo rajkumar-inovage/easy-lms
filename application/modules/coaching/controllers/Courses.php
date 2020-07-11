@@ -64,4 +64,18 @@ class Courses extends MX_Controller {
 		$this->load->view('courses/create_cat', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
+
+	public function manage ($coaching_id=0, $course_id=0) {
+		$data['page_title'] = 'Manage Course';
+
+		$data['num_lessons'] = $this->courses_model->count_course_lessons ($coaching_id, $course_id);
+		$data['num_tests'] = $this->courses_model->count_course_tests ($coaching_id, $course_id);
+
+		$data['coaching_id'] = $coaching_id;
+		$data['course_id'] = $course_id;
+		
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('courses/manage', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
+	}
 }
