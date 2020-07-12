@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-lg-3">
+  <div class="col-lg-3">
     <div class="card card-default mb-2">
       <div class="card-header d-flex justify-content-center">
         <h4 class="card-title">Categories
@@ -28,7 +28,7 @@
       </div>
     </div>
   </div>
-	<div class="col-lg-9">
+  <div class="col-lg-9">
     <?php if (!empty($courses)): ?>
     <div class="card card-default border-bottom-0 mb-2">
       <div class="card-header d-flex justify-content-center">
@@ -48,7 +48,9 @@
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($courses as $course): ?>
+            <?php foreach ($courses as $course): 
+              $category_id = isset($course['cat_id']) ? $course['cat_id'] : $cat_id;
+            ?>
             <tr>
               <th scope="row" class="text-left"><?php echo $course['title']; ?></th>
               <td><span><?php echo date('j<\s\up>S</\s\up> F, Y', $course['created_on']); ?></span></td>
@@ -56,8 +58,7 @@
               <td><?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? '<span class="badge badge-pill badge-success">Active</span>' : '<span class="badge badge-pill badge-danger">Inactive</span>'; ?></td>
               <td>
                 <a class="btn btn-info btn-sm" href="<?php echo site_url ('coaching/courses/manage/'.$coaching_id.'/'.$course['course_id']); ?>"><i class="fa fa-cog"></i> Manage
-                </a>               
-                
+                </a>
               </td>
             </tr>
             <?php endforeach;?>
@@ -66,5 +67,5 @@
       </div>
     </div>
     <?php endif;?>
-	</div>
+  </div>
 </div>

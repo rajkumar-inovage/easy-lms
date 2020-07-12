@@ -1,4 +1,3 @@
-
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 class Tests_model extends CI_Model {	
@@ -7,6 +6,36 @@ class Tests_model extends CI_Model {
 		parent::__construct();
 	} 
 	
+	public function generate_reference_id ($coaching_id=0, $course_id=0, $test_id=0) {
+		$prefix = array ();
+		$ref_prefix	= $this->common_model->get_sys_parameters (SYS_TST_ID_PREFIX);
+		foreach ($ref_prefix as $row) {
+			$prefix[] = $row['paramkey'];
+		}
+		
+		if ($test_id > 0) {
+			// This means member record is already inserted and the primary key is passed as member_id
+			$num = $test_id;
+		} else {
+			// Member record is not yet inserted, show a 
+			$this->db->select_max ('test_id');
+			$sql = $this->db->get ('coaching_tests');
+			if ($sql->num_rows () > 0) {
+				$row = $sql->row_array ();
+				$id = $row['test_id'];
+			} else { 
+				$id = 0;
+			}
+			$num = $id+1;
+		}
+		$suffix = str_pad($coaching_id, 3, "0", STR_PAD_LEFT);
+		$suffix .= str_pad($course_id, 3, "0", STR_PAD_LEFT);
+		$suffix .= str_pad($num, 3, "0", STR_PAD_LEFT);
+
+		$ref_id = implode ('', $prefix);
+		$ref_id = $ref_id . $suffix;
+		return $ref_id;
+	}
 	
 	/* Test Plan Categories */
 	public function test_categories ($coaching_id=0, $plan_id=0, $status='-1') {
@@ -168,7 +197,8 @@ class Tests_model extends CI_Model {
 				'time_min'	      	=>$this->input->post('time_min'),
 				'max_marks'  	  	=>0, 
 				'pass_marks'      	=>$this->input->post('pass_marks'),
-				'course_id'      	=>$this->input->post('course'),
+				'course_id'      	=>($this->input->post('course')==0)? null : $this->input->post('course'),
+				'unique_test_id' 	=> $this->generate_reference_id($coaching_id, $course_id, $tid),
 				'test_mode'      	=>$test_mode,
 				'test_type'      	=>$test_type,
             );

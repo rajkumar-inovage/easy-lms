@@ -478,7 +478,7 @@ class Tests_actions extends MX_Controller {
 		//$this->form_validation->set_rules('negmarks', 'Negative Marks', 'is_natural|trim|max_length[2]');
 		
 		if (($this->form_validation->run() == true))  {
-			$id = $this->qb_model->save_group ($coaching_id, 0, $question_id);
+			$id = $this->qb_model->save_group ($coaching_id, $course_id, $question_id);
 			$this->message->set ("Question heading created. Now add questions to it", 'success', true);
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>true, 'message'=>'Question created successfully', 'redirect'=>site_url('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$id) )));

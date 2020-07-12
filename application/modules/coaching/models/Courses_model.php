@@ -11,7 +11,6 @@ class Courses_model extends CI_Model {
 		$sql = $this->db->get('coaching_course_category');
 		return $sql->result_array();
 	}
-
 	public function courses($coaching_id, $cat_id, $status = CATEGORY_STATUS_ACTIVE){
 		$this->db->where('coaching_id', $coaching_id);
 		if($cat_id>0){
@@ -26,19 +25,16 @@ class Courses_model extends CI_Model {
 		}
 		return $courses;
 	}
-
 	public function get_course_category_by_id($category_id) {
 		$this->db->where('cat_id', $category_id);
 		$sql = $this->db->get('coaching_course_category');
 		return $sql->row_array();
 	}
-
 	public function get_course_by_id($course_id) {
 		$this->db->where('course_id', $course_id);
 		$sql = $this->db->get('coaching_courses');
 		return $sql->row_array();
 	}
-
 	public function add_course_category($coaching_id, $category_id, $status = CATEGORY_STATUS_ACTIVE) {
 		$data['title'] = $this->input->post('title');
 		$data['status'] = $status;
@@ -56,7 +52,6 @@ class Courses_model extends CI_Model {
 		}
 		return $category_id;
 	}
-
 	public function add_course($coaching_id, $category_id, $course_id, $status = CATEGORY_STATUS_ACTIVE) {
 		$data['title'] = $this->input->post('title');
 		$data['description'] = $this->input->post('description');
@@ -86,19 +81,20 @@ class Courses_model extends CI_Model {
 		}
 		return $returnValue;
 	}
-
+	public function delete_course ($course_id) {
+		$this->db->where ('course_id', $course_id);		
+		$this->db->delete('coaching_courses');	
+	}
 	public function count_course_lessons ($coaching_id=0, $course_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);
 		$sql = $this->db->get ('coaching_course_lessons');
 		return $sql->num_rows ();
 	}
-
 	public function count_course_tests ($coaching_id=0, $course_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);
 		$sql = $this->db->get ('coaching_tests');
 		return $sql->num_rows ();
 	}
-
 }

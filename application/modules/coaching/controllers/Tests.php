@@ -163,7 +163,7 @@ class Tests extends MX_Controller {
 		$data['test'] 		 = $test;
 		
 		/* Breadcrumbs */
-		$data['bc'] = array ('Tests'=>'coaching/tests/index/'.$coaching_id);
+		$data['bc'] = array ('Tests'=>'coaching/tests/index/'.$coaching_id.'/'.$course_id);
 		
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
 		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);

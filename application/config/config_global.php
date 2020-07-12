@@ -71,6 +71,7 @@ define ('USER_LEVEL_COACHING_STUDENT', 		5);
 define ('SYS_USER_STATUS', 					'USER_STATUS');
 define ('SYS_STUDENT_LEVELS', 				'STUDENT_CATEGORY_LEVEL');
 define ('SYS_REF_ID_PREFIX', 				'REF_ID_PREFIX');
+define ('SYS_TST_ID_PREFIX', 				'TST_ID_PREFIX');
 
 define ('SORT_ALPHA_ASC', 					1);
 define ('SORT_ALPHA_DESC', 					2);
