@@ -5,7 +5,7 @@ class Courses extends MX_Controller {
 	public function __construct() {
 		// Load Config and Model files required throughout Users sub-module
 		$config = ['config_coaching', 'config_course'];
-		$models = ['coaching_model', 'courses_model', 'users_model'];
+		$models = ['coaching_model', 'courses_model', 'lessons_model', 'users_model'];
 		$this->common_model->autoload_resources($config, $models);
 	}
 
@@ -78,4 +78,43 @@ class Courses extends MX_Controller {
 		$this->load->view('courses/manage', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
+
+	public function preview ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
+
+		$data['page_title'] = 'Preview';
+		$data['coaching_id'] = $coaching_id;
+		$data['course_id'] = $course_id;
+		$data['lesson_id'] = $lesson_id;
+		$data['page_id'] = $page_id;
+
+		$data['lessons'] = $this->lessons_model->get_lessons ($coaching_id, $course_id);
+		$data['pages'] = $this->lessons_model->get_all_pages ($coaching_id, $course_id, $lesson_id);
+		
+		if ($lesson_id > 0) {
+			$data['lesson'] = $this->lessons_model->get_lesson ($coaching_id, $course_id, $lesson_id);
+		} else {
+			$data['lesson'] = false;
+		}
+
+		if ($page_id > 0) {
+			$data['page'] = $this->lessons_model->get_page ($coaching_id, $course_id, $lesson_id, $page_id);
+			$data['attachments'] = $this->lessons_model->get_attachments ($coaching_id, $course_id, $lesson_id, $page_id);
+		} else {
+			$data['page'] = false;
+			$data['attachments'] = false;
+		}
+
+		/* --==// Back //==-- */
+		if ($lesson_id > 0) {
+			$data['bc'] = ['Preview'=>'coaching/courses/preview/'.$coaching_id.'/'.$course_id];
+		} else {
+			$data['bc'] = ['Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id];
+		}
+
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view("courses/preview", $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
+
+	}
+
 }

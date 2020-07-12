@@ -38,8 +38,19 @@
 				foreach ($attachments as $att) {
 					?>
 					<li class="list-group-item media">
-						<div class="media-body">							
-							<a href="<?php echo $att['att_url']; ?>"><?php echo $att['title']; ?></a>
+						<div class="media-body">
+							<a href="<?php echo $att['att_url']; ?>" target="_blank"><?php echo $att['title']; ?></a>
+						</div>
+						<div class="media-right">
+							<?php
+							if ($att['att_type'] == LESSON_ATT_YOUTUBE) { 
+								echo '<span class="badge badge-danger">Youtube</span>';
+							} else if ($att['att_type'] == LESSON_ATT_EXTERNAL) { 
+								echo '<span class="badge badge-info">External link</span>';
+							} else {
+								echo '<span class="badge badge-info">File</span>';
+							}
+							?>
 						</div>
 						<div class="media-right">
 							<?php
@@ -89,7 +100,7 @@
 	        </button>
 	      </div>
 	      <div class="modal-body">
-	
+			<input type="hidden" name="page_id" value="<?php echo $page_id; ?>">
 			<div class="form-group">
 				<label for="youtube">Attachment Title</label>
 				<input type="text" class="form-control" name="att_title" placeholder="Resource Title">

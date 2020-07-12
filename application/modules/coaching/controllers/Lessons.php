@@ -29,6 +29,9 @@ class Lessons extends MX_Controller {
 		/* --==// Toolbar //==-- */
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
+		/* --==// Back //==-- */
+		$data['bc'] = ['Pages'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id];
+
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('lessons/index', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
@@ -43,6 +46,9 @@ class Lessons extends MX_Controller {
 
 		/* --==// Toolbar //==-- */
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
+
+		/* --==// Back //==-- */
+		$data['bc'] = ['Lessons'=>'coaching/lessons/index/'.$coaching_id.'/'.$course_id];
 
 		$data['lesson'] = $this->lessons_model->get_lesson ($coaching_id, $course_id, $lesson_id);
 		$data['script'] = $this->load->view ("lessons/scripts/create", $data, true);
@@ -60,7 +66,12 @@ class Lessons extends MX_Controller {
 		$data['course_id'] = $course_id;
 		$data['lesson_id'] = $lesson_id;
 
+		/* --==// Back //==-- */
+		$data['bc'] = ['Lessons'=>'coaching/lessons/index/'.$coaching_id.'/'.$course_id];
+
+		$data['lesson'] = $this->lessons_model->get_lesson ($coaching_id, $course_id, $lesson_id);
 		$data['pages'] = $this->lessons_model->get_all_pages ($coaching_id, $course_id, $lesson_id);
+
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view("lessons/pages", $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
@@ -77,10 +88,34 @@ class Lessons extends MX_Controller {
 		$data['page'] = $this->lessons_model->get_page ($coaching_id, $course_id, $lesson_id, $page_id);
 		$data['attachments'] = $this->lessons_model->get_attachments ($coaching_id, $course_id, $lesson_id, $page_id);
 		
+		/* --==// Back //==-- */
+		$data['bc'] = ['Pages'=>'coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$lesson_id];
+
 		$data['script'] = $this->load->view ("lessons/scripts/add_page", $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view("lessons/add_page", $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 
+	public function preview ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
+		$data['page_title'] = 'Preview';
+		$data['coaching_id'] = $coaching_id;
+		$data['course_id'] = $course_id;
+		$data['lesson_id'] = $lesson_id;
+		$data['page_id'] = $page_id;
+
+		$data['lessons'] = $this->lessons_model->get_lessons ($coaching_id, $course_id);
+		$data['pages'] = $this->lessons_model->get_pages ($coaching_id, $course_id, $lesson_id);
+		$data['page'] = $this->lessons_model->get_page ($coaching_id, $course_id, $lesson_id, $page_id);
+		$data['attachments'] = $this->lessons_model->get_attachments ($coaching_id, $course_id, $lesson_id, $page_id);
+		
+		/* --==// Back //==-- */
+		$data['bc'] = ['Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id];
+
+		$data['script'] = $this->load->view ("lessons/scripts/add_page", $data, true);
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view("course/preview", $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
+
+	}
 }

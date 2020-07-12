@@ -37,13 +37,20 @@ class Lessons_model extends CI_Model {
 			$this->db->where ('coaching_id', $coaching_id);
 			$this->db->where ('course_id', $course_id);
 			$this->db->update ('coaching_course_lessons', $data);
-		} else {
+		} else {			
 			$data['coaching_id']	 	= $coaching_id;
 			$data['course_id']	 		= $course_id;
 			$data['created_by']	  		= intval ($this->session->userdata('member_id'));
 			$data['created_on']	  		= $now;
 			$this->db->insert('coaching_course_lessons', $data);
 			$lesson_id = $this->db->insert_id();
+
+			$ref_id = $this->generate_reference_id ($coaching_id, $course_id, $lesson_id);
+			$this->db->set ('lesson_key', $$ref_id);
+			$this->db->where ('coaching_id', $coaching_id);
+			$this->db->where ('course_id', $course_id);
+			$this->db->where ('lesson_id', $lesson_id);
+			$this->db->update ('coaching_course_lessons');
 		}
 		return $lesson_id;
 	}
@@ -66,7 +73,16 @@ class Lessons_model extends CI_Model {
 		$this->db->where ('lesson_id', $lesson_id);
 		$this->db->order_by ('position', 'ASC');
 		$sql = $this->db->get ('coaching_course_lesson_pages');
-		return $sql->result_array ();
+		$clp = $sql->result_array ();
+		$result = [];
+		if (! empty ($clp)) {
+			foreach ($clp as $row) {
+				$att = $this->get_attachments ($coaching_id, $course_id, $lesson_id, $row['page_id']);
+				$result[$row['page_id']] = $row;
+				$result[$row['page_id']]['att'] = $att;
+			}
+		}
+		return $result;
 	}
 
 	public function get_child_pages ($coaching_id=0, $course_id=0, $lesson_id=0, $parent_id=0) {
@@ -96,6 +112,16 @@ class Lessons_model extends CI_Model {
 		$this->db->where ('page_id', $page_id);
 		$sql = $this->db->get ('coaching_course_lesson_attachments');
 		return $sql->result_array ();
+	}
+
+	public function get_attachment ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0, $att_id=0) {
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$this->db->where ('lesson_id', $lesson_id);
+		$this->db->where ('page_id', $page_id);
+		$this->db->where ('att_id', $att_id);
+		$sql = $this->db->get ('coaching_course_lesson_attachments');
+		return $sql->row_array ();
 	}
 
 	public function add_page ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
@@ -198,5 +224,53 @@ class Lessons_model extends CI_Model {
 		}
 		return $response;
 	}
+
+	public function delete_page ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$this->db->where ('lesson_id', $lesson_id);
+		$this->db->where ('page_id', $page_id);
+		$sql = $this->db->delete ('coaching_course_lesson_pages');
+	}
+
+	public function delete_attachment ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0, $att_id=0) {
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$this->db->where ('lesson_id', $lesson_id);
+		$this->db->where ('page_id', $page_id);
+		$this->db->where ('att_id', $att_id);
+		$sql = $this->db->delete ('coaching_course_lesson_attachments');
+	}
+
+	/* Auto Generate Reference ID */
+	public function generate_reference_id ($coaching_id=0, $course_id=0, $lesson_id=0) {
+		$prefix = ['EAL', date('Y'), $coaching_id, $course_id];
+		/*
+		$ref_prefix	= $this->common_model->get_sys_parameters (SYS_REF_ID_PREFIX);
+		foreach ($ref_prefix as $row) {
+			$prefix[] = $row['paramkey'];
+		}
+		*/
+		if ($lesson_id > 0) {
+			// This means lesson record is already inserted and the primary key is passed as lesson_id
+			$num = $lesson_id;
+		} else {
+			// Member record is not yet inserted, show a 
+			$this->db->select_max ('lesson_id');
+			$sql = $this->db->get ('coaching_course_lessons');
+			if ($sql->num_rows () > 0) {
+				$row = $sql->row_array ();
+				$id = $row['lesson_id'];
+			} else { 
+				$id = 0;
+			}
+			$num = $id+1;
+		}
+		$suffix = str_pad($num, 3, "0", STR_PAD_LEFT);		
+		$ref_id = implode ('', $prefix);
+		$ref_id = $ref_id . $suffix;
+		return $ref_id;
+	}
+
 
 }
