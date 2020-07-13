@@ -35,7 +35,6 @@
         <h4 class="card-title">Courses
         </h4>
       </div>
-      <div>
       <div class="card-body p-0">
         <table class="table mb-0 text-center">
           <thead>
@@ -65,7 +64,8 @@
           </tbody>
         </table>
       </div>
-    </div>
+    <?php else: ?>
+      <div class="alert alert-danger" role="alert">There are no Courses in this Category. Click <a href="<?php echo site_url('coaching/courses/create/' . $coaching_id . '/' . $cat_id); ?>" class="alert-link">here</a> to create your first course.</div>
     <?php endif;?>
   </div>
 </div>
