@@ -76,7 +76,7 @@ class Tests extends MX_Controller {
 		$this->load->view(INCLUDE_PATH  . 'footer', $data);	    
 	}
 	
-	public function index ($coaching_id=0, $course_id=0, $status='-1', $type=0) { 
+	public function index ($coaching_id=0, $course_id=0, $status='-1', $type=TEST_TYPE_PRACTICE) { 
 
 		$data['coaching_id'] = $coaching_id;
 		$data['course_id'] = $course_id;

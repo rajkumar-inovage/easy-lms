@@ -12,13 +12,7 @@
 		      	<a class="" href="<?php echo site_url ('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>">Add Question</a>
 		      </li>
 		  <?php } ?>
-
-		  <li class="list-inline-item ml-4">
-		  	<a class="" href="<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>">Enrolments</a>
-		  </li>
-
 		</ul>
-
 	</div>
 </div>
 
