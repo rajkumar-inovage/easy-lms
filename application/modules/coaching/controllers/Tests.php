@@ -811,4 +811,18 @@ class Tests extends MX_Controller {
 	}
 	
 	
+	public function import_from_indiatests ($coaching_id=0, $course_id=0) {
+
+		$data['bc'] = array ('Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		$data['page_title'] = 'Test Plans';
+		
+		// Get all test categories from MASTER database
+		$data['categories'] = $this->tests_model->its_test_plan_categories ();
+
+		$this->load->view(INCLUDE_PATH  . 'header', $data);
+		$this->load->view('plans/its_test_plans', $data);
+		$this->load->view(INCLUDE_PATH  . 'footer', $data);
+
+	}
 }

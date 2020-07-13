@@ -26,10 +26,18 @@ class Lessons_model extends CI_Model {
 			$status = LESSON_STATUS_UNPUBLISHED;
 		}
 
+		if ($this->input->post ('duration')) {
+			$duration = $this->input->post  ('duration');
+		} else {
+			$duration = 0;
+		}
+
 		$data = array (
-				'title'    		  	=>ascii_to_entities ($this->input->post('title')),
-				'description' 	  	=>ascii_to_entities ($this->input->post('description')),
+				'title'    		  	=>($this->input->post('title')),
+				'description' 	  	=>($this->input->post('description')),
 				'status'      		=>$status,
+				'duration'      	=>$duration,
+				'duration_type'     =>$this->input->post('duration_type'),
             );
 		
 		if ($lesson_id > 0) {
@@ -46,7 +54,7 @@ class Lessons_model extends CI_Model {
 			$lesson_id = $this->db->insert_id();
 
 			$ref_id = $this->generate_reference_id ($coaching_id, $course_id, $lesson_id);
-			$this->db->set ('lesson_key', $$ref_id);
+			$this->db->set ('lesson_key', $ref_id);
 			$this->db->where ('coaching_id', $coaching_id);
 			$this->db->where ('course_id', $course_id);
 			$this->db->where ('lesson_id', $lesson_id);

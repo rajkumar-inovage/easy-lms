@@ -118,4 +118,19 @@ class Lessons extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 
 	}
+
+	public function import_from_indiatest ($coaching_id=0, $course_id=0) {
+
+		$data['page_title'] = 'Lesson Categories';
+		$data['bc'] = array ('Test Plans'=>'admin/plans/index');
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		
+		// Get all test categories from MASTER database
+		$data['categories'] = $this->plans_model->its_test_plan_categories ();
+
+		$this->load->view(INCLUDE_PATH  . 'header', $data);
+		$this->load->view('plans/its_test_plans', $data);
+		$this->load->view(INCLUDE_PATH  . 'footer', $data);
+
+	}
 }

@@ -11,6 +11,11 @@ define ('LESSON_ATT_YOUTUBE', 					1);
 define ('LESSON_ATT_EXTERNAL', 					2);
 define ('LESSON_ATT_UPLOAD', 					3);
 
+// Lesson Durations
+define ('LESSON_DURATION_MIN', 					1);
+define ('LESSON_DURATION_HOUR', 				2);
+define ('LESSON_DURATION_WEEK', 				3);
+
 defined('COURSE_STATUS_INACTIVE') or define('COURSE_STATUS_INACTIVE', 0);
 defined('COURSE_STATUS_ACTIVE') or define('COURSE_STATUS_ACTIVE', 1);
 defined('COURSE_STATUS_TRASH') or define('COURSE_STATUS_TRASH', 2);

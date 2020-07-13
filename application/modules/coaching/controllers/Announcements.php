@@ -55,6 +55,7 @@ class Announcements extends MX_Controller {
 		$data['result']=$this->announcements_model->get_announcement($coaching_id,$announcement_id);
 		
 		/*load registration view form*/
+		$data['script'] = $this->load->view('announcements/scripts/create', $data, true);
 		$this->load->view ( INCLUDE_PATH  . 'header', $data);
 		$this->load->view ( 'announcements/create_announcement',$data);
 		$this->load->view ( INCLUDE_PATH  . 'footer', $data);

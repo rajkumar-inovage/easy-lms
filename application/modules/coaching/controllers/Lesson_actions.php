@@ -16,10 +16,10 @@ class Lesson_actions extends MX_Controller {
 			$id = $this->lessons_model->create_lesson ($coaching_id, $course_id, $lesson_id);
 			if ($lesson_id > 0) {
 				$message = 'Lesson updated successfully';
-				$redirect = 'coaching/lessons/content/'.$coaching_id.'/'.$course_id.'/'.$lesson_id;
+				$redirect = 'coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$lesson_id;
 			} else {
 				$message = 'Lesson created successfully';
-				$redirect = 'coaching/lessons/content/'.$coaching_id.'/'.$course_id.'/'.$lesson_id;
+				$redirect = 'coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$lesson_id;
 			}
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url($redirect) )));
