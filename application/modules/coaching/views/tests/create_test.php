@@ -10,7 +10,7 @@
 						<input type="text" class="form-control required" name="title" value="<?php echo set_value('title', $results['title']); ?>" />
 					</div>
 
-					<div class="form-group row">
+					<div class="form-group row d-none">
 						<div class="col-md-6">
 							<?php echo form_label('Category', '', array('class'=>'control-label')); ?>
 							<select class="form-control required " name="course">
@@ -56,7 +56,7 @@
                         </div>
                         
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" id="test_practice" name="test_type" value="<?php echo TEST_TYPE_PRACTICE; ?>" <?php // echo set_radio('test_type', TEST_TYPE_PRACTICE); ?>> 
+                            <input type="radio" class="form-check-input" id="test_practice" name="test_type" value="<?php echo TEST_TYPE_PRACTICE; ?>" checked <?php // echo set_radio('test_type', TEST_TYPE_PRACTICE); ?>> 
                             <label class="form-check-label" for="test_practice">
 					        	Available to all students
                             </label>

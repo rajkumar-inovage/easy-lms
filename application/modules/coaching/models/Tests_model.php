@@ -197,7 +197,7 @@ class Tests_model extends CI_Model {
 				'time_min'	      	=>$this->input->post('time_min'),
 				'max_marks'  	  	=>0, 
 				'pass_marks'      	=>$this->input->post('pass_marks'),
-				'course_id'      	=>($this->input->post('course')==0)? null : $this->input->post('course'),
+				'course_id'      	=>($course_id==0)? null : $course_id,
 				'unique_test_id' 	=> $this->generate_reference_id($coaching_id, $course_id, $tid),
 				'test_mode'      	=>$test_mode,
 				'test_type'      	=>$test_type,
