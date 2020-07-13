@@ -69,7 +69,9 @@ class Courses_model extends CI_Model {
 			}
 		} else {
 			$data['coaching_id'] = $coaching_id;
-			$data['cat_id'] = $category_id;
+			if($category_id>0){
+				$data['cat_id'] = $category_id;
+			}
 			$data['created_on'] = time();
 			$data['created_by'] = $this->session->userdata('member_id');
 			$this->db->insert('coaching_courses', $data);
