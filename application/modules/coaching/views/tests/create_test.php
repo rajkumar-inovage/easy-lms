@@ -46,24 +46,24 @@
 						</div>
 					</div>
 					
-                    <div class="form-group ">
+                    <div class="form-group d-none">
                         <?php echo form_label('Test Type<span class="required">*</span>', '', array('class'=>'control-label')); ?>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" id="test_regular" name="test_type" value="<?php echo TEST_TYPE_REGULAR; ?>" <?php echo set_radio('test_type', TEST_TYPE_REGULAR, true); ?>> 
+                            <input type="radio" class="form-check-input" id="test_regular" name="test_type" value="<?php echo TEST_TYPE_REGULAR; ?>" <?php // echo set_radio('test_type', TEST_TYPE_REGULAR, true); ?>> 
                             <label class="form-check-label" for="test_regular">
                                 Available to enroled students only
                             </label>
                         </div>
                         
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" id="test_practice" name="test_type" value="<?php echo TEST_TYPE_PRACTICE; ?>" <?php echo set_radio('test_type', TEST_TYPE_PRACTICE); ?>> 
+                            <input type="radio" class="form-check-input" id="test_practice" name="test_type" value="<?php echo TEST_TYPE_PRACTICE; ?>" <?php // echo set_radio('test_type', TEST_TYPE_PRACTICE); ?>> 
                             <label class="form-check-label" for="test_practice">
 					        	Available to all students
                             </label>
                         </div>
                         
                         <div class="form-check d-none">
-                            <input type="radio" class="form-check-input" id="test_public" name="test_type" value="<?php echo TEST_TYPE_PUBLIC; ?>" <?php echo set_radio('test_type', TEST_TYPE_PUBLIC); ?>> 
+                            <input type="radio" class="form-check-input" id="test_public" name="test_type" value="<?php echo TEST_TYPE_PUBLIC; ?>" <?php // echo set_radio('test_type', TEST_TYPE_PUBLIC); ?>> 
                             <label class="form-check-label" for="test_public">
                                 Public<br>
 					        	<small>Available to your students as well as other users of this system</small>
