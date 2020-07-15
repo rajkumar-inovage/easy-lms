@@ -1,99 +1,77 @@
-<?php
-if ($category_id > 0) {
-    ?>
-    <div class="row justify-content-center" >
-    	<div class="col-md-10">
-    	  <div class="card">
-    		 <ul class="list-group">
-				<?php 
-				if ( ! empty ($plans)) {
-					foreach ($plans as $row) {
-						?>
-						<li class="list-group-item ">
-						        
-							<p class="text-bold mb-0">
-							<?php echo anchor ('coaching/plans/tests_in_plan/'.$coaching_id.'/'.$category_id.'/'.$row['plan_id'], $row['title'], array ('title'=>'Browse all tests in this plan ')); ?>
-							</p>
-							<span class="text-grey-500">
-								Category: <?php echo $row['cat_title']; ?>
-							</span>
-                            <br>
-
-						    <div class="d-flex justify-content-between">
-								<?php 
-								if ($row['amount'] == 0) {
-									echo '<span class="label label-primary">Free</span>';
-								} else {
-									echo '<span><i class="fa fa-rupee-sign"></i> '.$row['amount'] . ' per month</span>';
-								}
-								?>
-
-								<span>
-									<?php 
-										echo $row['tests_in_plan'] . ' Tests';
-									?>
-								</span>
-								
-								<?php if ($row['amount'] == 0) { ?>
-									<a href="<?php echo site_url('coaching/plans/subscribe_plan/'.$coaching_id.'/'.$category_id.'/'.$row['plan_id']); ?>" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" data-original-title="Subscribe For Free"><i class="fa fa-edit"></i> Subscribe For Free</a>
-								<?php } else {
-								    if ($this->session->userdata ('is_admin') == true) {
-								        ?>
-									    <a href="<?php echo site_url('coaching/plans/subscribe_plan/'.$coaching_id.'/'.$category_id.'/'.$row['plan_id']); ?>" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="bottom" data-original-title="Add this plan to coaching"><i class="fa fa-plus"></i> Add Test Plan</a>
-								        <?php 
-								    } else {
-								        ?>
-									    <a href="<?php echo site_url('coaching/plans/buy_plan/'.$coaching_id.'/'.$category_id.'/'.$row['plan_id']); ?>" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="bottom" data-original-title="Buy Plan"><i class="fa fa-shopping-cat"></i> Add To Cart</a>
-								        <?php
-								    }
-								    ?>
-								<?php } ?>
-						    </div>
-
-						</li>
-						<?php 
-					}
-				} else { 
+<h2 class="text-center mb-4">Purchased Test Plans</h2>
+<div class="row justify-content-center" >
+	<div class="col-md-10">
+	  <div class="card">
+		 <ul class="list-group">
+			<?php 
+			if ( ! empty ($test_plans)) {
+				foreach ($test_plans as $row) {
+					?>
+					<li class="list-group-item media">
+						<div class="media-left">
+							<span class=""></span>
+						</div>
+						<div class="media-body">
+							<h4><?php echo anchor ('coaching/indiatests/tests_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], $row['plan_name'], array ('class'=>'link-text-color', 'title'=>'Browse all tests in this plan ')); ?></h4>
+						</div>
+						<div class="media-right">
+							<?php echo anchor ('coaching/indiatests/tests_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Tests', array ('class'=>'btn btn-primary', 'title'=>'Browse all tests in this plan ')); ?>
+						</div>
+					</li>
+					<?php 
+				}
+			} else { 
 				?>
-				<tr>
-					<td colspan="6"><?php echo 'No Plans Found'; ?></td>
-				</tr>
-			    <?php } // if result ?>
-			  </ul>
-    	  </div>
-    	</div>
-    </div>
-    <?php
-} else {
-    ?>
-    <div class="row justify-content-center">
-    <?php
-    if (! empty ($categories)) {
-        foreach ($categories as $cat) {
-           ?>
-           <div class="col-md-3">
-               <div class="card my-2 border-primary">
-    				<div class="card-body height-100 d-flex align-items-center justify-content-center">
-    					<h4 class="card-title text-center my-3">
-                           <a class="text-black text-decoration-none stretched-link " href="<?php echo site_url ('coaching/plans/index/'.$coaching_id.'/'.$cat['id']); ?>"><?php echo  $cat['title']; ?></a>
-    					</h4>
-    				</div>
-    			</div>
-    		</div>
-           <?php
-        }
-    } else {
-    	?>
-    	<div class="col-md-8">
-        	<div class="alert alert-danger">
-        		<p>No test categories have been added yet</p>
-        	</div>
-    	</div>
-    	<?php
-    }
-    ?>
-    </div>
-    <?php
-}
+				<li class="list-group-item">
+					<span class="text-danger"><?php echo 'No Plans Found'; ?></span>
+				</li>
+		   	 	<?php 
+		   	} // if result 
+		   	?>
+		  </ul>
 
-?>
+		  <div class="card-footer">
+		  	<?php echo anchor ('coaching/indiatests/test_plan_categories/'.$coaching_id, '<i class="fa fa-shopping-cart"></i> Import Test Plan', ['class'=>'btn btn-danger']); ?> 	
+		  </div>
+	  </div>
+	</div>
+</div>
+
+<h2 class="text-center mt-4 mb-4">Purchased Lesson Plans</h2>
+<div class="row justify-content-center mt-4"  >
+	<div class="col-md-10">
+	  <div class="card">
+		 <ul class="list-group">
+			<?php 
+			if ( ! empty ($lesson_plans)) {
+				foreach ($lesson_plans as $row) {
+					?>
+					<li class="list-group-item media">
+						<div class="media-left">
+							<span class=""></span>
+						</div>
+						<div class="media-body">
+							<h4><?php echo anchor ('coaching/indiatests/lesssons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], $row['plan_name'], array ('class'=>'link-text-color', 'title'=>'Browse all tests in this plan ')); ?></h4>
+						</div>
+						<div class="media-right">
+							<?php echo anchor ('coaching/indiatests/lessons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Lessons', array ('class'=>'btn btn-primary', 'title'=>'Browse all tests in this plan ')); ?>
+						</div>
+					</li>
+					<?php 
+				}
+			} else { 
+				?>
+				<li class="list-group-item">
+					<span class="text-danger"><?php echo 'No Plans Found'; ?></span>
+				</li>
+		   	 	<?php 
+		   	} // if result 
+		   	?>
+		  </ul>
+
+		  <div class="card-footer">
+		  	<?php echo anchor ('coaching/indiatests/lesson_plan_categories/'.$coaching_id, '<i class="fa fa-shopping-cart"></i> Import Lesson Plans', ['class'=>'btn btn-success']); ?> 	
+		  </div>
+	  </div>
+	</div>
+</div>

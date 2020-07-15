@@ -6,15 +6,15 @@
 		<ul class="list-inline">
 		  
 		  <li class="list-inline-item">
-		  	<a class="" href="<?php echo site_url ('coaching/lessons/index/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-book-open"></i> Lessons</a>
+		  	<a class="" href="<?php echo site_url ('coaching/lessons/index/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-book-open"></i> Chapters</a>
 		  </li>
 
 		  <li class="list-inline-item ml-4">
-	      	<a class="" href="<?php echo site_url ('coaching/lessons/create/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-plus"></i> Create Lesson</a>
+	      	<a class="" href="<?php echo site_url ('coaching/lessons/create/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-plus"></i> Create Chapter</a>
 	      </li>
 
 		  <li class="list-inline-item ml-4">
-	      	<a class="" href="<?php echo site_url ('coaching/lessons/import/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-shopping-cart"></i> Import From Indiatests</a>
+	      	<a class="" href="<?php echo site_url ('coaching/plans/index/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-shopping-cart"></i> Import From Indiatests</a>
 	      </li>
 
 		</ul>
@@ -37,7 +37,7 @@
 	      </li>
 
 		  <li class="list-inline-item ml-4">
-	      	<a class="" href="<?php echo site_url ('coaching/tests/import_from_indiatests/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-shopping-cart"></i> Import From Indiatests</a>
+	      	<a class="" href="<?php echo site_url ('coaching/plans/index/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-shopping-cart"></i> Import From Indiatests</a>
 	      </li>
 
 		</ul>
@@ -89,11 +89,11 @@
 	<div class="card-body">
 		<ul class="list-inline">
 		  
-		  <li class="list-inline-item ml-4">
+		  <li class="list-inline-item ">
 		  	<a class="" href="<?php echo site_url ('coaching/courses/preview/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-search"></i> Preview</a>
 		  </li>
 
-		  <li class="list-inline-item">
+		  <li class="list-inline-item ml-4">
 		  	<a class="" href="<?php echo site_url ('coaching/courses/create/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-edit"></i> Edit</a>
 		  </li>
 

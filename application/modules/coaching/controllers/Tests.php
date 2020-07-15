@@ -7,7 +7,7 @@ class Tests extends MX_Controller {
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
 	    $config = [ 'coaching/config_coaching'];
-	    $models = ['coaching_model', 'subscription_model', 'tests_model', 'test_plans_model', 'qb_model', 'users_model'];
+	    $models = ['coaching_model', 'subscription_model', 'tests_model', 'test_plans_model', 'qb_model', 'users_model', 'plans_model'];
 
 	    $this->common_model->autoload_resources ($config, $models);
 	    $coaching_id = $this->uri->segment (4);
@@ -103,7 +103,7 @@ class Tests extends MX_Controller {
 		$data['sub_title']   = 'All Tests';
 		
 		/*---=== Back Link ===---*/
-		$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
+		$data['bc'] = array ('Dashboard'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
 		
 		/* --==// Toolbar //==-- */
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
@@ -811,17 +811,18 @@ class Tests extends MX_Controller {
 	}
 	
 	
-	public function import_from_indiatests ($coaching_id=0, $course_id=0) {
+	public function coaching_test_plans ($coaching_id=0, $course_id=0) {
 
 		$data['bc'] = array ('Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		$data['page_title'] = 'Test Plans';
+		$data['coaching_id'] = $coaching_id;
+		$data['course_id'] = $course_id;
 		
-		// Get all test categories from MASTER database
-		$data['categories'] = $this->tests_model->its_test_plan_categories ();
+		$data['plans'] = $this->plans_model->coaching_test_plans ($coaching_id);
 
 		$this->load->view(INCLUDE_PATH  . 'header', $data);
-		$this->load->view('plans/its_test_plans', $data);
+		$this->load->view('tests/coaching_test_plans', $data);
 		$this->load->view(INCLUDE_PATH  . 'footer', $data);
 
 	}

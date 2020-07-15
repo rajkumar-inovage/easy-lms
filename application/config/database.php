@@ -97,7 +97,7 @@ $db['default'] = array(
 );
 
 // Indiatests
-$db['indiatests'] = array(
+$db['its'] = array(
 	'dsn'	=> '',
 	'hostname' => 'indiatests.in',
 	'username' => 'indiatests_production',
