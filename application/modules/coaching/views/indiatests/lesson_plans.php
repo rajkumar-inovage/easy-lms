@@ -1,4 +1,35 @@
-<h2 class="text-center mb-4">Available test plans In IndiaTests&reg;</h2>
+<h2 class="text-center mb-4">Available Lesson Plans In IndiaTests&reg;</h2>
+
+<div class="card mb-4">
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-4">
+				<select id="categories" class="form-control">
+					<option value="0" <?php if ($category_id == 0) echo 'selectd="selected"'; ?>>Plan Categories</option>
+					<?php
+					if (!empty ($categories)) {
+						foreach ($categories as $cat) {
+							?>
+							<option value="<?php echo $cat['id']; ?>" <?php if ($category_id == $cat['id']) echo 'selected="selected"'; ?>><?php echo $cat['title']; ?></option>
+							<?php
+						}
+					}
+					?>
+				</select>
+			</div>
+
+			<div class="col-md-4">
+				<select id="amount" class="form-control">
+					<option value="-1" <?php if ($amount == '-1') echo 'selected="selected"'; ?>>All Type</option>
+					<option value="0" <?php if ($amount == 0) echo 'selected="selected"'; ?>>Free</option>
+					<option value="1" <?php if ($amount == 1) echo 'selected="selected"'; ?>>Paid</option>
+				</select>
+			</div>
+
+		</div>
+	</div>
+</div>
+
 <div class="card">
 	<ul class="list-group">
 		<?php 
@@ -32,9 +63,9 @@
                     <div class="media-right">
 						<?php 
 						if ($row['amount'] == 0) {
-							echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$row['plan_id'], 'Get Plan', ['class'=>'btn btn-success']);
+							echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Get Plan', ['class'=>'btn btn-success']);
 						} else {
-							echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$row['plan_id'], 'Buy Plan', ['class'=>'btn btn-primary']);
+							echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Buy Plan', ['class'=>'btn btn-primary']);
 						}
 						?>
                     </div>

@@ -74,6 +74,8 @@ class Courses extends MX_Controller {
 		$data['coaching_id'] = $coaching_id;
 		$data['course_id'] = $course_id;
 		
+		$data['bc'] = array('Courses' => 'coaching/courses/index/' . $coaching_id);
+
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/manage', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
@@ -105,12 +107,9 @@ class Courses extends MX_Controller {
 		}
 
 		/* --==// Back //==-- */
-		if ($lesson_id > 0) {
-			$data['bc'] = ['Preview'=>'coaching/courses/preview/'.$coaching_id.'/'.$course_id];
-		} else {
-			$data['bc'] = ['Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id];
-		}
+		$data['bc'] = ['Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id];
 
+		$data['sidebar_right'] = $this->load->view ('courses/inc/course_preview', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view("courses/preview", $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);

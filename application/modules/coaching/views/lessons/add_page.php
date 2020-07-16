@@ -1,5 +1,5 @@
 <div class="card">
-	<?php echo form_open ('coaching/lesson_actions/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$page_id, array('class'=>'validate-form')); ?>
+	<?php echo form_open ('coaching/lesson_actions/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$page_id, array('class'=>'validate-for')); ?>
 	<div class="card-body">
 		<div class="form-group">
 			<label for="title">Title</label>
@@ -84,6 +84,7 @@
 
 	<div class="card-footer">
 		<input type="submit" name="submit" class="btn btn-success" value="Save" data-toggle="tooltip" data-placement="right" title="Save">
+		<?php echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id, 'Reset'); ?>
 	</div>
 	<?php echo form_close (); ?>
 </div>

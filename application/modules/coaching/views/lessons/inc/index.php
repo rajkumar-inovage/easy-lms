@@ -1,5 +1,4 @@
 <div class="card card-default mb-4">
-
 	<ul class="list-group" >
 		<?php 
 		$i = 1;
@@ -18,9 +17,12 @@
 						?>						
 					</div>
 					<div class="media-body">
+						<div class="text-muted">Chapter <?php echo $i; ?></div>
 						<?php echo anchor('coaching/lessons/create/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], $row['title'], array('title'=>$row['title'], 'class'=>'')); ?>
+						<br>
 						<?php 
-						$description = character_limiter ($row['description'], 50);
+						$description = strip_tags ($row['description']);
+						$description = character_limiter ($description, 150);
 						echo $description;
 						?>
 					</div>

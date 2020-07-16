@@ -1,4 +1,35 @@
 <h2 class="text-center mb-4">Available test plans In IndiaTests&reg;</h2>
+
+<div class="card mb-4">
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-4">
+				<select id="categories" class="form-control">
+					<option value="0">Plan Categories</option>
+					<?php
+					if (!empty ($categories)) {
+						foreach ($categories as $cat) {
+							?>
+							<option value="<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?></option>
+							<?php
+						}
+					}
+					?>
+				</select>
+			</div>
+
+			<div class="col-md-4">
+				<select id="amount" class="form-control">
+					<option value="-1">All Type</option>
+					<option value="0">Free</option>
+					<option value="1">Paid</option>
+				</select>
+			</div>
+
+		</div>
+	</div>
+</div>
+
 <div class="card">
 	<ul class="list-group">
 		<?php 

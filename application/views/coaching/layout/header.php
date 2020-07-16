@@ -64,7 +64,7 @@
     ?>
 	<header class="fixed-top">
         <nav class="navbar bg-cyan-500 text-white border-bottom px-0">
-            <div class="container">
+            <div class="container-fluid">
                 <!-- Sidebar Toggler -->
                 <button class="navbar-toggle" type="button" id="toggle_sidebar_left">
                     <i class="fa fa-bars"></i>
@@ -96,16 +96,16 @@
             </div>
         </nav>
         <div class="bg-white shadow-sm <?php echo (isset ($bc))? "position-relative":""; ?>">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="d-flex justify-content-between">
                     <div class="">
-                        <?php 
-                          if (isset ($bc)) {
-                              $bc_link = current ($bc);
-                              $bc_title  = key ($bc);
-                              echo anchor ($bc_link, '<i class="fa fa-long-arrow-alt-left link-text-color"></i> ', array('class'=>'btn btn-link', 'title'=>'Back To '.$bc_title)); 
-                          }
-                        ?>
+                    <?php 
+                      if (isset ($bc)) {
+                          $bc_link = current ($bc);
+                          $bc_title  = key ($bc);
+                          echo anchor ($bc_link, '<i class="fa fa-long-arrow-alt-left link-text-color"></i> ', array('class'=>'btn btn-link', 'title'=>'Back To '.$bc_title)); 
+                      }
+                    ?>
                     </div>
 
                     <div class="py-2 font-weight-bold <?php echo (isset ($bc))? "h-100 absolute-center-h":""; ?>">
@@ -199,9 +199,15 @@
 	</div>
 	<!--// Sidebar left -->
 
+    <?php 
+    if (isset ($sidebar_right)) {
+        echo $sidebar_right;
+    }
+    ?>
+
 	<main id="content" role="main">
         <div class="py-4">
-            <div class="container">         
+            <div class="container-fluid">         
                 <div class="row justify-content-center">
                     <div class="col-md-6 col-lg-4 col-sm-8">
                       <?php $this->message->display (); ?>

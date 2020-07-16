@@ -31,7 +31,7 @@
 		  </ul>
 
 		  <div class="card-footer">
-		  	<?php echo anchor ('coaching/indiatests/test_plan_categories/'.$coaching_id, '<i class="fa fa-shopping-cart"></i> Import Test Plan', ['class'=>'btn btn-danger']); ?> 	
+		  	<?php echo anchor ('coaching/indiatests/test_plan_categories/'.$coaching_id, '<i class="fa fa-shopping-cart"></i> Review Available Plans', ['class'=>'btn btn-danger']); ?> 	
 		  </div>
 	  </div>
 	</div>
@@ -51,7 +51,7 @@
 							<span class=""></span>
 						</div>
 						<div class="media-body">
-							<h4><?php echo anchor ('coaching/indiatests/lesssons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], $row['plan_name'], array ('class'=>'link-text-color', 'title'=>'Browse all tests in this plan ')); ?></h4>
+							<h4><?php echo anchor ('coaching/indiatests/lessons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], $row['plan_name'], array ('class'=>'link-text-color', 'title'=>'Browse all tests in this plan ')); ?></h4>
 						</div>
 						<div class="media-right">
 							<?php echo anchor ('coaching/indiatests/lessons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Lessons', array ('class'=>'btn btn-primary', 'title'=>'Browse all tests in this plan ')); ?>
@@ -70,7 +70,7 @@
 		  </ul>
 
 		  <div class="card-footer">
-		  	<?php echo anchor ('coaching/indiatests/lesson_plan_categories/'.$coaching_id, '<i class="fa fa-shopping-cart"></i> Import Lesson Plans', ['class'=>'btn btn-success']); ?> 	
+		  	<?php echo anchor ('coaching/indiatests/lesson_plan_categories/'.$coaching_id, '<i class="fa fa-shopping-cart"></i> Review Available Plans', ['class'=>'btn btn-success']); ?> 	
 		  </div>
 	  </div>
 	</div>

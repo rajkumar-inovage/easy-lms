@@ -26,7 +26,11 @@ class Plans extends MX_Controller {
 	// List All Plans
 	public function index ($coaching_id=0, $course_id=0) {
 		
-		$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
+		if ($course_id > 0) {
+			$data['bc'] = array ('Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
+		} else {
+			$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
+		}
 
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		$data['page_title'] = 'Test Plans';

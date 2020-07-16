@@ -28,6 +28,7 @@ class Lessons extends MX_Controller {
 
 		/* --==// Toolbar //==-- */
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		$data['toolbar_buttons']['<i class="fa fa-plus-circle"></i> New Lesson']= 'coaching/lessons/create/'.$coaching_id.'/'.$course_id;
 
 		/* --==// Back //==-- */
 		$data['bc'] = ['Pages'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id];

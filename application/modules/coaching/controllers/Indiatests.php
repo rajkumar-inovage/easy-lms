@@ -63,16 +63,20 @@ class Indiatests extends MX_Controller {
 
 
     // List All Plans
-    public function test_plans ($coaching_id=0, $course_id=0, $category_id=0) {
+    public function test_plans ($coaching_id=0, $course_id=0, $category_id=0, $amount='-1') {
         
-        $data['bc'] = array ('Manage'=>'coaching/indiatests/test_plan_categories/'.$coaching_id.'/'.$course_id);
+        if ($course_id > 0) {
+            $data['bc'] = array ('Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
+        } else {
+            $data['bc'] = array ('Manage'=>'coaching/indiatests/test_plan_categories/'.$coaching_id.'/'.$course_id);
+        }
 
         $data['toolbar_buttons'] = $this->toolbar_buttons;
         $data['page_title'] = 'Test Plans';
         
         // Get all test categories from MASTER database
         $result = [];
-        $plans = $this->indiatests_model->test_plans ($category_id);
+        $plans = $this->indiatests_model->test_plans ($category_id, 1, $amount);
         if (! empty ($plans)) {
             foreach ($plans as $p) {                
                 $tests = $this->indiatests_model->tests_in_plan ($p['plan_id']); 
@@ -86,13 +90,14 @@ class Indiatests extends MX_Controller {
         }
         $data['plans'] = $result;   
         $data['coaching_id'] = $coaching_id;
+        $data['course_id'] = $course_id;
         $data['category_id'] = $category_id;    
         $data['categories'] = $this->indiatests_model->test_plan_categories ();
         if ($category_id > 0) {
             //$category = $this->indiatests_model->get_category ($category_id);
            // $data['sub_title'] = $category['title'] . ' Test Plans';
         }
-        
+        $data['script'] = $this->load->view('indiatests/scripts/test_plans', $data, true);
         $this->load->view(INCLUDE_PATH  . 'header', $data);
         $this->load->view('indiatests/test_plans', $data);
         $this->load->view(INCLUDE_PATH  . 'footer', $data);
@@ -147,16 +152,20 @@ class Indiatests extends MX_Controller {
 
 
     // List All Plans
-    public function lesson_plans ($coaching_id=0, $course_id=0, $category_id=0) {
+    public function lesson_plans ($coaching_id=0, $course_id=0, $category_id=0, $amount='-1') {
         
-        $data['bc'] = array ('Manage'=>'coaching/indiatests/lesson_plan_categories/'.$coaching_id.'/'.$course_id);
+        if ($course_id > 0) {
+            $data['bc'] = array ('Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
+        } else {
+            $data['bc'] = array ('Manage'=>'coaching/indiatests/lesson_plan_categories/'.$coaching_id.'/'.$course_id);
+        }
 
         $data['toolbar_buttons'] = $this->toolbar_buttons;
         $data['page_title'] = 'Test Plans';
         
         // Get all test categories from MASTER database
         $result = [];
-        $plans = $this->indiatests_model->lesson_plans ($category_id);
+        $plans = $this->indiatests_model->lesson_plans ($category_id, 1, $amount);
         if (! empty ($plans)) {
             foreach ($plans as $p) {                
                 $tests = $this->indiatests_model->lessons_in_plan ($p['plan_id']); 
@@ -170,6 +179,8 @@ class Indiatests extends MX_Controller {
         }
         $data['plans'] = $result;   
         $data['coaching_id'] = $coaching_id;
+        $data['course_id'] = $course_id;
+        $data['amount'] = $amount;
         $data['category_id'] = $category_id;    
         $data['categories'] = $this->indiatests_model->lesson_plan_categories ();
         if ($category_id > 0) {
@@ -177,6 +188,7 @@ class Indiatests extends MX_Controller {
            // $data['sub_title'] = $category['title'] . ' Test Plans';
         }
         
+        $data['script'] = $this->load->view('indiatests/scripts/lesson_plans', $data, true);
         $this->load->view(INCLUDE_PATH  . 'header', $data);
         $this->load->view('indiatests/lesson_plans', $data);
         $this->load->view(INCLUDE_PATH  . 'footer', $data);
