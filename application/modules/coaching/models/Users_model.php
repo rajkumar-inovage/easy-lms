@@ -206,9 +206,6 @@ class Users_model extends CI_Model {
 			$return = ['password'=>$otp, 'email'=>$this->input->post ('email'), 'member_id'=>$member_id];
 		}
 
-		$batches = $this->input->post ('batches');
-		$this->save_batch ($coaching_id, $member_id, $batches);
-
 		return $return;
 	}
 	

@@ -21,20 +21,6 @@
 					</select>
 				</div>
 
-				<div class="col-md-3 mb-2">
-					<select name="search_batch" class="form-control" id="search-batch">
-						<option value="0">All Batches</option>
-						<?php 
-						if (! empty($batches)) {
-						  foreach ($batches as $batch) { ?>
-							<option value="<?php echo $batch['batch_id']; ?>" <?php if ($batch_id == $batch['batch_id']) echo 'selected="selected"'; ?>><?php echo $batch['batch_name']; ?></option>
-						  <?php 
-						  }
-						}  
-						?>
-					</select>
-				</div>
-
 				<div class="col-md-3">
 					<select name="filter_sort" class="form-control" id="filter-sort" >
 						<option value="<?php echo SORT_ALPHA_ASC; ?>" <?php if ($sort==SORT_ALPHA_ASC) echo 'selected="selected"'; ?> >Name: A to Z</option>

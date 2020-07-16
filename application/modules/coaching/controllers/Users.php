@@ -80,25 +80,11 @@ class Users extends MX_Controller {
 		// Reference Id
 		$data['profile_image'] 	= $this->users_model->view_profile_image ($member_id, $coaching_id);
 		$user 				= $this->users_model->get_user ($member_id);
-		$get_batches 		= $this->users_model->get_batches ($coaching_id);
-		$batches 			= [];
-		if (! empty ($get_batches)) {			
-			foreach ($get_batches as $batch) {
-				if ($this->users_model->user_in_batch ($coaching_id, $member_id, $batch['batch_id']) == true) {
-					$batch['enroled'] = 1;
-				} else {
-					$batch['enroled'] = 0;
-				}
-				$batches[] = $batch;
-			}
-		}
-
 		$data['result'] 	= $user;
 
 		$role_lvl 		 	= $this->session->userdata ('role_lvl');
 		$admin 				= FALSE;
 		$data['roles']	 	= $this->users_model->get_user_roles ($admin, $role_lvl);
-		$data['batches']	= $batches;
 		$data['role_id'] 	= $role_id;
 		
 		$data['toolbar_buttons'] = $this->toolbar_buttons;

@@ -103,6 +103,16 @@ class Lessons_model extends CI_Model {
 		return $sql->result_array ();
 	}
 
+	public function get_last_page ($coaching_id=0, $course_id=0, $lesson_id=0) {
+		$this->db->select_max ('position');
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$sql = $this->db->get ('coaching_course_lesson_pages');
+		$row = $sql->row_array ();
+		$position = $row['position'];
+		return $position;
+	}
+
 	public function get_page ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);
@@ -151,9 +161,11 @@ class Lessons_model extends CI_Model {
 			$this->db->where ('page_id', $page_id);
 			$sql = $this->db->update ('coaching_course_lesson_pages', $data);
 		} else {
+			$position = $this->get_last_page ($coaching_id, $course_id, $lesson_id);			
 			$data['coaching_id'] = $coaching_id;
 			$data['course_id'] = $course_id;
 			$data['lesson_id'] = $lesson_id;
+			$data['position'] = $position + 1;
 			$data['created_by'] = $this->session->userdata ('member_id');
 			$data['created_on'] = time ();
 			$sql = $this->db->insert ('coaching_course_lesson_pages', $data);

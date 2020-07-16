@@ -134,29 +134,6 @@
 						
 					</div>
 
-					<div class="form-group row">
-						<div class="col-md-6">
-							<label class="form-label">User Batch</label>
-							<?php 
-							if (! empty($batches)) {
-							  foreach ($batches as $batch) { ?>
-							  	<div class="ml-2">
-							  		
-								  	<label class="form-label">
-								  		<input type="checkbox" value="<?php echo $batch['batch_id']; ?>" name="batches[]" <?php if ($batch['enroled'] == 1) echo 'checked'; ?> >
-								  		<?php echo $batch['batch_name']; ?>
-								  	</label>
-							  	</div>
-							  <?php 
-							  }      
-							}  
-							?>
-						</div>
-
-						<div class="col-md-6">
-						</div>
-
-					</div>
 				</div>
 					
 				<div class="card-footer">

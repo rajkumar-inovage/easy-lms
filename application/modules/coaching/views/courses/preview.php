@@ -19,7 +19,8 @@ if ($page_id > 0) {
 		<div class="card-body">
 			<?php echo $page['content']; ?>
 		</div>
-		<ul class="list-unstyled">
+
+		<ul class="list-unstyled ">
 			<?php
 			//$attachments = $page['att'];
 			if (! empty ($attachments)) {
@@ -68,14 +69,16 @@ if ($page_id > 0) {
 		<div class="card-body">
 			<?php echo $lesson['description']; ?>
 		</div>
+	</div>
 
-		<ul class="list-group" >
+	<div class="mt-4 px-2">		
+		<!--<ul class="list-group list-group-minimal" >-->
 			<?php 
 			$i = 1;
 			if ( ! empty ($pages)) { 
 				foreach ($pages as $row) { 
 					?>
-					<li class="list-group-item media">
+					<div class="media">
 						<div class="media-left"><?php echo $i; ?></div>
 						<div class="media-body">							
 
@@ -84,9 +87,8 @@ if ($page_id > 0) {
 							</a>
 						</div>
 						<div class="collapse" id="page<?php echo $row['page_id']; ?>">
-						</div>
-						
-					</li>
+						</div>						
+					</div>
 					<?php 
 					$i++; 
 				} 
@@ -98,7 +100,7 @@ if ($page_id > 0) {
 				<?php
 			}
 			?>
-		</ul>
+		<!--</ul>-->
 	</div>
 	<?php
 } else {
