@@ -1,4 +1,5 @@
-<?php if (!defined('BASEPATH')) {exit('No direct script access allowed');}
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Courses extends MX_Controller {
 
@@ -113,7 +114,44 @@ class Courses extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view("courses/preview", $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
-
 	}
 
+	public function teachers ($coaching_id=0, $course_id=0, $type=TEACHERS_ASSIGNED, $status=1) {
+		$data['page_title'] 	= 'Course Teachers';
+		$data['coaching_id'] 	= $coaching_id;
+		$data['course_id']		= $course_id;
+		$data['type'] 			= $type;
+		$data['status'] 		= $status;
+		$data['bc'] = array ('Manage '=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
+		
+		$teachers_assigned 		= $this->courses_model->get_teachers_assigned ($coaching_id, $course_id, $status);
+		// Count enroled users
+		if ($teachers_assigned > 0) 
+			$num_assigned = count ($teachers_assigned);
+		else 
+			$num_assigned = 0;
+		
+		$teachers_not_assigned 		= $this->courses_model->get_teachers_not_assigned ($coaching_id, $course_id, $status);
+		// Count enroled users
+		if ($teachers_not_assigned > 0) 
+			$num_not_assigned = count ($teachers_not_assigned);
+		else 
+			$num_not_assigned = 0;
+
+		$data['num_assigned']  = $num_assigned;
+		$data['num_not_assigned']  = $num_not_assigned;
+
+		if ($type == TEACHERS_ASSIGNED) {
+			$results = $teachers_assigned;
+		} else if ($type == TEACHERS_NOT_ASSIGNED) {
+			$results = $teachers_not_assigned;
+		}
+		$data['results'] = $results;
+		$data['data']			= $data;
+		
+		$data['script'] = $this->load->view ('courses/scripts/teachers', $data, true);
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('courses/teachers', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
+	}	
 }

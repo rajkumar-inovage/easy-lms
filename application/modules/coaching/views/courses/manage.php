@@ -72,7 +72,7 @@
 				  </li>
 
 				  <li class="list-inline-item ml-4">
-			      	<a class="" href="<?php echo site_url ('coaching/courses/add_teachers/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-plus"></i> Add Teacher</a>
+			      	<a class="" href="<?php echo site_url ('coaching/courses/teachers/'.$coaching_id.'/'.$course_id.'/'.TEACHERS_NOT_ASSIGNED) ?>"><i class="fa fa-plus"></i> Add Teacher</a>
 			      </li>
 
 				</ul>
