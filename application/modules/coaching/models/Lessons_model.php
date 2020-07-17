@@ -113,6 +113,20 @@ class Lessons_model extends CI_Model {
 		return $position;
 	}
 
+	public function get_next_page ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
+		$this->db->select ('page_id');
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$this->db->where ('lesson_id', $lesson_id);
+		$this->db->where ('page_id', $page_id);
+		$sql = $this->db->get ('coaching_course_lesson_pages');
+		$row = $sql->row_array ();
+		$position = $row['position'];
+		return $position;
+	}
+
+
+
 	public function get_page ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);

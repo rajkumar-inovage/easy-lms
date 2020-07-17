@@ -15,11 +15,11 @@
 			      	<a class="" href="<?php echo site_url ('coaching/lessons/create/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-plus"></i> Create Chapter</a>
 			      </li>
 
-				  <li class="list-inline-item ml-4 d-none">
-			      	<a class="" href="<?php echo site_url ('coaching/plans/index/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-shopping-cart"></i> Import From Indiatests</a>
+				  <li class="list-inline-item ml-4 ">
+			      	<a class="text-success" href="<?php echo site_url ('coaching/plans/index/'.$coaching_id.'/'.$course_id.'/2'); ?>"><i class="fa fa-shopping-cart"></i> Import Free Lessons</a>
 			      </li>
 
-				  <li class="list-inline-item ml-4">
+				  <li class="list-inline-item ml-4 d-none">
 			      	<a class="text-success" href="<?php echo site_url ('coaching/indiatests/lesson_plans/'.$coaching_id.'/'.$course_id.'/0/0'); ?>"><i class="fa fa-shopping-cart"></i> Import Free Lessons</a>
 			      </li>
 
@@ -44,12 +44,12 @@
 			      	<a class="" href="<?php echo site_url ('coaching/tests/create_test/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-plus"></i> Create Test</a>
 			      </li>
 
-				  <li class="list-inline-item ml-4 d-none">
-			      	<a class="" href="<?php echo site_url ('coaching/plans/index/'.$coaching_id.'/'.$course_id.'/0/0'); ?>"><i class="fa fa-shopping-cart"></i> Import From Indiatests</a>
+				  <li class="list-inline-item ml-4 ">
+			      	<a class="text-success" href="<?php echo site_url ('coaching/plans/index/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-shopping-cart"></i> Import Free Tests</a>
 			      </li>
 
-				  <li class="list-inline-item ml-4">
-			      	<a class="text-success" href="<?php echo site_url ('coaching/indiatests/test_plans/'.$coaching_id.'/'.$course_id.'/0/0'); ?>"><i class="fa fa-shopping-cart"></i> Import Free Tests</a>
+				  <li class="list-inline-item ml-4 d-none">
+			      	<a class="text-success" href="<?php echo site_url ('coaching/indiatests/test_plans/'.$coaching_id.'/'.$course_id.'/0/0'); ?>"><i class="fa fa-shopping-cart"></i> Import From Indiatests</a>
 			      </li>
 
 				</ul>
