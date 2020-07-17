@@ -99,4 +99,89 @@ class Courses_model extends CI_Model {
 		$sql = $this->db->get ('coaching_tests');
 		return $sql->num_rows ();
 	}
+	public function get_teachers_assigned ($coaching_id=0, $course_id=0, $status=1) {
+		$this->db->select('member_id');
+		$this->db->from('coaching_course_teachers');
+		$this->db->where ('course_id', $course_id);
+		$sub_query = $this->db->get_compiled_select();
+
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('status', $status);
+		$this->db->where ('role_id', USER_ROLE_TEACHER);
+		$this->db->where ("member_id IN ($sub_query)");
+		$sql = $this->db->get ('members');
+		return $sql->result_array();
+	}
+	public function get_teachers_not_assigned ($coaching_id=0, $course_id=0, $status=1) {
+		$this->db->select('member_id');
+		$this->db->from('coaching_course_teachers');
+		$this->db->where ('course_id', $course_id);
+		$sub_query = $this->db->get_compiled_select();
+		
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('status', $status);
+		$this->db->where ('role_id', USER_ROLE_TEACHER);
+		$this->db->where ("member_id NOT IN ($sub_query)");
+		$sql = $this->db->get ('members');
+		return $sql->result_array();
+	}
+	public function add_teachers_assignment($coaching_id, $course_id){
+		$users = $this->input->post('users');
+		$add_count = 0;
+		$user_count = count($users);
+		foreach ($users as $i => $member_id) {
+			if($this->add_teacher_assignment($coaching_id, $course_id, $member_id)){
+				$add_count += 1;
+			}
+		}
+		if($add_count===$user_count){
+			$returnValue = true;
+		} else {
+			$returnValue = false;
+		}
+		return $returnValue;
+	}
+	public function add_teacher_assignment($coaching_id, $course_id, $member_id, $status=1){
+		$data['course_id'] = $course_id;
+		$data['coaching_id'] = $coaching_id;
+		$data['member_id'] = $member_id;
+		$data['status'] = $status;
+		$data['created_on'] = time();
+		$data['created_by'] = $this->session->userdata('member_id');
+		$this->db->insert('coaching_course_teachers', $data);
+		if ($this->db->affected_rows() > 0) {
+			$returnValue = true;
+		} else {
+			$returnValue = false;
+		}
+		return $returnValue;
+	}
+	public function remove_teachers_assignment($coaching_id, $course_id){
+		$users = $this->input->post('users');
+		$remove_count = 0;
+		$users_count = count($users);
+		foreach ($users as $i => $member_id) {
+			if($this->remove_teacher_assignment($coaching_id, $course_id, $member_id)){
+				$remove_count += 1;
+			}
+		}
+		if($users_count===$remove_count){
+			$returnValue = true;
+		} else {
+			$returnValue = false;
+		}
+		return $returnValue;
+	}
+	public function remove_teacher_assignment($coaching_id, $course_id, $member_id){
+		$this->db->where ('course_id', $course_id);
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('member_id', $member_id);
+		$this->db->delete('coaching_course_teachers');	
+		if ($this->db->affected_rows() > 0) {
+			$returnValue = true;
+		} else {
+			$returnValue = false;
+		}
+		return $returnValue;
+	}
 }

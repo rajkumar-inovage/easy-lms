@@ -237,8 +237,6 @@ class Tests extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'footer', $data);	
 		
 	}	
-
-
 	// Create new question group
 	/* CREATE QUESTION GROUP
 		Function to create question group
@@ -277,8 +275,6 @@ class Tests extends MX_Controller {
 		$this->load->view('tests/question_group_create', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
     }
-	
-	
 	/* function for Create/Edit question */
 	public function question_create ($coaching_id=0, $course_id=0, $test_id=0, $parent_id=0, $question_id=0, $question_type=QUESTION_MCSC	) {
 				
@@ -324,8 +320,6 @@ class Tests extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 	// end create edit question	
-
-
 	/* Preview Test
 	// 
 	*/

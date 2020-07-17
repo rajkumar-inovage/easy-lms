@@ -93,4 +93,74 @@ class Courses_actions extends MX_Controller {
 		$this->message->set("Course deleted successfully", "success", TRUE);
 		redirect("coaching/courses/index/".$coaching_id.'/'.$category_id);
 	}
+	public function assign_teachers($coaching_id = 0, $course_id = 0){
+		$this->form_validation->set_rules('users[]', 'Users', 'required');
+		if ($this->form_validation->run() == true) {
+			if ($this->courses_model->add_teachers_assignment($coaching_id, $course_id)) {
+				$message = 'Teacher assigned to this Course successfully';
+				$redirect = "coaching/courses/teachers/$coaching_id/$course_id/".TEACHERS_ASSIGNED;
+				$this->message->set($message, 'success', true);
+				$this->output->set_content_type("application/json");
+				$this->output->set_output(
+					json_encode(
+						array(
+							'status' => true,
+							'message' => $message,
+							'redirect' => site_url($redirect),
+						)
+					)
+				);
+			}
+		} else {
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(
+				json_encode(
+					array(
+						'status' => false,
+						'error' => validation_errors(),
+					)
+				)
+			);
+		}
+	}
+	public function assign_teacher($coaching_id = 0, $course_id = 0, $member_id = 0){
+		$this->courses_model->add_teacher_assignment($coaching_id, $course_id, $member_id);
+		$this->message->set("Teacher assigned to this course successfully", "success", TRUE);
+		redirect("coaching/courses/teachers/".$coaching_id.'/'.$course_id.'/'.TEACHERS_ASSIGNED);
+	}
+	public function unassign_teachers($coaching_id = 0, $course_id = 0){
+		$this->form_validation->set_rules('users[]', 'Users', 'required');
+		if ($this->form_validation->run() == true) {
+			if ($this->courses_model->remove_teachers_assignment($coaching_id, $course_id)) {
+				$message = 'Teacher assignment removed from this course successfully.';
+				$redirect = "coaching/courses/teachers/$coaching_id/$course_id/".TEACHERS_ASSIGNED;
+				$this->message->set($message, 'info', true);
+				$this->output->set_content_type("application/json");
+				$this->output->set_output(
+					json_encode(
+						array(
+							'status' => true,
+							'message' => $message,
+							'redirect' => site_url($redirect),
+						)
+					)
+				);
+			}
+		} else {
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(
+				json_encode(
+					array(
+						'status' => false,
+						'error' => validation_errors(),
+					)
+				)
+			);
+		}
+	}
+	public function unassign_teacher($coaching_id = 0, $course_id = 0, $member_id = 0){
+		$this->courses_model->remove_teacher_assignment($coaching_id, $course_id, $member_id);
+		$this->message->set("Teacher assignment removed from this course successfully", "info", TRUE);
+		redirect("coaching/courses/teachers/".$coaching_id.'/'.$course_id.'/'.TEACHERS_ASSIGNED);
+	}
 }
