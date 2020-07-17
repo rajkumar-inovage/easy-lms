@@ -107,7 +107,7 @@ class Courses_model extends CI_Model {
 
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('status', $status);
-		$this->db->where ('role_id', 3);
+		$this->db->where ('role_id', USER_ROLE_TEACHER);
 		$this->db->where ("member_id IN ($sub_query)");
 		$sql = $this->db->get ('members');
 		return $sql->result_array();
@@ -120,7 +120,7 @@ class Courses_model extends CI_Model {
 		
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('status', $status);
-		$this->db->where ('role_id', 3);
+		$this->db->where ('role_id', USER_ROLE_TEACHER);
 		$this->db->where ("member_id NOT IN ($sub_query)");
 		$sql = $this->db->get ('members');
 		return $sql->result_array();
