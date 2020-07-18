@@ -68,7 +68,8 @@ class Indiatests_model extends CI_Model {
 		$prefix = $its_db->dbprefix;
   		$query = 'SELECT T.* FROM '.$prefix.'tests T INNER JOIN '.$prefix.'tests_in_plan TIP ON T.test_id=TIP.test_id WHERE TIP.plan_id='.$plan_id;
 		$sql = $its_db->query ($query);
-		return $sql->result_array ();
+		$result = $sql->result_array ();
+		return $result;
 	}
 
 
@@ -119,6 +120,7 @@ class Indiatests_model extends CI_Model {
 				$questions = $sql_tq->result_array ();
 
 				// Prepare to copy
+				$data = [];
 				$data['coaching_id'] 		= $coaching_id;
 				$data['course_id'] 			= $course_id;
 				$data['unique_test_id'] 	= $row['unique_test_id'];
@@ -147,7 +149,7 @@ class Indiatests_model extends CI_Model {
 					$new_test_id = $this->db->insert_id ();
 
 					// Prepare to copy questions
-					$data = [];
+					$q_data = [];
 					if (! empty ($questions)) {
 						foreach ($questions as $q) {
 							// Copy questions
@@ -155,8 +157,8 @@ class Indiatests_model extends CI_Model {
 							$q['question_id'] = NULL;
 							$q['coaching_id'] = $coaching_id;
 							$q['course_id'] = $course_id;
-							$data = $q;
-							$this->db->insert ('coaching_questions', $data);
+							$q_data = $q;
+							$this->db->insert ('coaching_questions', $q_data);
 							$question_id = $this->db->insert_id ();
 
 							// Copy test question
@@ -287,55 +289,63 @@ class Indiatests_model extends CI_Model {
 				$row['created_on'] 		= time ();
 				$row['created_by'] 		= $this->session->userdata ('member_id');
 				$data = $row;
-				$this->db->insert ('coaching_course_lessons', $data);
-				$new_lesson_id = $this->db->insert_id ();
 
-				// Get all pages in this lesson
-				$its_db->select ('LP.*');
-				$its_db->from ('lesson_pages LP');
-				$its_db->where ('LP.lesson_id', $lesson_id);
-				$sql_tq = $its_db->get ();
-				$pages = $sql_tq->result_array ();
+				// Check if lesson already exists
+				$this->db->where ('coaching_id', $coaching_id);
+				$this->db->where ('course_id', $course_id);
+				$this->db->where ('lesson_key', $row['lesson_key']);
+				$query = $this->db->get ('coaching_course_lessons');
+				if ($query->num_rows () == 0) {
+					$this->db->insert ('coaching_course_lessons', $data);
+					$new_lesson_id = $this->db->insert_id ();
 
-				// Copy pages locally
-				if  (! empty ($pages)) {
-					foreach ($pages as $page) {
-						unset ($page['category_id']);
-						$page_id 				= $page['page_id'];
-						$page['page_id'] 		= NULL;
-						$page['coaching_id'] 	= $coaching_id;
-						$page['course_id'] 		= $course_id;
-						$page['lesson_id'] 		= $new_lesson_id;
-						$page['created_on'] 	= time ();
-						$page['created_by'] 	= $this->session->userdata ('member_id');
-						$this->db->insert ('coaching_course_lesson_pages', $page);
-						$new_page_id = $this->db->insert_id ();
+					// Get all pages in this lesson
+					$its_db->select ('LP.*');
+					$its_db->from ('lesson_pages LP');
+					$its_db->where ('LP.lesson_id', $lesson_id);
+					$sql_tq = $its_db->get ();
+					$pages = $sql_tq->result_array ();
 
-						// Get all attachments
-						$its_db->select ('LP.*');
-						$its_db->from ('lesson_attachments LP');
-						$its_db->where ('LP.att_id', $page_id);
-						$sql_tq = $its_db->get ();
-						$atts = $sql_tq->result_array ();
+					// Copy pages locally
+					if  (! empty ($pages)) {
+						foreach ($pages as $page) {
+							unset ($page['category_id']);
+							$page_id 				= $page['page_id'];
+							$page['page_id'] 		= NULL;
+							$page['coaching_id'] 	= $coaching_id;
+							$page['course_id'] 		= $course_id;
+							$page['lesson_id'] 		= $new_lesson_id;
+							$page['created_on'] 	= time ();
+							$page['created_by'] 	= $this->session->userdata ('member_id');
+							$this->db->insert ('coaching_course_lesson_pages', $page);
+							$new_page_id = $this->db->insert_id ();
 
-						if  (! empty ($atts)) {
-							foreach ($atts as $att) {
-								unset ($att['category_id']);
-								$att_id 				= $att['att_id'];
-								$att['att_id'] 			= NULL;
-								$att['coaching_id'] 	= $coaching_id;
-								$att['course_id'] 		= $course_id;
-								$att['lesson_id'] 		= $new_lesson_id;
-								$att['page_id'] 		= $new_page_id;
-								$att['created_on'] 		= time ();
-								$att['created_by'] 		= $this->session->userdata ('member_id');
-								$this->db->insert ('coaching_course_lesson_pages', $att);
+							// Get all attachments
+							$its_db->select ('LP.*');
+							$its_db->from ('lesson_attachments LP');
+							$its_db->where ('LP.att_id', $page_id);
+							$sql_tq = $its_db->get ();
+							$atts = $sql_tq->result_array ();
+
+							if  (! empty ($atts)) {
+								foreach ($atts as $att) {
+									unset ($att['category_id']);
+									$att_id 				= $att['att_id'];
+									$att['att_id'] 			= NULL;
+									$att['coaching_id'] 	= $coaching_id;
+									$att['course_id'] 		= $course_id;
+									$att['lesson_id'] 		= $new_lesson_id;
+									$att['page_id'] 		= $new_page_id;
+									$att['created_on'] 		= time ();
+									$att['created_by'] 		= $this->session->userdata ('member_id');
+									$this->db->insert ('coaching_course_lesson_pages', $att);
+								}
 							}
+
 						}
-
 					}
-				}
 
+				} 
 
 			}
 		}

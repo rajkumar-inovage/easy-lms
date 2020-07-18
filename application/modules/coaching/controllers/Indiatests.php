@@ -7,7 +7,7 @@ class Indiatests extends MX_Controller {
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
 	    $config = [ 'config_coaching'];
-	    $models = ['coaching_model', 'subscription_model', 'tests_model', 'qb_model', 'users_model', 'indiatests_model'];
+	    $models = ['coaching_model', 'subscription_model', 'tests_model', 'qb_model', 'users_model', 'indiatests_model', 'plans_model'];
 
 	    $this->common_model->autoload_resources ($config, $models);
 	    $coaching_id = $this->uri->segment (4);
@@ -66,7 +66,7 @@ class Indiatests extends MX_Controller {
     public function test_plans ($coaching_id=0, $course_id=0, $category_id=0, $amount='-1') {
         
         if ($course_id > 0) {
-            $data['bc'] = array ('Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
+            $data['bc'] = array ('Manage'=>'coaching/plans/index/'.$coaching_id.'/'.$course_id);
         } else {
             $data['bc'] = array ('Manage'=>'coaching/indiatests/test_plan_categories/'.$coaching_id.'/'.$course_id);
         }
@@ -78,7 +78,12 @@ class Indiatests extends MX_Controller {
         $result = [];
         $plans = $this->indiatests_model->test_plans ($category_id, 1, $amount);
         if (! empty ($plans)) {
-            foreach ($plans as $p) {                
+            foreach ($plans as $p) {
+                if ($this->plans_model->test_plan_added ($coaching_id, $p['plan_id'])) {
+                    $p['added'] = true;
+                } else {
+                    $p['added'] = false;                    
+                }
                 $tests = $this->indiatests_model->tests_in_plan ($p['plan_id']); 
                 if (! empty($tests)) {
                     $num_tests = count ($tests);
@@ -111,6 +116,7 @@ class Indiatests extends MX_Controller {
         } else {
             $data['bc'] = array ('Test Plans'=>'coaching/plans/index/'.$coaching_id);
         }
+        $data['bc'] = array ('Test Plans'=>'coaching/plans/index/'.$coaching_id.'/'.$course_id);
 
         $data['toolbar_buttons'] = $this->toolbar_buttons;
         $data['page_title'] = 'Tests In Plan';
@@ -118,16 +124,25 @@ class Indiatests extends MX_Controller {
         $data['course_id'] = $course_id;
         $data['plan_id'] = $plan_id;
         
-        $data['tests'] = $this->indiatests_model->tests_in_plan ($plan_id);
+        $result = [];
+        $tests = $this->indiatests_model->tests_in_plan ($plan_id);
+        if (! empty ($tests)) {
+            foreach ($tests as $row) {
+               $courses = $this->plans_model->test_in_courses ($coaching_id, $row['unique_test_id']);
+               $row['courses'] = $courses;
+               $result[] = $row;
+            }
+        }
+        $data['tests'] = $result;
 
         $this->load->view(INCLUDE_PATH  . 'header', $data);
         $this->load->view('indiatests/tests_in_plan', $data);
         $this->load->view(INCLUDE_PATH  . 'footer', $data);        
     }
 
-    public function buy_plan ($coaching_id=0, $plan_id=0) {
+    public function buy_test_plan ($coaching_id=0, $course_id=0, $plan_id=0) {
         $this->indiatests_model->buy_plan ($coaching_id, $plan_id);
-        redirect ('coaching/plans/index/'.$coaching_id);
+        redirect ('coaching/plans/index/'.$coaching_id.'/'.$course_id);
     }
 
 
@@ -155,7 +170,7 @@ class Indiatests extends MX_Controller {
     public function lesson_plans ($coaching_id=0, $course_id=0, $category_id=0, $amount='-1') {
         
         if ($course_id > 0) {
-            $data['bc'] = array ('Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
+            $data['bc'] = array ('Manage'=>'coaching/plans/index/'.$coaching_id.'/'.$course_id.'/2');
         } else {
             $data['bc'] = array ('Manage'=>'coaching/indiatests/lesson_plan_categories/'.$coaching_id.'/'.$course_id);
         }
@@ -168,6 +183,11 @@ class Indiatests extends MX_Controller {
         $plans = $this->indiatests_model->lesson_plans ($category_id, 1, $amount);
         if (! empty ($plans)) {
             foreach ($plans as $p) {                
+                if ($this->plans_model->lesson_plan_added ($coaching_id, $p['plan_id'])) {
+                    $p['added'] = true;
+                } else {
+                    $p['added'] = false;                    
+                }
                 $tests = $this->indiatests_model->lessons_in_plan ($p['plan_id']); 
                 if (! empty($tests)) {
                     $num_tests = count ($tests);
@@ -209,7 +229,16 @@ class Indiatests extends MX_Controller {
         $data['course_id'] = $course_id;
         $data['plan_id'] = $plan_id;
         
-        $data['tests'] = $this->indiatests_model->lessons_in_plan ($plan_id);
+        $result = [];
+        $lessons = $this->indiatests_model->lessons_in_plan ($plan_id);
+        if (! empty ($lessons)) {
+            foreach ($lessons as $row) {
+               $courses = $this->plans_model->lesson_in_courses ($coaching_id, $row['lesson_key']);
+               $row['courses'] = $courses;
+               $result[] = $row;
+            }
+        }
+        $data['lessons'] = $result;
 
         $this->load->view(INCLUDE_PATH  . 'header', $data);
         $this->load->view('indiatests/lessons_in_plan', $data);

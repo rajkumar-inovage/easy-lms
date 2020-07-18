@@ -47,7 +47,9 @@ if ($page_id > 0) {
 			}
 			?>
 		</ul>
-	
+		<div class="card-footer">
+			<?php ?>
+		</div>
 	</div>
 	<?php
 } else if ($lesson_id > 0) {

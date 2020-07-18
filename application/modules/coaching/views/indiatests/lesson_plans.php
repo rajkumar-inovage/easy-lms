@@ -1,6 +1,6 @@
 <h2 class="text-center mb-4">Available Lesson Plans In IndiaTests&reg;</h2>
 
-<div class="card mb-4">
+<div class="card mb-4 d-none">
 	<div class="card-body">
 		<div class="row">
 			<div class="col-md-4">
@@ -49,7 +49,7 @@
                     <div class="media-right">
 						<?php 
 						if ($row['amount'] == 0) {
-							echo '<span class="badge badge-success p-2">Free</span>';
+							echo '<span class="badge badge-secondary p-2">Free</span>';
 						} else {
 							echo '<span class="badge badge-secondary p-2"><i class="fa fa-rupee-sign"></i> '.$row['amount'] . ' </span>';
 						}
@@ -62,10 +62,14 @@
                     </div>
                     <div class="media-right">
 						<?php 
-						if ($row['amount'] == 0) {
-							echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Get Plan', ['class'=>'btn btn-success']);
-						} else {
-							echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Buy Plan', ['class'=>'btn btn-primary']);
+						if ($row['added'] == true) {
+							echo '<span class="badge badge-primary p-2">Added</span>';
+						} else {							
+							if ($row['amount'] == 0) {
+								echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Import Lessons', ['class'=>'btn btn-success']);
+							} else {
+								echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Buy Plan', ['class'=>'btn btn-primary']);
+							}
 						}
 						?>
                     </div>

@@ -1,5 +1,5 @@
 <div class="card">
-	<?php echo form_open ('coaching/indiatest_actions/import_lessons/'.$coaching_id.'/'.$course_id.'/'.$plan_id, ['id'=>'validate-']) ;?>
+	<?php echo form_open ('coaching/indiatest_actions/import_lessons/'.$coaching_id.'/'.$course_id.'/'.$plan_id, ['id'=>'validate-1']) ;?>
 		<ul class="list-group">
 			<?php if ($course_id > 0) { ?>
 				<li class="list-group-item media">				
@@ -26,8 +26,9 @@
 			</li>
 			<?php
 			$i = 1;
-			if ( ! empty($tests)) {
-				foreach ($tests as $row) {
+			if ( ! empty($lessons)) {
+				foreach ($lessons as $row) {
+					$courses = $row['courses'];
 					?>
 					<li class="list-group-item media">
 						<div class="media-left">
@@ -40,6 +41,15 @@
 						<?php } ?>
 						<div class="media-body">
 							<?php echo $row['title']; ?>
+							<div class="mt-2">
+							<?php
+							if (! empty ($courses)) {
+								foreach ($courses as $course) {
+									echo '<span class="badge badge-info mr-2 pb-1">'.$course['title'].'</span>';
+								}
+							} 
+							?>
+							</div>
 						</div>
 						<div class="media-right">
 							<span><?php echo $row['duration'] . ' mins'; ?></span>
