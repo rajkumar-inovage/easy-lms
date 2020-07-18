@@ -752,7 +752,6 @@ class Users_model extends CI_Model {
 
 		$data['coaching_id']  	= $coaching_id;
 		$data['link_send_time']	= time();
-		$data['role_id']  		= $role_id;
 		$data['status']  		= USER_STATUS_ENABLED;
 		$data['creation_date'] 	= time ();
 		$data['created_by'] 	= intval($this->session->userdata ('member_id'));

@@ -478,8 +478,56 @@ class User_actions extends MX_Controller {
 			$i = 0;
 			$count_error = 0;
 			$data = [];
+			$result = array();
+			$fields = array();
+			$j = 0;
 
 			if (($handle = fopen (base_url($file), "r")) !== FALSE) {
+				while (($row = fgetcsv($handle, 1000, ",")) !== false) {
+			        if (empty($fields)) {
+			        	foreach ($row as $field) {
+			        		array_push($fields, strtolower(str_replace(' ', '_', $field)));
+			        	}
+			            continue;
+			        }
+			        foreach ($row as $k=>$value) {
+			            $result[$j][$fields[$k]] = $value;
+			        }
+			        $j++;
+			    }
+			    foreach ($result as $index => $row) {
+			    	$users['sr_no'] 			=  (trim($row['login']));
+					$users['email'] 			=  (trim($row['email']));
+					$users['first_name'] 		=  (trim($row['first_name']));
+					$users['second_name'] 		=  (trim($row['middle_name']));
+					$users['last_name'] 		=  (trim($row['last_name']));
+					$users['dob'] 				=  (trim($row['dob']));
+					$users['gender'] 			=  (trim($row['gender']));
+					$users['address'] 			=  (trim($row['address']));
+					$users['postal'] 			=  (trim($row['postal']));
+					$users['city'] 				=  (trim($row['city']));
+					$users['province'] 			=  (trim($row['province']));
+					$users['country'] 			=  (trim($row['country']));
+					$users['primary_contact'] 	=  (trim($row['primary_contact']));
+					$users['mobile'] 			=  (trim($row['mobile']));
+					$users['fax'] 				=  (trim($row['fax']));
+					$users['role_id'] 			=  $role_id;
+					if ($users['email'] == '' || $users['first_name'] == '' || $users['last_name'] == '') {
+						$count_error++;
+					} else if ( ($num_users > $free_users) && $member_id == 0) {
+							$this->output->set_content_type("application/json");
+							$this->output->set_output(json_encode(array('status'=>false, 'error'=>'User limit reached. You can create a maximum of '.$free_users.' user accounts in Free Subscription plan. Upgrade your plan to create more users' )));
+					} else {
+						$this->users_model->upload_users_csv ($coaching_id, $batch_id, $users);
+						$message = ($index + 1) . ' users uploaded successfully. ';
+						if ($count_error > 0) {
+								$message .= $count_error. ' records were skipped due to insufficient data.';
+						}
+						$this->output->set_content_type("application/json");
+						$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('coaching/users/index/'.$coaching_id.'/'.$role_id) )));
+					}
+			    }
+			    /*
 				while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
 					
 					$users['sr_no'] 			=  (trim($row[0]));
@@ -517,6 +565,7 @@ class User_actions extends MX_Controller {
 					}
 					$i++;
 				}
+				*/
 			}
 			// Clean-up
 			$this->users_model->import_cleanup ();

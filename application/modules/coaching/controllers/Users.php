@@ -221,7 +221,7 @@ class Users extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'footer', $data);				
 	}
 	
-	public function import ($coaching_id=0, $role_id=0) { 
+	public function import ($coaching_id=0, $role_id=USER_ROLE_STUDENT) { 
 		$data['page_title'] = 'Users';
 		$data['sub_title'] = 'Import Users';
 		$data['coaching_id'] 	= $coaching_id;

@@ -25,10 +25,15 @@
 				<div class="form-group">
 					<label>Feauted Image</label>
 					<div class="custom-file mb-3">
-						<input type="file" class="custom-file-input" id="feat-image" name="feat-image" />
-						<label class="custom-file-label" for="feat-image">Select file to upload...</label>
+						<input type="file" class="custom-file-input" id="feat_img" name="feat_img" accept="image/*" />
+						<label class="custom-file-label" for="feat_img">Select file to upload...</label>
 						<div class="invalid-feedback"></div>
 					</div>
+					<?php if (isset($course['feat_img'])) :?>
+					<div>
+						<img src="<?php echo site_url($course['feat_img']); ?>" class="img-fluid" style="width: 128px;" />
+					</div>
+					<?php endif;?>
 				</div>
 
 			</div>
