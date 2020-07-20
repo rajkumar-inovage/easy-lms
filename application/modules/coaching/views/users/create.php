@@ -106,7 +106,7 @@
 							} else {
 								$dob = '';
 							}
-							echo form_input(array('type'=>'date', 'name'=>'dob', 'class'=>'form-control input-width-small', 'value'=>set_value('dob', $dob)));
+							echo form_input(array('type'=>'date', 'name'=>'dob', 'max' =>date('Y-m-d', time()), 'class'=>'form-control input-width-small', 'value'=>set_value('dob', $dob)));
 							?>
 						</div>
 						
@@ -125,9 +125,9 @@
 							?>
 							<div class="d-block">
 								<div class="btn-group btn-group-toggle gender-toggle" data-toggle="buttons">
-									<label class="btn position-relative btn-default"><?php echo form_radio(array('name'=>'gender', 'value'=>'m', 'checked'=>$status_male, 'class'=>'')); ?><?php echo ('Male'); ?></label>
-									<label class="btn position-relative btn-default"><?php echo form_radio(array('name'=>'gender', 'value'=>'f', 'checked'=>$status_female, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Female'); ?></label>
-									<label class="btn position-relative btn-default"><?php echo form_radio(array('name'=>'gender', 'value'=>'n', 'checked'=>$status_none, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Not Specified'); ?></label>
+									<label class="btn position-relative btn-default<?php echo ($status_male)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'m', 'checked'=>$status_male, 'class'=>'')); ?><?php echo ('Male'); ?></label>
+									<label class="btn position-relative btn-default<?php echo ($status_female)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'f', 'checked'=>$status_female, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Female'); ?></label>
+									<label class="btn position-relative btn-default<?php echo ($status_none)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'n', 'checked'=>$status_none, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Not Specified'); ?></label>
 								</div>
 							</div>
 						</div>

@@ -41,7 +41,7 @@
             <tr>
               <th scope="col" class="text-left w-25">Course Name</th>
               <th scope="col" class="w-25">Created ON</th>
-              <th scope="col" class="w-25">Created By</th>
+              <th scope="col">Created By</th>
               <th scope="col">Status</th>
               <th scope="col">Actions</th>
             </tr>
@@ -49,15 +49,31 @@
           <tbody>
             <?php foreach ($courses as $course): 
               $category_id = isset($course['cat_id']) ? $course['cat_id'] : $cat_id;
+              $toggle_to = (intval($course['status']) === COURSE_STATUS_ACTIVE)?COURSE_STATUS_INACTIVE:COURSE_STATUS_ACTIVE;
             ?>
             <tr>
-              <th scope="row" class="text-left"><?php echo $course['title']; ?></th>
-              <td><span><?php echo date('j<\s\up>S</\s\up> F, Y', $course['created_on']); ?></span></td>
-              <td><?php echo $course['created_by']; ?></td>
-              <td><?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? '<span class="badge badge-pill badge-success">Active</span>' : '<span class="badge badge-pill badge-danger">Inactive</span>'; ?></td>
-              <td>
-                <a class="btn btn-info btn-sm" href="<?php echo site_url ('coaching/courses/manage/'.$coaching_id.'/'.$course['course_id']); ?>"><i class="fa fa-cog"></i> Manage
+              <th scope="row" class="text-left align-middle">
+                <a class="text-decoration-none" href="<?php echo site_url ('coaching/courses/edit/'.$coaching_id.'/'.$cat_id.'/'.$course['course_id']); ?>">
+                  <?php echo $course['title']; ?>
                 </a>
+              </th>
+              <td class="align-middle"><span><?php echo date('j<\s\up>S</\s\up> F, Y', $course['created_on']); ?></span></td>
+              <td class="align-middle"><?php echo $course['created_by']; ?></td>
+              <td class="align-middle"><?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? '<span class="badge badge-pill badge-success">Active</span>' : '<span class="badge badge-pill badge-danger">Inactive</span>'; ?></td>
+              <td>
+                <div class="d-flex justify-content-center">
+                  <a
+                  href="javascript: void(0);"
+                  onclick="show_confirm('This will <?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? 'Inactive' : 'Active'; ?> this course, Are you sure?', '<?php echo site_url ('coaching/courses_actions/toggle_course_status/'.$coaching_id.'/'.$cat_id.'/'.$course['course_id'].'/'.$toggle_to); ?>')"
+                  data-toggle="tooltip"
+                  data-placement="left"
+                  class="btn p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center mr-2 <?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? 'btn-danger' : 'btn-success'; ?>"
+                  title="<?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? 'Set Inactive' : 'Set Active'; ?>">
+                    <?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? '<i class="fa fa-ban"></i>' : '<i class="fa fa-check"></i>'; ?>
+                  </a>
+                  <a class="btn btn-info btn-sm" href="<?php echo site_url ('coaching/courses/manage/'.$coaching_id.'/'.$course['course_id']); ?>"><i class="fa fa-cog"></i> Manage
+                  </a>
+                </div>
               </td>
             </tr>
             <?php endforeach;?>

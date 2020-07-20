@@ -126,11 +126,11 @@
 				  </li>
 
 				  <li class="list-inline-item ml-4">
-				  	<a class="" href="<?php echo site_url ('coaching/courses/create/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-edit"></i> Edit</a>
+				  	<a class="" href="<?php echo site_url ('coaching/courses/edit/'.$coaching_id.'/'.$cat_id.'/'.$course_id); ?>"><i class="fa fa-edit"></i> Edit</a>
 				  </li>
 
 				  <li class="list-inline-item ml-4">
-			      	<a class="" href="<?php echo site_url ('coaching/courses/add_teachers/'.$coaching_id.'/'.$course_id); ?>" class="text-danger"><i class="fa fa-trash"></i> Delete Course</a>
+			      	<a class="" href="<?php echo site_url ('coaching/courses/add_teachers/'.$coaching_id.'/'.$cat_id.'/'.$course_id); ?>" class="text-danger"><i class="fa fa-trash"></i> Delete Course</a>
 			      </li>
 				</ul>
 			</div>

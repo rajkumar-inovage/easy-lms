@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
 	<div class="col-md-8">
 		<div class="card">
-			<?php echo form_open_multipart ('coaching/user_actions/import_from_csv/'.$coaching_id.'/'.$role_id, array ('class'=>'form-horizontal', 'id'=>'upload-user') ); ?>
+			<?php echo form_open_multipart ('coaching/user_actions/import_from_csv/'.$coaching_id.'/'.$role_id, array ('class'=>'form-horizontal', 'id'=>'validate-1') ); ?>
 				<div class="card-header bg-white">
 					<h4 class="card-title">Import Users</h4> 
 				</div>
@@ -36,8 +36,8 @@
 						<input type="file" name="userfile" size="20" class="form-control" />
 						<p class="help-text">.csv files only</p>
 					</div> 
-					<p class="text-danger">Upload students list in given format. Email, First Name and Last Name should not be left blank.</p>
-					<a href="<?php echo site_url ('coaching/users/download_file/users_sample')?>" class="btn btn-link">Download sample file</a> 
+					<p class="text-danger">Upload students list in given format. Contact No., First Name and Last Name should not be left blank.</p>
+					<a href="<?php echo site_url ('coaching/users/download_file')?>" class="btn btn-link">Download sample file</a> 
 				</div>
 				<div class="card-footer">
 					<input type="submit" id="" class="btn btn-primary" value="Import ">
