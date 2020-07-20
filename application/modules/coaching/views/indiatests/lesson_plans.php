@@ -63,7 +63,7 @@
                     <div class="media-right">
 						<?php 
 						if ($row['added'] == true) {
-							echo '<span class="badge badge-primary p-2">Added</span>';
+							echo '<span class="badge badge-success p-2">Added</span>';
 						} else {							
 							if ($row['amount'] == 0) {
 								echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Import Lessons', ['class'=>'btn btn-success']);

@@ -20,6 +20,10 @@ define ('LESSON_DURATION_WEEK', 				3);
 define ('TEACHERS_ASSIGNED', 					1);
 define ('TEACHERS_NOT_ASSIGNED', 				2);
 
+define ('COURSE_ENROLMENT_DIRECT', 				1);
+define ('COURSE_ENROLMENT_BATCH', 				2);
+
+
 defined('COURSE_STATUS_INACTIVE') or define('COURSE_STATUS_INACTIVE', 0);
 defined('COURSE_STATUS_ACTIVE') or define('COURSE_STATUS_ACTIVE', 1);
 defined('COURSE_STATUS_TRASH') or define('COURSE_STATUS_TRASH', 2);

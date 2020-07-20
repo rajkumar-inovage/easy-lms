@@ -42,7 +42,7 @@ class Courses_actions extends MX_Controller {
 			);
 		}
 	}
-	public function create_edit_action($coaching_id, $category_id = 0, $course_id = 0) {
+	public function create_edit_action($coaching_id=0, $category_id=0, $course_id=0) {
 		$this->form_validation->set_rules('title', 'Title', 'required');
 		$this->form_validation->set_rules('price', 'Price', 'required');
 		if ($this->form_validation->run() == true) {

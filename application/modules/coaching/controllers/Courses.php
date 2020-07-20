@@ -69,6 +69,7 @@ class Courses extends MX_Controller {
 	public function manage ($coaching_id=0, $course_id=0) {
 		$data['page_title'] = 'Manage Course';
 
+		$data['course'] = $this->courses_model->get_course_by_id ($course_id);
 		$data['num_lessons'] = $this->courses_model->count_course_lessons ($coaching_id, $course_id);
 		$data['num_tests'] = $this->courses_model->count_course_tests ($coaching_id, $course_id);
 
@@ -153,5 +154,13 @@ class Courses extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/teachers', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
-	}	
+	}
+
+	public function settings ($coaching_id=0, $course_id=0) {
+		$data['script'] = $this->load->view ('courses/scripts/teachers', $data, true);
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('courses/teachers', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
+
+	}
 }

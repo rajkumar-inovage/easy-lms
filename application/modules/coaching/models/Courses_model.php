@@ -52,15 +52,16 @@ class Courses_model extends CI_Model {
 		}
 		return $category_id;
 	}
-	public function add_course($coaching_id, $category_id, $course_id, $status = CATEGORY_STATUS_ACTIVE) {
+	
+	public function add_course($coaching_id, $category_id, $course_id, $status=CATEGORY_STATUS_ACTIVE) {
 		$data['title'] = $this->input->post('title');
 		$data['description'] = $this->input->post('description');
 		$data['price'] = $this->input->post('price');
+		$data['enrolment_type'] = $this->input->post('enrolment_type');
 		$data['status'] = $status;
 		if ($course_id > 0) {
 			$this->db->where('course_id', $course_id);
 			$this->db->where('coaching_id', $coaching_id);
-			$this->db->where('cat_id', $category_id);
 			$this->db->update('coaching_courses', $data);
 			if ($this->db->affected_rows() > 0) {
 				$returnValue = true;
@@ -69,7 +70,7 @@ class Courses_model extends CI_Model {
 			}
 		} else {
 			$data['coaching_id'] = $coaching_id;
-			if($category_id>0){
+			if ($category_id>0) {
 				$data['cat_id'] = $category_id;
 			}
 			$data['created_on'] = time();
