@@ -30,7 +30,10 @@
 					<div class="media-right">
 						<?php 
 						if ( $test['finalized'] == 0) {
+							echo '<div class="d-sm-flex text-right">';
+							echo anchor ('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id, '<i class="fa fa-plus"></i> Add Section', array('class'=>'btn btn-info btn-sm mr-sm-2 mb-2 sm mb-sm-0'));
 							echo anchor ('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id, '<i class="fa fa-plus"></i> Add Question', array('class'=>'btn btn-info btn-sm '));
+							echo '</div>';
 						}
 						?>
 					</div>

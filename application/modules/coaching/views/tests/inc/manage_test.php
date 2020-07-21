@@ -22,7 +22,9 @@
 			  </button>
 			  <div class="dropdown-menu dropdown-menu-lg-right">
 			      <a class="dropdown-item" href="<?php echo site_url ('coaching/tests/questions/'.$coaching_id.'/'.	$course_id.'/'.$test_id); ?>">Questions</a>
+			      <?php if ($test['finalized'] != 1) { ?>
 			      <a class="dropdown-item" href="<?php echo site_url ('coaching/tests/question_group_create/'.$coaching_id.'/'.	$course_id.'/'.$test_id); ?>">Add Section</a>
+			      <?php } ?>
 			      <?php if ($test['test_type'] == TEST_TYPE_REGULAR) { ?>
 			      	<a class="dropdown-item" href="<?php echo site_url ('coaching/tests/enrolments/'.$coaching_id.'/'.	$course_id.'/'.$test_id); ?>">Enrolments</a>
 				  <?php } ?>

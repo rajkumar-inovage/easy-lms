@@ -359,6 +359,7 @@ class Qb_model extends CI_Model {
 	public function save_group ($coaching_id=0, $course_id=0, $question_id=0) {
 		$marks 			= $this->input->post ('marks');
 		$course_id 		= ($course_id==0)?null:$course_id;
+		$chapter_id		= 0;
 		$type 			= 0;
 		$time 			= 0;
 		$negmarks 		= 0;
