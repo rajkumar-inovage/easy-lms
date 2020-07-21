@@ -92,16 +92,13 @@
 					  	<a class="" href="<?php echo site_url ('coaching/courses/enrolments/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-users"></i> Enrolments</a>
 					  </li>
 					<?php } else { ?>
-					  <li class="list-inline-item">
-					  	<a class="" href="<?php echo site_url ('coaching/courses/teachers/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-user-tie"></i> Schedules</a>
-					  </li>
 
 					  <li class="list-inline-item">
-					  	<a class="" href="<?php echo site_url ('coaching/courses/batches/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-user-tie"></i> Batches</a>
+					  	<a class="" href="<?php echo site_url ('coaching/enrolments/batches/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-users"></i> Batches</a>
 					  </li>
 
 					  <li class="list-inline-item ml-4">
-				      	<a class="" href="<?php echo site_url ('coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-plus"></i> Create Schedule</a>
+				      	<a class="" href="<?php echo site_url ('coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-plus"></i> Schedules</a>
 				      </li>
 					<?php } ?>
 				  

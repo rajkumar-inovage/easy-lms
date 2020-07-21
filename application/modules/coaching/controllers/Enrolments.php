@@ -2,10 +2,12 @@
 
 class Enrolments extends MX_Controller {
 
+	var $toolbar_buttons = [];
+
 	public function __construct() {
 		// Load Config and Model files required throughout Users sub-module
 		$config = ['config_coaching', 'config_course'];
-		$models = ['coaching_model', 'courses_model', 'lessons_model', 'users_model'];
+		$models = ['coaching_model', 'courses_model', 'lessons_model', 'users_model', 'enrolment_model'];
 		$this->common_model->autoload_resources($config, $models);
 	}
 
@@ -16,59 +18,64 @@ class Enrolments extends MX_Controller {
 	/*
 	 * Batches
 	*/
-	public function batches ($coaching_id=0, $course_id=0, $batch_id=0) {
+	public function batches ($coaching_id=0, $course_id=0) {
 		$data["page_title"] 	= "Batches";
+		$data["coaching_id"] 	= $coaching_id;
+		$data["course_id"] 		= $course_id;
+		$result = [];
+		$all_batches 			= $this->enrolment_model->get_batches ($coaching_id, $course_id);
+		if (! empty ($all_batches)) {
+			foreach ($all_batches as $row) {
+				$bu = $this->enrolment_model->batch_users ($coaching_id, $row['batch_id']);
+				if (! empty ($bu)) {
+					$num_users = count ($bu);
+				} else {
+					$num_users = 0;
+				}
+				$row['num_users'] = $num_users;
+				$result[] = $row;
+			}
+		}
+		
+		$data['all_batches'] = $result;
+
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		$data['toolbar_buttons']['<i class="fa fa-plus"></i> New Batch'] = 'coaching/enrolments/create_batch/'.$coaching_id.'/'.$course_id;
+		$data["bc"] = array ( 'Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
+
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('courses/batches', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);		
+	}
+	
+	public function create_batch ($coaching_id=0, $course_id=0, $batch_id=0) {
+		$data["page_title"] 	= "Create Batch";
 		$data["coaching_id"] 	= $coaching_id;
 		$data["course_id"] 		= $course_id;
 		$data["batch_id"] 		= $batch_id;
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
-		$data['toolbar_buttons']['<i class="fa fa-plus"></i> New Batch'] = 'coaching/users/create_batch/'.$coaching_id;
-		$data["bc"] = array ( 'Users'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id );
-		$data['all_batches'] = $this->users_model->get_batches ($coaching_id);
+		$data['toolbar_buttons']['<i class="fa fa-plus"></i> New Batch'] = 'coaching/enrolments/create_batch/'.$coaching_id.'/'.$course_id;
+		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
+
+		$data['batch'] = $this->enrolment_model->get_batch ($coaching_id, $course_id, $batch_id);
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
-		$this->load->view('users/batches', $data);
-		$this->load->view(INCLUDE_PATH . 'footer', $data);		
-	}
-	
-	public function create_batch ($coaching_id=0, $batch_id=0) {
-		$data["page_title"] = "Create Batch";
-		$data["sub_title"] = "Create New Batch";
-		$data["batch_id"] = $batch_id;
-		$data["coaching_id"] = $coaching_id;
-		$data['toolbar_buttons'] = $this->toolbar_buttons;
-		$data['toolbar_buttons']['<i class="fa fa-plus"></i> New Batch'] = 'coaching/users/create_batch/'.$coaching_id;
-		$data["bc"] = array ( 'Batches'=>'coaching/users/batches/'.$coaching_id );
-		$data['batch'] = $this->users_model->get_batch_details ($batch_id);
-        if ($data['batch']) {
-            $data['sub_title'] = 'Edit Batch: ' . $data['batch']['batch_name'];
-        }
-		$this->load->view(INCLUDE_PATH . 'header', $data);
-		$this->load->view('users/batch_create', $data);
+		$this->load->view('courses/create_batch', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);		
 	}
 	
 	
-	public function batch_users ($coaching_id=0, $batch_id=0, $add_users=0) {
-		$batch = $this->users_model->get_member_batches ($batch_id);
-		if ( ! empty ($batch)) {
-			$batch_title = $batch['batch_name'];
-		} else {
-			$batch_title = 'Batch Users';
-		}
-		$data["page_title"]  = 'Batch Users';
-		$data["sub_title"] = "Users in ";
-        if ($batch) {
-            $data['sub_title'] .= $batch['batch_name'];
-        }
-		$data["batch_title"] = $batch_title;
-		$data["batch_id"] = $batch_id;
-		$data["coaching_id"] = $coaching_id;
-		$data['add_users'] = $add_users;
-		$data["bc"] = array ( 'Batches'=>'coaching/users/batches/'.$coaching_id);
+	public function batch_users ($coaching_id=0, $course_id=0, $batch_id=0, $add_users=0) {
+		$batch = $this->enrolment_model->get_batch ($coaching_id, $course_id, $batch_id);
+		$data["page_title"]  	= 'Batch Users';
+		$data["coaching_id"] 	= $coaching_id;
+		$data["batch_id"] 		= $batch_id;
+		$data["course_id"] 		= $course_id;
+		$data['add_users'] 		= $add_users;
+		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
-		$users_not_in_batch = $this->users_model->users_not_in_batch ($batch_id, $coaching_id);
+		$users_not_in_batch = $this->enrolment_model->users_not_in_batch ($coaching_id, $batch_id);
 		if (! empty($users_not_in_batch)) {
 		    $num_users_notin = count($users_not_in_batch);
 		} else {
@@ -76,25 +83,36 @@ class Enrolments extends MX_Controller {
 		}
 		$data['num_users_notin'] = $num_users_notin;
 		
-		$users_in_batch = $this->users_model->batch_users ($batch_id);
-		if (! empty($users_in_batch)) {
-		    $num_users_in = count($users_in_batch);
+		$bu = $this->enrolment_model->batch_users ($coaching_id, $batch_id);
+		if (! empty($bu)) {
+		    $num_users_in = count($bu);
 		} else {
 		    $num_users_in = 0;
 		}
 		$data['num_users_in'] = $num_users_in;
 		
-		if ($add_users > 0) {
-		    $result = $users_not_in_batch;
+		$teachers = $this->courses_model->get_teachers_assigned ($coaching_id, $course_id);
+		if (! empty ($teachers)) {
+			$num_teachers = count ($teachers);
 		} else {
-		    $result = $users_in_batch;
+			$num_teachers = 0;
 		}
-		
+
+		if ($add_users == USER_ROLE_STUDENT) {
+		    $result = $users_not_in_batch;
+		} else if ($add_users == USER_ROLE_TEACHER) {
+		    $result = $teachers;
+		} else {
+		    $result = $bu;
+		}		
 		$data['result'] = $result;
+
+		$data['teachers'] = $teachers;
+		$data['num_teachers'] = $num_teachers;
 
 		$data['script'] = $this->load->view('users/scripts/batch_users', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
-		$this->load->view('users/batch_users', $data); 
+		$this->load->view('courses/batch_users', $data); 
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 	
