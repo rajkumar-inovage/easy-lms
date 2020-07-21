@@ -155,7 +155,7 @@ class Enrolment_model extends CI_Model {
 				$data[] = $u['member_id'];
 			}
 		}
-		
+
 		// Get all users not in batch
 		$this->db->select ('M.*, R.description');
 		$this->db->from ('members M');
@@ -200,5 +200,52 @@ class Enrolment_model extends CI_Model {
 		$sql = $this->db->delete ('coaching_batch_users');
 	}
 	
+	public function get_course_instructors ($coaching_id=0, $course_id=0) {
+		$this->db->select ('M.member_id, M.first_name, M.last_name');
+		$this->db->from ('coaching_course_teachers CC');
+		$this->db->join ('members M', 'CC.member_id=M.member_id');
+		$this->db->where ('CC.coaching_id', $coaching_id);
+		$this->db->where ('CC.course_id', $course_id);
+		$sql = $this->db->get ();
+		return $sql->result_array ();
+	}
+
+	public function get_course_schedule ($coaching_id=0, $course_id=0, $batch_id=0) {
+		$this->db->from ('coaching_course_schedules CC');
+		$this->db->where ('CC.coaching_id', $coaching_id);
+		$this->db->where ('CC.course_id', $course_id);
+		$this->db->where ('CC.batch_id', $batch_id);
+		$sql = $this->db->get ();
+		return $sql->result_array ();
+	}
+
+	public function add_schedule ($coaching_id=0, $course_id=0, $batch_id=0) {
+
+		$batch = $this->get_batch ($coaching_id, $course_id, $batch_id);
+		$start_time = $batch['start_date'];
+		$end_time 	= $batch['end_date'];
+		$repeat = $this->input->post ('repeat');
+		$interval = 24 * 60 * 60; 		// 1 day in seconds
+		$now = time ();
+		$insert = [];
+		if ($repeat == 1) {
+			for ($i=$start_time; $i<=$end_time; $i=$i+$interval) {
+				$data['id'] 			= NULL;
+				$data['coaching_id'] 	= $coaching_id;
+				$data['course_id'] 		= $course_id;
+				$data['batch_id'] 		= $batch_id;
+				$data['member_id'] 		= $this->input->post ('instructor');
+				$data['room_id'] 		= $this->input->post ('classroom');
+				$data['start_time'] 	= $this->input->post ('start_time');
+				$data['end_time'] 		= $this->input->post ('end_time');
+				$data['dow'] 			= $i;
+				$data['created_by'] 	= $this->session->userdata ('member_id');
+				$data['created_on'] 	= $now;
+				$insert[]				= $data;
+			}
+			$this->db->insert_batch ('coaching_course_schedules', $insert);
+		}
+	}
+
 
 }

@@ -286,4 +286,12 @@ class Coaching_model extends CI_Model {
 		$sql = $this->db->get ('coaching_tests');
 		return $sql->num_rows ();
 	}
+
+	public function get_classrooms ($coaching_id=0, $course_id=0, $batch_id=0) {
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$sql = $this->db->get ('coaching_classrooms');
+		return $sql->result_array ();
+	}
+
 }
