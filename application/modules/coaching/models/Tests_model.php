@@ -193,7 +193,6 @@ class Tests_model extends CI_Model {
 		$test_mode = TEST_MODE_ONLINE;
 		$data = array(				
 				'title'    		  	=>ascii_to_entities ($this->input->post('title')),
-				'time_hour' 	  	=>0,
 				'time_min'	      	=>$this->input->post('time_min'),
 				'max_marks'  	  	=>0, 
 				'pass_marks'      	=>$this->input->post('pass_marks'),
@@ -207,8 +206,6 @@ class Tests_model extends CI_Model {
 			$this->db->where ('test_id', $tid);
 			$this->db->update ('coaching_tests', $data);
 		} else {
-			$data['num_takes']			= 0;
-			$data['result_release']		= RELEASE_EXAM_NEVER;
 			$data['coaching_id']	 	= $coaching_id;
 			$data['created_by']	  		= intval ($this->session->userdata('member_id'));
 			$data['creation_date']	  	= $now;
@@ -351,7 +348,7 @@ class Tests_model extends CI_Model {
 		} else {
 			$t = date("H:i", mktime(0,0,$time,0,0,0));
 			list ($h, $m) = explode (':', $t);
-			$update =  array ('finalized'=>1, 'max_marks'=>$marks, 'time_hour'=>$h, 'time_min'=>$m);
+			$update =  array ('finalized'=>1, 'max_marks'=>$marks, 'time_min'=>$m);
 		}
 		$this->db->where ('coaching_id', $coaching_id);
 		
