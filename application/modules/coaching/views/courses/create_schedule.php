@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-4">
 		<?php echo form_open ('coaching/enrolment_actions/add_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id, ['id'=>'validate-']); ?>
 		<div class="card">
 			<div class="card-body">
@@ -11,11 +11,11 @@
 				<div class="form-group row">
 					<div class="col-md-6">
 						<label class="form-label">Start Date</label>
-						<p class="form-control-static"><?php echo $batch['start_date']; ?></p>
+						<p class="form-control-static"><?php echo date ('d M, Y', $batch['start_date']); ?></p>
 					</div>
 					<div class="col-md-6">
 						<label class="form-label">End Date</label>
-						<p class="form-control-static"><?php echo $batch['end_date']; ?></p>
+						<p class="form-control-static"><?php echo date ('d M, Y', $batch['end_date']); ?></p>
 					</div>
 				</div>
 
@@ -95,11 +95,24 @@
 
 				<div class="form-group">
 					<h4>Repeat</h4>
-					<label class="form-label" for="repeat-daily">Repeat Daily</label>
-					<input type="radio" name="repeat" id="repeat-daily" value="1">
+					<div>
+						<input type="radio" name="repeat" id="repeat-daily" value="1" checked>
+						<label class="form-label" for="repeat-daily">Repeat Daily</label>
+					</div>
 
-					<label class="form-label" for="repeat-weekly">Repeat Weekly</label>
-					<input type="radio" name="repeat" id="repeat-weekly" value="2">
+					<div>
+						<input type="radio" name="repeat" id="repeat-weekly" value="2">
+						<label class="form-label" for="repeat-weekly">Repeat Weekly</label>
+					</div>
+					<div>
+						<label><input type="checkbox" name="dow[]" value="1">Monday</label>
+						<label><input type="checkbox" name="dow[]" value="2">Tuesday</label>
+						<label><input type="checkbox" name="dow[]" value="3">Wednesday</label>
+						<label><input type="checkbox" name="dow[]" value="4">Thursday</label>
+						<label><input type="checkbox" name="dow[]" value="5">Friday</label>
+						<label><input type="checkbox" name="dow[]" value="6">Saturday</label>
+						<label><input type="checkbox" name="dow[]" value="7">Sunday</label>
+					</div>
 				</div>
 			</div>
 			<div class="card-footer">
@@ -108,30 +121,74 @@
 		</div>
 	</div>
 
-	<div class="col-md-6">
+	<div class="col-md-8">
 		<div class="card">
 			<?php
 			$start_date = $batch['start_date'];
 			$end_date = $batch['end_date'];
+			$interval = 24 * 60 * 60; 		// 1 day in seconds
 			?>
-			<table class="table">
+			<table class="table table-bordered">
 				<thead>
+					<tr>
+						<th><?php //echo $row['start_time']; ?></th>
+						<?php
+						$count = 0;
+						$next = 0;
+						for ($i=$start_date; $i<=$end_date; $i=$i+$interval) { 
+							?>
+							<th><?php echo date ('D, d', $i); ?></th>
+							<?php 
+							$count++;
+							if ($count >= 7) {
+								$next = $i;
+								//break;
+							}
+						}
+						?>
+					</tr>
 				</thead>
-				<tbody>					
-					<?php foreach ($schedule as $row) { ?>
-						<tr>
-							<th><?php echo date ('D, d', $row['dow']); ?></th>
-							<th><?php echo $row['start_time']; ?></th>
-							<th><?php echo $row['end_time']; ?></th>
-						</tr>
-					<?php } ?>
+				<tbody>
+					
+					<tr>
+						<th><?php //echo $row['start_time']; ?></th>
+						<?php
+						$count = 0;
+						for ($i=$start_date; $i<=$end_date; $i=$i+$interval) { 
+							?>
+							<td align="center">
+								<?php 
+								$scd = $schedule[$i];
+								if (! empty ($scd)) {
+									foreach ($scd as $row) {
+										?>
+										<div><?php echo $row['start_time']; ?>-<?php echo $row['end_time']; ?></div>
+										<div><?php echo $row['name']; ?></div>
+										<hr>
+										<?php
+									}
+								}
+								?>
+									
+							</td>
+							<?php 
+							$count++;
+							if ($count >= 7) {
+								//break;
+							}
+						}
+						?>
+					</tr>
 				</tbody>
 			</table>
 			<div class="card-body">
 			</div>
+			<div class="card-footer">
+				<?php echo anchor ('coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id, 'Next', ['class'=>'btn btn-primary']); ?>
+			</div>
 		</div>
 		<?php
-		print_r ($schedule);
+		//print_r ($schedule);
 		?>
 	</div>
 

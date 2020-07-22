@@ -211,10 +211,24 @@ class Enrolment_model extends CI_Model {
 	}
 
 	public function get_course_schedule ($coaching_id=0, $course_id=0, $batch_id=0) {
+		$this->db->select ('CC.*, CONCAT (M.first_name, M.last_name) AS name'); 
 		$this->db->from ('coaching_course_schedules CC');
+		$this->db->join ('members M', 'CC.member_id=M.member_id');
 		$this->db->where ('CC.coaching_id', $coaching_id);
 		$this->db->where ('CC.course_id', $course_id);
 		$this->db->where ('CC.batch_id', $batch_id);
+		$sql = $this->db->get ();
+		return $sql->result_array ();
+	}
+
+	public function get_schedule_data ($coaching_id=0, $course_id=0, $batch_id=0, $dow=0) {
+		$this->db->select ('CC.*, CONCAT (M.first_name, M.last_name) AS name'); 
+		$this->db->from ('coaching_course_schedules CC');
+		$this->db->join ('members M', 'CC.member_id=M.member_id');
+		$this->db->where ('CC.coaching_id', $coaching_id);
+		$this->db->where ('CC.course_id', $course_id);
+		$this->db->where ('CC.batch_id', $batch_id);
+		$this->db->where ('CC.dow', $dow);
 		$sql = $this->db->get ();
 		return $sql->result_array ();
 	}
@@ -225,10 +239,10 @@ class Enrolment_model extends CI_Model {
 		$start_time = $batch['start_date'];
 		$end_time 	= $batch['end_date'];
 		$repeat = $this->input->post ('repeat');
-		$interval = 24 * 60 * 60; 		// 1 day in seconds
 		$now = time ();
 		$insert = [];
 		if ($repeat == 1) {
+			$interval = 24 * 60 * 60; 		// 1 day in seconds
 			for ($i=$start_time; $i<=$end_time; $i=$i+$interval) {
 				$data['id'] 			= NULL;
 				$data['coaching_id'] 	= $coaching_id;
@@ -244,6 +258,35 @@ class Enrolment_model extends CI_Model {
 				$insert[]				= $data;
 			}
 			$this->db->insert_batch ('coaching_course_schedules', $insert);
+		} else if ($repeat == 2) {
+			$dow = $this->input->post ('dow');
+			$num_weeks = date ('W', $end_time) - date ('W', $start_time);
+			$first_dow = date ('N', $start_time);
+			$inc = 7;
+			$week_days = 0;
+			$insert = [];
+			for ($i=1; $i<=$num_weeks; $i++) {
+				foreach ($dow as $w) {
+					$day = $week_days - $first_dow + $w;
+					$interval = $day * 24 * 60 * 60; 		// Num days in seconds
+					$timestamp = $start_time + $interval;						
+					$data['id'] 			= NULL;
+					$data['coaching_id'] 	= $coaching_id;
+					$data['course_id'] 		= $course_id;
+					$data['batch_id'] 		= $batch_id;
+					$data['member_id'] 		= $this->input->post ('instructor');
+					$data['room_id'] 		= $this->input->post ('classroom');
+					$data['start_time'] 	= $this->input->post ('start_time');
+					$data['end_time'] 		= $this->input->post ('end_time');
+					$data['dow'] 			= $timestamp;
+					$data['created_by'] 	= $this->session->userdata ('member_id');
+					$data['created_on'] 	= $now;
+					$insert[]				= $data;
+				}
+				$week_days = $week_days + $inc;
+			}
+			$this->db->insert_batch ('coaching_course_schedules', $insert);
+
 		}
 	}
 
