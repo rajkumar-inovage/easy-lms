@@ -95,6 +95,23 @@ class Enrolment_actions extends MX_Controller {
 	public function delete_batch ($coaching_id=0, $batch_id=0) {
 		$this->enrolment_model->delete_batch ($batch_id);
 		redirect ('coaching/users/batches/'.$coaching_id);
-	}	
+	}
 
+
+	public function add_schedule ($coaching_id=0, $course_id=0, $batch_id=0) {
+		$this->form_validation->set_rules ('repeat', 'Repeat', 'required');
+		
+			$message = $this->input->post ('start_time');
+		if ( $this->form_validation->run() == true)  {
+			//$message = "Schedule created successfully";
+			$this->enrolment_model->add_schedule ($coaching_id, $course_id, $batch_id);
+			
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id))));
+		} else {
+			$this->output->set_content_type("application/json");
+			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors() )));
+		}
+		
+	}
 }

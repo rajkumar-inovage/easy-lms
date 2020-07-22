@@ -116,12 +116,39 @@ class Enrolments extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 	
-	public function create_schedule ($coaching_id=0, $course_id=0) {
+	public function schedule ($coaching_id=0, $course_id=0, $batch_id=0) {
+		
+		$data['page_title'] 	= 'Schedule';
+		$data['coaching_id'] 	= $coaching_id;
+		$data['course_id'] 		= $course_id;
+		$data['batch_id'] 		= $batch_id;
+
+		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		$data['toolbar_buttons']['<i class="fa fa-plus"></i> Create Schedule'] = 'coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id;
+
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view('courses/schedule', $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
+	}
+
+	public function create_schedule ($coaching_id=0, $course_id=0, $batch_id=0) {
 		
 		//$data['category'] = $this->courses_model->get_course_category_by_id($cat_id);
 		$data['page_title'] = 'Create Schedule';
 		$data['coaching_id'] = $coaching_id;
 		$data['course_id'] = $course_id;
+		$data['batch_id'] = $batch_id;
+
+		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/schedule/'.$coaching_id.'/'.$course_id);
+
+		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		$data['toolbar_buttons']['<i class="fa fa-plus"></i> Create Schedule'] = 'coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id;
+
+		$data['batch'] = $this->enrolment_model->get_batch ($coaching_id, $course_id, $batch_id);
+		$data['classrooms'] = $this->coaching_model->get_classrooms ($coaching_id, $course_id);
+		$data['instructors'] = $this->enrolment_model->get_course_instructors ($coaching_id, $course_id);
+		$data['schedule'] = $this->enrolment_model->get_course_schedule ($coaching_id, $course_id, $batch_id);
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/create_schedule', $data);
