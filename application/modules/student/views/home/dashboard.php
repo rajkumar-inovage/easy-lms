@@ -1,4 +1,4 @@
-<?php print_pre($courses); ?>
+<?php // print_pre($courses); ?>
 <div class="card mb-4 shadow-sm">
 	<div class="card-header ">
 		<h4 class="my-1">My Classrooms</h4>

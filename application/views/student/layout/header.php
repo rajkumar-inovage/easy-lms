@@ -199,6 +199,12 @@
 	</div>
 	<!--// Sidebar left -->
 
+    <?php 
+    if (isset ($sidebar_right)) {
+        echo $sidebar_right;
+    }
+    ?>
+
 	<main id="content" role="main">
         <div class="py-4">
             <div class="container">
