@@ -145,10 +145,20 @@ class Enrolments extends MX_Controller {
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		$data['toolbar_buttons']['<i class="fa fa-plus"></i> Create Schedule'] = 'coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id;
 
-		$data['batch'] = $this->enrolment_model->get_batch ($coaching_id, $course_id, $batch_id);
+		$data['batch'] = $batch = $this->enrolment_model->get_batch ($coaching_id, $course_id, $batch_id);
 		$data['classrooms'] = $this->coaching_model->get_classrooms ($coaching_id, $course_id);
 		$data['instructors'] = $this->enrolment_model->get_course_instructors ($coaching_id, $course_id);
-		$data['schedule'] = $this->enrolment_model->get_course_schedule ($coaching_id, $course_id, $batch_id);
+		//$data['schedule'] = $schedule = $this->enrolment_model->get_course_schedule ($coaching_id, $course_id, $batch_id);	
+
+		$schedule = [];
+		$interval = 24 * 60 * 60; 		// 1 day in seconds
+		for ($i=$batch['start_date']; $i<=$batch['end_date']; $i=$i+$interval) { 
+			// get data for this date
+			$scd = $this->enrolment_model->get_schedule_data ($coaching_id, $course_id, $batch_id, $i);		
+			$schedule[$i] = $scd;
+		}
+
+		$data['schedule'] = $schedule;
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/create_schedule', $data);
