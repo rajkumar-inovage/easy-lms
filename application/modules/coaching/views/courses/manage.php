@@ -16,7 +16,7 @@
 			      </li>
 
 				  <li class="list-inline-item ml-4 ">
-			      	<a class="text-success" href="<?php echo site_url ('coaching/plans/index/'.$coaching_id.'/'.$course_id.'/2'); ?>"><i class="fa fa-shopping-cart"></i> Import Free Lessons</a>
+			      	<a class="text-success" href="<?php echo site_url ('coaching/indiatests/lesson_plans/'.$coaching_id.'/'.$course_id.'/0/0'); ?>"><i class="fa fa-shopping-cart"></i> Import Free Lessons</a>
 			      </li>
 
 				  <li class="list-inline-item ml-4 ">
@@ -45,11 +45,11 @@
 			      </li>
 
 				  <li class="list-inline-item ml-4 ">
-			      	<a class="text-success" href="<?php echo site_url ('coaching/plans/index/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-shopping-cart"></i> Import Free Tests</a>
+			      	<a class="text-success" href="<?php echo site_url ('coaching/indiatests/test_plans/'.$coaching_id.'/'.$course_id.'/0/0'); ?>"><i class="fa fa-shopping-cart"></i> Import Free Tests</a>
 			      </li>
 
 				  <li class="list-inline-item ml-4 ">
-			      	<a class="text-success" href="<?php echo site_url ('coaching/indiatests/test_plans/'.$coaching_id.'/'.$course_id.'/0/'); ?>"><i class="fa fa-shopping-cart"></i> Buy From IndiaTests</a>
+			      	<a class="text-success" href="<?php echo site_url ('coaching/indiatests/test_plans/'.$coaching_id.'/'.$course_id.'/0/1'); ?>"><i class="fa fa-shopping-cart"></i> Buy From IndiaTests</a>
 			      </li>
 
 				</ul>
@@ -59,6 +59,32 @@
 </div>
 
 <div class="row">
+
+	<div class="col-md-6">
+		<div class="card mb-3 ">
+			<div class="card-header">
+				<h4 class="card-title d-flex justify-content-between">Organize <span class="badge badge-primary"><?php //echo $num_lessons; ?></span></h4>
+			</div>
+			<div class="card-body">
+				<ul class="list-inline">
+					<?php if ($course['enrolment_type'] == COURSE_ENROLMENT_DIRECT) { ?>
+					  <li class="list-inline-item">
+					  	<a class="" href="<?php echo site_url ('coaching/courses/organize/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-file"></i> Organize Contents</a>
+					  </li>
+					  <li class="list-inline-item ml-4">
+					  	<a class="" href="<?php echo site_url ('coaching/courses/enrolments/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-users"></i> Enrolments</a>
+					  </li>
+					<?php } else { ?>
+					  <li class="list-inline-item">
+					  	<a class="" href="<?php echo site_url ('coaching/enrolments/batches/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-users"></i> Batches and Schedules</a>
+					  </li>
+					<?php } ?>
+				  
+				</ul>
+			</div>
+		</div>
+	</div>
+
 	<div class="col-md-6">
 		<div class="card mb-3 ">
 			<div class="card-header">
@@ -80,7 +106,12 @@
 		</div>
 	</div>
 
-	<div class="col-md-6">
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6 d-none">
 		<div class="card mb-3 ">
 			<div class="card-header">
 				<h4 class="card-title d-flex justify-content-between">Enrolment <span class="badge badge-primary"><?php //echo $num_lessons; ?></span></h4>
@@ -94,22 +125,15 @@
 					<?php } else { ?>
 
 					  <li class="list-inline-item">
-					  	<a class="" href="<?php echo site_url ('coaching/enrolments/batches/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-users"></i> Batches</a>
+					  	<a class="" href="<?php echo site_url ('coaching/enrolments/batches/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-users"></i> Batches and Schedules</a>
 					  </li>
-
-					  <li class="list-inline-item ml-4">
-				      	<a class="" href="<?php echo site_url ('coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-plus"></i> Schedules</a>
-				      </li>
 					<?php } ?>
 				  
 				</ul>
 			</div>
 		</div>
 	</div>
-</div>
 
-
-<div class="row">
 	<div class="col-md-6">
 		<div class="card mb-3 ">
 			<div class="card-header">

@@ -79,7 +79,8 @@ class Indiatests_model extends CI_Model {
 		$plan = $this->get_test_plan ($plan_id);
 		$sql = $this->db->get_where ('coaching_test_plans', $data);
 		if ($sql->num_rows () == 0) {
-			$data['plan_name'] = $plan['title'];
+			$data['plan_name'] 	= $plan['title'];
+			$data['amount'] 	= $plan['amount'];
 			$data['created_by'] = $this->session->userdata ('member_id');
 			$data['created_on'] = time ();
 			$this->db->insert ('coaching_test_plans', $data);

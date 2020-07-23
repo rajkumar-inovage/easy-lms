@@ -116,7 +116,7 @@ class Enrolments extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 	
-	public function schedule ($coaching_id=0, $course_id=0, $batch_id=0) {
+	public function schedule ($coaching_id=0, $course_id=0, $batch_id=0, $start=0) {
 		
 		$data['page_title'] 	= 'Schedule';
 		$data['coaching_id'] 	= $coaching_id;
@@ -126,6 +126,32 @@ class Enrolments extends MX_Controller {
 		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		$data['toolbar_buttons']['<i class="fa fa-plus"></i> Create Schedule'] = 'coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id;
+
+		$data['batch'] = $batch = $this->enrolment_model->get_batch ($coaching_id, $course_id, $batch_id);
+
+		$schedule = [];
+		$interval = 24 * 60 * 60; 		// 1 day in seconds
+		if ($start == 0) {
+			$start_date = $batch['start_date'];
+		} else {
+			$start_date = $start;
+		}
+		$count = 0;
+		for ($i=$start_date; $i<=$batch['end_date']; $i=$i+$interval) {
+			// get data for this date
+			$scd = $this->enrolment_model->get_schedule_data ($coaching_id, $course_id, $batch_id, $i);		
+			$schedule[$i] = $scd;
+			$count++;
+			if ($count >= 7) {
+				break;
+			}
+		}
+
+		$data['start_date'] = $start_date;
+		$data['end_date'] = $batch['end_date'];
+		$data['interval'] = $interval;
+		$data['schedule'] = $schedule;
+
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/schedule', $data);
