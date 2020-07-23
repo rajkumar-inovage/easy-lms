@@ -20,8 +20,7 @@
                   <div class="d-flex flex-column flex-sm-row justify-content-between justify-content-md-start">
                     <span><strong>Created ON:</strong> <?php echo date('j<\s\up>S</\s\up> F, Y', $course['created_on']); ?></span>
                     <span class="ml-md-3 "><strong>Created By:</strong> <?php echo $course['created_by']; ?></span>
-                    <span class="ml-md-3 "><strong>Lessons:</strong> <?php echo $course['lessons']; ?></span>
-                    <span class="ml-md-3 "><strong>Tests:</strong> <?php echo $course['tests']; ?></span>
+                    <span class="ml-md-3 "><strong>Price: &#8377;</strong><?php echo $course['price']; ?></span>
                   </div>
                   <p><?php echo excerpt($course['description'], 30); ?></p>
                   <a class="btn btn-info btn-sm d-md-none shadow-sm stretched-link" href="<?php echo site_url ('student/courses/view/'.$coaching_id.'/'.$member_id.'/'.$course['course_id']); ?>">View <i class="fa fa-eye"></i>
