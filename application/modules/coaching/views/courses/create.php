@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-md-12">
-		<?php echo form_open('coaching/courses_actions/create_edit_action/' . $coaching_id . '/' . $cat_id . '/' . $course_id, array('class' => 'card', 'id' => 'validate1')); ?>
+		<?php echo form_open('coaching/courses_actions/create_edit_action/' . $coaching_id . '/' . $cat_id . '/' . $course_id, array('class' => 'card', 'id' => 'validate-1')); ?>
 			<div class="card-header">
 				<h4 class="card-title text-center mb-0"><?php echo $sub_title; ?></h4>
 			</div>

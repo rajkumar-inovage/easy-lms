@@ -115,9 +115,9 @@
 
                     <div class="right-toolbar">
                         <?php if (! empty ($toolbar_buttons)) { ?>
-                            <div class="dropdown show">
-                              <a class="btn btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-plus-circle"></i>
+                            <div class="dropdown show h-100 d-flex align-items-center">
+                              <a class="btn btn-success dropdown-toggler p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v"></i>
                               </a>
                               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                 <?php foreach ($toolbar_buttons as $title=>$url) { ?>
@@ -198,6 +198,12 @@
         </div>
 	</div>
 	<!--// Sidebar left -->
+
+    <?php 
+    if (isset ($sidebar_right)) {
+        echo $sidebar_right;
+    }
+    ?>
 
 	<main id="content" role="main">
         <div class="py-4">

@@ -85,5 +85,13 @@ $config['allowed_mime_types']	=	[ 'csv', 'psd', 'so', 'sea', 'oda', 'pdf', 'ai',
 // global function
 function print_pre($object){
 	$object = print_r($object, true);
-	print_r("<pre>$object</pre>");
+	print_r("<pre style=\"white-space: pre-wrap;\">$object</pre>");
+}
+function excerpt($text, $limit) {
+	if (str_word_count($text, 0) > $limit) {
+		$words = str_word_count($text, 2);
+		$pos = array_keys($words);
+		$text = substr($text, 0, $pos[$limit]) . '&hellip;';
+	}
+	return $text;
 }

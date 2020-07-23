@@ -53,7 +53,7 @@
             ?>
             <tr>
               <th scope="row" class="text-left align-middle">
-                <a class="text-decoration-none" href="<?php echo site_url ('coaching/courses/edit/'.$coaching_id.'/'.$cat_id.'/'.$course['course_id']); ?>">
+                <a class="text-decoration-none" title="Click to Edit" data-toggle="tooltip" data-placement="right" href="<?php echo site_url ('coaching/courses/edit/'.$coaching_id.'/'.$cat_id.'/'.$course['course_id']); ?>">
                   <?php echo $course['title']; ?>
                 </a>
               </th>
