@@ -10,6 +10,30 @@ class Courses_model extends CI_Model {
 		$sql = $this->db->get('coaching_courses');
 		return $sql->row_array();
 	}
+	public function get_users_courses($coaching_id, $member_id){
+		$this->db->select('course_id');
+		$this->db->from('coaching_course_batch_users');
+		$this->db->where('coaching_id', $coaching_id);
+		$this->db->where ('member_id', $member_id);
+		$sub_query = $this->db->get_compiled_select();
+
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('status', 1);
+		$this->db->where ('enrolment_type', COURSE_ENROLMENT_DIRECT);
+		$this->db->where ("course_id NOT IN ($sub_query)");
+		$sql = $this->db->get ('coaching_courses');
+		$courses = $sql->result_array();
+		foreach ($courses as $i => $course) {
+			$courses[$i]['lessons'] = $this->count_course_lessons($coaching_id, $course['course_id']);
+			$courses[$i]['tests'] = $this->count_course_tests($coaching_id, $course['course_id']);
+			$this->db->select('first_name, last_name');
+			$this->db->where ('member_id', $course['created_by']);
+			$users = $this->db->get ('members');
+			$created_by = $users->row_array();
+			$courses[$i]['created_by'] = $created_by['first_name'] . " " . $created_by['last_name'];
+		}
+		return $courses;
+	}
 	public function get_users_batch_courses($coaching_id, $member_id){
 		$this->db->select('course_id');
 		$this->db->from('coaching_course_batch_users');
