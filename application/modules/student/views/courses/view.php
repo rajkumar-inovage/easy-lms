@@ -17,6 +17,11 @@
 					</div>
 					<div class="mt-auto text-center">
 						<div class="row">
+							<?php if(!$course['in_my_course']):?>
+							<div class="col-12">
+								<h1 class="mb-3"><strong>Price: &#8377;</strong><?php echo $course['price']; ?></h1>
+							</div>
+							<?php endif; ?>
 							<div class="col">
 								<a class="btn btn-info shadow-sm" href="">Buy Now <i class="fa fa-shopping-cart"></i>
 								</a>

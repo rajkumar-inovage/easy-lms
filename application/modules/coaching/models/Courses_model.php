@@ -27,6 +27,30 @@ class Courses_model extends CI_Model {
 		}
 		return $courses;
 	}
+	public function member_courses($coaching_id, $cat_id, $status = CATEGORY_STATUS_ALL){
+        $this->db->select(
+        	array(
+        		'pwa_coaching_courses.*',
+        		'pwa_coaching_course_teachers.created_on AS assigned_on',
+        		'pwa_coaching_course_teachers.created_by AS assigned_by'
+        	)
+        );
+		if($status != CATEGORY_STATUS_ALL){
+			$this->db->where('coaching_courses.status', $status);
+		}
+        $this->db->where('coaching_courses.coaching_id', $coaching_id);
+        $this->db->where('coaching_course_teachers.member_id', $this->session->userdata ('member_id'));
+        $this->db->join('coaching_course_teachers','coaching_courses.course_id = coaching_course_teachers.course_id');
+        $sql = $this->db->get('coaching_courses');
+		$courses = $sql->result_array();
+		foreach ($courses as $i => $course) {
+			$created_by = $this->users_model->get_user($course['created_by']);
+			$courses[$i]['created_by'] = $created_by['first_name'] . " " . $created_by['last_name'];
+			$assigned_by = $this->users_model->get_user($course['assigned_by']);
+			$courses[$i]['assigned_by'] = $assigned_by['first_name'] . " " . $assigned_by['last_name'];
+		}
+		return $courses;
+	}
 	public function get_course_category_by_id($category_id) {
 		$this->db->where('cat_id', $category_id);
 		$sql = $this->db->get('coaching_course_category');
