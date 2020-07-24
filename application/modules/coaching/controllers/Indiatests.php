@@ -63,16 +63,20 @@ class Indiatests extends MX_Controller {
 
 
     // List All Plans
-    public function test_plans ($coaching_id=0, $course_id=0, $category_id=0, $amount='-1') {
+    public function test_plans ($coaching_id=0, $course_id=0, $category_id=0, $amount=0) {
         
         if ($course_id > 0) {
-            $data['bc'] = array ('Manage'=>'coaching/plans/index/'.$coaching_id.'/'.$course_id);
+            $data['bc'] = array ('Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
         } else {
             $data['bc'] = array ('Manage'=>'coaching/indiatests/test_plan_categories/'.$coaching_id.'/'.$course_id);
         }
 
         $data['toolbar_buttons'] = $this->toolbar_buttons;
-        $data['page_title'] = 'Test Plans';
+        if ($amount == 0) {
+            $data['page_title'] = 'Free Test Plans In Indiatests';
+        } else {            
+            $data['page_title'] = 'Buy Test Plans From Indiatests';
+        }
         
         // Get all test categories from MASTER database
         $result = [];
@@ -108,7 +112,7 @@ class Indiatests extends MX_Controller {
         $this->load->view(INCLUDE_PATH  . 'footer', $data);
     }
     
-    public function tests_in_plan ($coaching_id=0, $course_id=0, $plan_id=0) {
+    public function tests_in_plan ($coaching_id=0, $course_id=0, $plan_id=0, $amount=0) {
 
         /* Breadcrumbs */ 
         if ($course_id > 0) {
@@ -116,7 +120,7 @@ class Indiatests extends MX_Controller {
         } else {
             $data['bc'] = array ('Test Plans'=>'coaching/plans/index/'.$coaching_id);
         }
-        $data['bc'] = array ('Test Plans'=>'coaching/plans/index/'.$coaching_id.'/'.$course_id);
+        $data['bc'] = array ('Test Plans'=>'coaching/indiatests/test_plans/'.$coaching_id.'/'.$course_id);
 
         $data['toolbar_buttons'] = $this->toolbar_buttons;
         $data['page_title'] = 'Tests In Plan';
@@ -167,16 +171,21 @@ class Indiatests extends MX_Controller {
 
 
     // List All Plans
-    public function lesson_plans ($coaching_id=0, $course_id=0, $category_id=0, $amount='-1') {
+    public function lesson_plans ($coaching_id=0, $course_id=0, $category_id=0, $amount=0) {
         
         if ($course_id > 0) {
             $data['bc'] = array ('Manage'=>'coaching/plans/index/'.$coaching_id.'/'.$course_id.'/2');
         } else {
             $data['bc'] = array ('Manage'=>'coaching/indiatests/lesson_plan_categories/'.$coaching_id.'/'.$course_id);
         }
+        $data['bc'] = array ('Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
 
         $data['toolbar_buttons'] = $this->toolbar_buttons;
-        $data['page_title'] = 'Test Plans';
+        if ($amount == 0) {
+            $data['page_title'] = 'Free Lesson Plans In Indiatests';
+        } else {            
+            $data['page_title'] = 'Buy Lesson Plans From Indiatests';
+        }
         
         // Get all test categories from MASTER database
         $result = [];
@@ -214,7 +223,7 @@ class Indiatests extends MX_Controller {
         $this->load->view(INCLUDE_PATH  . 'footer', $data);
     }
     
-    public function lessons_in_plan ($coaching_id=0, $course_id=0, $plan_id=0) {
+    public function lessons_in_plan ($coaching_id=0, $course_id=0, $plan_id=0, $amount=0) {
 
         /* Breadcrumbs */ 
         if ($course_id > 0) {
@@ -222,6 +231,7 @@ class Indiatests extends MX_Controller {
         } else {
             $data['bc'] = array ('Test Plans'=>'coaching/plans/index/'.$coaching_id);
         }
+        $data['bc'] = array ('Lesson Plans'=>'coaching/indiatests/lesson_plans/'.$coaching_id.'/'.$course_id.'/0/'.$amount);
 
         $data['toolbar_buttons'] = $this->toolbar_buttons;
         $data['page_title'] = 'Lessons In Plan';

@@ -45,6 +45,11 @@ class Enrolment_model extends CI_Model {
 		$time = time ();
 		$data = array ();
 		$data['batch_name'] = $this->input->post ('batch_name');
+		if ($this->input->post ('max_users')) {
+			$data['max_users'] = $this->input->post ('max_users');
+		} else {
+			$data['max_users'] = 0;
+		}
 		$start_date = $this->input->post ('start_date');
 		$end_date 	= $this->input->post ('end_date');
 		if (! empty($start_date)) {

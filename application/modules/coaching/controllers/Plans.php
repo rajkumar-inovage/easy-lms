@@ -24,7 +24,7 @@ class Plans extends MX_Controller {
 	
 	
 	// List All Plans
-	public function index ($coaching_id=0, $course_id=0, $type=1) {
+	public function index ($coaching_id=0, $course_id=0, $type=1, $amount=0) {
 		
 		if ($course_id > 0) {
 			$data['bc'] = array ('Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);

@@ -6,7 +6,13 @@
 					<div class="form-group row">
 					  <div class="col-md-6">
 						<?php echo form_label('Batch Name<span class="required">*</span>', '', array('class'=>'control-label')); ?>
-							<?php echo form_input ( array('name'=>'batch_name', 'class'=>'form-control required', 'value'=>set_value('batch_name', $batch['batch_name'])) );?> 
+						<?php echo form_input ( array('name'=>'batch_name', 'class'=>'form-control required', 'value'=>set_value('batch_name', $batch['batch_name'])) );?> 
+						<p class="text-muted">Title of the batch. Must contain alpha-numeric characters only</p>
+					  </div>
+					  <div class="col-md-6">
+						<?php echo form_label('Max Users<span class="required">*</span>', '', array('class'=>'control-label')); ?>
+						<?php echo form_input ( array('name'=>'max_users', 'type'=>'number', 'min'=>0, 'class'=>'form-control required', 'value'=>set_value('max_users', $batch['max_users'])) );?> 
+						<p class="text-muted">Maximum number of users allowed in this batch. 0 for unlimited</p>
 					  </div>
 					</div>
 
