@@ -2,7 +2,7 @@
 $(document).ready(() => {
     $(".edit-category").hide();
     $('#edit-categories').click(() => {
-        $(".edit-category").toggle("slide").toggleClass('px-2');;
+        $(".edit-category").toggle("slide").toggleClass('px-2').prev().toggleClass('border-right');
     });
     $('.edit-cat').click((event) => {
     	$('#editCategories').find('form').attr('action', `<?php echo site_url('coaching/courses_actions/category_action/' . $coaching_id . '/'); ?>${$(event.currentTarget).data('id')}/`);

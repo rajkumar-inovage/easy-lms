@@ -92,9 +92,22 @@
                     class="custom-control-input toggle-status"
                     data-href="<?php echo site_url ('coaching/courses_actions/toggle_course_status/'.$coaching_id.'/'.$cat_id.'/'.$course['course_id'].'/'.$toggle_to); ?>"
                     id="course-<?php echo $course['course_id']; ?>"
+                    <?php if($is_admin): ?>
                     <?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? 'checked="checked"' : ''; ?>
+                    <?php else: ?>
+                    <?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? 'checked="checked" disabled="disabled"' : 'disabled="disabled"'; ?>
+                    <?php endif; ?>
                   />
-                  <label class="custom-control-label h-100" for="course-<?php echo $course['course_id']; ?>" data-toggle="tooltip" data-placement="right" title="<?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? 'Set Inactive' : 'Set Active'; ?>" style="text-indent: -99999px;">&nbsp;</label>
+                  <label class="custom-control-label h-100" for="course-<?php echo $course['course_id']; ?>"
+                    data-toggle="tooltip"
+                    data-placement="right"
+                    <?php if($is_admin): ?>
+                    title="<?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? 'Set Inactive' : 'Set Active'; ?>"
+                    <?php else: ?>
+                    title="<?php echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? 'Active' : 'Inactive'; ?>"
+                    <?php endif; ?>
+                    style="text-indent: -99999px;"
+                  >&nbsp;</label>
                 </div>
                 <?php // echo (intval($course['status']) === COURSE_STATUS_ACTIVE) ? '<span class="badge badge-pill badge-success">Active</span>' : '<span class="badge badge-pill badge-danger">Inactive</span>'; ?>
               </td>
