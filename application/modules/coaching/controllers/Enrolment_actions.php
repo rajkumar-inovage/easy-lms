@@ -55,46 +55,45 @@ class Enrolment_actions extends MX_Controller {
 	}
 	
 	
-	public function save_batch_users ($coaching_id=0, $batch_id=0) {
+	public function add_users_to_batch ($coaching_id=0, $course_id=0, $batch_id=0) {
 		
 		$this->form_validation->set_rules ('users[]', 'Users', 'required');
 		if ($this->form_validation->run () == true) {
-			$this->enrolment_model->save_batch_users ($batch_id);			
+			$this->enrolment_model->add_users_to_batch ($coaching_id, $course_id, $batch_id);			
 			$message = 'User(s) added to batch successfully';
 			$this->message->set ($message, 'success', true);
 			$this->output->set_content_type("application/json");
-			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('coaching/users/batch_users/'.$coaching_id.'/'.$batch_id.'/1') )));
+			$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('coaching/enrolments/batch_users/'.$coaching_id.'/'.$course_id.'/'.$batch_id.'/0') )));
 		} else {
 			$this->output->set_content_type("application/json");
 			$this->output->set_output(json_encode(array('status'=>false, 'error'=>validation_errors () )));
 		}
 	}
 	
-	public function remove_batch_users ($coaching_id=0, $batch_id=0, $member_id=0, $add_user=0) {
-		
+	public function remove_batch_users ($coaching_id=0, $course_id=0, $batch_id=0, $member_id=0, $add_user=0) {		
 		$this->form_validation->set_rules ('users[]', 'Users', 'required');
 		if ($this->form_validation->run () == true) {
 			$users = $this->input->post ('users');
 			foreach ($users as $member_id) {
-				$this->enrolment_model->remove_batch_user ($batch_id, $member_id);
+				$this->enrolment_model->remove_batch_user ($coaching_id, $course_id, $batch_id, $member_id);
 			}
 		} else {
-			$this->enrolment_model->remove_batch_user ($batch_id, $member_id);			
+			$this->enrolment_model->remove_batch_user ($coaching_id, $course_id, $batch_id, $member_id);	
 		}
 		$this->message->set ('User(s) removed from batch successfully', 'success', true);
-		redirect ('coaching/users/batch_users/'.$coaching_id.'/'.$batch_id.'/'.$add_user);
+		redirect ('coaching/enrolments/batch_users/'.$coaching_id.'/'.$course_id.'/'.$batch_id);
 	}
 	
 
-	public function remove_batch_user ($coaching_id=0, $batch_id=0, $member_id=0, $add_user=0) {
-		$this->enrolment_model->remove_batch_user ($batch_id, $member_id);
+	public function remove_batch_user ($coaching_id=0, $course_id=0, $batch_id=0, $member_id=0, $add_user=0) {
+		$this->enrolment_model->remove_batch_user ($coaching_id, $course_id, $batch_id, $member_id);
 		$this->message->set ('User removed from batch successfully', 'success', true);
-		redirect ('coaching/users/batch_users/'.$coaching_id.'/'.$batch_id.'/'.$add_user);
+		redirect ('coaching/enrolments/batch_users/'.$coaching_id.'/'.$course_id.'/'.$batch_id);
 	}
 	
 	public function delete_batch ($coaching_id=0, $batch_id=0) {
 		$this->enrolment_model->delete_batch ($batch_id);
-		redirect ('coaching/users/batches/'.$coaching_id);
+		redirect ('coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
 	}
 
 

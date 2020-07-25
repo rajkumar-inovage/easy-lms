@@ -18,11 +18,11 @@
 				<div class="form-group">
 					<label for="batch-type">Course Type</label>
 					<div class="">
-						<label><input type="radio" name="enrolment_type" value="<?php echo COURSE_ENROLMENT_DIRECT;?>" <?php echo set_radio ('enrolment_type', COURSE_ENROLMENT_DIRECT, true);?> > Direct Enrolment</label>
+						<label><input type="radio" name="enrolment_type" value="<?php echo COURSE_ENROLMENT_DIRECT;?>" <?php echo set_radio ('enrolment_type', $course['enrolment_type'], true);?> > Direct Enrolment</label>
 						<div class="text-muted">Students can enrol anytime and from anywhere</div>
 					</div>
 					<div class="">
-						<label><input type="radio" name="enrolment_type" value="<?php echo COURSE_ENROLMENT_BATCH;?>" <?php echo set_radio ('enrolment_type', COURSE_ENROLMENT_BATCH);?> > Batch Enrolment</label>
+						<label><input type="radio" name="enrolment_type" value="<?php echo COURSE_ENROLMENT_BATCH;?>" <?php echo set_radio ('enrolment_type', $course['enrolment_type']);?> > Batch Enrolment</label>
 						<div class="text-muted">Students can enrol in available batch </div>
 					</div>
 				</div>

@@ -72,10 +72,14 @@ class Enrolments extends MX_Controller {
 		$data["batch_id"] 		= $batch_id;
 		$data["course_id"] 		= $course_id;
 		$data['add_users'] 		= $add_users;
-		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
+		if ($batch_id > 0) {
+			$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
+		} else {
+			$data["bc"] = array ( 'Batches'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);			
+		}
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
-		$users_not_in_batch = $this->enrolment_model->users_not_in_batch ($coaching_id, $batch_id);
+		$users_not_in_batch = $this->enrolment_model->users_not_in_batch ($coaching_id, $course_id, $batch_id);
 		if (! empty($users_not_in_batch)) {
 		    $num_users_notin = count($users_not_in_batch);
 		} else {
@@ -83,7 +87,7 @@ class Enrolments extends MX_Controller {
 		}
 		$data['num_users_notin'] = $num_users_notin;
 		
-		$bu = $this->enrolment_model->batch_users ($coaching_id, $batch_id);
+		$bu = $this->enrolment_model->batch_users ($coaching_id, $course_id, $batch_id);
 		if (! empty($bu)) {
 		    $num_users_in = count($bu);
 		} else {
@@ -91,25 +95,14 @@ class Enrolments extends MX_Controller {
 		}
 		$data['num_users_in'] = $num_users_in;
 		
-		$teachers = $this->courses_model->get_teachers_assigned ($coaching_id, $course_id);
-		if (! empty ($teachers)) {
-			$num_teachers = count ($teachers);
-		} else {
-			$num_teachers = 0;
-		}
-
+		
 		if ($add_users == USER_ROLE_STUDENT) {
-		    $result = $users_not_in_batch;
-		} else if ($add_users == USER_ROLE_TEACHER) {
-		    $result = $teachers;
+		    $result = $users_not_in_batch;		
 		} else {
 		    $result = $bu;
 		}		
 		$data['result'] = $result;
-
-		$data['teachers'] = $teachers;
-		$data['num_teachers'] = $num_teachers;
-
+		
 		$data['script'] = $this->load->view('users/scripts/batch_users', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/batch_users', $data); 

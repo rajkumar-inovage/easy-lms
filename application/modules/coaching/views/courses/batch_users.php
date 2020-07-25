@@ -7,9 +7,6 @@
 		  <li class="nav-item">
 			<a class="nav-link <?php if ($add_users == USER_ROLE_STUDENT) echo 'active'; ?>" href="<?php echo site_url ('coaching/enrolments/batch_users/'.$coaching_id.'/'.$course_id.'/'.$batch_id.'/'.USER_ROLE_STUDENT )?>" >Add Users <span class="badge badge-primary"><?php echo $num_users_notin; ?></span></a>
 		  </li>
-		  <li class="nav-item d-none">
-			<a class="nav-link <?php if ($add_users == USER_ROLE_TEACHER) echo 'active'; ?>" href="<?php echo site_url ('coaching/enrolments/batch_users/'.$coaching_id.'/'.$course_id.'/'.$batch_id.'/'.USER_ROLE_TEACHER )?>" >Add Instructors <span class="badge badge-primary"><?php echo $num_teachers; ?></span></a>
-		  </li>
 		</ul>
 	</div>
 </div>
@@ -19,9 +16,9 @@
 		<div class="card">
 			<?php 
 			if ($add_users > 0) {
-				echo form_open ('coaching/enrolment_actions/add_user/'.$coaching_id.'/'.$course_id.'/'.$batch_id, array ('id'=>'validate-1'));
+				echo form_open ('coaching/enrolment_actions/add_users_to_batch/'.$coaching_id.'/'.$course_id.'/'.$batch_id, array ('id'=>'validate-1')); 
 			} else {
-				echo form_open ('coaching/enrolment_actions/remove_users/'.$coaching_id.'/'.$course_id.'/'.$batch_id, array ('id'=>'validate-1'));
+				echo form_open ('coaching/enrolment_actions/remove_batch_users/'.$coaching_id.'/'.$course_id.'/'.$batch_id, array ('id'=>'validate-1'));
 			}
 			?>				
 				<table class="table table-hover ">
@@ -61,7 +58,7 @@
 								<?php if ($add_users == 0) { ?>
 									<td>
 										<!-- DELETE LOG  -->
-										<a href="javascript:void(0);" onclick="show_confirm ('Remove this user from batch <?php echo $batch_title; ?>?', '<?php echo site_url("coaching/user_actions/remove_batch_user/".$coaching_id.'/'.$batch_id.'/'.$item['member_id'].'/'.$add_users); ?>')" class="btn btn-link" data-title="Remove User"><i class="fa fa-trash"></i></a>
+										<a href="javascript:void(0);" onclick="show_confirm ('Remove this user ?', '<?php echo site_url("coaching/enrolment_actions/remove_batch_user/".$coaching_id.'/'.$course_id.'/'.$batch_id.'/'.$item['member_id'].'/'.$add_users); ?>')" class="btn btn-link" data-title="Remove User"><i class="fa fa-trash"></i></a>
 									</td>
 								<?php } ?>
 							</tr>
