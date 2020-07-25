@@ -14,10 +14,10 @@ class Courses_actions extends MX_Controller {
 			$cat_id = $this->courses_model->add_course_category($coaching_id, $category_id, CATEGORY_STATUS_ACTIVE);
 			if ($category_id > 0) {
 				$message = 'Course Category updated successfully';
-				$redirect = 'coaching/courses/create/' . $coaching_id . '/' . $category_id;
+				$redirect = 'coaching/courses/index/' . $coaching_id . '/' . $category_id;
 			} else {
 				$message = 'Course Category created successfully';
-				$redirect = 'coaching/courses/create/' . $coaching_id . '/' . $cat_id;
+				$redirect = 'coaching/courses/index/' . $coaching_id . '/' . $cat_id;
 			}
 			$this->message->set($message, 'success', true);
 			$this->output->set_content_type("application/json");

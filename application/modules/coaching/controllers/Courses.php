@@ -12,15 +12,21 @@ class Courses extends MX_Controller {
 
 	public function index($coaching_id = 0, $cat_id = 0) {
 		$data['page_title'] = 'Courses';
+		$is_admin = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
 		$data['bc'] = array('Dashboard' => 'coaching/home/dashboard/' . $coaching_id);
 		$data['cat_id'] = $cat_id;
 		$data['coaching_id'] = $coaching_id;
 		$data['categories'] = $this->courses_model->course_categories($coaching_id);
-		$data['courses'] = $this->courses_model->courses($coaching_id, $cat_id);
-		$data['toolbar_buttons'] = array(
-			'<i class="fa fa-plus-circle"></i> New Course' => 'coaching/courses/create/' . $coaching_id . '/' . $cat_id,
-			'<i class="fa fa-plus-circle"></i> New Category' => 'coaching/courses/create_category/' . $coaching_id . '/' . $cat_id,
-		);
+		if($is_admin){
+			$data['courses'] = $this->courses_model->courses($coaching_id, $cat_id);
+			$data['toolbar_buttons'] = array(
+				'<i class="fa fa-plus-circle"></i> New Course' => 'coaching/courses/create/' . $coaching_id . '/' . $cat_id,
+				'<i class="fa fa-plus-circle"></i> New Category' => 'coaching/courses/create_category/' . $coaching_id . '/' . $cat_id,
+			);
+		}else{
+			$data['courses'] = $this->courses_model->member_courses($coaching_id, $cat_id);
+		}
+		$data['is_admin'] = $is_admin;
 		$data['script'] = $this->load->view('courses/scripts/index', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/index', $data);
@@ -42,6 +48,7 @@ class Courses extends MX_Controller {
 		if ($course_id > 0) {
 			$data['course'] = $this->courses_model->get_course_by_id($course_id);
 		}
+		$data['is_admin'] = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
 		$data['script'] = $this->load->view ('courses/scripts/create', $data, true);
 		
 		$this->load->view(INCLUDE_PATH . 'header', $data);
@@ -63,6 +70,8 @@ class Courses extends MX_Controller {
 		}
 		$data['cat_id'] = $cat_id;
 		$data['coaching_id'] = $coaching_id;
+		$data['is_admin'] = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
+
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/create_cat', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
@@ -79,7 +88,7 @@ class Courses extends MX_Controller {
 
 		$data['coaching_id'] = $coaching_id;
 		$data['course_id'] = $course_id;
-		
+		$data['is_admin'] = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
 		$data['bc'] = array('Courses' => 'coaching/courses/index/' . $coaching_id);
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
@@ -88,7 +97,6 @@ class Courses extends MX_Controller {
 	}
 
 	public function preview ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
-
 		$data['page_title'] = 'Preview';
 		$data['coaching_id'] = $coaching_id;
 		$data['course_id'] = $course_id;
@@ -111,6 +119,7 @@ class Courses extends MX_Controller {
 			$data['page'] = false;
 			$data['attachments'] = false;
 		}
+		$data['is_admin'] = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
 
 		/* --==// Back //==-- */
 		$data['bc'] = ['Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id];
@@ -153,6 +162,7 @@ class Courses extends MX_Controller {
 		}
 		$data['results'] = $results;
 		$data['data']			= $data;
+		$data['is_admin'] = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
 		
 		$data['script'] = $this->load->view ('courses/scripts/teachers', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
@@ -170,6 +180,7 @@ class Courses extends MX_Controller {
 
 
 	public function settings ($coaching_id=0, $course_id=0) {
+		$data['is_admin'] = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
 		$data['script'] = $this->load->view ('courses/scripts/teachers', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/teachers', $data);

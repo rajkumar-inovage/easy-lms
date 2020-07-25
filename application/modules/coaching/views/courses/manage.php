@@ -59,7 +59,6 @@
 </div>
 
 <div class="row">
-
 	<div class="col-md-6">
 		<div class="card mb-3 ">
 			<div class="card-header">
@@ -84,7 +83,7 @@
 			</div>
 		</div>
 	</div>
-
+	<?php if($is_admin): ?>
 	<div class="col-md-6">
 		<div class="card mb-3 ">
 			<div class="card-header">
@@ -105,12 +104,7 @@
 			</div>
 		</div>
 	</div>
-
-</div>
-
-
-<div class="row">
-
+	<?php endif; ?>
 	<div class="col-md-6 d-none">
 		<div class="card mb-3 ">
 			<div class="card-header">
@@ -133,19 +127,29 @@
 			</div>
 		</div>
 	</div>
-
 	<div class="col-md-6">
 		<div class="card mb-3 ">
 			<div class="card-header">
-				<h4 class="card-title d-flex justify-content-between">Settings <span class="badge badge-primary"><?php //echo $num_lessons; ?></span></h4>
+				<?php if($is_admin): ?>
+				<h4 class="card-title d-flex justify-content-between">Settings</h4>
+				<?php else: ?>
+				<h4 class="card-title d-flex justify-content-between">Preview</h4>
+				<?php endif; ?>
+				<?php if($is_admin): ?>
+				<?php endif; ?>
 			</div>
 			<div class="card-body">
 				<ul class="list-inline">
-				  
+				<?php if($is_admin): ?>
 				  <li class="list-inline-item ">
 				  	<a class="" href="<?php echo site_url ('coaching/courses/preview/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-search"></i> Preview</a>
 				  </li>
-
+				<?php else: ?>
+				  <li class="list-inline-item ">
+				  	<a class="" href="<?php echo site_url ('coaching/courses/preview/'.$coaching_id.'/'.$course_id); ?>"><i class="fa fa-eye"></i> Preview</a>
+				  </li>
+				<?php endif; ?>
+				<?php if($is_admin): ?>
 				  <li class="list-inline-item ml-4">
 				  	<a class="" href="<?php echo site_url ('coaching/courses/edit/'.$coaching_id.'/'.$cat_id.'/'.$course_id); ?>"><i class="fa fa-edit"></i> Edit</a>
 				  </li>
@@ -153,6 +157,7 @@
 				  <li class="list-inline-item ml-4">
 			      	<a class="" href="<?php echo site_url ('coaching/courses/add_teachers/'.$coaching_id.'/'.$cat_id.'/'.$course_id); ?>" class="text-danger"><i class="fa fa-trash"></i> Delete Course</a>
 			      </li>
+			    <?php endif; ?>
 				</ul>
 			</div>
 		</div>

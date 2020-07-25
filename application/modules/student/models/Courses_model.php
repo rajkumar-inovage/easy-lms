@@ -8,7 +8,15 @@ class Courses_model extends CI_Model {
 	public function get_course_by_id($course_id) {
 		$this->db->where('course_id', $course_id);
 		$sql = $this->db->get('coaching_courses');
-		return $sql->row_array();
+		$course = $sql->row_array();
+		$this->db->where('course_id', $course_id);
+		$sql = $this->db->get('coaching_course_batch_users');
+		if(!empty($sql->row_array())){
+			$course['in_my_course'] = true;
+		}else{
+			$course['in_my_course'] = false;
+		}
+		return $course;
 	}
 	public function get_users_courses($coaching_id, $member_id){
 		$this->db->select('course_id');
