@@ -161,10 +161,10 @@ class Courses extends MX_Controller {
 	}
 
 	public function organize ($coaching_id=0, $course_id=0) {
-		$data['']
-		$data['script'] = $this->load->view ('courses/scripts/teachers', $data, true);
+		$data['page_title'] = 'Organize Contents';
+		$data['script'] = $this->load->view ('courses/scripts/organize', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
-		$this->load->view('courses/teachers', $data);
+		$this->load->view('courses/organize', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 

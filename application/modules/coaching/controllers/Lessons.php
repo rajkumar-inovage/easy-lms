@@ -33,6 +33,7 @@ class Lessons extends MX_Controller {
 		/* --==// Back //==-- */
 		$data['bc'] = ['Pages'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id];
 
+		$data['script'] = $this->load->view ('lessons/scripts/sortable', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('lessons/index', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
