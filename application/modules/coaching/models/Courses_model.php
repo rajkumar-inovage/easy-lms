@@ -38,6 +38,9 @@ class Courses_model extends CI_Model {
 		if($status != CATEGORY_STATUS_ALL){
 			$this->db->where('coaching_courses.status', $status);
 		}
+		if($cat_id>0){
+			$this->db->where('coaching_courses.cat_id', $cat_id);
+		}
         $this->db->where('coaching_courses.coaching_id', $coaching_id);
         $this->db->where('coaching_course_teachers.member_id', $this->session->userdata ('member_id'));
         $this->db->join('coaching_course_teachers','coaching_courses.course_id = coaching_course_teachers.course_id');
@@ -133,9 +136,13 @@ class Courses_model extends CI_Model {
 		$this->db->where('course_id', $course_id);
 		$this->db->update('coaching_courses', $data);
 	}
+	public function delete_course_category($category_id){
+		$this->db->where ('cat_id', $category_id);		
+		$this->db->delete('coaching_course_category');
+	}
 	public function delete_course ($course_id) {
 		$this->db->where ('course_id', $course_id);		
-		$this->db->delete('coaching_courses');	
+		$this->db->delete('coaching_courses');
 	}
 	public function count_course_lessons ($coaching_id=0, $course_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);

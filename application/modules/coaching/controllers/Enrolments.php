@@ -38,10 +38,13 @@ class Enrolments extends MX_Controller {
 		}
 		
 		$data['all_batches'] = $result;
-
-		$data['toolbar_buttons'] = $this->toolbar_buttons;
-		$data['toolbar_buttons']['<i class="fa fa-plus"></i> New Batch'] = 'coaching/enrolments/create_batch/'.$coaching_id.'/'.$course_id;
+		$is_admin = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
+		if($is_admin){
+			$data['toolbar_buttons'] = $this->toolbar_buttons;
+			$data['toolbar_buttons']['<i class="fa fa-plus"></i> New Batch'] = 'coaching/enrolments/create_batch/'.$coaching_id.'/'.$course_id;
+		}
 		$data["bc"] = array ( 'Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
+		$data['is_admin'] = $is_admin;
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/batches', $data);
@@ -53,6 +56,8 @@ class Enrolments extends MX_Controller {
 		$data["coaching_id"] 	= $coaching_id;
 		$data["course_id"] 		= $course_id;
 		$data["batch_id"] 		= $batch_id;
+		$is_admin = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
+		$data['is_admin'] = $is_admin;
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		$data['toolbar_buttons']['<i class="fa fa-plus"></i> New Batch'] = 'coaching/enrolments/create_batch/'.$coaching_id.'/'.$course_id;
 		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
@@ -72,11 +77,15 @@ class Enrolments extends MX_Controller {
 		$data["batch_id"] 		= $batch_id;
 		$data["course_id"] 		= $course_id;
 		$data['add_users'] 		= $add_users;
+
 		if ($batch_id > 0) {
 			$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
 		} else {
 			$data["bc"] = array ( 'Batches'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);			
 		}
+		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
+		$is_admin = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
+		$data['is_admin'] = $is_admin;
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
 		$users_not_in_batch = $this->enrolment_model->users_not_in_batch ($coaching_id, $course_id, $batch_id);
@@ -117,8 +126,12 @@ class Enrolments extends MX_Controller {
 		$data['batch_id'] 		= $batch_id;
 
 		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
-		$data['toolbar_buttons'] = $this->toolbar_buttons;
-		$data['toolbar_buttons']['<i class="fa fa-plus"></i> Create Schedule'] = 'coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id;
+		$is_admin = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
+		$data['is_admin'] = $is_admin;
+		if($is_admin){
+			$data['toolbar_buttons'] = $this->toolbar_buttons;
+			$data['toolbar_buttons']['<i class="fa fa-plus"></i> Create Schedule'] = 'coaching/enrolments/create_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id;
+		}
 
 		$data['batch'] = $batch = $this->enrolment_model->get_batch ($coaching_id, $course_id, $batch_id);
 

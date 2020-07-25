@@ -17,10 +17,12 @@
 						echo '<div class="text-muted">Ending On: '.date('d M, Y', $row["end_date"]).'</div>';
 					} 
 					?>
+					<?php if($is_admin): ?>
 					<div class="btn-group">
 						<a href="<?php echo site_url('coaching/enrolments/create_batch/'.$coaching_id.'/'.$course_id.'/'.$row["batch_id"]); ?>" class="btn btn-xs"><i class="fa fa-edit"></i> </a>	
 						<a href="javascript:void(0);" onclick="show_confirm ('Are you sure delete this batch?', '<?php echo site_url('coaching/enrolment_actions/delete_batch/'.$coaching_id.'/'.$course_id.'/'.$row["batch_id"]); ?>')" class="btn btn-xs"><i class="fa fa-trash"></i> </a>
 					</div>
+					<?php endif; ?>
 				</div>
 				<div class="media-right">
 					<a href="<?php echo site_url('coaching/enrolments/schedule/'.$coaching_id.'/'.$course_id.'/'.$row["batch_id"]); ?>" class="btn btn-info" ><i class="fa fa-calendar"></i> Schedule</a>	
