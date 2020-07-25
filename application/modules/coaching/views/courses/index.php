@@ -39,8 +39,8 @@
                 </a>
               </div>
               <?php if($is_admin): ?>
-              <div class="media-right h-100 align-self-center edit-category" style="display: none;">
-                <a class="btn btn-sm" href="<?php echo site_url('coaching/courses/edit_category/' . $coaching_id . '/' . $category['cat_id']); ?>">
+              <div class="media-right h-100 my-auto edit-category" style="display: none;">
+                <a class="btn btn-sm border-primary text-primary p-0 height-30 width-30 rounded-circle d-flex align-items-center justify-content-center" href="<?php echo site_url('coaching/courses/edit_category/' . $coaching_id . '/' . $category['cat_id']); ?>">
                   <i class="fa fa-pencil-alt"></i>
                 </a>
               </div>
