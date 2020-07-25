@@ -21,7 +21,7 @@ class Courses extends MX_Controller {
 			$data['courses'] = $this->courses_model->courses($coaching_id, $cat_id);
 			$data['toolbar_buttons'] = array(
 				'<i class="fa fa-plus-circle"></i> New Course' => 'coaching/courses/create/' . $coaching_id . '/' . $cat_id,
-				'<i class="fa fa-plus-circle"></i> New Category' => 'coaching/courses/create_category/' . $coaching_id . '/' . $cat_id,
+				'<i class="fa fa-plus-circle"></i> New Category' => 'coaching/courses/create_category/' . $coaching_id,
 			);
 		}else{
 			$data['courses'] = $this->courses_model->member_courses($coaching_id, $cat_id);

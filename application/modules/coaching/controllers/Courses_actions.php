@@ -14,7 +14,7 @@ class Courses_actions extends MX_Controller {
 			$cat_id = $this->courses_model->add_course_category($coaching_id, $category_id, CATEGORY_STATUS_ACTIVE);
 			if ($category_id > 0) {
 				$message = 'Course Category updated successfully';
-				$redirect = 'coaching/courses/index/' . $coaching_id . '/' . $category_id;
+				$redirect = 'coaching/courses/index/' . $coaching_id . '/';
 			} else {
 				$message = 'Course Category created successfully';
 				$redirect = 'coaching/courses/index/' . $coaching_id . '/' . $cat_id;
@@ -116,6 +116,11 @@ class Courses_actions extends MX_Controller {
 		$this->courses_model->toggle_course_status($coaching_id, $category_id, $course_id, $status);
 		$this->message->set("Course status changed.", "info", TRUE);
 		redirect("coaching/courses/index/".$coaching_id.'/'.$category_id);
+	}
+	public function delete_category ($coaching_id, $category_id)	{		
+		$this->courses_model->delete_course_category ($category_id);
+		$this->message->set("Course Category deleted successfully", "success", TRUE);
+		redirect("coaching/courses/index/".$coaching_id);
 	}
 	public function delete($coaching_id, $category_id, $course_id)	{		
 		$this->courses_model->delete_course ($course_id);
