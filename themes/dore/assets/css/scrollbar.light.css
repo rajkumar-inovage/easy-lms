@@ -1,0 +1,20 @@
+body::-webkit-scrollbar {
+    width: 5px;
+    height: 2px
+}
+
+body::-webkit-scrollbar-track {
+    opacity: 0.6;
+}
+
+body::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    opacity: 0.9;
+    background: #d7d7d7;
+    transition: background-color .2s linear, width .2s ease-in-out;
+    -webkit-transition: background-color .2s linear, width .2s ease-in-out;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
