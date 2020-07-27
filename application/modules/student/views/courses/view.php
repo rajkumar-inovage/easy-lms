@@ -5,7 +5,7 @@
 	</div>
 	<div class="card-body">
 		<div class="row">
-			<div class="col text-justify">
+			<div class="col-12 col-sm order-2 order-sm-1 text-justify">
 				<div class="d-flex flex-column h-100">
 					<div class="description">
 						<?php
@@ -21,13 +21,13 @@
 							<div class="col-12">
 								<h1 class="mb-3"><strong>Price: &#8377;</strong><?php echo $course['price']; ?></h1>
 							</div>
-							<?php endif; ?>
 							<div class="col">
-								<a class="btn btn-info shadow-sm" href="">Buy Now <i class="fa fa-shopping-cart"></i>
+								<a class="btn btn-info shadow-sm mt-3" href="">Buy Now <i class="fa fa-shopping-cart"></i>
 								</a>
 							</div>
+							<?php endif; ?>
 							<div class="col">
-								<a class="btn btn-info shadow-sm" href="">View Chapters <i class="fa fa-eye"></i>
+								<a class="btn btn-info shadow-sm mt-3" href="">View Chapters <i class="fa fa-eye"></i>
 								</a>
 							</div>
 						</div>
@@ -35,11 +35,11 @@
 				</div>
 			</div>
 			<?php if($course['feat_img']!=''): ?>
-			<div class="col">
+			<div class="col-12 col-sm order-1 order-sm-2">
 				<img src="<?php echo site_url( $course['feat_img'] ); ?>" class="img-fluid" />
 			</div>
 			<?php else: ?>
-			<div class="col">
+			<div class="col-12 col-sm order-1 order-sm-2">
 				<img src="<?php echo site_url('contents/system/default_course.jpg'); ?>" class="img-fluid" />
 			</div>
 			<?php endif; ?>

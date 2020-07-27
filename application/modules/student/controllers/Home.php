@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Home extends MX_Controller {
-
     public function __construct () {
         $config = ['config_student', 'config_virtual_class'];
         $models = ['virtual_class_model', 'courses_model', 'tests_reports', 'tests_model', 'announcements_model'];
@@ -19,7 +18,6 @@ class Home extends MX_Controller {
             }
         }
 	}	
-    
     public function dashboard ($coaching_id=0, $member_id=0) {
 		$data['page_title'] = 'Dashboard';
         if ($coaching_id==0) {

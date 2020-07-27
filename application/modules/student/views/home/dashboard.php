@@ -1,4 +1,63 @@
-<?php // print_pre($courses); ?>
+<div class="card mb-4 shadow-sm">
+	<div class="card-header ">
+		<h4 class="my-1">My Courses</h4>
+	</div>
+		<?php 
+		if (! empty ($courses)) {
+			?>
+			<ul class="list-group border-0">
+			<?php
+			foreach($courses as $i => $row) { 
+				?>
+				<li class="list-group-item media border-bottom-0 rounded-0">
+					<div class="media-left d-none d-md-table-cell align-middle">
+						<?php if ($row['feat_img'] != '') { ?>
+							<img src="<?php echo site_url( $row['feat_img'] ); ?>" class="img-fluid" style="max-width: 50px;" />
+						<?php } else { ?>
+							<span class="icon-block half rounded-circle bg-grey-200">
+								<i class="fa fa-book"></i>
+							</span>
+						<?php } ?>
+					</div>
+					<div class="media-body">
+						<h4 class="text-left"><?php echo $row['title']; ?></h4>
+						<p class="text-justify"><?php echo excerpt($row['description'], 15); ?></p>
+						<a class="btn btn-outline-primary border-primary shadow-sm d-none d-sm-inline-block" href="<?php echo site_url ('student/courses/view/'.$coaching_id.'/'.$member_id.'/'.$row['course_id']); ?>">View <i class="fa fa-eye"></i>
+						</a>
+					</div>
+					<div class="media-right align-middle text-center">
+						<div class="progressbar-circle relative">
+							<svg viewBox="0 0 100 100" style="display:block;width:65px;margin:auto;">
+								<path d="M 50,50 m 0,-48 a 48,48 0 1 1 0,96 a 48,48 0 1 1 0,-96" stroke="#eee" stroke-width="4" fill-opacity="0"></path>
+								<path d="M 50,50 m 0,-48 a 48,48 0 1 1 0,96 a 48,48 0 1 1 0,-96" stroke="#42a5f5" stroke-width="4" fill-opacity="0" style="stroke-dasharray: 301.635, 301.635; stroke-dashoffset: 99.5396;"></path>
+							</svg>
+							<div class="progressbar-text" style="position: absolute; left: 50%; top: 50%; padding: 0px; margin: 0px; transform: translate(-50%, -50%); color: rgb(0, 0, 0); font-size: 1rem;">67%</div>
+                        </div>
+						<a class="btn btn-outline-primary border-primary shadow-sm mt-3 d-block d-sm-none" href="<?php echo site_url ('student/courses/view/'.$coaching_id.'/'.$member_id.'/'.$row['course_id']); ?>">View <i class="fa fa-eye"></i>
+						</a>
+	                </div>
+				</li>
+				<?php
+				if ($i >= 2) {
+					break;
+				}
+			}?>
+		</ul>
+		<?php
+		} else {
+        	?>
+        <div class="card-body">
+            <div class="alert alert-danger mb-0">
+                You are not enroled in any courses
+            </div>
+        </div>
+            <?php
+        }
+		?>
+	<div class="card-footer text-right">
+		<?php echo anchor ('student/courses/index/'.$coaching_id.'/'.$member_id, '<i class="fa fa-book"></i> All Courses', ['class'=>'btn btn-link mr-1']); ?>
+	</div>
+</div>
 <div class="card mb-4 shadow-sm">
 	<div class="card-header ">
 		<h4 class="my-1">My Classrooms</h4>
