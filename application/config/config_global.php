@@ -20,7 +20,7 @@ $config['system_logo']					= 'contents/system/system_logo.png';
 $config['coaching_logo']				= 'logo.png';
 $config['profile_picture_path']			= 'contents/profile_images/';
 
-define ('THEME_PATH', 			    	'themes/default/');
+define ('THEME_PATH', 			    	'themes/dore/');
 define ('ANSWER_TEMPLATE', 			    'templates/answer_choices/');
 define ('SMS_TEMPLATE', 			    'templates/sms/');
 define ('EMAIL_TEMPLATE', 			    'templates/email/');
