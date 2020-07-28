@@ -24,7 +24,7 @@ class Lessons extends MX_Controller {
 		$data['status'] = $status;
 		$data['lessons'] = $this->lessons_model->get_lessons ($coaching_id, $course_id, $status);
 		$data['data']	= $data;
-		$data['page_title'] = 'Lessons';
+		$data['page_title'] = 'Chapters';
 
 		/* --==// Toolbar //==-- */
 		$data['toolbar_buttons'] = $this->toolbar_buttons;

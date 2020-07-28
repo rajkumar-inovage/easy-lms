@@ -51,6 +51,8 @@
 
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/main.css'); ?>" />
     <!--==== Other CSS ====-->
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/fontawesome5.14.min.css'); ?>" />
     <!-- Toastr CSS -->
     <link type="text/css" href="<?php echo base_url(THEME_PATH . 'assets/css/toastr.min.css'); ?>" rel="stylesheet">
 
@@ -252,9 +254,8 @@
                             }
                             ?>
                             <li>
-                                <a class="" href="<?php echo site_url($link); ?>">
-                                    <?php echo $menu['icon_img']; ?>
-                                    <i class="iconsminds-shop-4"></i>
+                                <a class="text-primary" href="<?php echo site_url($link); ?>">
+                                    <span class=""><?php echo $menu['icon_img']; ?></span>
                                     <span><?php echo $menu['menu_desc']; ?></span>
                                 </a>
                             </li>
@@ -269,32 +270,35 @@
     </div>
 
     <main>
-        <div class="container-fluid">
-             <div class="row app-row">
+        <div class="container-fluid disable-text-selection">
+             <div class="row <?php if (isset ($right_sidebar)) echo 'app-row'; ?>">
                 <div class="col-12">
                     <div class="mb-2">
-                        <h1><?php if(isset($page_title)) echo $page_title; ?></h1>
+                        <h1>
+                            <?php 
+                              if (isset ($bc)) {
+                                  $bc_link = current ($bc);
+                                  $bc_title  = key ($bc);
+                                  echo anchor ($bc_link, '<i class="fa fa-long-arrow-alt-left link-text-color"></i> ', array('class'=>'mr-2', 'title'=>'Back To '.$bc_title)); 
+                              }
+                            ?>
+                            <?php if(isset($page_title)) echo $page_title; ?>                            
+                        </h1>
 
-                        <div class="top-right-button-container">                           
-
-                            <?php if (! empty ($toolbar_buttons)) { ?>
-                                <div class="btn-group">
-                                    <div class="btn btn-primary btn-lg pl-4 pr-0 ">
-                                        <div class=" mb-0 mt-1">
-                                            <span class="">Actions</span>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="btn btn-lg btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right">
+                        <?php if (! empty ($toolbar_buttons)) { ?>
+                            <div class="top-right-button-container d-flex">
+                                <button type="button" class="btn btn-primary btn-lg top-right-button mr-1 dropdown-toggle dropdown-toggle-split top-right-button top-right-button-single" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    ACTION
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
                                     <?php foreach ($toolbar_buttons as $title=>$url) { ?>
                                         <a class="dropdown-item" href="<?php echo site_url ($url); ?>"><?php echo $title; ?></a>
                                     <?php } ?>
-                                    </div>
                                 </div>
-                            <?php } ?>
-                        </div>
+                            </div>
+                        <?php } ?>
                     </div>                   
 
                     <div class="separator mb-5"></div>
+                </div>
+            </div>
