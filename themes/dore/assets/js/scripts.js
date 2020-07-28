@@ -14,6 +14,7 @@ function loadStyle(href, callback) {
   }
   /*
   Overriding default script and loading in header
+  */
   for (var i = 0; i < document.styleSheets.length; i++) {
     if (document.styleSheets[i].href == href) {
       //return;
@@ -37,7 +38,6 @@ function loadStyle(href, callback) {
   } else {
     head.appendChild(link);
   }
-  */
 }
 
 /* 02. Theme Selector, Layout Direction And Initializer */
@@ -55,7 +55,7 @@ function loadStyle(href, callback) {
   var theme = "dore.light.blue.min.css";
   var scrollbar = "scrollbar.light.css";
   var direction = "ltr";
-  var radius = "rounded";
+  var radius = "flat";
 
   if (typeof Storage !== "undefined") {
     if (localStorage.getItem("dore-theme")) {
@@ -85,8 +85,8 @@ function loadStyle(href, callback) {
   $(".radius-radio[data-radius='" + radius + "']").attr("checked", true);
   $("#switchDark").attr("checked", theme.indexOf("dark") > 0 ? true : false);
 
-  loadStyle(appPath + "themes/dore/assets/css/" + scrollbar);
-  loadStyle(appPath + "themes/dore/assets/css/" + theme, onStyleComplete);
+  loadStyle(`${themePath}css/${scrollbar}`);
+  loadStyle(`${themePath}css/${theme}`, onStyleComplete);
   function onStyleComplete() {
     setTimeout(onStyleCompleteDelayed, 300);
   }
@@ -94,7 +94,7 @@ function loadStyle(href, callback) {
   function onStyleCompleteDelayed() {
     $("body").addClass(direction);
     $("html").attr("dir", direction);
-    // $("body").addClass(radius);
+    $("body").addClass(radius);
     $("body").dore();
   }
 

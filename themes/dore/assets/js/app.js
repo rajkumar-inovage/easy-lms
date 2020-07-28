@@ -160,7 +160,7 @@ function updateBtn() {
   }
   notifyButton.classList.remove('disabled');
 }
-
+toastr.options = {"positionClass": "toast-bottom-center", "newestOnTop": false};
 var submitFormSelector = document.getElementById ('validate-1');
 if (submitFormSelector) {	
 	submitFormSelector.addEventListener ('submit', e => {
