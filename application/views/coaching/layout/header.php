@@ -275,25 +275,32 @@
                     <div class="mb-2">
                         <h1><?php if(isset($page_title)) echo $page_title; ?></h1>
 
-                        <div class="top-right-button-container">                           
-
+                        <div class="top-right-button-container">
                             <?php if (! empty ($toolbar_buttons)) { ?>
-                                <div class="btn-group">
-                                    <div class="btn btn-primary btn-lg pl-4 pr-0 ">
-                                        <div class=" mb-0 mt-1">
-                                            <span class="">Actions</span>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="btn btn-lg btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                    <?php foreach ($toolbar_buttons as $title=>$url) { ?>
+                            <button type="button" class="btn btn-primary btn-lg top-right-button mr-1 dropdown-toggle dropdown-toggle-split top-right-button top-right-button-single" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ADD NEW
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                 <?php foreach ($toolbar_buttons as $title=>$url) { ?>
                                         <a class="dropdown-item" href="<?php echo site_url ($url); ?>"><?php echo $title; ?></a>
                                     <?php } ?>
-                                    </div>
+                            </div>
+                            <div class="btn-group">
+                                <div class="btn btn-primary btn-lg pl-4 pr-0 check-button">
+                                    <label class="custom-control custom-checkbox mb-0 d-inline-block">
+                                        <input type="checkbox" class="custom-control-input" id="checkAll">
+                                        <span class="custom-control-label">&nbsp;</span>
+                                    </label>
                                 </div>
-                            <?php } ?>
+                                <button type="button" class="btn btn-lg btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                </div>
+                            </div>
+                             <?php } ?>
                         </div>
                     </div>                   
 
