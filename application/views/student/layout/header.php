@@ -38,7 +38,7 @@
     <!--==== Core CSS ====-->
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/font/iconsmind-s/css/iconsminds.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/font/simple-line-icons/css/simple-line-icons.css'); ?>" />
-
+    <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/font/fontawesome/fontawesome.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/bootstrap.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/bootstrap.rtl.only.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/bootstrap-datepicker3.min.css'); ?>" />
@@ -46,13 +46,8 @@
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/select2.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/jquery.contextMenu.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/component-custom-switch.min.css'); ?>" />
-    <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/scrollbar.light.css'); ?>" />
-    <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/dore.light.blue.min.css'); ?>" />
-
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/main.css'); ?>" />
     <!--==== Other CSS ====-->
-    <!-- Fontawesome -->
-    <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/fontawesome5.14.min.css'); ?>" />
     <!-- Toastr CSS -->
     <link type="text/css" href="<?php echo base_url(THEME_PATH . 'assets/css/toastr.min.css'); ?>" rel="stylesheet">
 
@@ -105,7 +100,7 @@
 
         <div class="navbar-right">
             <div class="header-icons d-inline-block align-middle">
-                <div class="d-none __d-md-inline-block align-text-bottom mr-3">
+                <div class="d-none d-md-inline-block align-text-bottom mr-3">
                     <div class="custom-switch custom-switch-primary-inverse custom-switch-small pl-1" 
                         data-toggle="tooltip" data-placement="left" title="Dark Mode">
                         <input class="custom-switch-input" id="switchDark" type="checkbox" checked>
@@ -225,7 +220,7 @@
                     aria-expanded="false">
                     <span class="name"><?php echo $this->session->userdata ('user_name'); ?></span>
                     <span>
-                        <img alt="Profile Picture" src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" />
+                        <img alt="Profile Picture" src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" class="bg-white"/>
                     </span>
                 </button>
 
@@ -239,7 +234,7 @@
     </nav>
 
     <div class="menu">
-        <div class="main-menu">
+        <div class="main-menu rounded-0">
             <div class="scroll">
                 <ul class="list-unstyled">
                     <?php
@@ -249,11 +244,14 @@
                     if (! empty ($main_menu)) {
                         foreach ($main_menu as $menu) {
                             $link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id;
+                            $nameMatch = $this->uri->segment(2) == $menu['controller_nm'];
+                            $actionMatch = $this->uri->segment(3) == $menu['action_nm'];
+                            $active = ($nameMatch && $actionMatch)? ' class="active"':'';
                             if ($this->session->userdata ('role_id') == USER_ROLE_STUDENT) {
                                 $link .= '/'.$this->session->userdata ('member_id');
                             }
                             ?>
-                            <li>
+                            <li<?php echo $active; ?>>
                                 <a class="" href="<?php echo site_url($link); ?>">
                                     <?php echo $menu['icon_img']; ?>
                                     <span><?php echo $menu['menu_desc']; ?></span>

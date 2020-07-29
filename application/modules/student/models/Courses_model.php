@@ -58,6 +58,7 @@ class Courses_model extends CI_Model {
 		foreach ($courses as $i => $course) {
 			$courses[$i]['lessons'] = $this->count_course_lessons($coaching_id, $course['course_id']);
 			$courses[$i]['tests'] = $this->count_course_tests($coaching_id, $course['course_id']);
+			$courses[$i]['progress'] = $this->lessons_model->get_progress($member_id, $coaching_id, $course['course_id']);
 			$this->db->select('first_name, last_name');
 			$this->db->where ('member_id', $course['created_by']);
 			$users = $this->db->get ('members');
