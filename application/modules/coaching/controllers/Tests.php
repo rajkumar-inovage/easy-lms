@@ -49,7 +49,6 @@ class Tests extends MX_Controller {
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
 		$data['categories'] = $this->tests_model->test_categories ($coaching_id);
-
 		$this->load->view(INCLUDE_PATH  . 'header', $data);
 		$this->load->view('tests/categories', $data);
 		$this->load->view(INCLUDE_PATH  . 'footer', $data);
@@ -164,7 +163,7 @@ class Tests extends MX_Controller {
 		
 		/* Breadcrumbs */
 		$data['bc'] = array ('Tests'=>'coaching/tests/index/'.$coaching_id.'/'.$course_id);
-		
+		$data['right_sidebar'] = $this->load->view('tests/inc/manage_test', $data, true);
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
 		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
 

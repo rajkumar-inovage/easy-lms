@@ -1,4 +1,4 @@
-<div class="row justify-content-center">
+<div class="row app-row justify-content-center">
 	<div class="col-md-12">
 		<?php 
 		if ( ! empty ($results) ) {
@@ -8,7 +8,7 @@
 				$parent 	= $all_questions['parent'];
 				$questions 	= $all_questions['questions'];
 				?>
-				<div class="card mb-4 " oncopy="return false;" oncut="return false;" onpaste="return false;" onmousedown="return false;" onselectstart="return false;">
+				<div class="card pt-4" oncopy="return false;" oncut="return false;" onpaste="return false;" onmousedown="return false;" onselectstart="return false;">
 					<div class="card-header">
 						<div class="">
 							<?php if ( $test['finalized'] == 0) { ?>
@@ -40,14 +40,14 @@
 								?>
 								<li class="list-group-item">
 								  <div class="media">
-									<div class="media-left">
+									<div class="media-left test">
 										<?php if ( $test['finalized'] == 0) { ?>
 											<input name="questions[]" id="select<?php echo $id; ?>" type="checkbox" value="<?php echo $id; ?>" class="mr-2 checks checks<?php echo $parent_id; ?>">
 										<?php } ?>
-										<label for="select<?php echo $id; ?>"><?php echo $num_question; ?>.</label>
+										<label class="pr-2" for="select<?php echo $id; ?>"><?php echo $num_question; ?>.</label>
 									</div>
 
-									<div class="media-body">
+									<div class="media-body test">
 										<?php 
 										if ( $test['finalized'] == 0) {
 											echo anchor ('coaching/tests/question_edit/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$id, $row['question']);
