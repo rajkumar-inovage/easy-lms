@@ -71,9 +71,38 @@ class Lessons_model extends CI_Model {
 		$position = $row['position'];
 		return $position;
 	}
-
-
-
+	public function get_progress($member_id=0, $coaching_id=0, $course_id=0){
+		$this->db->select ('count(page_id) as total_pages');
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$sql = $this->db->get ('coaching_course_lesson_pages');
+		$total_pages = $sql->row_array();
+		$this->db->select ('count(progress_id) as total_progress');
+		$this->db->where ('member_id', $member_id);
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$sql = $this->db->get ('coaching_course_progress');
+		$total_progress = $sql->row_array();
+		return array_merge($total_pages, $total_progress);
+	}
+	public function make_progress($member_id=0, $coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0){
+		$this->db->where ('member_id', $member_id);
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$this->db->where ('lesson_id', $lesson_id);
+		$this->db->where ('page_id', $page_id);
+		$sql = $this->db->get ('coaching_course_progress');
+		if(intval($sql->num_rows()) === 0){
+			$data['member_id']	 		= $member_id;
+			$data['coaching_id']	 	= $coaching_id;
+			$data['course_id']	 		= $course_id;
+			$data['lesson_id']	 		= $lesson_id;
+			$data['page_id']	 		= $page_id;
+			$data['created_on']	  		= time();
+			$this->db->insert('coaching_course_progress', $data);
+			$progress_id = $this->db->insert_id();
+		}
+	}
 	public function get_page ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);
@@ -83,7 +112,6 @@ class Lessons_model extends CI_Model {
 		$sql = $this->db->get ('coaching_course_lesson_pages');
 		return $sql->row_array ();
 	}
-
 	public function get_attachments ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);
@@ -92,7 +120,6 @@ class Lessons_model extends CI_Model {
 		$sql = $this->db->get ('coaching_course_lesson_attachments');
 		return $sql->result_array ();
 	}
-
 	public function get_attachment ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0, $att_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);
@@ -102,7 +129,6 @@ class Lessons_model extends CI_Model {
 		$sql = $this->db->get ('coaching_course_lesson_attachments');
 		return $sql->row_array ();
 	}
-
 	public function add_page ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
 		
 		if ($this->input->post ('status')) {
@@ -135,10 +161,7 @@ class Lessons_model extends CI_Model {
 
 		return $page_id;
 	}
-	
-
 	public function add_attachment ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {		
-
 		$att_type = $this->input->post ('att_type');
 		if ($att_type == LESSON_ATT_UPLOAD) {
 			$this->load->helper('directory');
@@ -205,7 +228,6 @@ class Lessons_model extends CI_Model {
 		}
 		return $response;
 	}
-
 	public function delete_page ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);
@@ -213,7 +235,6 @@ class Lessons_model extends CI_Model {
 		$this->db->where ('page_id', $page_id);
 		$sql = $this->db->delete ('coaching_course_lesson_pages');
 	}
-
 	public function delete_attachment ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0, $att_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);
@@ -222,7 +243,6 @@ class Lessons_model extends CI_Model {
 		$this->db->where ('att_id', $att_id);
 		$sql = $this->db->delete ('coaching_course_lesson_attachments');
 	}
-
 	/* Auto Generate Reference ID */
 	public function generate_reference_id ($coaching_id=0, $course_id=0, $lesson_id=0) {
 		$prefix = ['EAL', date('Y'), $coaching_id, $course_id];

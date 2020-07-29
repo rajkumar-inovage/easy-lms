@@ -9,7 +9,7 @@
 
 			<div class="form-group">
 				<label for="description">Description</label>
-				<textarea class="form-control tinyeditor" name="description" rows="4" placeholder="How you describe this lesson?"><?php echo set_value ('description', $lesson['description']); ?></textarea>
+				<textarea class="form-control tinyeditor" name="description" rows="10" placeholder="How you describe this lesson?"><?php echo set_value ('description', $lesson['description']); ?></textarea>
 			</div>
 
 			<div class="form-group row">
@@ -28,12 +28,25 @@
 				</div>
 			</div>
 
-			<div class="form-group">
-				<div class="custom-control custom-switch">
-					<input type="checkbox" name="status" class="custom-control-input" id="status" value="1" <?php if ($lesson['status'] == 1 ) echo 'checked';?>  >
-				  	<label class="custom-control-label" for="status">Publish </label>
-				</div>
-			</div>
+			<div class="form-group row mb-1">
+			<label class="col-12 col-form-label">Publish</label>
+            <div class="col-12">
+            	<?php
+					if ($lesson_id == 0) {
+						$checked = 'checked';
+					} else if ($lesson_id > 0 && $lesson['status'] == 1) {
+						$checked = 'checked';
+					} else {
+						$checked = '';
+					}
+				?>
+                <div class="custom-switch custom-switch-secondary mb-2 custom-switch-small">
+                    <input name="status" class="custom-switch-input" id="status" type="checkbox" <?php echo $checked; ?> value="1" >
+                    <label class="custom-switch-btn" for="status"></label>
+                </div>
+            </div>
+        </div>		
+			
 		</div>
 
 		<div class="card-footer">

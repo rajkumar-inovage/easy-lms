@@ -1,62 +1,46 @@
-<div class="card card-default mb-4">
-	<ul class="list-group sortable" >
-		<li class="list-group-item media d-none">
-			<div class="media-left">#</div>
-			<div class="media-left"></div>
-			<div class="media-left"></div>
-			<div class="media-body">Title</div>
-			<div class="media-right">For Demo</div>
-			<div class="media-right">Actions</div>
-		</li>
+<div class="row">
+    <div class="col-12 list" data-check-all="checkAll">	
 		<?php 
 		$i = 1;
 		if ( ! empty ($lessons)) { 
 			foreach ($lessons as $row) { 
 				?>
-				<li class="list-group-item media" data-id="<?php echo $row['lesson_id']; ?>" data-name="<?php echo $i; ?>">
-					<div class="media-left"><?php echo $i; ?></div>
-					<div class="media-left">
-						<span style="cursor: pointer;"><i class="fa fa-arrows-alt"></i></span>
-					</div>
-					<div class="media-left">
-						<?php 
-							if ($row['status'] == LESSON_STATUS_PUBLISHED) {
-								echo '<i class="fa fa-circle text-success"></i>';
-							} else {
-								echo '<i class="fa fa-circle text-secondary"></i>';
-							}
-						?>						
-					</div>
-					<div class="media-body">
-						<div class="text-muted">Chapter <?php echo $i; ?></div>
-						<?php echo anchor('coaching/lessons/create/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], $row['title'], array('title'=>$row['title'], 'class'=>'')); ?>
-						<br>
-						<?php 
-						$description = strip_tags ($row['description']);
-						$description = character_limiter ($description, 150);
-						echo $description;
-						?>
-					</div>
-					<div class="media-right">
-						<div class="btn-group">
-							<?php echo anchor ('coaching/courses/preview/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], '<i class="fa fa-search"></i>', ['class'=>'btn btn-primary btn-sm']); ?>
-							<?php echo anchor ('coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], 'Content', ['class'=>'btn btn-info btn-sm']); ?>
-						</div>
-					</div>
-				</li>
+				<div class="card d-flex flex-row mb-3">
+                    <div class="d-flex flex-grow-1 min-width-zero">
+                        <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                            <a class="list-item-heading mb-0 truncate w-40 w-xs-100" href="<?php echo site_url ('coaching/lessons/create/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id']); ?>">
+								<div class="text-muted">Chapter <?php echo $i; ?></div>
+                                <h4><?php echo $row['title']; ?></h4>
+		                    </a>
+                            <p class="mb-0 text-muted text-small w-15 w-xs-100"></p>
+                            <p class="mb-0 text-muted text-small w-15 w-xs-100"></p>
+                            <div class="w-15 w-xs-100">
+	                        	<?php 
+								if ($row['status'] == LESSON_STATUS_PUBLISHED) {
+									echo '<span class="badge badge-primary badge-pill">Published</span>';
+								} else {
+									echo '<span class="badge badge-secondary badge-pill">Un-Published</span>';
+								}
+								?>
+                            </div>
+	                        <div class="btn-group">
+								<?php echo anchor ('coaching/courses/preview/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], '<i class="fa fa-search"></i>', ['class'=>'btn btn-primary btn-sm']); ?>
+								<?php echo anchor ('coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], '<i class="fa fa-file-alt"></i>', ['class'=>'btn btn-primary btn-sm']); ?>
+							</div>
+                        </div>
+                    </div>
+                </div>
 				<?php 
 				$i++; 
 			} 
 		} else {
 			?>
-			<li class="list-group-item media">
-				<div class="media-body" >
-					<span class="text-danger">No lessons found</span>
-					<?php echo anchor ('coaching/lessons/create/'.$coaching_id.'/'.$course_id, 'Create Lesson'); ?>
-				</div>
-			</li>
+			<div class="alert alert-danger" role="alert">
+				No lessons found
+				<?php echo anchor ('coaching/lessons/create/'.$coaching_id.'/'.$course_id, 'Create Lesson'); ?>
+			</div>
 			<?php
 		}
 		?>
-	</ul>
+	</div>
 </div>

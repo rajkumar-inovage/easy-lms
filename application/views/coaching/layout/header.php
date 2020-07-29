@@ -38,7 +38,7 @@
     <!--==== Core CSS ====-->
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/font/iconsmind-s/css/iconsminds.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/font/simple-line-icons/css/simple-line-icons.css'); ?>" />
-
+    <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/font/fontawesome/fontawesome.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/bootstrap.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/bootstrap.rtl.only.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/bootstrap-datepicker3.min.css'); ?>" />
@@ -223,7 +223,7 @@
                     aria-expanded="false">
                     <span class="name"><?php echo $this->session->userdata ('user_name'); ?></span>
                     <span>
-                        <img alt="Profile Picture" src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" />
+                        <img alt="Profile Picture" src="<?php echo base_url ($this->session->userdata ('profile_image')); ?>" class="bg-white"/>
                     </span>
                 </button>
 
@@ -237,7 +237,7 @@
     </nav>
 
     <div class="menu">
-        <div class="main-menu">
+        <div class="main-menu rounded-0">
             <div class="scroll">
                 <ul class="list-unstyled">
                     <?php
@@ -247,14 +247,17 @@
                     if (! empty ($main_menu)) {
                         foreach ($main_menu as $menu) {
                             $link = $menu['controller_path'].'/'.$menu['controller_nm'].'/'.$menu['action_nm'].'/'.$coaching_id;
+                            $pathMatch = $this->uri->segment(1) == $menu['controller_path'];
+                            $nameMatch = $this->uri->segment(2) == $menu['controller_nm'];
+                            $actionMatch = $this->uri->segment(3) == $menu['action_nm'];
+                            $active = ($pathMatch && $nameMatch && $actionMatch)? ' class="active"':'';
                             if ($this->session->userdata ('role_id') == USER_ROLE_STUDENT) {
                                 $link .= '/'.$this->session->userdata ('member_id');
                             }
                             ?>
-                            <li>
-                                <a class="" href="<?php echo site_url($link); ?>">
-                                    <?php echo $menu['icon_img']; ?>
-                                    <i class="iconsminds-shop-4"></i>
+                            <li<?php echo $active; ?>>
+                                <a href="<?php echo site_url($link); ?>">
+                                    <span class=""><?php echo $menu['icon_img']; ?></span>
                                     <span><?php echo $menu['menu_desc']; ?></span>
                                 </a>
                             </li>
@@ -269,39 +272,35 @@
     </div>
 
     <main>
-        <div class="container-fluid">
-             <div class="row app-row">
+        <div class="container-fluid disable-text-selection">
+             <div class="row <?php if (isset ($right_sidebar)) echo 'app-row'; ?>">
                 <div class="col-12">
                     <div class="mb-2">
-                        <h1><?php if(isset($page_title)) echo $page_title; ?></h1>
+                        <h1>
+                            <?php 
+                              if (isset ($bc)) {
+                                  $bc_link = current ($bc);
+                                  $bc_title  = key ($bc);
+                                  echo anchor ($bc_link, '<i class="fa fa-long-arrow-alt-left link-text-color"></i> ', array('class'=>'mr-2', 'title'=>'Back To '.$bc_title)); 
+                              }
+                            ?>
+                            <?php if(isset($page_title)) echo $page_title; ?>                            
+                        </h1>
 
-                        <div class="top-right-button-container">
-                            <?php if (! empty ($toolbar_buttons)) { ?>
-                            <button type="button" class="btn btn-primary btn-lg top-right-button mr-1 dropdown-toggle dropdown-toggle-split top-right-button top-right-button-single" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                ADD NEW
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                 <?php foreach ($toolbar_buttons as $title=>$url) { ?>
-                                        <a class="dropdown-item" href="<?php echo site_url ($url); ?>"><?php echo $title; ?></a>
-                                    <?php } ?>
-                            </div>
-                            <div class="btn-group">
-                                <div class="btn btn-primary btn-lg pl-4 pr-0 check-button">
-                                    <label class="custom-control custom-checkbox mb-0 d-inline-block">
-                                        <input type="checkbox" class="custom-control-input" id="checkAll">
-                                        <span class="custom-control-label">&nbsp;</span>
-                                    </label>
-                                </div>
-                                <button type="button" class="btn btn-lg btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="sr-only">Toggle Dropdown</span>
+                        <?php if (! empty ($toolbar_buttons)) { ?>
+                            <div class="top-right-button-container d-flex">
+                                <button type="button" class="btn btn-primary btn-lg top-right-button mr-1 dropdown-toggle dropdown-toggle-split top-right-button top-right-button-single" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    ACTION
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">Delete</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <?php foreach ($toolbar_buttons as $title=>$url) { ?>
+                                        <a class="dropdown-item" href="<?php echo site_url ($url); ?>"><?php echo $title; ?></a>
+                                    <?php } ?>
                                 </div>
                             </div>
-                             <?php } ?>
-                        </div>
+                        <?php } ?>
                     </div>                   
 
                     <div class="separator mb-5"></div>
+                </div>
+            </div>

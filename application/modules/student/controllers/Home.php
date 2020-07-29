@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Home extends MX_Controller {
     public function __construct () {
         $config = ['config_student', 'config_virtual_class'];
-        $models = ['virtual_class_model', 'courses_model', 'tests_reports', 'tests_model', 'announcements_model'];
+        $models = ['virtual_class_model', 'courses_model', 'lessons_model', 'tests_reports', 'tests_model', 'announcements_model'];
         $this->common_model->autoload_resources ($config, $models);
 
         $cid = $this->uri->segment (4);        
