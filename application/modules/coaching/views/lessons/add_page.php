@@ -24,7 +24,7 @@
 						$checked = '';
 					}
 				?>
-                <div class="custom-switch custom-switch-secondary mb-2 custom-switch-small">
+                <div class="custom-switch custom-switch-primary mb-2 custom-switch-small">
                     <input name="status" class="custom-switch-input" id="status" type="checkbox" <?php echo $checked; ?> value="1" >
                     <label class="custom-switch-btn" for="status"></label>
                 </div>
@@ -33,54 +33,56 @@
 
 	</div>
 
-	<div class="card-body">
-        <h5 class="card-title">Attachments</h5>
-        <?php
-		if (! empty ($attachments)) {
-			foreach ($attachments as $att) {
-				?>
-				<div class="d-flex flex-row mb-3 border-bottom justify-content-between">
-					<span class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall">
-                    <?php
-						if ($att['att_type'] == LESSON_ATT_YOUTUBE) { 
-							echo '<i class="text-danger fab fa-youtube "></i>';
-						} else if ($att['att_type'] == LESSON_ATT_EXTERNAL) { 
-							echo '<i class="fa fa-link "></i>';
-						} else {
-							echo '<i class="fa fa-file "></i>';
-						}
+	<?php if ($page_id > 0) { ?>
+		<div class="card-body">
+	        <h5 class="card-title">Attachments</h5>
+	        <?php
+			if (! empty ($attachments)) {
+				foreach ($attachments as $att) {
 					?>
-					</span>
-                    <div class="pl-3 flex-grow-1">
-                        <a href="#">
-                            <p class="font-weight-medium mb-0"><?php echo $att['title']; ?></p>
-                        </a>
-                    </div>
-                    <div class="comment-likes">
-                        <?php
-							$msg = 'Delete this attachment?';
-							$url = site_url ('coaching/lesson_actions/delete_attachment/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$page_id.'/'.$att['att_id'].'/'.$att['att_type']);
+					<div class="d-flex flex-row mb-3 border-bottom justify-content-between">
+						<span class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall">
+	                    <?php
+							if ($att['att_type'] == LESSON_ATT_YOUTUBE) { 
+								echo '<i class="text-danger fab fa-youtube "></i>';
+							} else if ($att['att_type'] == LESSON_ATT_EXTERNAL) { 
+								echo '<i class="fa fa-link "></i>';
+							} else {
+								echo '<i class="fa fa-file "></i>';
+							}
 						?>
-						<a href="javascript: void ()" onclick="show_confirm ('<?php echo $msg; ?>', '<?php echo $url; ?>')"><i class="fa fa-trash"></i></a>
-                    </div>
-                </div>
+						</span>
+	                    <div class="pl-3 flex-grow-1">
+	                        <a href="#">
+	                            <p class="font-weight-medium mb-0"><?php echo $att['title']; ?></p>
+	                        </a>
+	                    </div>
+	                    <div class="comment-likes">
+	                        <?php
+								$msg = 'Delete this attachment?';
+								$url = site_url ('coaching/lesson_actions/delete_attachment/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$page_id.'/'.$att['att_id'].'/'.$att['att_type']);
+							?>
+							<a href="javascript: void ()" onclick="show_confirm ('<?php echo $msg; ?>', '<?php echo $url; ?>')"><i class="fa fa-trash"></i></a>
+	                    </div>
+	                </div>
+					<?php
+				}
+			} else {
+				?>
+				<div class="text-danger">None</div>
 				<?php
 			}
-		} else {
 			?>
-			<div class="text-danger">None</div>
-			<?php
-		}
-		?>
-    </div>	
+	    </div>	
 
-	<!-- Button trigger modal -->
-	<?php if ($page_id > 0) { ?>
-		<button type="button" class="btn btn-link" data-toggle="modal" data-target="#add_attachment">
-		  Add Attachment
-		</button>
-	<?php } else { ?>
-		<button type="button" class="btn btn-link" data-toggle="" disabled="">Add Attachment</button>
+		<!-- Button trigger modal -->
+		<?php if ($page_id > 0) { ?>
+			<button type="button" class="btn btn-link" data-toggle="modal" data-target="#add_attachment">
+			  Add Attachment
+			</button>
+		<?php } else { ?>
+			<button type="button" class="btn btn-link" data-toggle="" disabled="">Add Attachment</button>
+		<?php } ?>
 	<?php } ?>
 
 

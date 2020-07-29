@@ -81,9 +81,9 @@ class Enrolments extends MX_Controller {
 		if ($batch_id > 0) {
 			$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
 		} else {
-			$data["bc"] = array ( 'Batches'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);			
+			$data["bc"] = array ( 'Batches'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
 		}
-		$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
+
 		$is_admin = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
 		$data['is_admin'] = $is_admin;
 		$data['toolbar_buttons'] = $this->toolbar_buttons;

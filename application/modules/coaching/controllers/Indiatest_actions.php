@@ -32,10 +32,10 @@ class Indiatest_actions extends MX_Controller {
         }
 	}
 
-    public function buy_lesson_plan ($coaching_id=0, $course_id=0, $plan_id=0) {
+    public function buy_test_plan ($coaching_id=0, $course_id=0, $plan_id=0) {
         $this->message->set ('Plan addedd successfully', 'success', true);
-        $this->indiatests_model->buy_lesson_plan ($coaching_id, $plan_id);
-        redirect ('coaching/plans/index/'.$coaching_id.'/'.$course_id);
+        $this->indiatests_model->buy_test_plan ($coaching_id, $plan_id);
+        redirect ('coaching/plans/index/'.$coaching_id.'/'.$course_id.'/1');
     }
 
     public function import_tests ($coaching_id=0, $course_id=0, $plan_id=0) {
@@ -53,6 +53,12 @@ class Indiatest_actions extends MX_Controller {
     }
 
    
+    public function buy_lesson_plan ($coaching_id=0, $course_id=0, $plan_id=0) {
+        $this->message->set ('Plan addedd successfully', 'success', true);
+        $this->indiatests_model->buy_lesson_plan ($coaching_id, $plan_id);
+        redirect ('coaching/plans/index/'.$coaching_id.'/'.$course_id);
+    }
+
     public function import_lessons ($coaching_id=0, $course_id=0, $plan_id=0) {
         $this->form_validation->set_rules ('lessons[]', 'Lesson', 'required', ['required'=>'You have not selected any lesson ']);
         if ( $this->form_validation->run () == true )  {

@@ -1,6 +1,5 @@
 
-	
-				<h4><?php echo $lesson['title']; ?></h4>
+<h3><?php echo $lesson['title']; ?></h3>
 			
 <div class="row">
 	<?php 
@@ -42,8 +41,10 @@
 		} 
 	} else {
 		?>
-		<div class="alert alert-danger ">
-			<span class="">No page found</span>
+		<div class="col-12">
+			<div class="alert alert-danger ">
+				<span class="">No pages found</span>
+			</div>
 		</div>
 		<?php
 	}

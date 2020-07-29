@@ -30,58 +30,65 @@
 	</div>
 </div>
 
-<div class="card">
-	<ul class="list-group">
+	<div class="row list disable-text-selection" data-check-all="checkAll">
 		<?php 
 		if ( ! empty ($plans)) {
 			foreach ($plans as $row) {
 				?>
-				<li class="list-group-item media">
-					<div class="media-body">
-						<h4>
-							<?php //echo anchor ('coaching/indiatests/tests_in_plan/'.$coaching_id.'/'.$category_id.'/'.$row['plan_id'], $row['title'], array ('class'=>'link-text-color', 'title'=>'Browse all tests in this plan ')); ?>
-							<?php echo $row['title']; ?>
-						</h4>
-						<span class="text-grey-500">
-							Category: <?php echo $row['cat_title']; ?>
-						</span>
-					</div>
-                    <div class="media-right">
-						<?php 
-						if ($row['amount'] == 0) {
-							echo '<span class="badge badge-secondary p-2">Free</span>';
-						} else {
-							echo '<span class="badge badge-secondary p-2"><i class="fa fa-rupee-sign"></i> '.$row['amount'] . ' </span>';
-						}
-						?>
-                    </div>
-                    <div class="media-right">
-						<?php 
-							echo '<span class="badge badge-secondary p-2">'.$row['tests_in_plan'].' Tests</span>';
-						?>
-                    </div>
-                    <div class="media-right">
-						<?php 
-						if ($row['added'] == true) {
-							echo anchor ('coaching/indiatests/lessons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'].'/'.$amount, 'Import Lessons', ['class'=>'btn btn-success']);
-						} else {							
+                <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+                    <div class="card">
+                        <div class="position-relative">                        	
+	                        <?php 
 							if ($row['amount'] == 0) {
-								echo anchor ('coaching/indiatest_actions/lessons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'].'/0', 'Import Lessons', ['class'=>'btn btn-success']);
+								echo '<span class="badge badge-pill badge-dark position-absolute badge-top-left">Free</span>';
 							} else {
-								echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Buy Plan', ['class'=>'btn btn-primary']);
+								echo '<span class="badge badge-pill badge-dark position-absolute badge-top-left "><i class="fa fa-rupee-sign"></i> '.$row['amount'] . ' </span>';
 							}
-						}
-						?>
+							?>
+							<?php 
+								echo '<span class="badge badge-pill badge-theme-1 position-absolute badge-top-right">'.$row['tests_in_plan'].' Lessons</span>';
+							?>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">                                
+                                <div class="col-12">
+                                    <h4 class="list-item-heading mb-4 pt-1"><?php echo $row['title']; ?></h4>
+                                    <p class="text-muted">
+										Category: <?php echo $row['cat_title']; ?>
+									</p>
+                                    <footer>
+                                        <p class="text-muted text-small mb-0 font-weight-light">
+                                        	<?php 
+											if ($row['added'] == true) {
+												echo anchor ('coaching/indiatests/lessons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'].'/'.$amount, 'Import Lessons', ['class'=>'btn btn-success']);
+											} else {
+												if ($row['amount'] == 0) {
+													echo anchor ('coaching/indiatest_actions/lessons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'].'/0', 'Import Lessons', ['class'=>'btn btn-success']);
+												} else {
+													echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Buy Plan', ['class'=>'btn btn-outline-primary']);
+												}
+											}
+											?>
+                                        </p>
+                                    </footer>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-				</li>
+
+				
 				<?php 
 			}
 		} else { 
-		?>
-		<li class="list-group-item">
-			<span class="text-danger"><?php echo 'No Plans Found'; ?></span>
-		</li>
-	    <?php } // if result ?>
-	</ul>
-</div>
+			?>
+
+			<div class="col-12">
+				<div class="alert alert-danger ">
+					<span class="">No plans found</span>
+				</div>
+			</div>
+	    	<?php 
+	    } // if result ?>
+	</div>
