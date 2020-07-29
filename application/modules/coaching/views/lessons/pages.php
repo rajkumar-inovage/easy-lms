@@ -26,6 +26,9 @@
 									<?php 
 										echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id'], '<i class="fa fa-edit"></i>', ['class'=>'btn btn-primary btn-xs']);
 									?>
+									<?php 
+										echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id'], '<i class="simple-icon-eye"></i>', ['class'=>'btn btn-info btn-xs']);
+									?>
 									<?php
 									$msg = 'Delete this page?';
 									$url = site_url ('coaching/lesson_actions/delete_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id']);
@@ -50,7 +53,7 @@
 	?>
 </div>
 
-<div class="row">
+<div class="row mb-2">
 	<div class="col-12">
 		<?php echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id, 'Add Page', ['class'=>'btn btn-primary btn-lg']); ?>
 	</div>

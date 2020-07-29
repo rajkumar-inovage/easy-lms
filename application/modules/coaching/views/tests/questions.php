@@ -1,5 +1,6 @@
+<div class="row app-row">
 <?php if ( ! empty ($results) ) { ?>
-	<div class="card mb-4 " oncopy="return false;" oncut="return false;" onpaste="return false;" onmousedown="return false;" onselectstart="return false;">
+	<div class="card mb-4" oncopy="return false;" oncut="return false;" onpaste="return false;" onmousedown="return false;" onselectstart="return false;">
 	  <?php 
 	  echo form_open('coaching/tests_actions/remove_questions/'.$course_id.'/'.$test_id, array('class'=>'form-horizontol', 'id'=>'validate-1') );
 		$num_parent = 1;
@@ -70,8 +71,7 @@
 							</div>
 
 							<div class="media-right">
-								<a href="void()" onclick="show_confirm ('Remove this ?')">Delete</a>
-								asasas
+								<a href="void()" class="btn btn-danger default py-1" onclick="show_confirm ('Remove this ?')">Delete</a>
 							</div>
 						</li>
 						<?php
@@ -85,17 +85,17 @@
 			</ul>
 
 			<div class="card-footer">
-				<div class="media">
+				<div class="media align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
 					<div class="media-left">
 						<?php if ( $test['finalized'] == 0) { ?>
 							<input type="checkbox" class="selectAll" id="selectAll">
-							<label for="selectAll" class="control-label">Select All</label>
+							<label for="selectAll" class="control-label mb-0">Select All</label>
 						<?php } ?>
 					</div>
 					<div class="media-body">
 						<?php 
 						if ( $test['finalized'] == 0) {
-							echo form_submit (array ('name'=>'save', 'value'=>'Delete ', 'class'=>'btn btn-sm btn-danger'));
+							echo form_submit (array ('name'=>'save', 'value'=>'Delete ', 'class'=>'btn btn-danger default mb-1 ml-3 py-1'));
 						} 
 						?>
 					</div>
@@ -112,3 +112,4 @@
 	</div>
 
 <?php } ?>
+</div>

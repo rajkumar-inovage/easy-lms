@@ -23,9 +23,9 @@
 								}
 								?>
                             </div>
-	                        <div class="btn-group">
-								<?php echo anchor ('coaching/courses/preview/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], '<i class="fa fa-search"></i>', ['class'=>'btn btn-primary btn-sm']); ?>
-								<?php echo anchor ('coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], '<i class="fa fa-file-alt"></i>', ['class'=>'btn btn-primary btn-sm']); ?>
+	                        <div class="btn-group mt-2 mt-md-0">
+								<?php echo anchor ('coaching/courses/preview/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], 'Preview', ['class'=>'btn btn-info btn-sm']); ?>
+								<?php echo anchor ('coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], 'Content', ['class'=>'btn btn-primary btn-sm']); ?>
 							</div>
                         </div>
                     </div>
