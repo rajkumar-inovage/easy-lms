@@ -8,83 +8,85 @@
 
 		<div class="form-group">
 			<label for="content">Content</label>
-			<textarea class="form-control tinyeditor" name="description" rows="4" placeholder="Add your content..."><?php echo set_value ('content', $page['content']); ?></textarea>
+			<textarea class="form-control tinyeditor" name="description" rows="10" placeholder="Add your content..."><?php echo set_value ('content', $page['content']); ?></textarea>
 		</div>
-
-		<div class="form-group">
-			<label for="price">Status</label>
-			<div class="custom-control custom-switch">
-				<?php
-				if ($page_id == 0) {
-					$checked = 'checked';
-				} else if ($page_id > 0 && $page['status'] == 1) {
-					$checked = 'checked';
-				} else {
-					$checked = '';
-				}
+		
+		
+		<div class="form-group row mb-1">
+			<label class="col-12 col-form-label">Publish</label>
+            <div class="col-12">
+            	<?php
+					if ($page_id == 0) {
+						$checked = 'checked';
+					} else if ($page_id > 0 && $page['status'] == 1) {
+						$checked = 'checked';
+					} else {
+						$checked = '';
+					}
 				?>
-				<input type="checkbox" class="custom-control-input" name="status" id="status" value="1" <?php echo $checked; ?> >
-				<label class="custom-control-label" for="status">Publish</label>
-			</div>
-		</div>
+                <div class="custom-switch custom-switch-secondary mb-2 custom-switch-small">
+                    <input name="status" class="custom-switch-input" id="status" type="checkbox" <?php echo $checked; ?> value="1" >
+                    <label class="custom-switch-btn" for="status"></label>
+                </div>
+            </div>
+        </div>
 
 	</div>
 
 	<div class="card-body">
-		<h4>Attachments</h4>
-		<ul class="list-group">
-			<?php
-			if (! empty ($attachments)) {
-				foreach ($attachments as $att) {
+        <h5 class="card-title">Attachments</h5>
+        <?php
+		if (! empty ($attachments)) {
+			foreach ($attachments as $att) {
+				?>
+				<div class="d-flex flex-row mb-3 border-bottom justify-content-between">
+					<span class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall">
+                    <?php
+						if ($att['att_type'] == LESSON_ATT_YOUTUBE) { 
+							echo '<i class="text-danger fab fa-youtube "></i>';
+						} else if ($att['att_type'] == LESSON_ATT_EXTERNAL) { 
+							echo '<i class="fa fa-link "></i>';
+						} else {
+							echo '<i class="fa fa-file "></i>';
+						}
 					?>
-					<li class="list-group-item media">
-						<div class="media-body">
-							<a href="<?php echo $att['att_url']; ?>" target="_blank"><?php echo $att['title']; ?></a>
-						</div>
-						<div class="media-right">
-							<?php
-							if ($att['att_type'] == LESSON_ATT_YOUTUBE) { 
-								echo '<span class="badge badge-danger">Youtube</span>';
-							} else if ($att['att_type'] == LESSON_ATT_EXTERNAL) { 
-								echo '<span class="badge badge-info">External link</span>';
-							} else {
-								echo '<span class="badge badge-info">File</span>';
-							}
-							?>
-						</div>
-						<div class="media-right">
-							<?php
+					</span>
+                    <div class="pl-3 flex-grow-1">
+                        <a href="#">
+                            <p class="font-weight-medium mb-0"><?php echo $att['title']; ?></p>
+                        </a>
+                    </div>
+                    <div class="comment-likes">
+                        <?php
 							$msg = 'Delete this attachment?';
 							$url = site_url ('coaching/lesson_actions/delete_attachment/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$page_id.'/'.$att['att_id'].'/'.$att['att_type']);
-							?>
-							<a href="javascript: void ()" onclick="show_confirm ('<?php echo $msg; ?>', '<?php echo $url; ?>')"><i class="fa fa-trash"></i></a>
-						</div>
-					</li>
-					<?php
-				}
-			} else {
-				?>
-				<li class="list-unstyled text-danger">None</li>
+						?>
+						<a href="javascript: void ()" onclick="show_confirm ('<?php echo $msg; ?>', '<?php echo $url; ?>')"><i class="fa fa-trash"></i></a>
+                    </div>
+                </div>
 				<?php
 			}
+		} else {
 			?>
-		</ul>
-		<hr>
+			<div class="text-danger">None</div>
+			<?php
+		}
+		?>
+    </div>	
 
-		<!-- Button trigger modal -->
-		<?php if ($page_id > 0) { ?>
-			<button type="button" class="btn btn-link" data-toggle="modal" data-target="#add_attachment">
-			  Add Attachment
-			</button>
-		<?php } else { ?>
-			<button type="button" class="btn btn-link" data-toggle="" disabled="">Add Attachment</button>
-		<?php } ?>
+	<!-- Button trigger modal -->
+	<?php if ($page_id > 0) { ?>
+		<button type="button" class="btn btn-link" data-toggle="modal" data-target="#add_attachment">
+		  Add Attachment
+		</button>
+	<?php } else { ?>
+		<button type="button" class="btn btn-link" data-toggle="" disabled="">Add Attachment</button>
+	<?php } ?>
 
-	</div>
 
 	<div class="card-footer">
-		<input type="submit" name="submit" class="btn btn-success" value="Save" data-toggle="tooltip" data-placement="right" title="Save">
-		<?php echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id, 'Reset'); ?>
+		<input type="submit" name="submit" class="btn btn-primary" value="Save" data-toggle="tooltip" data-placement="right" title="Save">
+		<?php echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id, 'Reset', ['class'=>'btn btn-secondary']); ?>
 	</div>
 	<?php echo form_close (); ?>
 </div>

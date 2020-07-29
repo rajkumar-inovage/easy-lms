@@ -17,17 +17,17 @@
                             <div class="w-15 w-xs-100">
 	                        	<?php 
 								if ($row['status'] == LESSON_STATUS_PUBLISHED) {
-									echo '<span class="badge badge-secondary badge-pill">Published</span>';
+									echo '<span class="badge badge-primary badge-pill">Published</span>';
 								} else {
-									echo '<span class="badge badge-primary badge-pill">Un-Published</span>';
+									echo '<span class="badge badge-secondary badge-pill">Un-Published</span>';
 								}
 								?>
                             </div>
+	                        <div class="btn-group">
+								<?php echo anchor ('coaching/courses/preview/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], '<i class="fa fa-search"></i>', ['class'=>'btn btn-primary btn-sm']); ?>
+								<?php echo anchor ('coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$row['lesson_id'], '<i class="fa fa-file-alt"></i>', ['class'=>'btn btn-primary btn-sm']); ?>
+							</div>
                         </div>
-                        <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
-                            <input type="checkbox" class="custom-control-input">
-                            <span class="custom-control-label">&nbsp;</span>
-                        </label>
                     </div>
                 </div>
 				<?php 

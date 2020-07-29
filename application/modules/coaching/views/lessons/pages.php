@@ -1,59 +1,57 @@
-<div class="card mb-4">
 
-	<ul class="list-group" >
-
-		<li class="list-group-item media">
-			<div class="media-left">
-			</div>
-
-			<div class="media-body">
+	
 				<h4><?php echo $lesson['title']; ?></h4>
-			</div>
-		</li>
-
-		<?php 
-		$i = 1;
-		if ( ! empty ($pages)) { 
-			foreach ($pages as $row) { 
-				?>
-				<li class="list-group-item media">
-					<div class="media-left"><?php echo $i; ?></div>
-					<div class="media-body">
-						<a data-toggle="collapse" href="#page<?php echo $row['page_id']; ?>" role="button" aria-expanded="false" aria-controls="page<?php echo $row['page_id']; ?>">
-							<?php echo $row['title']; ?>
-						</a>
-						<div class="collapse" id="page<?php echo $row['page_id']; ?>">
-						    <?php echo $row['content']; ?>
-						</div>
-						<?php 
-						?>
-					</div>
-					<div class="media-right">
-						<div class="btn-group">
-							<?php 
-								echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id'], '<i class="fa fa-edit"></i>', ['class'=>'btn btn-default btn-xs']);
-							?>
-							<?php
-							$msg = 'Delete this page?';
-							$url = site_url ('coaching/lesson_actions/delete_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id']);
-							?>
-							<a href="javascript: void ()" onclick="show_confirm ('<?php echo $msg; ?>', '<?php echo $url; ?>')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-						</div>
-					</div>
-				</li>
-				<?php 
-				$i++; 
-			} 
-		} else {
+			
+<div class="row">
+	<?php 
+	$i = 1;
+	if ( ! empty ($pages)) { 
+		foreach ($pages as $row) { 
 			?>
-			<li class="list-group-item ">
-				<span class="text-danger">No page found</span>
-			</li>
-			<?php
-		}
+			<div class="col-12 col-lg-6 mb-5">
+                <div class="card flex-row listing-card-container">                   
+                    <div class="d-flex align-items-center">
+                        <div class="card-body">
+                            <a href="<?php echo site_url ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id']); ?>">
+                                <h5 class=" ellipsis"><?php echo $row['title']; ?></h5>
+                            </a>
+                            <p class=" text-muted ellipsis">
+                                <?php 
+	                                $content = strip_tags($row['content']);
+                                	echo character_limiter ($content, 250); 
+                                ?>
+                            </p>
+		                    <div class="mt-2">
+								<div class="btn-group">
+									<?php 
+										echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id'], '<i class="fa fa-edit"></i>', ['class'=>'btn btn-primary btn-xs']);
+									?>
+									<?php
+									$msg = 'Delete this page?';
+									$url = site_url ('coaching/lesson_actions/delete_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id']);
+									?>
+									<a href="javascript: void ()" onclick="show_confirm ('<?php echo $msg; ?>', '<?php echo $url; ?>')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+								</div>
+		                    </div>
+                        </div>
+                    </div>
+                </div>				
+			</div>
+			<?php 
+			$i++; 
+		} 
+	} else {
 		?>
-	</ul>
-	<div class="card-footer">
-		<?php echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id, 'Add Page', ['class'=>'btn btn-success']); ?>
+		<div class="alert alert-danger ">
+			<span class="">No page found</span>
+		</div>
+		<?php
+	}
+	?>
+</div>
+
+<div class="row">
+	<div class="col-12">
+		<?php echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id, 'Add Page', ['class'=>'btn btn-primary btn-lg']); ?>
 	</div>
 </div>
