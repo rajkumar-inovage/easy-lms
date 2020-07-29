@@ -17,7 +17,7 @@ class Courses extends MX_Controller {
             $member_id = $this->session->userdata ('member_id');
         }
         $data['toolbar_buttons'] = array(
-			'<i class="fa fa-book"></i> My Courses' => 'student/courses/my_tests/' . $coaching_id . '/' . $member_id,
+			'<i class="fa fa-book"></i> My Courses' => 'student/courses/my_courses/' . $coaching_id . '/' . $member_id,
 		);
 
 		$data['bc'] = array('Dashboard' => 'student/home/dashboard/' . $coaching_id);
@@ -31,7 +31,7 @@ class Courses extends MX_Controller {
 		$this->load->view('courses/index', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
-	public function my_tests($coaching_id = 0, $member_id=0, $cat_id = 0) {
+	public function my_courses($coaching_id = 0, $member_id=0, $cat_id = 0) {
 		$data['page_title'] = 'My Courses';
 		if ($coaching_id==0) {
             $coaching_id = $this->session->userdata ('coaching_id');
@@ -47,10 +47,10 @@ class Courses extends MX_Controller {
 		$data['member_id'] = $member_id;
 		$data['cat_id'] = $cat_id;
 		$data['courses'] = $this->courses_model->get_users_batch_courses($coaching_id, $member_id);
-		$data['script'] = $this->load->view('courses/scripts/my_tests', $data, true);
+		$data['script'] = $this->load->view('courses/scripts/my_courses', $data, true);
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
-		$this->load->view('courses/my_tests', $data);
+		$this->load->view('courses/my_courses', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 	public function view ($coaching_id=0, $member_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
@@ -91,9 +91,10 @@ class Courses extends MX_Controller {
 		// if course not purchased
 		// $data['bc'] = ['All Courses'=>'student/courses/index/'.$coaching_id.'/'.$member_id];
 		// if course purchased
-		$data['bc'] = ['My Courses'=>'student/courses/my_tests/'.$coaching_id.'/'.$member_id];
+		$data['bc'] = ['My Courses'=>'student/courses/my_courses/'.$coaching_id.'/'.$member_id];
+		$data['script'] = $this->load->view('courses/scripts/view', $data, true);
 
-		$data['sidebar_right'] = $this->load->view ('courses/inc/course_view', $data, true);
+		$data['right_sidebar'] = $this->load->view ('courses/inc/course_view', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view("courses/view", $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);

@@ -1,17 +1,35 @@
 <div class="row">
 	<div class="col-lg-12 col-xl-6">
+		<div class="card mb-4 progress-banner">
+			<a href="<?php echo site_url("student/announcements/index/$coaching_id/$member_id") ?>" class="card-body justify-content-between d-flex flex-row align-items-center">
+				<div>
+					<i class="fa fa-bullhorn mr-2 text-white align-text-bottom d-inline-block"></i>
+					<div>
+						<p class="lead text-white">0 Notification</p>
+						<p class="text-small text-white">Waiting for notice</p>
+					</div>
+				</div>
+				<div>
+					<div role="progressbar" class="progress-bar-circle progress-bar-banner position-relative" data-color="white" data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="0" aria-valuemax="0" data-show-percent="false">
+					</div>
+				</div>
+			</a>
+		</div>
 		<div class="card mb-4 shadow-sm">
 			<div class="card-body">
 				<h5 class="card-title">My Courses</h5>
 				<?php 
 				if (! empty ($courses)) {
+				?>
+				<div class="scroll" style="height: 270px;">
+					<?php
 					foreach($courses as $i => $row) {
 						extract($row['progress']);
 						?>
-						<div class="d-flex flex-row justify-content-between<?php echo (count($courses) - 1 !== $i)?' border-bottom pb-3 mb-3':''; ?>">
+						<div class="d-flex flex-row justify-content-between<?php echo (count($courses) - 1 !== $i && $i < 2)?' pb-3':''; ?>">
 							<div class="pr-3 flex-grow-1">
 								<h4 class="text-left"><?php echo $row['title']; ?></h4>
-								<p class="text-justify"><?php echo excerpt($row['description'], 15); ?></p>
+								<p class="<?php echo ($row['description'] != '')?'text-justify':'text-justify text-muted'; ?>"><?php echo ($row['description'] != '')?excerpt($row['description'], 15):'No Description'; ?></p>
 							</div>
 							<div class="align-middle text-center flex-shrink-0">
 								<div role="progressbar" class="progress-bar-circle mx-auto position-relative" data-color="#5b87ac" data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="<?php echo $total_progress; ?>" aria-valuemax="<?php echo $total_pages; ?>" data-show-percent="false"></div>
@@ -19,11 +37,17 @@
 								</a>
 							</div>
 						</div>
+						<?php if(count($courses) - 1 !== $i && $i < 2) :?>
+						<div class="separator mb-3"></div>
+						<?php endif;?>
 						<?php
 						if ($i >= 2) {
 							break;
 						}
 					}
+					?>
+				</div>
+				<?php
 				} else {
 		        	?>
 		            <div class="alert alert-danger mb-0">
@@ -34,7 +58,8 @@
 				?>
 			</div>
 			<div class="card-footer text-right">
-				<?php echo anchor ('student/courses/index/'.$coaching_id.'/'.$member_id, '<i class="fa fa-book"></i> All Courses', ['class'=>'btn btn-link mr-1']); ?>
+				<?php echo anchor ('student/courses/my_courses/'.$coaching_id.'/'.$member_id, '<i class="iconsminds-books"></i> My Courses', ['class'=>'btn btn-primary mr-1']); ?>
+				<?php echo anchor ('student/courses/my_courses/'.$coaching_id.'/'.$member_id, '<i class="iconsminds-shopping-cart"></i> Buy Courses', ['class'=>'btn btn-outline-secondary mr-1']); ?>
 			</div>
 		</div>
 	</div>
