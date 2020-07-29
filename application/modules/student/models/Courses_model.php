@@ -79,4 +79,18 @@ class Courses_model extends CI_Model {
 		$sql = $this->db->get ('coaching_tests');
 		return $sql->num_rows ();
 	}
+	public function buy_course($coaching_id, $member_id, $course_id, $batch_id=0){
+		$this->db->where ('member_id', $member_id);
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$this->db->where ('batch_id', $batch_id);
+		$sql = $this->db->get ('coaching_course_batch_users');
+		if(intval($sql->num_rows()) === 0){
+			$data['coaching_id']	 	= $coaching_id;
+			$data['course_id']	 		= $course_id;
+			$data['batch_id']	 		= $batch_id;
+			$data['member_id']	 		= $member_id;
+			$this->db->insert('coaching_course_batch_users', $data);
+		}
+	}
 }

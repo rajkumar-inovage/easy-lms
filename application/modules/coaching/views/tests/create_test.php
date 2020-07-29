@@ -29,14 +29,14 @@
 					</div>
 
 					<div class="form-group row">
-						<div class="col-md-6">
+						<div class="col-md-6 mb-3">
 							<?php echo form_label('Passing Percentage<span class="required">*</span>', '', array('class'=>'control-label')); ?>
 							<input name="pass_marks" type="text" class="form-control digits required " maxlength='3' value="<?php echo set_value('pass_marks', $results['pass_marks']); ?>" placeholder="%"  />
 						</div>
 						<div class="col-md-6">
 							<?php echo form_label('Test Duration (minutes)<span class="required">*</span>', '', array('class'=>'control-label')); ?>
 							<div class="form-row">
-								<div class="col-10">
+								<div class="col-11">
 									<input name="time_min" type="text" class="form-control digits required " maxlength='4' value="<?php echo set_value('time_min', $results['time_min']); ?>" placeholder="Minutes" /> 
 								</div>
 								<div class="col">
