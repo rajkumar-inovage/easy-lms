@@ -93,4 +93,32 @@ class Courses_model extends CI_Model {
 			$this->db->insert('coaching_course_batch_users', $data);
 		}
 	}
+	public function get_course_tests ($coaching_id=0, $course_id=0, $status='-1', $type=0) {
+		if ( $course_id > 0 ) {
+			$this->db->where ('course_id', $course_id);
+		}
+		if ( $type > 0 ) {
+			$this->db->where ('test_type', $type);
+		}
+		$this->db->where ('finalized', 1);
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->order_by ('creation_date', 'DESC');
+		
+		$query = $this->db->get ("coaching_tests");
+		$results = $query->result_array();	
+		return $results;
+	}
+	public function get_teachers_assigned ($coaching_id=0, $course_id=0, $status=1) {
+		$this->db->select('member_id');
+		$this->db->from('coaching_course_teachers');
+		$this->db->where ('course_id', $course_id);
+		$sub_query = $this->db->get_compiled_select();
+
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('status', $status);
+		$this->db->where ('role_id', USER_ROLE_TEACHER);
+		$this->db->where ("member_id IN ($sub_query)");
+		$sql = $this->db->get ('members');
+		return $sql->result_array();
+	}
 }

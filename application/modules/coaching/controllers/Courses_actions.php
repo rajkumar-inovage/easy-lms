@@ -73,7 +73,7 @@ class Courses_actions extends MX_Controller {
 			if ($this->courses_model->add_course($coaching_id, $category_id, $course_id, $feat_img, COURSE_STATUS_ACTIVE)) {
 					if ($course_id > 0) {
 						$message = 'Course updated successfully';
-						$redirect = 'coaching/courses/index/' . $coaching_id;
+						$redirect = 'coaching/courses/manage/' . $coaching_id.'/'.$course_id;
 					} else {
 						$message = 'Course created successfully';
 						$redirect = 'coaching/courses/index/' . $coaching_id;

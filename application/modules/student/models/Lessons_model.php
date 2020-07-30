@@ -6,7 +6,16 @@ class Lessons_model extends CI_Model {
 		$this->db->where ('course_id', $course_id);
 		$this->db->order_by ('position', 'ASC');
 		$sql = $this->db->get ('coaching_course_lessons');
-		return $sql->result_array ();
+		$lessons = $sql->result_array ();
+		foreach ($lessons as $i => $lesson) {
+			$this->db->where ('coaching_id', $coaching_id);
+			$this->db->where ('course_id', $course_id);
+			$this->db->where ('lesson_id', $lesson['lesson_id']);
+			$sql = $this->db->get ('coaching_course_progress');
+			$progress = $sql->result_array();
+			$lessons[$i]['progress'] = empty($progress)?false:true;
+		}
+		return $lessons;
 	}
 	public function get_lesson ($coaching_id=0, $course_id=0, $lesson_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
@@ -38,6 +47,14 @@ class Lessons_model extends CI_Model {
 				$att = $this->get_attachments ($coaching_id, $course_id, $lesson_id, $row['page_id']);
 				$result[$row['page_id']] = $row;
 				$result[$row['page_id']]['att'] = $att;
+
+				$this->db->where ('coaching_id', $coaching_id);
+				$this->db->where ('course_id', $course_id);
+				$this->db->where ('lesson_id', $lesson_id);
+				$this->db->where ('page_id', $row['page_id']);
+				$sql = $this->db->get ('coaching_course_progress');
+				$progress = $sql->row_array();
+				$result[$row['page_id']]['progress'] = empty($sql->num_rows() > 0)?false:true;
 			}
 		}
 		return $result;
@@ -70,6 +87,13 @@ class Lessons_model extends CI_Model {
 		$row = $sql->row_array ();
 		$position = $row['position'];
 		return $position;
+	}
+	public function get_full_progress($member_id=0, $coaching_id=0, $course_id=0){
+		$this->db->where ('member_id', $member_id);
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$sql = $this->db->get ('coaching_course_progress');
+		return $sql->result_array();
 	}
 	public function get_progress($member_id=0, $coaching_id=0, $course_id=0){
 		$this->db->select ('count(page_id) as total_pages');
