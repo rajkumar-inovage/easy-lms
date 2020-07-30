@@ -96,7 +96,7 @@
         </div>
 
 
-        <a class="navbar-logo" href="Dashboard.Default.html">
+        <a class="navbar-logo" href="">
             <span class="logo d-none d-xs-block"></span>
             <span class="logo-mobile d-block d-xs-none"></span>
         </a>
@@ -275,32 +275,30 @@
         <div class="container-fluid disable-text-selection">
              <div class="row <?php if (isset ($right_sidebar)) echo 'app-row'; ?>">
                 <div class="col-12">
-                    <div class="mb-2">
-                        <h1>
-                            <?php 
-                              if (isset ($bc)) {
-                                  $bc_link = current ($bc);
-                                  $bc_title  = key ($bc);
-                                  echo anchor ($bc_link, '<i class="fa fa-long-arrow-alt-left link-text-color"></i> ', array('class'=>'mr-2', 'title'=>'Back To '.$bc_title)); 
-                              }
-                            ?>
-                            <?php if(isset($page_title)) echo $page_title; ?>                            
+                    <div class="d-flex mb-2">
+                        <?php 
+                            if (isset ($bc)) {
+                                $bc_link = current ($bc);
+                                $bc_title  = key ($bc);
+                                echo anchor ($bc_link, '<i class="fa fa-long-arrow-alt-left"></i> ', array('class'=>'flex-shrink-0 my-auto btn btn-outline-primary icon-button mr-2', 'title'=>'Back To '.$bc_title)); 
+                            }
+                        ?>
+                        <h1 class="flex-grow-1 my-auto py-0 truncate">
+                            <?php if(isset($page_title)) echo $page_title; ?>
                         </h1>
-
+                        <div class="flex-shrink-0 my-auto">
                         <?php if (! empty ($toolbar_buttons)) { ?>
-                            <div class="top-right-button-container d-flex">
-                                <button type="button" class="btn btn-primary btn-lg top-right-button mr-1 dropdown-toggle dropdown-toggle-split top-right-button top-right-button-single" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    ACTION
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <?php foreach ($toolbar_buttons as $title=>$url) { ?>
-                                        <a class="dropdown-item" href="<?php echo site_url ($url); ?>"><?php echo $title; ?></a>
-                                    <?php } ?>
-                                </div>
+                            <button type="button" class="btn btn-outline-primary icon-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <?php foreach ($toolbar_buttons as $title=>$url) { ?>
+                                    <a class="dropdown-item" href="<?php echo site_url ($url); ?>"><?php echo $title; ?></a>
+                                <?php } ?>
                             </div>
                         <?php } ?>
-                    </div>                   
-
+                        </div>
+                    </div>
                     <div class="separator mb-5"></div>
                 </div>
             </div>

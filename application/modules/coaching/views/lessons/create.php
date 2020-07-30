@@ -4,7 +4,7 @@
 			
 			<div class="form-group">
 				<label for="title">Title<span class="text-danger">*</span></label>
-				<input type="text" class="form-control" name="title" placeholder="Title of the Lesson" required value="<?php echo set_value ('title', $lesson['title']); ?>">
+				<input type="text" class="form-control" name="title" placeholder="Title of the chapter" required value="<?php echo set_value ('title', $lesson['title']); ?>">
 			</div>
 
 			<div class="form-group">
@@ -14,8 +14,16 @@
 
 			<div class="form-group row">
 				<div class="col-md-4">
-					<label for="duration">Duration <span class="text-danger">*</span></label>
-					<input type="number" class="form-control required" name="duration" value="<?php echo set_value ('duration', $lesson['duration'], 0); ?>" min=0 max="500">
+					<label for="duration">Duration </label>
+					<?php
+					if ($lesson['duration']) {
+						$duration = $lesson['duration'];
+					} else {
+						$duration = 0;
+					}
+					?>
+					<input type="number" class="form-control required" name="duration" value="<?php echo set_value ('duration', $duration); ?>" min=0 max="500">
+					<p class="text-muted">Estimated duration of this chapter. Set 0 if you are not sure</p>
 				</div>
 
 				<div class="col-md-2">
@@ -40,7 +48,7 @@
 						$checked = '';
 					}
 				?>
-                <div class="custom-switch custom-switch-secondary mb-2 custom-switch-small">
+                <div class="custom-switch custom-switch-primary mb-2 custom-switch-small">
                     <input name="status" class="custom-switch-input" id="status" type="checkbox" <?php echo $checked; ?> value="1" >
                     <label class="custom-switch-btn" for="status"></label>
                 </div>

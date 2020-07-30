@@ -15,7 +15,7 @@
                       } else {
                         echo '<i class="simple-icon-refresh heading-icon"></i>';
                       }
-                      ?>                      
+                      ?>
                       <span class="align-middle d-inline-block"><?php echo $row['title']; ?></span>
                   </a>
                   <p class="mb-0 text-muted text-small w-15 w-xs-100"></p>
@@ -24,12 +24,9 @@
                     <a class="btn btn-primary" href="<?php echo site_url ('coaching/courses/manage/'.$coaching_id.'/'.$row['course_id']); ?>"><i class="fa fa-cog"></i> Manage </a>
 
                   </div>
-                </div>                
-                
-
-                
+                </div>
             </div>
-        </div>        
+        </div>
         <?php 
         $i++; 
       } 

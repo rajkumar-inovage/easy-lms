@@ -31,10 +31,6 @@
 </div>
 
 
-
-
-
-
 	<div class="row">
 	<?php 
 		if ( ! empty ($plans)) {

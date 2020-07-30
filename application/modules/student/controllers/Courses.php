@@ -17,7 +17,7 @@ class Courses extends MX_Controller {
             $member_id = $this->session->userdata ('member_id');
         }
         $data['toolbar_buttons'] = array(
-			'<i class="fa fa-book"></i> My Courses' => 'student/courses/my_tests/' . $coaching_id . '/' . $member_id,
+			'<i class="fa fa-book"></i> My Courses' => 'student/courses/my_courses/' . $coaching_id . '/' . $member_id,
 		);
 
 		$data['bc'] = array('Dashboard' => 'student/home/dashboard/' . $coaching_id);
@@ -31,7 +31,7 @@ class Courses extends MX_Controller {
 		$this->load->view('courses/index', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
-	public function my_tests($coaching_id = 0, $member_id=0, $cat_id = 0) {
+	public function my_courses($coaching_id = 0, $member_id=0, $cat_id = 0) {
 		$data['page_title'] = 'My Courses';
 		if ($coaching_id==0) {
             $coaching_id = $this->session->userdata ('coaching_id');
@@ -47,14 +47,13 @@ class Courses extends MX_Controller {
 		$data['member_id'] = $member_id;
 		$data['cat_id'] = $cat_id;
 		$data['courses'] = $this->courses_model->get_users_batch_courses($coaching_id, $member_id);
-		$data['script'] = $this->load->view('courses/scripts/my_tests', $data, true);
+		$data['script'] = $this->load->view('courses/scripts/my_courses', $data, true);
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
-		$this->load->view('courses/my_tests', $data);
+		$this->load->view('courses/my_courses', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 	public function view ($coaching_id=0, $member_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
-		$data['page_title'] = 'View Course';
 		if ($coaching_id==0) {
             $coaching_id = $this->session->userdata ('coaching_id');
         }
@@ -68,14 +67,19 @@ class Courses extends MX_Controller {
 		$data['page_id'] = $page_id;
 
 		$data['course'] = $this->courses_model->get_course_by_id($course_id);
+		$data['page_title'] = $data['course']['title'];
 		$data['lessons'] = $this->lessons_model->get_lessons ($coaching_id, $course_id);
-		$data['pages'] = $this->lessons_model->get_all_pages ($coaching_id, $course_id, $lesson_id);
+		$data['tests'] = $this->courses_model->get_course_tests ($coaching_id, $course_id, TEST_TYPE_PRACTICE);
+		$data['teachers'] = $this->courses_model->get_teachers_assigned ($coaching_id, $course_id);
 	
 		if ($lesson_id > 0) {
 			$data['lesson'] = $this->lessons_model->get_lesson ($coaching_id, $course_id, $lesson_id);
+			$data['pages'] = $this->lessons_model->get_all_pages ($coaching_id, $course_id, $lesson_id);
+			$data['right_sidebar'] = $this->load->view ('courses/inc/course_view', $data, true);
 		} else {
 			$data['lesson'] = false;
 		}
+		$data['full_progress'] = $this->lessons_model->get_full_progress($member_id, $coaching_id, $course_id);
 		$data['progress'] = $this->lessons_model->get_progress($member_id, $coaching_id, $course_id);
 
 		if ($page_id > 0) {
@@ -91,9 +95,9 @@ class Courses extends MX_Controller {
 		// if course not purchased
 		// $data['bc'] = ['All Courses'=>'student/courses/index/'.$coaching_id.'/'.$member_id];
 		// if course purchased
-		$data['bc'] = ['My Courses'=>'student/courses/my_tests/'.$coaching_id.'/'.$member_id];
+		$data['bc'] = ['My Courses'=>'student/courses/my_courses/'.$coaching_id.'/'.$member_id];
+		$data['script'] = $this->load->view('courses/scripts/view', $data, true);
 
-		$data['sidebar_right'] = $this->load->view ('courses/inc/course_view', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view("courses/view", $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);

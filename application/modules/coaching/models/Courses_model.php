@@ -95,6 +95,7 @@ class Courses_model extends CI_Model {
 	public function add_course($coaching_id, $category_id, $course_id, $feat_img, $status = CATEGORY_STATUS_ACTIVE) {
 		$data['title'] = $this->input->post('title');
 		$data['description'] = $this->input->post('description');
+		$data['curriculum'] = $this->input->post('curriculum');
 		$data['price'] = $this->input->post('price');
 		$data['enrolment_type'] = $this->input->post('enrolment_type');
 		$data['status'] = $status;

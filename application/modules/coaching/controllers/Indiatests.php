@@ -99,6 +99,7 @@ class Indiatests extends MX_Controller {
         }
         $data['plans'] = $result;   
         $data['coaching_id'] = $coaching_id;
+        $data['amount'] = $amount;
         $data['course_id'] = $course_id;
         $data['category_id'] = $category_id;    
         $data['categories'] = $this->indiatests_model->test_plan_categories ();

@@ -20,8 +20,8 @@
               <a href="<?php echo site_url ('student/courses/view/'.$coaching_id.'/'.$member_id.'/'.$course['course_id']); ?>" class="w-40 w-sm-100">
                 <p class="list-item-heading mb-0 truncate"><strong class="mr-3"><?php echo ($i + 1) . "."?></strong><strong><?php echo $course['title']; ?></strong></p>
               </a>
-              <p class="mb-0 text-muted text-small w-15 w-sm-100"><?php echo date('j<\s\up>S</\s\up> F, Y', $course['created_on']); ?></p>
-              <p class="mb-0 text-muted text-small w-15 w-sm-100"><strong>Price: &#8377;</strong><?php echo $course['price']; ?></p>
+              <p class="mb-0 text-muted text-small w-15 w-sm-100"><strong>Lessons:</strong> <?php echo $course['lessons']; ?></p>
+              <p class="mb-0 text-muted text-small w-15 w-sm-100"><strong>Tests:</strong> <?php echo $course['tests']; ?></p>
               <div class="w-15 w-sm-100">
                 <a class="btn btn-outline-primary btn-xs" href="<?php echo site_url ('student/courses/view/'.$coaching_id.'/'.$member_id.'/'.$course['course_id']); ?>">View <i class="fa fa-eye"></i>
                   </a>
