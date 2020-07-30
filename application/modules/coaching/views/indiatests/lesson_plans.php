@@ -30,58 +30,63 @@
 	</div>
 </div>
 
-<div class="card">
-	<ul class="list-group">
-		<?php 
+
+
+
+
+
+	<div class="row">
+	<?php 
 		if ( ! empty ($plans)) {
 			foreach ($plans as $row) {
 				?>
-				<li class="list-group-item media">
-					<div class="media-body">
-						<h4>
-							<?php //echo anchor ('coaching/indiatests/tests_in_plan/'.$coaching_id.'/'.$category_id.'/'.$row['plan_id'], $row['title'], array ('class'=>'link-text-color', 'title'=>'Browse all tests in this plan ')); ?>
-							<?php echo $row['title']; ?>
-						</h4>
-						<span class="text-grey-500">
-							Category: <?php echo $row['cat_title']; ?>
-						</span>
-					</div>
-                    <div class="media-right">
-						<?php 
-						if ($row['amount'] == 0) {
-							echo '<span class="badge badge-secondary p-2">Free</span>';
-						} else {
-							echo '<span class="badge badge-secondary p-2"><i class="fa fa-rupee-sign"></i> '.$row['amount'] . ' </span>';
-						}
-						?>
-                    </div>
-                    <div class="media-right">
-						<?php 
-							echo '<span class="badge badge-secondary p-2">'.$row['tests_in_plan'].' Tests</span>';
-						?>
-                    </div>
-                    <div class="media-right">
-						<?php 
-						if ($row['added'] == true) {
-							echo anchor ('coaching/indiatests/lessons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'].'/'.$amount, 'Import Lessons', ['class'=>'btn btn-success']);
-						} else {							
-							if ($row['amount'] == 0) {
-								echo anchor ('coaching/indiatest_actions/lessons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'].'/0', 'Import Lessons', ['class'=>'btn btn-success']);
-							} else {
-								echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Buy Plan', ['class'=>'btn btn-primary']);
-							}
-						}
-						?>
-                    </div>
-
-				</li>
+	<div class="col-xs-6 col-lg-3 col-12 mb-4">
+		<div class="card">
+			
+			<div class="card-body position-relative">
+				<div class="heading-icon pt-2" style="font-size:1.2rem;"><?php echo $row['title']; ?></div>
+					
 				<?php 
+					if ($row['amount'] == 0) {
+						echo '<span class="badge-success badge badge-pill position-absolute badge-top-left">Free</span>';
+					} else {
+						echo '<span class="badge-info badge badge-pill position-absolute badge-top-left"><i class="fa fa-rupee-sign"></i> '.$row['amount'] . ' </span>';
+					}
+					?>
+				
+				
+				
+				<span class="text-grey-500">
+					Category: <?php echo $row['cat_title']; ?>
+				</span>
+				<div class="w-100 text-left pt-3">
+				<?php 
+					echo '<span class="badge badge-secondary mb-1">'.$row['tests_in_plan'].' Tests</span>';
+				?>
+				</div>
+				<footer class="mt-4 text-center">
+					<?php 
+					if ($row['added'] == true) {
+						echo anchor ('coaching/indiatests/lessons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'].'/'.$amount, 'Import Lessons', ['class'=>'btn btn-small btn-primary']);
+					} else {
+						if ($row['amount'] == 0) {
+							echo anchor ('coaching/indiatest_actions/lessons_in_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'].'/0', 'Import Lessons', ['class'=>'btn btn-small btn-primary']);
+						} else {
+							echo anchor ('coaching/indiatest_actions/buy_lesson_plan/'.$coaching_id.'/'.$course_id.'/'.$row['plan_id'], 'Buy Plan', ['class'=>'btn btn-small btn-primary']);
+						}
+					}
+					?>
+				</footer>
+			</div>
+		</div>
+	</div>
+	<?php 
 			}
 		} else { 
 		?>
-		<li class="list-group-item">
+		<div class="list-group-item">
 			<span class="text-danger"><?php echo 'No Plans Found'; ?></span>
-		</li>
+		</div>
 	    <?php } // if result ?>
-	</ul>
 </div>
+

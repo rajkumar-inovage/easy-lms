@@ -31,9 +31,9 @@
 					<div class="media-right">
 						<?php 
 						if ( $test['finalized'] == 0) {
-							echo '<div class="d-sm-flex text-right">';
+							echo '<div class="my-3 d-flex justify-content-between">';
 							echo anchor ('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id, '<i class="fa fa-plus"></i> Add Section', array('class'=>'btn btn-info btn-sm mr-sm-2 mb-2 sm mb-sm-0'));
-							echo anchor ('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id, '<i class="fa fa-plus"></i> Add Question', array('class'=>'btn btn-info btn-sm '));
+							echo anchor ('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id, '<i class="fa fa-plus"></i> Add Question', array('class'=>'btn btn-info btn-sm mr-sm-2 mb-2 sm mb-sm-0'));
 							echo '</div>';
 						}
 						?>
@@ -47,8 +47,8 @@
 				if ( ! empty($questions)) {
 					foreach ($questions as $id=>$row) {
 						?>
-						<li class="list-group-item media">
-							<div class="media-left">
+						<li class="list-group-item media d-flex justify-content-between">
+							<div class="media-left pr-2">
 								<label for="">
 									<?php if ( $test['finalized'] == 0) { ?>
 										<input name="questions[]" id="select<?php echo $id; ?>" type="checkbox" value="<?php echo $id; ?>" class="mr-2 checks checks<?php echo $parent_id; ?>">
@@ -57,7 +57,7 @@
 								</label>
 							</div>
 
-							<div class="media-body">
+							<div class="media-body pr-2">
 								<?php 
 								if ( $test['finalized'] == 0) {
 									echo anchor ('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$id, $row['question']);
@@ -71,7 +71,7 @@
 							</div>
 
 							<div class="media-right">
-								<a href="void()" class="btn btn-danger default py-1" onclick="show_confirm ('Remove this ?')">Delete</a>
+								<a href="void()" class="badge badge-danger mb-1" onclick="show_confirm ('Remove this ?')"><i class="simple-icon-trash text-small"></i></a>
 							</div>
 						</li>
 						<?php

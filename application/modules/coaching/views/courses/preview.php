@@ -80,11 +80,11 @@ if ($page_id > 0) {
 			if ( ! empty ($pages)) { 
 				foreach ($pages as $row) { 
 					?>
-					<div class="media">
-						<div class="media-left"><?php echo $i; ?></div>
+					<div class="media mt-3">
+						<div class="media-left pr-2 btn-link"><?php echo $i; ?></div>
 						<div class="media-body">							
 
-		                  	<a class="" href="<?php echo site_url ('coaching/courses/preview/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id']); ?>" >
+		                  	<a class="btn-link" href="<?php echo site_url ('coaching/courses/preview/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id']); ?>" >
 								<?php echo $row['title']; ?>
 							</a>
 						</div>

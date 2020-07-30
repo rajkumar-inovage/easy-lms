@@ -8,19 +8,20 @@
 					</div>
 				<?php } ?>
 			</li>
-			<li class="list-group-item media font-weight-bold">
-				<div class="media-left">
+			<li class="list-group-item media font-weight-bold d-inline-flex justify-content-between">
+				<div class="media-left d-flex">
+					<?php if ($course_id > 0) { ?>
+						<div class="media-left pr-2">
+							<input id="checkAll" type="checkbox" onchange="check_all()">
+						</div>
+					<?php } ?>
 					#
 				</div>
-				<?php if ($course_id > 0) { ?>
-					<div class="media-left">
-						<input id="checkAll" type="checkbox" onchange="check_all()">
-					</div>
-				<?php } ?>
-				<div class="media-body">
+				
+				<div class="media-body pl-2">
 					Test Name
 				</div>
-				<div class="media-right">
+				<div class="media-right float-right">
 					Duration
 				</div>
 			</li>
@@ -30,29 +31,30 @@
 				foreach ($tests as $row) {
 					$courses = $row['courses'];					
 					?>
-					<li class="list-group-item media">
-						<div class="media-left">
-							<?php echo $i; ?>
+					<li class="list-group-item media font-weight-bold d-inline-flex justify-content-between">
+						<div class="media-left d-flex">
+							<?php if ($course_id > 0) { ?>
+								<div class="media-left pr-2">
+									<input type="checkbox" name="tests[]" value="<?php echo $row['test_id']; ?>" class="checks" >
+								</div>
+							<?php } ?>
+							<?php echo $i; ?>-
 						</div>
-						<?php if ($course_id > 0) { ?>
-							<div class="media-left">
-								<input type="checkbox" name="tests[]" value="<?php echo $row['test_id']; ?>" class="checks" >
-							</div>
-						<?php } ?>
-						<div class="media-body">
+						
+						<div class="media-body pl-2">
 							<?php echo $row['title']; ?>
 							<div class="mt-2">
 							<?php
 							if (! empty ($courses)) {
 								foreach ($courses as $course) {
-									echo '<span class="badge badge-info mr-2 pb-1">'.$course['title'].'</span>';
+									echo '<span class="badge badge-info mr-2 pb-1 mb-1">'.$course['title'].'</span>';
 								}
 							} 
 							?>
 							</div>
 						</div>
-						<div class="media-right">
-							<span><?php echo $row['time_min'] . ' mins'; ?></span>
+						<div class="media-right float-right">
+							<span class="text-info"><?php echo $row['time_min'] . ' mins'; ?></span>
 						</div>
 					</li>
 					<?php
