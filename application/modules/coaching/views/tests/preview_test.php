@@ -12,7 +12,7 @@
 					<div class="card-header">
 						<div class="">
 							<?php if ( $test['finalized'] == 0) { ?>
-								<input type="checkbox" class="checks checkAll" id="checkAll<?php echo $parent_id; ?>" value="<?php echo $parent_id; ?>" onclick="check_all ()">
+								<input type="checkbox" class="checks checkAll d-none" id="checkAll<?php echo $parent_id; ?>" value="<?php echo $parent_id; ?>" onclick="check_all ()">
 							<?php } ?>
 							<label for="checkAll<?php echo $parent_id; ?>" class="">Section <?php echo $num_parent; ?></label>
 						</div>
@@ -20,11 +20,11 @@
 						<div class="d-flex justify-content-between">						  
 						  <div class="">
 							<?php
-								if ( $test['finalized'] == 0) {
-									echo anchor ('coaching/tests/question_group_edit/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id, $parent['question']);
-								} else {
+								// if ( $test['finalized'] == 0) {
+								// 	echo anchor ('coaching/tests/question_group_edit/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id, $parent['question']);
+								// } else {
 									echo $parent['question'];
-								}
+								// }
 							?>						  
 						  </div>
 						  
@@ -42,18 +42,18 @@
 								  <div class="media">
 									<div class="media-left test">
 										<?php if ( $test['finalized'] == 0) { ?>
-											<input name="questions[]" id="select<?php echo $id; ?>" type="checkbox" value="<?php echo $id; ?>" class="mr-2 checks checks<?php echo $parent_id; ?>">
+											<input name="questions[]" id="select<?php echo $id; ?>" type="checkbox" value="<?php echo $id; ?>" class="d-none mr-2 checks checks<?php echo $parent_id; ?>">
 										<?php } ?>
 										<label class="pr-2" for="select<?php echo $id; ?>"><?php echo $num_question; ?>.</label>
 									</div>
 
 									<div class="media-body test">
 										<?php 
-										if ( $test['finalized'] == 0) {
-											echo anchor ('coaching/tests/question_edit/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$id, $row['question']);
-										} else {
+										// if ( $test['finalized'] == 0) {
+										// 	echo anchor ('coaching/tests/question_edit/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$id, $row['question']);
+										// } else {
 											echo $row['question'];
-										}
+										// }
 										?>
 										<?php echo $this->qb_model->display_answer_choices($row['type'], $row); ?>
 									</div>
@@ -74,7 +74,7 @@
 						?>
 					</ul>
 
-					<div class="card-footer">
+					<div class="card-footer d-none">
 						<?php 
 						if ( $test['finalized'] == 0) {
 							?>
@@ -89,7 +89,7 @@
 			}
 			?>
 
-			<div class="card-footer">
+			<div class="card-footer d-none">
 				<div class="row">
 					<div class="col-2">
 						<?php if ( $test['finalized'] == 0) { ?>
@@ -113,7 +113,7 @@
 		<?php } else { ?>
 			<div class="alert alert-danger">
 				<strong> <?php echo 'No questions found in test'; ?></strong>
-				<p>You can <?php echo anchor('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id, 'Create Questions', array ('class'=>'btn btn-sm btn-primary') ); ?>  <?php // echo anchor('coaching/tests/upload_test_questions/'.$coaching_id.'/'.$course_id.'/'.$test_id, 'Upload Questions', array ('class'=>'btn btn-sm btn-secondary') ); ?> in this test.
+				<p>You can <?php echo anchor('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id, 'Create Questions', array ('class'=>'btn-link') ); ?>  <?php // echo anchor('coaching/tests/upload_test_questions/'.$coaching_id.'/'.$course_id.'/'.$test_id, 'Upload Questions', array ('class'=>'btn btn-sm btn-secondary') ); ?> in this test.
 				</p>
 			</div>
 			<?php 

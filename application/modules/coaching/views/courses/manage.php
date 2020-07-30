@@ -16,7 +16,7 @@
 	                    <i class="simple-icon-plus heading-icon"></i>
 	                    <span class="align-middle d-inline-block">Create Chapter</span>
 	                </a>
-	                <a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/indiatests/lesson_plans/'.$coaching_id.'/'.$course_id.'/0/0'); ?>">
+	                <a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/indiatests/lesson_plans/'.$coaching_id.'/'.$course_id.'/12/'); ?>">
 	                    <i class="simple-icon-arrow-down-circle heading-icon"></i>
 	                    <span class="align-middle d-inline-block">Import Free Lessons</span>
 	                </a>
@@ -62,10 +62,7 @@
             </div>
         </div>
     </div>
-</div>
 
-
-<div class="row mb-4">
     <!-- Teachers -->
 	<?php if ($is_admin) { ?>
 	    <div class="col-lg-6 col-md-12 mb-4">
@@ -116,10 +113,6 @@
             </div>
         </div>
     </div>
-</div>
-
-
-<div class="row mb-4">
     <!-- Settings -->
 	<?php if ($is_admin) { ?>
 	    <div class="col-lg-6 col-md-12 mb-4">

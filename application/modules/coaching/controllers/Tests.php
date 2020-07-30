@@ -163,7 +163,6 @@ class Tests extends MX_Controller {
 		
 		/* Breadcrumbs */
 		$data['bc'] = array ('Tests'=>'coaching/tests/index/'.$coaching_id.'/'.$course_id);
-		$data['right_sidebar'] = $this->load->view('tests/inc/manage_test', $data, true);
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
 		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
 
@@ -177,7 +176,7 @@ class Tests extends MX_Controller {
 
 		/* --==// Toolbar //==-- */
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
-
+		$data['right_sidebar'] = $this->load->view('tests/inc/manage_test', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/manage_test', $data);		
@@ -287,8 +286,9 @@ class Tests extends MX_Controller {
 		}
 		$data['test_marks'] = $testMarks;
 		$data['num_test_questions'] = $num_test_questions;
-
+		
 		/* Back Link */
+		
 		$data['bc'] = array ('Question Group'=>'coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id);
 
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
@@ -312,11 +312,13 @@ class Tests extends MX_Controller {
 		$data['question_categories']   = $this->common_model->get_sys_parameters (SYS_QUESTION_CLASSIFICATION);
 		$data['question_difficulties'] = $this->common_model->get_sys_parameters (SYS_QUESTION_DIFFICULTIES);
 
-		//$data['script'] 	= $this->load->view ('tests/scripts/question_create', $data, true);		
+		//$data['script'] 	= $this->load->view ('tests/scripts/question_create', $data, true);	
+		$data['right_sidebar'] = $this->load->view('tests/inc/question_create', $data, true);	
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/question_create', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
+
 	}
 	// end create edit question	
 	/* Preview Test

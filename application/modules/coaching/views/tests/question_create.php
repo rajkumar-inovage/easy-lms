@@ -1,46 +1,7 @@
-<div class="row justify-content-center">
-	
-	<div class="col-md-3">
-		<div class="card mb-2">
-		  <div class="card-header">
-		  	Questions
-		  </div>
-		  <ul class="list-group">
-			<?php 
-			$i = 1;
-			if (! empty ($questions)) {
-				foreach ($questions as $q) {
-					?>
-					<li class="list-group-item media">
-						<div class="media-left">
-							<?php echo $i; ?>
-						</div>
-						<div class="media-body">
-							<?php 
-							$qn = strip_tags ($q['question']); 
-							$qn = character_limiter ($qn, 100);
-							?>
-							<a href="<?php echo site_url ('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$q['parent_id'].'/'.$q['question_id'].'/'.$q['type']); ?>" class="<?php if ($q['question_id'] == $question_id) echo 'text-danger'; ?>"><?php echo $qn; ?></a>
-						</div>
-						
-					</li>
-					<?php
-					$i++;
-				}
-				
-			} else {
-				?>
-				<li class="list-group-item ">
-					<span class="text-danger">No questions found</span>
-				</li>
-				<?php
-			}
-			?>
-		  </ul>
-		</div>
-	</div>
+<div class="row justify-content-center app-row">
 
-	<div class="col-md-9">
+
+	<div class="col-md-12">
 		<div class="card">
 			<div class="card-body">
 				<?php echo form_open ('coaching/tests_actions/validate_question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id.'/'.$question_id, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') ); ?>

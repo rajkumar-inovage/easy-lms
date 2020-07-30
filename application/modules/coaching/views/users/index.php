@@ -1,10 +1,10 @@
-<div class="card mb-2"> 
-	<div class="card-body ">
+<div class=""> 
+	<div class="">
 		<strong>Search</strong>
-		<?php echo form_open('coaching/user_actions/search_users/'.$coaching_id.'/'.$role_id.'/'.$status.'/'.$batch_id, array('class'=>"", 'id'=>'search-form')); ?>
-			<div class="form-group row mb-2">
+		<?php echo form_open('coaching/user_actions/search_users/'.$coaching_id.'/'.$role_id.'/'.$status.'/'.$batch_id, array('class'=>"mt-3", 'id'=>'search-form')); ?>
+			<div class="form-group row mb-2 d-flex">
 				<div class="col-md-3 mb-2">
-					<select name="search_status" class="form-control" id="search-status" >
+					<select name="search_status" class="custom-select rounded" id="search-status" >
 						<option value="-1">All Status</option>
 						<option value="<?php echo USER_STATUS_DISABLED; ?>" <?php if ($status==USER_STATUS_DISABLED) echo 'selected="selected"'; ?> >Disabled</option>
 						<option value="<?php echo USER_STATUS_ENABLED; ?>" <?php if ($status==USER_STATUS_ENABLED) echo 'selected="selected"'; ?> >Enabled</option>
@@ -13,7 +13,7 @@
 				</div>
 
 				<div class="col-md-3 mb-2">
-					<select name="search_role" class="form-control" id="search-role">
+					<select name="search_role" class="custom-select rounded" id="search-role">
 						<option value="0">All Roles</option>
 						<?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role['role_id']; ?>" <?php if ($role_id ==$role['role_id']) echo 'selected="selected"'; ?> ><?php echo $role['description']; ?></option>
@@ -22,7 +22,7 @@
 				</div>
 
 				<div class="col-md-3">
-					<select name="filter_sort" class="form-control" id="filter-sort" >
+					<select name="filter_sort" class="custom-select rounded" id="filter-sort" >
 						<option value="<?php echo SORT_ALPHA_ASC; ?>" <?php if ($sort==SORT_ALPHA_ASC) echo 'selected="selected"'; ?> >Name: A to Z</option>
 						<option value="<?php echo SORT_ALPHA_DESC; ?>" <?php if ($sort==SORT_ALPHA_DESC) echo 'selected="selected"'; ?> >Name: Z to A</option>
 						<option value="<?php echo SORT_CREATION_ASC; ?>" <?php if ($sort==SORT_CREATION_ASC) echo 'selected="selected"'; ?> >Old to New</option>
@@ -33,21 +33,41 @@
 
 			<div class="form-group row mb-2">
 				<div class="col-md-6 mb-2">
-					<div class="input-group ">
-						<input name="search_text" class="form-control " type="search" placeholder="Search by name, mobile number, user-id" aria-label="Search Test" aria-describedby="search-button">
-						<div class="input-group-append">
+					<div class="input-group position-relative">
+						<input name="search_text" class="form-control rounded" type="search" placeholder="Search by name, mobile number, user-id" aria-label="Search Test" aria-describedby="search-button">
+						<div class="input-group-append position-absolute" style="top:1px; right:0; z-index:99;">
 							<button class="btn btn-sm btn-primary " type="submit" id="search-button"><i class="fa fa-search"></i></button>
 						</div>
 					</div>
 				</div>
+				<div class="col-md-6 text-right mb-2">
+					<div class="btn-group">
+						<div class="btn btn-primary btn-lg pl-4 pr-0 check-button">
+							<label class="custom-control custom-checkbox mb-0 d-inline-block">
+								<input type="checkbox" class="custom-control-input" id="checkAll">
+								<span class="custom-control-label">&nbsp;</span>
+							</label>
+						</div>
+						<button type="button"
+							class="btn btn-lg btn-primary dropdown-toggle dropdown-toggle-split"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="sr-only">Toggle Dropdown</span>
+						</button>
+						<div class="dropdown-menu dropdown-menu-right">
+							<a class="dropdown-item" href="#">Delete</a>
+							<a class="dropdown-item" href="#">Another action</a>
+						</div>
+					</div>
+				</div>
+				
 			</div>
 
 		</form>
 	</div>
 </div>
-
 <?php echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$status, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') ); ?>
 	<div id="users-list">
 		<?php $this->load->view ('users/inc/index', $data); ?>
 	</div>
 </form>
+

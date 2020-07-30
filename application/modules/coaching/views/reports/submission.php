@@ -1,16 +1,16 @@
 <div class="card card-default">
     <?php echo form_open('coaching/report_actions/delete_submissions/'.$coaching_id.'/'.$category_id.'/'.$test_id, array('class'=>'', 'id'=>'validate-1'));?>
 		<ul class="list-group">
-			<li class="list-group-item list-group-header media">
-				<div class="media-left">
-					<input id="checkAll" type="checkbox" onchange="check_all()" >
+			<li class="list-group-item list-group-header media d-flex">
+				<div class="media-left d-table-cell pr-2">
+					<input id="checkAll" type="checkbox" onchange="check_all()" ><br/>
 					#
 				</div>
-				<div class="media-body">
+				<div class="media-body d-table-cell">
 					<?php echo 'Name '; ?><br>
 					<?php echo 'Test Taken On'; ?><br>
 				</div>
-				<div class="media-right">
+				<div class="media-right d-table-cell float-right">
 					<?php echo 'Max Score'; ?>
 				</div>
 			</li>
@@ -19,17 +19,17 @@
 				$i = 1;
 				foreach($submissions as $row) {
 					?>
-					<li class="list-group-item list-group-header media">
-						<div class="media-left">
-							<?php echo form_checkbox (array('name'=>'users[]', 'value'=>$row['member_id'], 'class'=>'checks')); ?>
+					<li class="list-group-item list-group-header media d-flex">
+						<div class="media-left d-table-cell pr-2">
+							<?php echo form_checkbox (array('name'=>'users[]', 'value'=>$row['member_id'], 'class'=>'checks')); ?> <br/>
 							<?php echo $i; ?>							
 						</div>
 						
-						<div class="media-body">
+						<div class="media-body d-table-cell">
 							<?php 
 							$user_name = $row['first_name'] . ' ' .$row['last_name'];
 							if ($row['submitted'] == 1 || ($row['submitted'] == 0 && $row['submit_time'] > 0)) {
-								echo anchor('coaching/reports/all_reports/'.$coaching_id.'/'.$row['attempt_id'].'/'.$row['member_id'].'/'.$test_id, $user_name);
+								echo anchor('coaching/reports/all_reports/'.$coaching_id.'/'.$row['attempt_id'].'/'.$row['member_id'].'/'.$test_id, $user_name, array('class'=>'btn-link') );
 							} else {
 								echo $user_name;
 							}
@@ -52,7 +52,7 @@
 								?>
 							</div>
 						</div>
-						<div class="media-right">
+						<div class="media-right d-table-cell float-right">
 							<?php 
 							if ($row['submitted'] == 1 || ($row['submitted'] == 0 && $row['submit_time'] > $attempt_time)) {
 								$pass_marks = ($row['pass_marks'] * $test_marks) / 100;

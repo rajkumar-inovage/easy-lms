@@ -2,8 +2,8 @@
 	<div class="p-4 h-100">
     	<div class="scroll">
 			<div class="flex-column pt-3">
-				<span class="float-left">MM: 32</span>
-				<span class="float-right">QUESTIONS: 32</span>
+				<span class="float-left">MM: <?php echo $test_marks; ?></span>
+				<span class="float-right">QUESTIONS: <?php echo $num_test_questions; ?></span>
 			</div>
 			<div class="separator mt-4"></div>
 			<div class="mt-3 d-inline-block">

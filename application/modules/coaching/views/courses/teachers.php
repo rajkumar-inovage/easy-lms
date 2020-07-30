@@ -11,7 +11,33 @@
 	</div>
 </div>
 
-<div class="card mb-2"> 
+<div class="row my-3">
+	<div class="col-12">
+		<strong>Search</strong>
+		<?php echo form_open('coaching/courses_actions/search_teachers/', array('class'=>"mt-2", 'id'=>'search-form')); ?>
+			<div class="form-group row mb-2">
+			<div class="col-sm-6 col-lg-3 mb-2">
+					<select name="search_status" class="custom-select rounded" id="search-status" >
+						<option value="-1">All Status</option>
+						<option value="<?php echo USER_STATUS_DISABLED; ?>" <?php if ($status==USER_STATUS_DISABLED) echo 'selected="selected"'; ?> >Disabled</option>
+						<option value="<?php echo USER_STATUS_ENABLED; ?>" <?php if ($status==USER_STATUS_ENABLED) echo 'selected="selected"'; ?> >Enabled</option>
+						<option value="<?php echo USER_STATUS_UNCONFIRMED; ?>" <?php if ($status==USER_STATUS_UNCONFIRMED) echo 'selected="selected"'; ?> >Pending</option>
+					</select>
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<div class="input-group position-relative">
+						<input name="search_text" class="form-control rounded" type="search" placeholder="Search" aria-label="Search Test" aria-describedby="search-button">
+						<div class="input-group-append position-absolute" style="top:1px; right:0; z-index:99;">
+							<button class="btn btn-sm btn-primary" type="submit" id="search-button"><i class="fa fa-search"></i></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="card mb-2 d-none"> 
 	<div class="card-body ">
 		<strong>Search</strong>
 		<?php echo form_open('coaching/courses_actions/search_teachers/', array('class'=>"", 'id'=>'search-form')); ?>
