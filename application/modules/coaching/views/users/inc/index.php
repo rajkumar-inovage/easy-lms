@@ -23,12 +23,11 @@
 							</div>
 						</div>
 						<p class="mb-0 w-20 w-xs-100">
-							<i class="iconsminds-old-telephone pr-2"></i>
+							<i class="simple-icon-phone pr-2"></i>
 							<?php echo $row['primary_contact']; ?>
 						</p>
 						
-						<p class="w-20 w-xs-100 m-0">
-							<i class="simple-icon-user pr-2"></i>
+						<p class="w-20 w-xs-100 m-0 text-info">
 							<?php echo $row['description']; ?>
 						</p>
 						<div class="w-10 w-xs-100">

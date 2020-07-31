@@ -29,7 +29,7 @@
 </div>
 
 
-<div class="row list disable-text-selection" data-check-all="checkAll">
+<div class="row list disable-text-selection d-none" data-check-all="checkAll">
 	<?php 
 	if ( ! empty ($plans)) {
 		foreach ($plans as $row) {
@@ -86,7 +86,7 @@
 		</div>
     	<?php 
     } // if result ?>
-
+</div>
 <div class="row">
 <?php 
 		if ( ! empty ($plans)) {

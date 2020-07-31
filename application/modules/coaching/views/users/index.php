@@ -40,25 +40,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6 text-right mb-2">
-					<div class="btn-group">
-						<div class="btn btn-primary btn-lg pl-4 pr-0 check-button">
-							<label class="custom-control custom-checkbox mb-0 d-inline-block">
-								<input type="checkbox" class="custom-control-input" id="checkAll">
-								<span class="custom-control-label">&nbsp;</span>
-							</label>
-						</div>
-						<button type="button"
-							class="btn btn-lg btn-primary dropdown-toggle dropdown-toggle-split"
-							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="sr-only">Toggle Dropdown</span>
-						</button>
-						<div class="dropdown-menu dropdown-menu-right">
-							<a class="dropdown-item" href="#">Delete</a>
-							<a class="dropdown-item" href="#">Another action</a>
-						</div>
-					</div>
-				</div>
+				
 				
 			</div>
 
@@ -68,6 +50,25 @@
 <?php echo form_open('coaching/user_actions/confirm/'.$coaching_id.'/'.$role_id.'/'.$status, array('class'=>'form-horizontal row-border', 'id'=>'validate-1') ); ?>
 	<div id="users-list">
 		<?php $this->load->view ('users/inc/index', $data); ?>
+		<div class="row my-3">
+			<div class="col-12">
+				<div class="btn-group" role="group" aria-label="Basic example">
+					<div class="btn btn-primary btn-lg pl-4 pr-0 check-button">
+						<label class="custom-control custom-checkbox mb-0 d-inline-block">
+							<input type="checkbox" class="custom-control-input" id="checkAll">
+							<span class="custom-control-label">&nbsp;</span>
+						</label>
+					</div>
+					<select name="action" class="custom-select w-auto">
+						<option value="0">---With Selected---</option>
+						<option value="delete">Delete</option>
+						<option value="enable">Enable Account</option>
+						<option value="disable">Disable Account</option>
+					</select>
+					<input type="submit" name="Submit" value="Change" class="btn btn-primary"/>
+				</div>
+			</div>
+		</div>
 	</div>
 </form>
 

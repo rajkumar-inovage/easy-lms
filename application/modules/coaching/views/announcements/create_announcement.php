@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-	<div class="col-md-9">
+	<div class="col-md-12">
 		<div class="card">
 			
 			<div class="card-body">
@@ -13,10 +13,9 @@
 					</div>
 
 					<div class="form-group row">
-						<div class="col-md-12">
+						<div class="col-md-12 overflow-hidden">
 							<?php echo form_label('Description', '', array('class'=>'control-label')); ?>
-							<textarea class="form-control required" name="description" placeholder="" rows="5"><?php echo set_value('description', $result['description']); ?></textarea>
-							
+							<textarea class="form-control required tinyeditor" name="description" placeholder="" rows="6"><?php echo set_value('description', $result['description']); ?></textarea>
 						</div>
 					</div>
 
@@ -45,10 +44,10 @@
 						</div>
 					</div>
 
-					<div class="form-group row">
+					<div class="form-group row d-flex">
 						<div class="col-md-6 mt-3">
 						  <?php echo form_label('Status', '', array('class'=>'control-label pr-5')); ?>
-       					  <div class="custom-control custom-switch">
+       					  <div class="custom-control custom-switch pl-4 ml-2">
 							  <input type="checkbox" name="status" class="custom-control-input" id="status" value="1" <?php if ($result['status'] == 1 ) echo 'checked';?> checked >
 							  <label class="custom-control-label" for="status">Publish </label>
 						  </div>
@@ -59,9 +58,15 @@
 				</div>
 
 				<div class="card-footer">					
-					<p class="btn-toolbar">
 						<input type="submit" name="submit" value="<?php echo ('Save'); ?>" class="btn btn-primary " accesskey="s" />
-					</p>
+						<?php 
+                            if (isset ($bc)) {
+                                $bc_link = current ($bc);
+                                $bc_title  = key ($bc);
+                                echo anchor ($bc_link, 'Cancel', array('class'=>'float-right btn btn-info', 'title'=>'Back To '.$bc_title)); 
+                            }
+                        ?>
+					</div>
 				</form>
 			</div>
 		</div>
