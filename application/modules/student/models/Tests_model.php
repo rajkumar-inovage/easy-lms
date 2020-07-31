@@ -42,20 +42,18 @@ class Tests_model extends CI_Model {
 	
 	//=========== Model for list tests =======================
 	public function get_all_tests ($coaching_id=0, $category_id=0, $type=0) {
-		
+		if ( $course_id > 0 ) {
+			$this->db->where ('course_id', $course_id);
+		}
 		if ( $type > 0 ) {
-			$this->db->where ('test_type', $type);			
+			$this->db->where ('test_type', $type);
 		}
-		if ( $category_id > 0 ) {
-			$this->db->where ('category_id', $category_id);
-		}
-		
 		$this->db->where ('finalized', 1);
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->order_by ('creation_date', 'DESC');
 		
 		$query = $this->db->get ("coaching_tests");
-		$results = $query->result_array();		
+		$results = $query->result_array();	
 		$data = [];
 		if (! empty ($results))	{
 			foreach ($results as $row) {

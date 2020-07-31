@@ -16,6 +16,11 @@
 				</div>
 
 				<div class="form-group">
+					<label for="curriculum">Curricullum</label>
+					<textarea class="form-control" id="curriculum" name="curriculum" rows="4" placeholder="Curriculum of this course?"><?php echo (isset($course['curriculum'])) ? $course['curriculum'] : ''; ?></textarea>
+				</div>
+				
+				<div class="form-group">
 					<label for="batch-type">Course Type</label>
 					<div class="">
 						<label><input type="radio" name="enrolment_type" value="<?php echo COURSE_ENROLMENT_DIRECT;?>" <?php echo set_radio ('enrolment_type', $course['enrolment_type'], true);?> > Direct Enrolment</label>

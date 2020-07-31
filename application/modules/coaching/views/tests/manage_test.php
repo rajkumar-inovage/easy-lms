@@ -1,4 +1,28 @@
 <div class="row app-row mb-4">
+	<!-- Prepare -->
+    <div class="col-lg-6 col-md-12 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-primary">
+                	<span><i class="simple-icon-notebook pr-3"></i></span>Prepare <span class="badge badge-primary float-right"></span>
+                </h5>
+                <div class="separator mb-5"></div>
+                <div class="card-body p-0 align-self-center justify-content-between min-width-zero align-items-md-center">
+	                <a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/tests/questions/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>">
+	                    <i class="simple-icon-question heading-icon"></i>
+	                    <span class="align-middle d-inline-block">Questions</span>
+	                </a>
+					<?php if ($test['finalized'] == 0) { ?>
+						<a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>">
+						<i class="simple-icon-plus heading-icon"></i>
+	                    <span class="align-middle d-inline-block">Add Questions</span>
+						</a>
+					<?php } ?>
+                
+	            </div>
+            </div>
+        </div>
+    </div>
     
     <!-- Publish -->
     <div class="col-lg-6 col-md-12 mb-4">
@@ -32,44 +56,33 @@
 					   <i class="simple-icon-arrow-up-circle heading-icon"></i>
 					   <span class="align-middle d-inline-block">Export</span>
 					</a>
-	                <a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/reports/submissions/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>">
-	                    <i class="simple-icon-check heading-icon"></i>
-	                    <span class="align-middle d-inline-block">Submissions</span>
-	                </a>
-
-			      	<a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="javascript:void(0)" onclick="javascript:show_confirm ('Release test results for users?', '<?php echo site_url('coaching/tests_actions/release_result/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>')" title="">
-			      		<i class="simple-icon-graduation heading-icon"></i>
-	                    <span class="align-middle d-inline-block">Release Result</span>
-			      	</a>
                 
 	            </div>
             </div>
         </div>
     </div>
-	<!-- Prepare -->
+	<!-- Submissions -->
     <div class="col-lg-6 col-md-12 mb-4">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title text-primary">
-                	<span><i class="simple-icon-notebook pr-3"></i></span>Prepare <span class="badge badge-primary float-right"></span>
+                	<span><i class="simple-icon-check pr-3"></i></span>Submissions <span class="badge badge-primary float-right"></span>
                 </h5>
                 <div class="separator mb-5"></div>
                 <div class="card-body p-0 align-self-center justify-content-between min-width-zero align-items-md-center">
-	                <a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/tests/questions/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>">
-	                    <i class="simple-icon-question heading-icon"></i>
-	                    <span class="align-middle d-inline-block">Questions</span>
+					<a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/reports/submissions/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>">
+	                    <i class="simple-icon-check heading-icon"></i>
+	                    <span class="align-middle d-inline-block">Submissions</span>
 	                </a>
-					<?php if ($test['finalized'] == 0) { ?>
-						<a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>">
-						<i class="simple-icon-plus heading-icon"></i>
-	                    <span class="align-middle d-inline-block">Add Questions</span>
-						</a>
-					<?php } ?>
-                
+					<a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="javascript:void(0)" onclick="javascript:show_confirm ('Release test results for users?', '<?php echo site_url('coaching/tests_actions/release_result/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>')" title="">
+			      		<i class="simple-icon-graduation heading-icon"></i>
+	                    <span class="align-middle d-inline-block">Release Result</span>
+			      	</a>
 	            </div>
             </div>
         </div>
     </div>
+
 	<!-- Delete -->
 
 	<div class="col-lg-6 col-md-12 mb-4">
