@@ -98,7 +98,7 @@
 	<div class="card-footer">
 		<p class="btn-toolbar btn-toolbar-demo">
 			<?php if ($start_test == true) { ?>
-				<a href="<?php echo site_url ('student/tests/start_test/'.$coaching_id.'/'.$member_id.'/'.$test_id); ?>" class="btn btn-success  ">Start Test <i class="fa fa-play-circle"></i> </a>
+				<a href="<?php echo site_url ('student/tests/start_test/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$test_id); ?>" class="btn btn-success  ">Start Test <i class="fa fa-play-circle"></i> </a>
 			<?php } ?>
 		</p>
 	</div>

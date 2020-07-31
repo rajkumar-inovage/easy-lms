@@ -89,7 +89,7 @@
 							<?php echo form_input(array('name'=>'primary_contact', 'class'=>'form-control digits ', 'value'=>set_value('primary_contact', $result['primary_contact']) ));?>
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-6 mt-3 mt-md-0">
 							<?php echo form_label('E-mail <span class="text-danger"></span>', '', array('class'=>'', 'for' =>"email")); ?>
 							<?php echo form_input(array('name'=>'email', 'class'=>'form-control email  ', 'value'=>set_value('email', $result['email']), 'id'=>'email')); ?>
 						</div>
@@ -110,7 +110,7 @@
 							?>
 						</div>
 						
-						<div class="col-md-6">
+						<div class="col-md-6 mt-3 mt-md-0">
 							<?php echo form_label('Gender', '', array('class'=>'form-label')); ?>
 							<?php
 								$status_none = false;
@@ -124,10 +124,10 @@
 									$status_none = true;
 							?>
 							<div class="d-block">
-								<div class="btn-group btn-group-toggle gender-toggle" data-toggle="buttons">
-									<label class="btn position-relative btn-default<?php echo ($status_male)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'m', 'checked'=>$status_male, 'class'=>'')); ?><?php echo ('Male'); ?></label>
-									<label class="btn position-relative btn-default<?php echo ($status_female)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'f', 'checked'=>$status_female, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Female'); ?></label>
-									<label class="btn position-relative btn-default<?php echo ($status_none)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'n', 'checked'=>$status_none, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Not Specified'); ?></label>
+								<div class="btn-group-toggle gender-toggle" data-toggle="buttons">
+									<label class="btn position-relative btn-info default p-1 mb-1<?php echo ($status_male)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'m', 'checked'=>$status_male, 'class'=>'')); ?><i class="iconsminds-male pr-2"></i><?php echo ('Male'); ?></label>
+									<label class="btn position-relative btn-info default p-1 mb-1<?php echo ($status_female)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'f', 'checked'=>$status_female, 'class'=>'radio-primary form-check-input')); ?><i class="iconsminds-female pr-2"></i><?php echo ('Female'); ?></label>
+									<label class="btn position-relative btn-info default p-1 mb-1<?php echo ($status_none)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'n', 'checked'=>$status_none, 'class'=>'radio-primary form-check-input')); ?><i class="iconsminds-woman-man pr-2"></i><?php echo ('Not Specified'); ?></label>
 								</div>
 							</div>
 						</div>
@@ -138,8 +138,15 @@
 					
 				<div class="card-footer">
 					<?php
-					echo form_submit ( array ('name'=>'submit', 'value'=>'Save ', 'class'=>'btn btn-primary ')); 
+					echo form_submit ( array ('name'=>'submit', 'value'=>'Save ', 'class'=>'btn btn-primary float-left')); 
 					?>
+					<?php 
+                            if (isset ($bc)) {
+                                $bc_link = current ($bc);
+                                $bc_title  = key ($bc);
+                                echo anchor ($bc_link, 'Cancel', array('class'=>'float-right btn btn-info', 'title'=>'Back To '.$bc_title)); 
+                            }
+                        ?>
 				</div>
 			</form>
 		</div>

@@ -44,6 +44,7 @@
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/mousetrap.min.js'); ?>"></script>
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/jquery.contextMenu.min.js'); ?>"></script>
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/bootstrap-datepicker.js'); ?>"></script>
+    <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/glide.min.js'); ?>"></script>
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/dore.script.js'); ?>"></script>
 
 	<!-- Default JS (Must be loaded befaore app.js) -->

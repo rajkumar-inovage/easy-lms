@@ -81,28 +81,3 @@ define ('SORT_CREATION_DESC', 				4);
 @date_default_timezone_set('ASIA/KOLKATA');
 
 $config['allowed_mime_types']	=	[ 'csv', 'psd', 'so', 'sea', 'oda', 'pdf', 'ai', 'eps', 'ps', 'smi', 'smil', 'mif', 'xls', 'ppt', 'pptx', 'wbxml', 'wmlc', 'dcr', 'dir', 'dxr', 'dvi', 'gtar', 'gz', 'gzip', 'swf', 'zip', 'rar', 'mid', 'midi', 'mpga', 'mp2', 'mp3', 'aif', 'aiff', 'aifc', 'ram', 'rm', 'rpm', 'ra', 'rv', 'wav', 'bmp', 'gif', 'jpeg', 'jpg', 'jpe', 'jp2', 'j2k', 'jpf', 'jpg2', 'jpx', 'jpm', 'mj2', 'mjp2', 'png', 'tiff', 'tif', 'txt', 'text', 'rtx', 'rtf', 'xsl', 'mpeg', 'mpg', 'mpe', 'qt', 'mov', 'avi', 'movie', 'doc', 'docx', 'xlsx', '3g2', '3gp', 'mp4', 'm4a', 'f4v', 'flv', 'webm', 'aac', 'm4u', 'm3u', 'vlc', 'wmv', 'au', 'ac3', 'ogg', 'wma', 'ico', 'odc', 'otc', 'odf', 'otf', 'odg', 'otg', 'odi', 'oti', 'odp', 'otp', 'ods', 'ots', 'odt', 'odm', 'ott', 'oth'];
-
-// global function
-function print_pre($object){
-	$object = print_r($object, true);
-	print_r("<pre style=\"white-space: pre-wrap;\">$object</pre>");
-}
-function excerpt($text, $limit) {
-	if (str_word_count($text, 0) > $limit) {
-		$words = str_word_count($text, 2);
-		$pos = array_keys($words);
-		$text = substr($text, 0, $pos[$limit]) . '&hellip;';
-	}
-	return $text;
-}
-function getYoutubeEmbedUrl($url){
-    $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_]+)\??/i';
-    $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))(\w+)/i';
-    if (preg_match($longUrlRegex, $url, $matches)) {
-        $youtube_id = $matches[count($matches) - 1];
-    }
-    if (preg_match($shortUrlRegex, $url, $matches)) {
-        $youtube_id = $matches[count($matches) - 1];
-    }
-    return 'https://www.youtube.com/embed/' . $youtube_id ;
-}

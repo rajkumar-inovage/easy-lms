@@ -15,7 +15,7 @@
 					<div class="alert alert-danger">
 						<strong>Test locked!</strong>.
 						<p>This test has been locked, as you have recently taken this test. Next attempt will be avalailable only after given time <br>
-							<a href="<?php echo site_url ('student/tests/request_reset/'.$coaching_id.'/'.$member_id.'/'.$test_id); ?>" onclick="" class="btn btn-warning btn-sm"> Request Reset  </a>
+							<a href="<?php echo site_url ('student/tests/request_reset/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$test_id); ?>" onclick="" class="btn btn-warning btn-sm"> Request Reset  </a>
 						</p>
 					</div>
 
@@ -24,7 +24,7 @@
 						<script language="javascript">
 							// Function for submit form when time is over.	
 							function countdownComplete(){
-								document.location = '<?php echo site_url ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$test_id); ?>';
+								document.location = '<?php echo site_url ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$test_id); ?>';
 							}
 							// === *** SHOW TIMER *** === //
 							var test2 = new Countdown( {  

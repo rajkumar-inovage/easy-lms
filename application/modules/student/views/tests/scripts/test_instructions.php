@@ -9,7 +9,7 @@ function start_test () {
 		'resizable=1',
 		'fullscreen=yes' /*only works in IE, but here for completeness*/
 	].join(',');
-	var testWindow = window.open ('<?php echo site_url ('student/tests/start_test/'.$coaching_id.'/'.$member_id.'/'.$category_id.'/'.$test_id); ?>', "_blank", params);
+	var testWindow = window.open ('<?php echo site_url ('student/tests/start_test/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$category_id.'/'.$test_id); ?>', "_blank", params);
 	if (testWindow.outerWidth < screen.availWidth || testWindow.outerHeight < screen.availHeight){
 	    testWindow.moveTo(0,0);
 	    testWindow.resizeTo(screen.availWidth, screen.availHeight);
