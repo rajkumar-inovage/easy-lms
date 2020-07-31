@@ -299,5 +299,11 @@
                         <?php } ?>
                         </div>
                     </div>
+                    
                     <div class="separator mb-5"></div>
-                
+                        
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-4 col-sm-8">
+                          <?php $this->message->display (); ?>
+                        </div>
+                    </div>                

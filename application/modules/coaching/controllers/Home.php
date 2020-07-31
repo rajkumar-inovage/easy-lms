@@ -3,8 +3,8 @@
 class Home extends MX_Controller {
 	
 	public function __construct () { 
-	    $config = ['config_coaching', 'config_virtual_class'];
-	    $models = ['coaching_model', 'users_model', 'subscription_model', 'virtual_class_model'];
+	    $config = ['config_coaching', 'config_virtual_class', 'config_course'];
+	    $models = ['coaching_model', 'users_model', 'subscription_model', 'virtual_class_model', 'courses_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 
         $cid = $this->uri->segment (4);
@@ -44,22 +44,19 @@ class Home extends MX_Controller {
 		$data['coaching'] = $this->coaching_model->get_coaching ($coaching_id);
 		$data['subscription'] = $this->subscription_model->get_coaching_subscription ($coaching_id);
 		$data['announcements'] = $this->coaching_model->get_coaching_announcements ($coaching_id);
+		$data['courses'] 	= $courses = $this->courses_model->courses($coaching_id);
 		
+		if (! empty ($courses)) {
+			$data['num_courses'] = count ($courses);
+		} else {
+			$data['num_courses'] = 0;			
+		}
 		$start_date = time ();
 		// seven days from today
 		$num_days = 7 * 24 * 3600;
 		$end_date = $start_date - $num_days;
 		$data['user_registration'] = $this->users_model->user_registration_between ($coaching_id, $start_date, $end_date);
 
-		// Virtual Class
-		$data['virtual_class'] = $this->virtual_class_model->get_all_classes ($coaching_id);
-		if (! empty($data['virtual_class'])) {
-			$num_vc = count($data['virtual_class']);
-		} else {
-			$num_vc = 0;
-		}
-		$data['num_vc'] = $num_vc;
-		
 		$data['tests'] = $this->coaching_model->get_coaching_tests ($coaching_id);
 
 		// Users
@@ -83,10 +80,10 @@ class Home extends MX_Controller {
 
         //$data['bc'] = array ('Coachings'=>'admin/coaching/index');
 		
+		$data['script'] = $this->load->view('home/scripts/dashboard', $data, true);
 		$this->load->view (INCLUDE_PATH . 'header', $data);
 		$this->load->view ('home/dashboard', $data);
-		$this->load->view (INCLUDE_PATH . 'footer', $data);		
-		
+		$this->load->view (INCLUDE_PATH . 'footer', $data);	
 	}
 
 

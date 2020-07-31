@@ -507,7 +507,6 @@ class Users_model extends CI_Model {
 				$end_date = $start_date - 1;			// minus one second
 			}
 			$result = array_reverse ($result, true);
-			return $result;
 		} else {
 			$end_date = $today;
 			$this->db->where ('creation_date >= ', $start_date );
@@ -518,6 +517,7 @@ class Users_model extends CI_Model {
 			$result[$end_date] = $count;
 		}
 		
+			return $result;
 	}
 	
 	/* Reporting Functions */
