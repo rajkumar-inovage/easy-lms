@@ -242,4 +242,38 @@ class Courses_model extends CI_Model {
 		}
 		return $returnValue;
 	}
+
+	public function get_course_content ($coaching_id=0, $course_id=0) {
+
+		$result = [];
+		// Get lessons
+		$this->db->select ('CL.lesson_id AS id, CL.*, CC.position, CC.resource_type, CC.for_demo');
+		$this->db->from ('coaching_course_lessons CL, coaching_course_contents CC');
+		$this->db->where ('CC.resource_id=CL.lesson_id');
+		$this->db->where ('CC.resource_type='.COURSE_CONTENT_CHAPTER);
+		$this->db->order_by ('CC.position', 'ASC');
+		$sql = $this->db->get ();
+		$lessons = $sql->result_array ();
+		if (! empty ($lessons)) {
+			foreach ($lessons as $row) {
+				$result[$row['position']] = $row;
+			}
+		}
+		// Get tests
+		$this->db->select ('CT.test_id AS id, CT.*, CC.position, CC.resource_type, CC.for_demo');
+		$this->db->from ('coaching_tests CT, coaching_course_contents CC');
+		$this->db->where ('CC.resource_id=CT.test_id');
+		$this->db->where ('CC.resource_type='.COURSE_CONTENT_TEST);
+		$this->db->order_by ('CC.position', 'ASC');
+		$sql = $this->db->get ();
+		$tests = $sql->result_array ();
+		if (! empty ($tests)) {
+			foreach ($tests as $row) {
+				$result[$row['position']] = $row;
+			}
+		}
+
+		ksort ($result, SORT_NUMERIC);
+		return $result;
+	}
 }

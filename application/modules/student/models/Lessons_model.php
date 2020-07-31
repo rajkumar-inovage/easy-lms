@@ -1,6 +1,11 @@
-<?php 
-defined('BASEPATH') or exit ('No direct script access allowed');
+<?php defined('BASEPATH') or exit ('No direct script access allowed');
+
 class Lessons_model extends CI_Model {
+
+	public function __construct () {
+		parent:: __construct ();
+	}
+
 	public function get_lessons ($coaching_id=0, $course_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);

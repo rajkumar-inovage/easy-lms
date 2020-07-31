@@ -65,7 +65,7 @@
 
 </head>
 
-<body id="app-container" class="menu-sub-hidden show-spinner <?php //if (isset ($right_sidebar) && $right_sidebar == true) { echo 'right-menu'; } else { echo 'vertical boxed'; } ?> right-menu">
+<body id="app-container" class="menu-sub-hidden show-spinner <?php if (isset ($right_sidebar)) { echo 'right-menu'; } else { echo 'vertical boxed'; } ?> ">
     <?php
         $coaching_id = $this->session->userdata ('coaching_id');
         $member_id = $this->session->userdata ('member_id');
@@ -272,7 +272,7 @@
     </div>
 
     <main>
-        <div class="container-fluid disable-text-selection">
+        <div class="container-fluid ">
              <div class="row <?php if (isset ($right_sidebar)) echo 'app-row'; ?>">
                 <div class="col-12">
                     <div class="d-flex mb-2">
@@ -300,5 +300,4 @@
                         </div>
                     </div>
                     <div class="separator mb-5"></div>
-                </div>
-            </div>
+                

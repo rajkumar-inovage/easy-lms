@@ -25,7 +25,7 @@ class Enrolment_model extends CI_Model {
 	}
 	
 	public function batch_users ($coaching_id=0, $course_id=0, $batch_id=0) {
-		$this->db->select ('M.*, SR.description');
+		$this->db->select ('M.*, SR.description, MB.enroled_on');
 		$this->db->from ('coaching_course_batch_users MB, sys_roles SR');
 		$this->db->join ('members M', 'MB.member_id=M.member_id');
 		$this->db->where ('SR.role_id=M.role_id');
@@ -132,6 +132,7 @@ class Enrolment_model extends CI_Model {
 				$data['course_id'] = $course_id;
 				$data['member_id'] = $member_id;
 				$data['batch_id']  = $batch_id;
+				$data['enroled_on']  = time ();
 				$sql = $this->db->insert ('coaching_course_batch_users', $data);
 			}
 		}
@@ -245,5 +246,18 @@ class Enrolment_model extends CI_Model {
 		}
 	}
 
-
+	public function get_progress ($member_id=0, $coaching_id=0, $course_id=0){
+		$this->db->select ('count(page_id) as total_pages');
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$sql = $this->db->get ('coaching_course_lesson_pages');
+		$total_pages = $sql->row_array();
+		$this->db->select ('count(progress_id) as total_progress');
+		$this->db->where ('member_id', $member_id);
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$sql = $this->db->get ('coaching_course_progress');
+		$total_progress = $sql->row_array();
+		return array_merge($total_pages, $total_progress);
+	}
 }

@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-md-4">
-		<?php echo form_open ('coaching/enrolment_actions/add_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id, ['id'=>'validate-']); ?>
+		<?php echo form_open ('coaching/enrolment_actions/add_schedule/'.$coaching_id.'/'.$course_id.'/'.$batch_id, ['id'=>'validate-1']); ?>
 		<div class="card">
 			<div class="card-body">
 				<div class="form-group">
@@ -121,7 +121,7 @@
 		</div>
 	</div>
 
-	<div class="col-md-8">
+	<div class="col-md-8 d-none">
 		<div class="card">
 			<?php
 			$start_date = $batch['start_date'];

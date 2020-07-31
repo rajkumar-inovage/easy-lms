@@ -99,9 +99,9 @@
                 	<?php if ($course['enrolment_type'] == COURSE_ENROLMENT_DIRECT) { ?>
 		                <a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/courses/organize/'.$coaching_id.'/'.$course_id); ?>">
 		                    <i class="simple-icon-calendar heading-icon"></i>
-		                    <span class="align-middle d-inline-block"> Organize Contents </span>
+		                    <span class="align-middle d-inline-block">Organize Contents </span>
 		                </a>
-					  	<a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/enrolments/batch_users/'.$coaching_id.'/'.$course_id); ?>"><i class="iconsminds-conference heading-icon"></i> Enrolments</a>
+					  	<a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/enrolments/batch_users/'.$coaching_id.'/'.$course_id); ?>"><i class="iconsminds-conference heading-icon"></i>Enrolments</a>
 					<?php } else { ?>
 		                <a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/enrolments/batches/'.$coaching_id.'/'.$course_id); ?>">
 		                    <i class="simple-icon-calendar heading-icon"></i>

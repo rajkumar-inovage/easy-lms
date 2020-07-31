@@ -93,22 +93,6 @@ class Tests_model extends CI_Model {
 
 	/*--------------- // Category // ----------------------*/
 
-
-	//=========== Model for list tests =======================
-	public function get_latest_tests ($limit=5) {
-		$this->db->where ('coaching_id', $coaching_id);
-		
-		$this->db->where ('finalized', 1);
-		$this->db->order_by ('creation_date', 'DESC');
-		if ($limit > 0)	
-			$this->db->limit ($limit);
-		$query = $this->db->get ("coaching_tests");
-		if ($query->num_rows() > 0)	{
-			return $query->result_array();
-		} else {
-			return false;
-		}
-	}
 	
 	//=========== Model for list tests =======================
 	public function get_all_tests ($coaching_id=0, $course_id=0, $status='-1', $type=0) {

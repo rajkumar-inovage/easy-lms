@@ -17,9 +17,9 @@
                             <div class="w-15 w-xs-100">
 	                        	<?php 
 								if ($row['status'] == LESSON_STATUS_PUBLISHED) {
-									echo '<span class="badge badge-primary badge-pill">Published</span>';
+									echo '<span class="badge badge-success badge-pill">Published</span>';
 								} else {
-									echo '<span class="badge badge-secondary badge-pill">Un-Published</span>';
+									echo '<span class="badge badge-light badge-pill">Un-Published</span>';
 								}
 								?>
                             </div>

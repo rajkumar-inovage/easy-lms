@@ -33,8 +33,8 @@
 
 	</div>
 
-	<?php if ($page_id > 0) { ?>
-		<div class="card-body">
+	<div class="card-body">
+		<?php if ($page_id > 0) { ?>
 	        <h5 class="card-title">Attachments</h5>
 	        <?php
 			if (! empty ($attachments)) {
@@ -69,32 +69,34 @@
 				}
 			} else {
 				?>
-				<div class="text-danger">None</div>
+				<div class="d-flex flex-row mb-3 border-bottom justify-content-between">
+					<div class="text-danger">None</div>
+				</div>
 				<?php
 			}
 			?>
-	    </div>	
 
-		<!-- Button trigger modal -->
-		<?php if ($page_id > 0) { ?>
-			<button type="button" class="btn btn-link" data-toggle="modal" data-target="#add_attachment">
-			  Add Attachment
-			</button>
-		<?php } else { ?>
-			<button type="button" class="btn btn-link" data-toggle="" disabled="">Add Attachment</button>
+			<!-- Button trigger modal -->
+			<?php if ($page_id > 0) { ?>
+				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#add_attachment" data-backdrop="static">
+				  Add Attachment
+				</button>
+			<?php } else { ?>
+				<button type="button" class="btn btn-link" data-toggle="" disabled="">Add Attachment</button>
+			<?php } ?>
 		<?php } ?>
-	<?php } ?>
+	</div>	
 
 
 	<div class="card-footer">
-		<input type="submit" name="submit" class="btn btn-primary" value="Save" data-toggle="tooltip" data-placement="right" title="Save">
-		<?php echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id, 'Reset', ['class'=>'btn btn-secondary']); ?>
+		<input type="submit" name="submit" class="btn btn-primary" value="Save" data-toggle="tooltip" data-placement="bottom" title="Save">
+		<?php echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id, 'Add New Page', ['class'=>'btn btn-outline-secondary ml-2']); ?>
 	</div>
 	<?php echo form_close (); ?>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="add_attachment" tabindex="-1" role="dialog" aria-labelledby="add_attachment_label" aria-hidden="true">
+<div class="modal fade " id="add_attachment" tabindex="-1" role="dialog" aria-labelledby="add_attachment_label" aria-hidden="true">
 	<?php echo form_open_multipart ('coaching/lesson_actions/add_attachment/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$page_id, array('class'=>'validate-form')); ?>
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">

@@ -2,9 +2,12 @@
 
 class Lessons_model extends CI_Model {
 
-	public function get_lessons ($coaching_id=0, $course_id=0) {
+	public function get_lessons ($coaching_id=0, $course_id=0, $status='-1') {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);
+		if ($status > 0) {
+			$this->db->where ('status', $status);
+		}
 		$this->db->order_by ('position', 'ASC');
 		$sql = $this->db->get ('coaching_course_lessons');
 		return $sql->result_array ();
@@ -78,7 +81,9 @@ class Lessons_model extends CI_Model {
 	public function get_all_pages ($coaching_id=0, $course_id=0, $lesson_id=0) {
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);
-		$this->db->where ('lesson_id', $lesson_id);
+		if ($lesson_id > 0) {
+			$this->db->where ('lesson_id', $lesson_id);
+		}
 		$this->db->order_by ('position', 'ASC');
 		$sql = $this->db->get ('coaching_course_lesson_pages');
 		$clp = $sql->result_array ();
@@ -274,6 +279,45 @@ class Lessons_model extends CI_Model {
 		$this->db->where ('page_id', $page_id);
 		$this->db->where ('att_id', $att_id);
 		$sql = $this->db->delete ('coaching_course_lesson_attachments');
+	}
+
+	public function organize_content ($coaching_id=0, $course_id=0, $batch_id=0, $get=[]) {
+		
+		$member_id = $this->session->userdata ('member_id');
+		$time = time ();
+		if (! empty ($get)) {
+			foreach ($get as $num=>$row) {
+				$position = $num + 1;
+				$type = $row['name'];
+				$del_data = [];
+				// Check if record exists
+				$del_data['coaching_id'] 	= $coaching_id;
+				$del_data['course_id'] 		= $course_id;
+				$del_data['batch_id'] 		= $batch_id;
+				$del_data['resource_id'] 	= $row['id'];
+				$del_data['resource_type'] 	= $type;
+				$sql = $this->db->get_where ('coaching_course_contents', $del_data);
+				if ($sql->num_rows () > 0) {
+					$record = $sql->row_array ();
+					$this->db->set ('position', $position);
+					$this->db->where ('id', $record['id']);
+					$this->db->update ('coaching_course_contents');
+					echo $this->db->last_query ();
+				} else {
+					$data = [];
+					$data['coaching_id'] 	= $coaching_id;
+					$data['course_id'] 		= $course_id;
+					$data['batch_id'] 		= $batch_id;
+					$data['resource_type'] 	= $type;
+					$data['resource_id'] 	= $row['id'];
+					$data['position'] 		= $position;
+					$data['for_demo'] 		= 0;
+					$data['created_on'] 	= $time;
+					$data['created_by'] 	= $member_id;
+					$this->db->insert ('coaching_course_contents', $data);					
+				}
+			}
+		}
 	}
 
 	/* Auto Generate Reference ID */
