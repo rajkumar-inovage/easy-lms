@@ -22,10 +22,10 @@
 							<?php 
 							if ($row['submitted'] == 1 || ($row['submitted'] == 0 && $row['submit_time'] > 0)) {
 								if ($row['release_result'] == RELEASE_EXAM_IMMEDIATELY) {
-									echo anchor ('student/reports/test_report/'.$coaching_id.'/'.$member_id.'/'.$row['attempt_id'].'/'.$row['test_id'], 'Report', array ('class'=>'btn btn-default btn-sm '));
+									echo anchor ('student/reports/test_report/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$row['attempt_id'].'/'.$row['test_id'], 'Report', array ('class'=>'btn btn-default btn-sm '));
 								}
 								if ($row['attempts'] == 0  || $num_attempts < $row['attempts'] ) {
-									echo anchor ('student/tests/take_test/'.$coaching_id.'/'.$member_id.'/'.$row['test_id'], 'Re-Take Test ', array('class'=>'btn btn-sm btn-primary ml-2'));
+									echo anchor ('student/tests/take_test/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$row['test_id'], 'Re-Take Test ', array('class'=>'btn btn-sm btn-primary ml-2'));
 								}
 							}
 							?>

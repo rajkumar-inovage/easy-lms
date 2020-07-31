@@ -1,8 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Tests extends MX_Controller {
-
     public function __construct () {
 		$config = ['config_student'];
 	    $models = ['tests_model' ,'qb_model', 'tests_reports', 'users_model'];
@@ -20,17 +18,15 @@ class Tests extends MX_Controller {
         }
 
 	}
-    
-
-    public function index ($coaching_id=0, $member_id=0, $test_type=TEST_TYPE_REGULAR) {
-		$this->browse_tests ($coaching_id, $member_id, $test_type);
-	} 
-	
-    public function browse_tests ($coaching_id=0, $member_id=0, $test_type=TEST_TYPE_REGULAR) {
+    public function index ($coaching_id=0, $member_id=0, $course_id=0, $test_type=TEST_TYPE_PRACTICE) {
+		$this->browse_tests ($coaching_id, $member_id, $course_id, $test_type);
+	}
+    public function browse_tests ($coaching_id=0, $member_id=0, $course_id=0, $test_type=TEST_TYPE_PRACTICE) {
 		$data['page_title'] 	= "Browse Tests";
 		
         $data['coaching_id'] 	= $coaching_id;
 		$data['member_id'] 		= $member_id;
+		$data['course_id'] 		= $course_id;
 		$data['test_type'] 		= $test_type;
 
 		if ($test_type == TEST_TYPE_REGULAR) {
@@ -80,15 +76,13 @@ class Tests extends MX_Controller {
 			$data['tests'] = $this->tests_model->get_all_tests ($coaching_id, $category_id=0, TEST_TYPE_PRACTICE);
 		}
 		
-		$data['bc'] = array ('Dashboard'=>'student/home/dashboard/'.$coaching_id.'/'.$member_id);
+		$data['bc'] = array ('Course'=>'student/courses/view/'.$coaching_id.'/'.$member_id.'/'.$course_id);
 
 		$this->load->view ( INCLUDE_PATH . 'header', $data); 
 		$this->load->view ( 'tests/browse_tests', $data);
 		$this->load->view ( INCLUDE_PATH . 'footer', $data);
-		
     }
-	
-	public function tests_taken ($coaching_id=0, $member_id=0, $category_id=0, $type=0, $offset=0) {
+	public function tests_taken ($coaching_id=0, $member_id=0, $course_id=0, $category_id=0, $type=0, $offset=0) {
 		if ($coaching_id==0) {
             $coaching_id = $this->session->userdata ('coaching_id');
         }
@@ -98,11 +92,11 @@ class Tests extends MX_Controller {
 
         $data['coaching_id'] = $coaching_id;
 		$data['member_id'] = $member_id;
+		$data['course_id'] = $course_id;
 		$data['category_id'] = $category_id;
 		$data['type'] 		 = $type;		
 		$data['page_title'] 	= 'Tests Taken';
-		$data['bc'] 			= array ('Dashboard'=>'student/home/dashboard/'.$coaching_id.'/'.$member_id);		
-
+		$data['bc'] = array ('Course'=>'student/courses/view/'.$coaching_id.'/'.$member_id.'/'.$course_id);
 		// We have to call the same method again to get ALL records. Notice fourth parameter is set true
 		$test_taken = $this->tests_model->test_taken_by_member ($coaching_id, $member_id);
 
@@ -112,29 +106,21 @@ class Tests extends MX_Controller {
 		$this->load->view('tests/my_tests',$data);
 		$this->load->view ( INCLUDE_PATH  . 'footer', $data);
 	}
-
-	
 	// it gives all the instructions for the test
-	public function take_test ($coaching_id=0, $member_id=0, $test_id=0, $page="") {
-		redirect ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$test_id.'/'.$page);
+	public function take_test ($coaching_id=0, $member_id=0, $course_id=0, $test_id=0, $page="") {
+		redirect ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$test_id.'/'.$page);
 	}
-	
-	public function test_instructions ($coaching_id=0, $member_id=0, $test_id=0, $nav="") {
-		
+	public function test_instructions ($coaching_id=0, $member_id=0, $course_id=0, $test_id=0, $nav="") {
 		$test = $this->tests_model->view_tests ($test_id);		
-		
-        $questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
+	    $questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
         $testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
-
         if (! empty ($questions)) {
             $num_test_questions = count ($questions);
         } else {
             $num_test_questions = 0;
         }
-
         $data['test_marks'] = $testMarks;
         $data['num_test_questions'] = $num_test_questions;
-
 
 		if ($coaching_id == 0) {
             $coaching_id = $this->session->userdata ('coaching_id');
@@ -177,10 +163,11 @@ class Tests extends MX_Controller {
 		$data['test'] 			= $test;
 		$data['coaching_id'] 	= $coaching_id;
 		$data['member_id'] 		= $member_id;
+		$data['course_id'] 		= $course_id;
 		$data['test_id'] 		= $test_id;
 		$data['start_test'] 	= $start_test;
 		
-		$data['bc']			= array ('Dashboard'=>'student/tests/index/'.$coaching_id.'/'.$member_id);
+		$data['bc'] = array ('Course'=>'student/courses/view/'.$coaching_id.'/'.$member_id.'/'.$course_id);
 
 		$this->load->view(INCLUDE_PATH  . 'header', $data);
 		$this->load->view('tests/test_instructions',$data);
@@ -188,7 +175,7 @@ class Tests extends MX_Controller {
 	}
 	
 
-	public function test_verification ($coaching_id=0, $member_id=0, $test_id=0) {
+	public function test_verification ($coaching_id=0, $member_id=0, $course_id=0, $test_id=0) {
 		
 		/* Check for valid test session */
 		# Test window cannot be refreshed/reloaded. This will disable/lock the current test.
@@ -238,16 +225,18 @@ class Tests extends MX_Controller {
 		return false;
 	}
 	
-	public function test_error ($coaching_id=0, $member_id=0, $test_id=0, $error=0, $time_remaining=0) {
+	public function test_error ($coaching_id=0, $member_id=0, $course_id=0, $test_id=0, $error=0, $time_remaining=0) {
 
 		$data['page_title'] = "Error";
 		
 		$data['error']				= $error;
 		$data['coaching_id']		= $coaching_id;
 		$data['member_id']			= $member_id;
+		$data['course_id'] 			= $course_id;
 		$data['test_id']			= $test_id;
 		$data['time_remaining']		= $time_remaining;
-		$data['bc']					= ['Tests'=>'student/tests/index/'.$coaching_id.'/'.$member_id];
+
+		$data['bc']					= ['Tests'=>'student/tests/index/'.$coaching_id.'/'.$member_id.'/'.$course_id];
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('tests/test_error', $data);
@@ -255,7 +244,7 @@ class Tests extends MX_Controller {
 	}
 	
 	// here starts the test
-	public function start_test ($coaching_id=0, $member_id=0, $test_id=0) {
+	public function start_test ($coaching_id=0, $member_id=0, $course_id=0, $test_id=0) {
 	
 		$this->load->helper('text');
 		$this->load->helper('html');
@@ -321,6 +310,7 @@ class Tests extends MX_Controller {
 		$data['coaching_id'] 			= $coaching_id;
 		$data['attempt_id'] 			= $attempt_id;
 		$data['member_id'] 				= $member_id;
+		$data['course_id'] 				= $course_id;
 		$data['results'] 				= $result;
 		$data['test_duration'] 			= $test_duration;
 		$data['hide_left_sidebar'] 		= true;
@@ -334,15 +324,17 @@ class Tests extends MX_Controller {
 	}	
 	
 	
-	public function test_submitted ($coaching_id=0, $test_id=0, $member_id=0, $attempt_id=0) {
+	public function test_submitted ($coaching_id=0, $course_id=0, $test_id=0, $member_id=0, $attempt_id=0) {
 		
 		$data['page_title'] 		= "Test Submitted";
 
 		$data['coaching_id']		= $coaching_id;
 		$data['member_id']			= $member_id;
+		$data['course_id'] 			= $course_id;
 		$data['test_id']			= $test_id;
 		$data['attempt_id']		    = $attempt_id;
-		$data['bc']					= ['Test Taken'=>'student/tests/tests_taken/'.$coaching_id.'/'.$member_id];
+
+		$data['bc']					= ['Test Taken'=>'student/tests/tests_taken/'.$coaching_id.'/'.$member_id.'/'.$course_id];
 
 		$enrolment = $this->tests_model->get_enrolment_details ($coaching_id, $test_id, $member_id);
 		if ($enrolment['release_result'] == RELEASE_EXAM_NEVER) {

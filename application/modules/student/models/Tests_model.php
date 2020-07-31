@@ -42,7 +42,7 @@ class Tests_model extends CI_Model {
 	
 	//=========== Model for list tests =======================
 	public function get_all_tests ($coaching_id=0, $category_id=0, $type=0) {
-		if ( $course_id > 0 ) {
+		if ( isset($course_id) && $course_id > 0 ) {
 			$this->db->where ('course_id', $course_id);
 		}
 		if ( $type > 0 ) {
