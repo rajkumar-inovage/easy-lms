@@ -83,7 +83,7 @@
 						<tr>
 						<tr>
 							<th class="justify-content-between">
-								<a href="<?php echo site_url ('coaching/subscription/browse_plans/'.$coaching_id.'/'.$plan_id); ?>" class="btn btn-link">Cancel</a>
+								<a href="<?php echo site_url ('coaching/subscription/browse_plans/'.$coaching_id.'/'.$plan_id); ?>" class="btn btn-info">Cancel</a>
 							</th>
 							<th>
 								<?php if ($price > 0) { ?>
