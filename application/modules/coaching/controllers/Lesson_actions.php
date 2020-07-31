@@ -109,12 +109,13 @@ class Lesson_actions extends MX_Controller {
 
  	}
 
- 	public function organize ($coaching_id=0, $course_id=0) {
+ 	public function organize ($coaching_id=0, $course_id=0, $batch_id=0) {
 		$raw_input 		= $this->input->raw_input_stream;
-		//$input_data 	=  ($raw_input);
-		$input_data 	= json_decode ($raw_input, true);
-
+		$data 			= json_decode ($raw_input, true);
+		
+		$this->lessons_model->organize_content ($coaching_id, $course_id, $batch_id, $data);
+		
 		$this->output->set_content_type("application/json");
-		$this->output->set_output(json_encode(array('status'=>true, 'message'=>$input_data )));
+		$this->output->set_output(json_encode(array('status'=>true, 'message'=>$data )));
  	}
 }

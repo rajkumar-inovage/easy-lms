@@ -23,6 +23,8 @@ define ('TEACHERS_NOT_ASSIGNED', 				2);
 define ('COURSE_ENROLMENT_DIRECT', 				1);
 define ('COURSE_ENROLMENT_BATCH', 				2);
 
+define ('COURSE_CONTENT_TEST', 					1);
+define ('COURSE_CONTENT_CHAPTER', 				2);
 
 defined('COURSE_STATUS_INACTIVE') or define('COURSE_STATUS_INACTIVE', 0);
 defined('COURSE_STATUS_ACTIVE') or define('COURSE_STATUS_ACTIVE', 1);

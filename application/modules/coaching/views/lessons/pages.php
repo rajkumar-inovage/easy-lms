@@ -26,7 +26,7 @@
 										echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id'], '<i class="fa fa-edit"></i>', ['class'=>'btn btn-primary btn-xs']);
 									?>
 									<?php 
-										echo anchor ('coaching/lessons/add_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id'], '<i class="simple-icon-eye"></i>', ['class'=>'btn btn-info btn-xs']);
+										echo anchor ('coaching/lessons/view_page/'.$coaching_id.'/'.$course_id.'/'.$lesson_id.'/'.$row['page_id'], '<i class="simple-icon-eye"></i>', ['class'=>'btn btn-info btn-xs']);
 									?>
 									<?php
 									$msg = 'Delete this page?';

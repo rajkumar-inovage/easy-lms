@@ -23,6 +23,7 @@ class Lessons extends MX_Controller {
 		$data['course_id'] = $course_id;
 		$data['status'] = $status;
 		$data['lessons'] = $this->lessons_model->get_lessons ($coaching_id, $course_id, $status);
+		$data['course'] = $this->courses_model->get_course_by_id ($course_id);
 		$data['data']	= $data;
 		$data['page_title'] = 'Chapters';
 
@@ -34,6 +35,7 @@ class Lessons extends MX_Controller {
 		$data['bc'] = ['Pages'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id];
 
 		$data['script'] = $this->load->view ('lessons/scripts/sortable', $data, true);
+		$data['right_sidebar'] = $this->load->view ('courses/inc/manage_course', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('lessons/index', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
@@ -53,7 +55,9 @@ class Lessons extends MX_Controller {
 		$data['bc'] = ['Lessons'=>'coaching/lessons/index/'.$coaching_id.'/'.$course_id];
 
 		$data['lesson'] = $this->lessons_model->get_lesson ($coaching_id, $course_id, $lesson_id);
+		$data['course'] = $this->courses_model->get_course_by_id ($course_id);
 		$data['script'] = $this->load->view ("lessons/scripts/create", $data, true);
+		$data['right_sidebar'] = $this->load->view ('courses/inc/manage_course', $data, true);
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('lessons/create', $data);
@@ -72,7 +76,9 @@ class Lessons extends MX_Controller {
 		$data['bc'] = ['Lessons'=>'coaching/lessons/index/'.$coaching_id.'/'.$course_id];
 
 		$data['lesson'] = $this->lessons_model->get_lesson ($coaching_id, $course_id, $lesson_id);
+		$data['course'] = $this->courses_model->get_course_by_id ($course_id);
 		$data['pages'] = $this->lessons_model->get_all_pages ($coaching_id, $course_id, $lesson_id);
+		$data['right_sidebar'] = $this->load->view ('courses/inc/manage_course', $data, true);
 
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view("lessons/pages", $data);
@@ -87,6 +93,7 @@ class Lessons extends MX_Controller {
 		$data['lesson_id'] = $lesson_id;
 		$data['page_id'] = $page_id;
 
+		$data['course'] = $this->courses_model->get_course_by_id ($course_id);
 		$data['page'] = $this->lessons_model->get_page ($coaching_id, $course_id, $lesson_id, $page_id);
 		$data['attachments'] = $this->lessons_model->get_attachments ($coaching_id, $course_id, $lesson_id, $page_id);
 		
@@ -94,8 +101,31 @@ class Lessons extends MX_Controller {
 		$data['bc'] = ['Pages'=>'coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$lesson_id];
 
 		$data['script'] = $this->load->view ("lessons/scripts/add_page", $data, true);
+		$data['right_sidebar'] = $this->load->view ('courses/inc/manage_course', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view("lessons/add_page", $data);
+		$this->load->view(INCLUDE_PATH . 'footer', $data);
+	}
+
+	public function view_page ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
+	
+		$data['page_title'] = 'View Page';
+		$data['coaching_id'] = $coaching_id;
+		$data['course_id'] = $course_id;
+		$data['lesson_id'] = $lesson_id;
+		$data['page_id'] = $page_id;
+
+		$data['course'] = $this->courses_model->get_course_by_id ($course_id);
+		$data['page'] = $this->lessons_model->get_page ($coaching_id, $course_id, $lesson_id, $page_id);
+		$data['attachments'] = $this->lessons_model->get_attachments ($coaching_id, $course_id, $lesson_id, $page_id);
+		
+		/* --==// Back //==-- */
+		$data['bc'] = ['Pages'=>'coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$lesson_id];
+
+		$data['script'] = $this->load->view ("lessons/scripts/add_page", $data, true);
+		$data['right_sidebar'] = $this->load->view ('courses/inc/manage_course', $data, true);
+		$this->load->view(INCLUDE_PATH . 'header', $data);
+		$this->load->view("lessons/view_page", $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
 
@@ -115,6 +145,7 @@ class Lessons extends MX_Controller {
 		$data['bc'] = ['Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id];
 
 		$data['script'] = $this->load->view ("lessons/scripts/add_page", $data, true);
+		$data['right_sidebar'] = $this->load->view ('courses/inc/manage_course', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view("course/preview", $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);

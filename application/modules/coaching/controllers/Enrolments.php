@@ -71,16 +71,20 @@ class Enrolments extends MX_Controller {
 	
 	
 	public function batch_users ($coaching_id=0, $course_id=0, $batch_id=0, $add_users=0) {
+
+		$this->load->model ('student/lessons_model', 'std_lm');
+
 		$batch = $this->enrolment_model->get_batch ($coaching_id, $course_id, $batch_id);
-		$data["page_title"]  	= 'Batch Users';
 		$data["coaching_id"] 	= $coaching_id;
 		$data["batch_id"] 		= $batch_id;
 		$data["course_id"] 		= $course_id;
 		$data['add_users'] 		= $add_users;
 
 		if ($batch_id > 0) {
+			$data["page_title"]  	= 'Batch Users';
 			$data["bc"] = array ( 'Batches'=>'coaching/enrolments/batches/'.$coaching_id.'/'.$course_id);
 		} else {
+			$data["page_title"]  	= 'Enroled Users';
 			$data["bc"] = array ( 'Batches'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
 		}
 
@@ -97,8 +101,13 @@ class Enrolments extends MX_Controller {
 		$data['num_users_notin'] = $num_users_notin;
 		
 		$bu = $this->enrolment_model->batch_users ($coaching_id, $course_id, $batch_id);
+		$users_in_batch = [];
 		if (! empty($bu)) {
 		    $num_users_in = count($bu);
+		    foreach ($bu as $users) {
+		    	$users['progress'] = $this->enrolment_model->get_progress ($users['member_id'], $coaching_id, $course_id);
+		    	$users_in_batch[] = $users;
+		    }
 		} else {
 		    $num_users_in = 0;
 		}
@@ -106,9 +115,9 @@ class Enrolments extends MX_Controller {
 		
 		
 		if ($add_users == USER_ROLE_STUDENT) {
-		    $result = $users_not_in_batch;		
+		    $result = $users_not_in_batch;	
 		} else {
-		    $result = $bu;
+		    $result = $users_in_batch;
 		}		
 		$data['result'] = $result;
 		
@@ -186,8 +195,8 @@ class Enrolments extends MX_Controller {
 		$interval = 24 * 60 * 60; 		// 1 day in seconds
 		for ($i=$batch['start_date']; $i<=$batch['end_date']; $i=$i+$interval) { 
 			// get data for this date
-			$scd = $this->enrolment_model->get_schedule_data ($coaching_id, $course_id, $batch_id, $i);		
-			$schedule[$i] = $scd;
+			//$scd = $this->enrolment_model->get_schedule_data ($coaching_id, $course_id, $batch_id, $i);		
+			//$schedule[$i] = $scd;
 		}
 
 		$data['schedule'] = $schedule;
