@@ -84,13 +84,14 @@ function loadStyle(href, callback) {
   $(".direction-radio[data-direction='" + direction + "']").attr("checked", true);
   $(".radius-radio[data-radius='" + radius + "']").attr("checked", true);
   $("#switchDark").attr("checked", theme.indexOf("dark") > 0 ? true : false);
-
+/*
   loadStyle(`${themePath}css/${scrollbar}`);
   loadStyle(`${themePath}css/${theme}`, onStyleComplete);
   function onStyleComplete() {
     setTimeout(onStyleCompleteDelayed, 300);
   }
-
+*/
+  onStyleCompleteDelayed();
   function onStyleCompleteDelayed() {
     $("body").addClass(direction);
     $("html").attr("dir", direction);

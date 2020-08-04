@@ -173,8 +173,6 @@ class Tests extends MX_Controller {
 		$this->load->view('tests/test_instructions',$data);
 		$this->load->view(INCLUDE_PATH  . 'footer', $data);		
 	}
-	
-
 	public function test_verification ($coaching_id=0, $member_id=0, $course_id=0, $test_id=0) {
 		
 		/* Check for valid test session */
@@ -224,7 +222,6 @@ class Tests extends MX_Controller {
 		
 		return false;
 	}
-	
 	public function test_error ($coaching_id=0, $member_id=0, $course_id=0, $test_id=0, $error=0, $time_remaining=0) {
 
 		$data['page_title'] = "Error";
@@ -242,16 +239,15 @@ class Tests extends MX_Controller {
 		$this->load->view('tests/test_error', $data);
 		$this->load->view(INCLUDE_PATH  . 'footer', $data);
 	}
-	
 	// here starts the test
 	public function start_test ($coaching_id=0, $member_id=0, $course_id=0, $test_id=0) {
 	
 		$this->load->helper('text');
 		$this->load->helper('html');
-		$this->test_verification ($coaching_id, $member_id, $test_id);
+		$this->test_verification ($coaching_id, $member_id, $course_id, $test_id);
 
 		$test = $this->tests_model->view_tests ($test_id);
-		$test_duration = ($test['time_hour'] * 3600) + ($test['time_min'] * 60);
+		$test_duration = ($test['time_min'] * 60);
 		
 		if ($coaching_id==0) {
             $coaching_id = $this->session->userdata ('coaching_id');
@@ -321,9 +317,8 @@ class Tests extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('tests/start_test', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
+
 	}	
-	
-	
 	public function test_submitted ($coaching_id=0, $course_id=0, $test_id=0, $member_id=0, $attempt_id=0) {
 		
 		$data['page_title'] 		= "Test Submitted";
@@ -350,5 +345,4 @@ class Tests extends MX_Controller {
 		$this->load->view('tests/test_submitted', $data);
 		$this->load->view(INCLUDE_PATH  . 'footer', $data);
 	}
-
 }
