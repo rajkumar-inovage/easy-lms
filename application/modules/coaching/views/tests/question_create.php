@@ -1,4 +1,4 @@
-<div class="row justify-content-center app-row">
+<div class="row justify-content-center">
 
 
 	<div class="col-md-12">
@@ -31,7 +31,7 @@
 					<!--== Question ==-->
 					<div class="form-group">
 						<label class=" control-label">Question <span class="required text-danger">*</span></label>
-						<div class="">
+						<div class="overflow-hidden">
 							<textarea name="question" class="form-control required tinyeditor " rows="5"  autofocus="true"><?php echo set_value ('question', $result['question']); ?></textarea>
 						</div>
 						<input type="hidden" name="course_id" value="<?php echo $course_id; ?>" >
