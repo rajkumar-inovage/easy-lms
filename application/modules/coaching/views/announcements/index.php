@@ -10,20 +10,17 @@ if (!empty($results)) {
 			<div class="d-flex flex-grow-1 min-width-zero">
 				<div
 					class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
-					<a class="d-none list-item-heading mb-0 truncate w-40 w-xs-100" href="Pages.Product.Detail.html">
-						Marble Cake
-					</a>
 					<div class="media-body w-35 w-xs-100 pr-3">
-					<span class="heading-icon" style="font-size:1rem;"><?php echo $i; ?>-</span>
-					<?php echo anchor('coaching/announcements/create_announcement/' . $coaching_id . '/' . $row['announcement_id'], $row['title'], array('class'=>'heading-icon', 'style'=>'font-size:1rem')); ?>
-					<div class=>
-					<?php 
-						$description = strip_tags ($row['description']);
-						$description = character_limiter ($description, 100);
-						echo $description;
-						?>
-					
-				</div>
+						<span class="heading-icon" style="font-size:1rem;"><?php echo $i; ?>-</span>
+						<?php echo anchor('coaching/announcements/create_announcement/' . $coaching_id . '/' . $row['announcement_id'], $row['title'], array('class'=>'heading-icon', 'style'=>'font-size:1rem')); ?>
+						<div class=>
+						<?php 
+							$description = strip_tags ($row['description']);
+							$description = character_limiter ($description, 100);
+							echo $description;
+							?>
+						
+					</div>
 					</div>
 					<p class="mb-0 text-muted text-small w-10 w-xs-100">Availability</p>
 					<p class="mb-0 text-muted text-small w-15 w-xs-100"><?php echo date('d M, Y', $row['start_date']); ?></p>
