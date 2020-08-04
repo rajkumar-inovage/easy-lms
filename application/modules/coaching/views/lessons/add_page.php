@@ -78,7 +78,7 @@
 
 			<!-- Button trigger modal -->
 			<?php if ($page_id > 0) { ?>
-				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#add_attachment" data-backdrop="static">
+				<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#add_attachment" data-backdrop="static">
 				  Add Attachment
 				</button>
 			<?php } else { ?>
