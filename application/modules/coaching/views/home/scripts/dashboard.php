@@ -1,15 +1,16 @@
+<script type="text/javascript" src="<?php echo base_url (THEME_PATH. 'assets/js/chart.bundle.min.js'); ?>"></script>
 <script>
-var obtained_marks = []; 
+var num_users = []; 
 var xlabels = [];
 
 <?php
 // Data for "Summary Report"
 $i = 1;
-if ( ! empty ($ob_marks) ) {
-	foreach ($ob_marks as $attempt_id=>$data) {
+if ( ! empty ($user_registration) ) {
+	foreach ($user_registration as $date=>$num) {
 		?> 
-		obtained_marks.push(<?php echo $data['obtained']; ?>);
-		xlabels.push("<?php echo date('d M, Y h:i A', $data['loggedon']); ?>");
+		num_users.push(<?php echo $num; ?>);
+		xlabels.push("<?php echo date('j D', $date); ?>");
 		<?php 
 		$i++;
 		if ($i >= 10) break;
@@ -18,13 +19,13 @@ if ( ! empty ($ob_marks) ) {
 
 ?>
 
-var ctx = document.getElementById("briefChart").getContext('2d');
+var ctx = document.getElementById("user-registered").getContext('2d');
 var briefChart = new Chart(ctx, {
     type: 'line',
     data: {
         labels: xlabels,
         datasets: [{
-            data: obtained_marks,
+            data: num_users,
             fill: false,
 			borderColor: "#43c115",
 			backgroundColor: "#43c115",
@@ -32,15 +33,12 @@ var briefChart = new Chart(ctx, {
 			pointBorderColor: "#42a5f5",
 			pointHoverBackgroundColor: "#42a5f5",
 			pointHoverBorderColor: "#42a5f5",
-   			label: 'Marks Obtained',
+   			label: 'User Created',
         }]
     },
     options: {
         responsive: true,
-		title: {
-			display: true,
-			text: 'Summary Report'
-		},
+		
 		tooltips: {
 			//enabled: false,
 			mode: 'index',
@@ -58,14 +56,14 @@ var briefChart = new Chart(ctx, {
 				display: true,
 				scaleLabel: {
 					display: true,
-					labelString: 'Attempts'
+					labelString: 'Date'
 				}
 			}],
 			yAxes: [{
 				display: true,
 				scaleLabel: {
 					display: true,
-					labelString: 'Marks Obtained'
+					labelString: 'Users'
 				},
 				ticks: {
 					min: 0,

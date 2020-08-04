@@ -21,7 +21,7 @@ class Reports extends MX_Controller {
 
 	}
 	
-	public function test_report ($coaching_id=0, $member_id=0, $attempt_id=0, $test_id=0, $type=SUMMARY_REPORT, $nav='' ) {
+	public function test_report ($coaching_id=0, $member_id=0, $course_id=0, $attempt_id=0, $test_id=0, $type=SUMMARY_REPORT, $nav='' ) {
 		
 		// Get member_id
 		if ($member_id == 0) {
@@ -143,7 +143,7 @@ class Reports extends MX_Controller {
 		$data['brief']['ob_perc'] 		= $ob_perc;
 		$data['brief']['accuracy'] 		= $accuracy;
 		$data['coaching_id'] 			= $coaching_id;
-		$category_id 				= $test['category_id'];
+		$data['course_id'] 				= $course_id;
 		$data['test'] 				= $test;
 		$data['cat_response'] 		= $cat_response;
 		$data['dif_response'] 		= $dif_response;

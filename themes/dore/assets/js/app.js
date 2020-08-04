@@ -267,7 +267,7 @@ async function fetchPage (url = defaultPage) {
 function show_confirm (msg, url) {
 	var k = confirm (msg);	
 	if (k) {
-		toastr.success ('Action completed successfully');
+		//toastr.success ('Action completed successfully');
 		document.location = url;
 	} 
 }

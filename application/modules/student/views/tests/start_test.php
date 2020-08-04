@@ -1,23 +1,45 @@
+<style>
+@media (max-width: 1439px){
+	.test-mode main.default-transition {
+	    margin-top: 40px !important;
+	}
+}
+@media (max-width: 1199px){
+	.test-mode main.default-transition {
+	    margin-top: 30px !important;
+	}
+}
+@media (max-width: 1199px){
+	.test-mode main.default-transition {
+	    margin-top: 30px !important;
+	}
+}
+@media(max-width: 767px){
+	.test-mode main.default-transition {
+	    margin-top: 20px !important;
+	}
+}
+</style>
 <div class="card ">
 	<div class="card-header text-center">
 		<div class="d-flex justify-content-end">
 			<div class="p-2">
-				<h5 id="hours"><?php echo ($test['time_hour']<10)?"0".$test['time_hour']:$test['time_hour']; ?></h5>
+				<h5 id="hours"><?php echo gmdate("H", $test_duration); ?></h5>
 				<h6 class="mb-0">HOURS</h6>
 			</div>
 			<div class="p-2">
-				<h5 id="minutes"><?php echo ($test['time_min']<10)?"0".$test['time_min']:$test['time_min']; ?></h5>
+				<h5 id="minutes"><?php echo gmdate("i", $test_duration); ?></h5>
 				<h6 class="mb-0">MINUTES</h6>
 			</div>
 			<div class="p-2">
-				<h5 id="seconds">00</h5>
+				<h5 id="seconds"><?php echo gmdate("s", $test_duration); ?></h5>
 				<h6 class="mb-0">SECONDS</h6>
 			</div>
 		</div>
 	</div>
 </div>
 
-<?php echo form_open_multipart('student/tests_actions/submit_test/'.$coaching_id.'/'.$member_id.'/'.$test_id, array('id'=>'test_form', 'name'=>'forms', 'enctype'=>'multipart/form-data', 'class' => 'h-100') ); ?>
+<?php echo form_open_multipart('student/tests_actions/submit_test/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$test_id, array('id'=>'test_form', 'name'=>'forms', 'enctype'=>'multipart/form-data', 'class' => 'h-100') ); ?>
 	<div class="row" id="question-block">
 		<div class="col-md-12">
 			<?php 

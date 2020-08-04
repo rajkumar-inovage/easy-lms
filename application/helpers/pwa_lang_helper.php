@@ -20,3 +20,31 @@ function _AT_TEXT ($code='', $type='', $lang='en') {
 		
 	return $data[$lang][$type][$code];
 }
+
+function print_pre($object){
+	$object = print_r($object, true);
+	print_r("<pre style=\"white-space: pre-wrap;\">$object</pre>");
+}
+function excerpt($text, $limit) {
+	if (str_word_count($text, 0) > $limit) {
+		$words = str_word_count($text, 2);
+		$pos = array_keys($words);
+		$text = substr($text, 0, $pos[$limit]) . '&hellip;';
+	}
+	return $text;
+}
+function getYoutubeEmbedUrl($url){
+    $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_]+)\??/i';
+    $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))(\w+)/i';
+    if (preg_match($longUrlRegex, $url, $matches)) {
+        $youtube_id = $matches[count($matches) - 1];
+    }
+    if (preg_match($shortUrlRegex, $url, $matches)) {
+        $youtube_id = $matches[count($matches) - 1];
+    }
+    if(isset($youtube_id)){
+    	return 'https://www.youtube.com/embed/' . $youtube_id ;
+    }else{
+    	return null;
+    }
+}

@@ -2,7 +2,7 @@
 	<div class="card-body">
 		<div class="row">
 			<div class="col-md-9">
-				<canvas id="pieChart" width="100%" ></canvas>
+				<canvas id="briefChart" width="100%" ></canvas>
 			</div>
 			<div class="col-md-3 align-self-center">
 				<div class="progress-stats">

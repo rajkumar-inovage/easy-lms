@@ -12,8 +12,8 @@
 				</p>
 			</div>
 			<div class="card-footer d-flex justify-content-between">
-				<a href="<?php echo base_url('student/reports/test_report/'.$coaching_id.'/'.$member_id.'/'.$attempt_id.'/'.$test_id.'/'.OVERALL_REPORT);?>" class="btn btn-sm btn-danger"> See Full Report</a>
-				<a href="<?php echo base_url('student/tests/take_test/'.$coaching_id.'/'.$member_id.'/'.$test_id);?>" class="btn btn-sm btn-primary"> Try Again</a>
+				<a href="<?php echo base_url('student/reports/test_report/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$attempt_id.'/'.$test_id.'/'.OVERALL_REPORT);?>" class="btn btn-sm btn-danger"> See Full Report</a>
+				<a href="<?php echo base_url('student/tests/take_test/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$test_id);?>" class="btn btn-sm btn-primary"> Try Again</a>
 			</div> <!-- // widget-content -->
 		</div> <!-- // widget -->
 	</div>

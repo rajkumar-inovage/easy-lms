@@ -43,6 +43,7 @@
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/bootstrap.rtl.only.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/bootstrap-datepicker3.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/perfect-scrollbar.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/glide.core.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/select2.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/jquery.contextMenu.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/vendor/component-custom-switch.min.css'); ?>" />
@@ -53,6 +54,8 @@
     <!--==== Other CSS ====-->
     <!-- Toastr CSS -->
     <link type="text/css" href="<?php echo base_url(THEME_PATH . 'assets/css/toastr.min.css'); ?>" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/scrollbar.light.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo base_url(THEME_PATH . 'assets/css/dore.light.blue.min.css'); ?>" />
 
     <!-- Custom JS (Dynamically included) -->
     <?php
@@ -228,9 +231,24 @@
                 </button>
 
                 <div class="dropdown-menu dropdown-menu-right mt-3">
-                    <a class="dropdown-item" href="<?php echo site_url ('coaching/users/my_account/'.$coaching_id.'/'.$member_id); ?>"><i class="fa fa-user"></i> My Account</a>
-                    <a class="dropdown-item" href="<?php echo site_url ('coaching/users/my_password/'.$coaching_id.'/'.$member_id); ?>"><i class="fa fa-lock"></i> Change Password</a>
-                    <a class="dropdown-item" href="#" onclick="logout_user ()"><i class="fa fa-sign-out-alt"></i> Logout</a>
+                    <a class="dropdown-item py-0" href="<?php echo site_url ('coaching/users/my_account/'.$coaching_id.'/'.$member_id); ?>">
+                        <div class="d-flex">
+                            <i class="flex-shrink-0 iconsminds-id-card fa-2x"></i>
+                            <span class="flex-grow-1 my-auto ml-1">My Account</span>
+                        </div>
+                    </a>
+                    <a class="dropdown-item py-0" href="<?php echo site_url ('coaching/users/my_password/'.$coaching_id.'/'.$member_id); ?>">
+                        <div class="d-flex">
+                            <i class="flex-shrink-0 iconsminds-type-pass fa-2x"></i>
+                            <span class="flex-grow-1 my-auto ml-1">Change Password</span>
+                        </div>
+                    </a>
+                    <a class="dropdown-item py-0" href="#" onclick="logout_user ()">
+                        <div class="d-flex">
+                            <i class="flex-shrink-0 iconsminds-lock-2 fa-2x"></i>
+                            <span class="flex-grow-1 my-auto ml-1">Logout</span>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -283,7 +301,7 @@
                                 echo anchor ($bc_link, '<i class="fa fa-long-arrow-alt-left"></i> ', array('class'=>'flex-shrink-0 my-auto btn btn-outline-primary icon-button mr-2', 'title'=>'Back To '.$bc_title)); 
                             }
                         ?>
-                        <h1 class="flex-grow-1 my-auto py-0 truncate">
+                        <h1 class="flex-grow-1 my-auto py-0">
                             <?php if(isset($page_title)) echo $page_title; ?>
                         </h1>
                         <div class="flex-shrink-0 my-auto">
@@ -299,5 +317,11 @@
                         <?php } ?>
                         </div>
                     </div>
+                    
                     <div class="separator mb-5"></div>
-                
+                        
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-4 col-sm-8">
+                          <?php $this->message->display (); ?>
+                        </div>
+                    </div>                

@@ -16,6 +16,11 @@ class Courses_model extends CI_Model {
 		}else{
 			$course['in_my_course'] = false;
 		}
+		$this->db->select('first_name, last_name');
+		$this->db->where ('member_id', $course['created_by']);
+		$users = $this->db->get ('members');
+		$created_by = $users->row_array();
+		$course['created_by'] = $created_by['first_name'] . " " . $created_by['last_name'];
 		return $course;
 	}
 	public function get_users_courses($coaching_id, $member_id){
@@ -120,5 +125,35 @@ class Courses_model extends CI_Model {
 		$this->db->where ("member_id IN ($sub_query)");
 		$sql = $this->db->get ('members');
 		return $sql->result_array();
+	}
+	public function continue_course($coaching_id, $member_id, $course_id) {
+		$this->db->select(['lesson_id', 'page_id']);
+		$this->db->where('coaching_id', $coaching_id);
+		$this->db->where('member_id', $member_id);
+		$this->db->where('course_id', $course_id);
+		$this->db->order_by('created_on', 'DESC');
+		$this->db->limit(1);
+		$last_progress = $this->db->get ('coaching_course_progress');
+		return $last_progress->row_array();
+	}
+	public function begin_course($coaching_id, $course_id){
+		$this->db->select('lesson_id');
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$this->db->order_by ('position', 'ASC');
+		$sql = $this->db->get ('coaching_course_lessons');
+		$lessons = $sql->result_array();
+		return reset($lessons);
+		/*
+		$this->db->select('lesson_id');
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$this->db->order_by ('position', 'ASC');
+		$this->db->limit(1);
+		$sql = $this->db->get ('coaching_course_lessons');
+		$first_lesson = $sql->row_array();
+		echo $this->db->last_query();
+		print_pre($first_lesson);
+		*/
 	}
 }

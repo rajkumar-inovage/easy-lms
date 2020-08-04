@@ -13,16 +13,27 @@
 	    fetch ('<?php echo base_url ('coaching/lesson_actions/organize/'.$coaching_id.'/'.$course_id.'/'.$batch_id); ?>', {
 	    	method: 'POST',
 	    	body: jsonString,
-	    }).then (function (response) {
-			return response.json ();
-		}).then (function (result) {
-			if (result.status == true) {
-				alert(JSON.stringify(result.message));
-			} else {
-				alert ('NOT OK')
-			}
-		});
+	    });
 
 	  }
+	});
+
+	$('.switch_demo').on ('change', function () {
+		
+		if ($(this).is(':checked')) {
+			var data = 1;
+		} else {
+			var data = 0;			
+		}
+
+		var id = $(this).attr ('data-id');
+		
+		fetch ('<?php echo site_url ('coaching/courses_actions/mark_for_demo'); ?>/'+id+'/'+data, {
+			method: 'POST',
+		}).then (function (response){
+			return response.json ();
+		}).then (function (result) {
+
+		});
 	});
 </script>

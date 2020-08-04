@@ -11,7 +11,7 @@ class Lessons_model extends CI_Model {
 		$this->db->where ('course_id', $course_id);
 		$this->db->order_by ('position', 'ASC');
 		$sql = $this->db->get ('coaching_course_lessons');
-		$lessons = $sql->result_array ();
+		$lessons = $sql->result_array();
 		foreach ($lessons as $i => $lesson) {
 			$this->db->where ('coaching_id', $coaching_id);
 			$this->db->where ('course_id', $course_id);
@@ -101,11 +101,19 @@ class Lessons_model extends CI_Model {
 		return $sql->result_array();
 	}
 	public function get_progress($member_id=0, $coaching_id=0, $course_id=0){
+		/*
+		$this->db->select ('count(lesson_id) as total_lessons');
+		$this->db->where ('coaching_id', $coaching_id);
+		$this->db->where ('course_id', $course_id);
+		$sql = $this->db->get('coaching_course_lessons');
+		$total_lessons = $sql->row_array();
+		*/
 		$this->db->select ('count(page_id) as total_pages');
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('course_id', $course_id);
 		$sql = $this->db->get ('coaching_course_lesson_pages');
 		$total_pages = $sql->row_array();
+		
 		$this->db->select ('count(progress_id) as total_progress');
 		$this->db->where ('member_id', $member_id);
 		$this->db->where ('coaching_id', $coaching_id);
@@ -115,21 +123,23 @@ class Lessons_model extends CI_Model {
 		return array_merge($total_pages, $total_progress);
 	}
 	public function make_progress($member_id=0, $coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0){
-		$this->db->where ('member_id', $member_id);
-		$this->db->where ('coaching_id', $coaching_id);
-		$this->db->where ('course_id', $course_id);
-		$this->db->where ('lesson_id', $lesson_id);
-		$this->db->where ('page_id', $page_id);
-		$sql = $this->db->get ('coaching_course_progress');
-		if(intval($sql->num_rows()) === 0){
-			$data['member_id']	 		= $member_id;
-			$data['coaching_id']	 	= $coaching_id;
-			$data['course_id']	 		= $course_id;
-			$data['lesson_id']	 		= $lesson_id;
-			$data['page_id']	 		= $page_id;
-			$data['created_on']	  		= time();
-			$this->db->insert('coaching_course_progress', $data);
-			$progress_id = $this->db->insert_id();
+		if($lesson_id > 0){
+			$this->db->where ('member_id', $member_id);
+			$this->db->where ('coaching_id', $coaching_id);
+			$this->db->where ('course_id', $course_id);
+			$this->db->where ('lesson_id', $lesson_id);
+			$this->db->where ('page_id', $page_id);
+			$sql = $this->db->get ('coaching_course_progress');
+			if(intval($sql->num_rows()) === 0){
+				$data['member_id']	 		= $member_id;
+				$data['coaching_id']	 	= $coaching_id;
+				$data['course_id']	 		= $course_id;
+				$data['lesson_id']	 		= $lesson_id;
+				$data['page_id']	 		= $page_id;
+				$data['created_on']	  		= time();
+				$this->db->insert('coaching_course_progress', $data);
+				$progress_id = $this->db->insert_id();
+			}
 		}
 	}
 	public function get_page ($coaching_id=0, $course_id=0, $lesson_id=0, $page_id=0) {
