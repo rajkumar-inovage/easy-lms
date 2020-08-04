@@ -13,7 +13,7 @@ class Indiatests extends MX_Controller {
 	    $coaching_id = $this->uri->segment (4);
 	    $course_id = $this->uri->segment (5);
         
-        $this->toolbar_buttons['<i class="fa fa-puzzle-piece"></i> Purchased Plans']= 'coaching/plans/index/'.$coaching_id;
+        //$this->toolbar_buttons['<i class="fa fa-puzzle-piece"></i> Purchased Plans']= 'coaching/plans/index/'.$coaching_id;
         
         if ($this->session->userdata ('is_admin') == TRUE) {
         } else {
@@ -46,7 +46,7 @@ class Indiatests extends MX_Controller {
     public function test_plan_categories ($coaching_id=0, $course_id=0) {
 
         /* Breadcrumbs */ 
-        $data['bc'] = array ('Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);
+        $data['bc'] = array ('Manage'=>'coaching/home/dashboard/'.$coaching_id);
         $data['toolbar_buttons'] = $this->toolbar_buttons;
         $data['page_title'] = 'Test Plans';
         $data['coaching_id'] = $coaching_id;
@@ -73,9 +73,9 @@ class Indiatests extends MX_Controller {
 
         $data['toolbar_buttons'] = $this->toolbar_buttons;
         if ($amount == 0) {
-            $data['page_title'] = 'Free Test Plans In Indiatests';
+            $data['page_title'] = 'Free Test Plans In IndiaTests';
         } else {            
-            $data['page_title'] = 'Buy Test Plans From Indiatests';
+            $data['page_title'] = 'Buy Test Plans From IndiaTests';
         }
         
         // Get all test categories from MASTER database

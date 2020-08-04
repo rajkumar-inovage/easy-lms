@@ -39,9 +39,19 @@
 					?>
 					</span>
                     <div class="pl-3 flex-grow-1">
-                        <a href="#">
-                            <p class="font-weight-medium mb-0"><?php echo $att['title']; ?></p>
-                        </a>
+                    	<?php if ($att['att_type'] == LESSON_ATT_YOUTUBE) { ?>
+							<iframe width="100" height="80" src="<?php echo $att['att_url']; ?>">
+							</iframe><br>
+							<?php echo $att['title']; ?>
+						<?php } else if ($att['att_type'] == LESSON_ATT_EXTERNAL) { ?>
+	                        <a href="<?php echo $att['att_url']; ?>" target="_blank">
+	                            <?php echo $att['title']; ?>
+	                        </a>
+						<?php } else { ?>
+	                        <a href="<?php echo $att['att_url']; ?>" target="_blank">
+	                            <?php echo $att['title']; ?>
+	                        </a>
+						<?php } ?>
                     </div>
                     <div class="comment-likes">
                         

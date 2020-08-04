@@ -72,6 +72,7 @@
         $member_id = $this->session->userdata ('member_id');
     ?>
     <nav class="navbar fixed-top">
+
         <div class="d-flex align-items-center navbar-left">
             <a href="#" class="menu-button d-none d-md-block">
                 <svg class="main" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 17">
@@ -94,6 +95,7 @@
                 </svg>
             </a>           
 
+            <a class="btn btn-sm btn-outline-danger ml-3 " href="<?php echo site_url ('coaching/indiatests/test_plan_categories/'.$coaching_id); ?>"><i class="iconsminds-clothing-store"></i> <span class="d-none d-md-inline-block">Free Tests</span></a>
         </div>
 
 

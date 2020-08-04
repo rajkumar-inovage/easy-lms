@@ -37,9 +37,9 @@
 				<div class="scroll" style="height: 270px;">
 					<?php
 					foreach($annc as $i => $row) {
-						print_pre($row);
+						//print_pre($row);
 						?>
-						<div class="d-none flex-row justify-content-between<?php echo (count($courses) - 1 !== $i && $i < 2)?' pb-3':''; ?>">
+						<div class="d-none flex-row justify-content-between <?php echo (count($courses) - 1 !== $i && $i < 2)?' pb-3':''; ?> d-none">
 							<div class="pr-3 flex-grow-1">
 								<h4 class="text-left"><?php echo $row['title']; ?></h4>
 								<p class="<?php echo ($row['description'] != '')?'text-justify':'text-justify text-muted'; ?>"><?php echo ($row['description'] != '')?excerpt($row['description'], 15):'No Description'; ?></p>
@@ -66,11 +66,11 @@
 				?>
 			</div>
 			<div class="card-footer text-right">
-				<?php echo anchor ('student/announcements/index/'.$coaching_id.'/'.$member_id, 'Show All', ['class'=>'btn btn-primary mr-1']); ?>
+				<?php //echo anchor ('student/announcements/index/'.$coaching_id.'/'.$member_id, 'Show All', ['class'=>'btn btn-primary mr-1']); ?>
 			</div>
 		</div>
 		<div class="card mb-4 progress-banner d-none">
-			<a href="<?php echo site_url("student/announcements/index/$coaching_id/$member_id") ?>" class="card-body justify-content-between d-flex flex-row align-items-center">
+			<a href="<?php //echo site_url("student/announcements/index/$coaching_id/$member_id") ?>" class="card-body justify-content-between d-flex flex-row align-items-center">
 				<div>
 					<i class="fa fa-bullhorn mr-2 text-white align-text-bottom d-inline-block"></i>
 					<div>
