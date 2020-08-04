@@ -1,147 +1,181 @@
-<div class="row justify-content-center mb-10">
-	<div class="col-md-3">
-		
-		<!----// Plan //-->
-		<div class="card shadow mb-3">
-			<div class="card-body">
-				<div class="media">
-					<div class="media-left ">
-						<?php if ($subscription['ending_on'] > time ()) { ?>
-							<span class="icon-block half bg-success"><i class="fa fa-check "></i></span>
-						<?php } else { ?>
-							<span class="icon-block half bg-danger"><i class="fa fa-times "></i></span>
-						<?php } ?>
-					</div>
-					<div class="media-body ml-2">
-						<h6><?php echo anchor ('coaching/subscription/index/'.$coaching_id.'/'.$subscription['sp_id'], $subscription['title'], ['class'=>'link-streched']); ?></h6>
-						<p>Ending On: <?php echo date ('d M, Y', $subscription['ending_on']); ?></p>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card mb-4 progress-banner">
+            <a href="<?php echo site_url ('coaching/subscription/index/'.$coaching_id.'/'.$subscription['sp_id']); ?>" class="card-body justify-content-between d-flex flex-row align-items-center">
+                <div>
+					<?php if ($subscription['ending_on'] > time ()) { ?>
+						<i class="iconsminds-yes mr-2 text-white align-text-bottom d-inline-block"></i>
+					<?php } else { ?>
+						<i class="iconsminds-close-check mr-2 text-white align-text-bottom d-inline-block"></i>
+					<?php } ?>
+                    <div>
+                        <p class="lead text-white"><?php echo $subscription['title']; ?></p>
+                        <p class="text-small text-white">Ending On: <?php echo date ('d M, Y', $subscription['ending_on']); ?></p>
+                    </div>
+                </div>
+
+                <div>
+					<button class="btn btn-light btn-lg">Details</button>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card mb-4 progress-banner">
+            <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id); ?>" class="card-body justify-content-between d-flex flex-row align-items-center">
+                <div>
+                    <i class="simple-icon-people mr-2 text-white align-text-bottom d-inline-block"></i>
+                    <div>
+                        <p class="lead text-white"><?php echo $users['total']; ?> Users</p>
+                        <p class="text-small text-white"></p>
+                    </div>
+                </div>
+                <div>
+                    <div role="progressbar"
+                        class="progress-bar-circle progress-bar-banner position-relative" data-color="white"
+                        data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="<?php echo $users['total']; ?>" aria-valuemax="<?php echo $subscription['max_users']; ?>"
+                        data-show-percent="false">
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card mb-4 progress-banner">
+            <a href="<?php echo site_url ('coaching/courses/index/'.$coaching_id); ?>" class="card-body justify-content-between d-flex flex-row align-items-center">
+                <div>
+                    <i class="iconsminds-books mr-2 text-white align-text-bottom d-inline-block"></i>
+                    <div>
+                        <p class="lead text-white"><?php echo $num_courses; ?> Courses</p>
+                        <p class="text-small text-white"></p>
+                    </div>
+                </div>
+                <div>
+                	<button class="btn btn-light btn-lg">View Courses</button>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row ">
+	<div class="col-md-9">
+
+		<div class="row">
+
+			<div class="col-md-6">
+				<!----// Class //-->
+				<div class="card mb-4 shadow">
+					<div class="card-body">
+						<h4 class="card-title d-flex justify-content-between">
+							<span><i class="iconsminds-books "></i> Courses</span>
+							<span class="badge badge-primary"><?php echo $num_courses; ?></span>
+						 </h4>
+
+						<?php
+						$i = 0;
+						if (! empty($courses)) {
+							foreach ($courses as $row) {
+								?>
+								 <div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">  
+				                  <a class="list-item-heading mb-0 w-50 w-xs-100 mt-0" href="<?php echo site_url ('coaching/courses/manage/'.$coaching_id.'/'.$row['course_id']); ?>">
+				                      <?php 
+				                      if ($row['status'] == LESSON_STATUS_PUBLISHED) {
+				                        echo '<i class="simple-icon-check heading-icon"></i>';
+				                      } else {
+				                        echo '<i class="simple-icon-refresh heading-icon"></i>';
+				                      }
+				                      ?>
+				                      <span class="align-middle d-inline-block"><?php echo $row['title']; ?></span>
+				                  </a>
+				                  <div class="">
+				                    <a class="btn btn-outline-primary btn-sm" href="<?php echo site_url ('coaching/courses/manage/'.$coaching_id.'/'.$row['course_id']); ?>"><i class="fa fa-cog"></i> Manage </a>
+
+				                  </div>
+				                </div>
+								<?php
+								$i++;
+								if ($i >= 3) {
+									break;
+								}
+							}
+						} else {
+							?>
+							<div class="alert alert-danger">
+								No class created
+							</div>
+							<?php
+						}
+						?>
 					</div>
 				</div>
 			</div>
-		</div>
+			<!-- // Col-md-6 -->
+			<div class="col-md-6">
+				<!----// Class //-->
+				<div class="card mb-4 shadow">
+					<div class="card-body">
+						<h4 class="card-title d-flex justify-content-between">
+							<span>User Registration This Week</span>
+							<span class="badge badge-primary"><?php //echo $num_courses; ?></span>
+						 </h4>
+					</div>
+					 <div class="chart-container chart">
+                        <canvas id="user-registered"></canvas>
+                    </div>
+				</div>
+			</div>
+			<!-- // Col-md-6 -->
 
+		</div>
+		<!-- // row -->
+	</div>
+	<!-- // Col-md-9 -->
+
+	<div class="col-md-3 col-lg-3">
 		
 		<!----// Users //-->
-		<div class="card mb-3 shadow-sm">
-			<div class="card-header ">
-				<h4 class="d-flex justify-content-between">
-					<span>Users</span>
+		<div class="card mb-3 ">
+			<div class="card-body ">
+				<h4 class="card-title d-flex justify-content-between">
+					<span><i class="simple-icon-people "></i> Users</span>
 					<span class="badge badge-primary"><?php echo $users['total']; ?></span>
 				 </h4>
-			</div>
-			<ul class="list-group">
-				<li class="list-group-item media">
-					<div class="media-body"><?php echo anchor ('coaching/users/index/'.$coaching_id.'/'.USER_ROLE_TEACHER, 'Teachers'); ?></div>
-					<div class="media-right"><?php echo $users['num_teachers']; ?></div>
-				</li>
-				<li class="list-group-item media">
-					<div class="media-body"><?php echo anchor ('coaching/users/index/'.$coaching_id.'/'.USER_ROLE_STUDENT, 'Student'); ?></div>
-					<div class="media-right"><?php echo $users['num_students']; ?></div>
-				</li>
-				<li class="list-group-item media d-none">
-					<div class="media-body"><?php echo anchor ('coaching/users/index/'.$coaching_id.'/0/'.USER_STATUS_ENABLED, 'Active'); ?></div>
-					<div class="media-right"><?php echo $users['num_active']; ?></div>
-				</li>
-				<li class="list-group-item media">
-					<div class="media-body"><?php echo anchor ('coaching/users/index/'.$coaching_id.'/0/'.USER_STATUS_DISABLED, 'Disabled'); ?></div>
-					<div class="media-right"><?php echo $users['num_disabled']; ?></div>
-				</li>
-				<li class="list-group-item media">
-					<div class="media-body"><?php echo anchor ('coaching/users/index/'.$coaching_id.'/0/'.USER_STATUS_UNCONFIRMED, 'Pending'); ?></div>
-					<div class="media-right"><?php echo $users['num_pending']; ?></div>
-				</li>
-			</ul>
-		</div>
+				 <div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
+                    <div class="">
+                        <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id.'/'.USER_ROLE_STUDENT); ?>">
+                            <p class="font-weight-medium mb-0 ">Students</p>
+                            <p class="text-muted mb-0 text-small"></p>
+                        </a>
+                    </div>
+                    <span class="badge badge-pill badge-primary"><?php echo $users['num_students']; ?></span>
+                </div>
+				 <div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
+                    <div class="">
+                        <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id.'/'.USER_ROLE_TEACHER); ?>">
+                            <p class="font-weight-medium mb-0 ">Teachers</p>
+                            <p class="text-muted mb-0 text-small"></p>
+                        </a>
+                    </div>
+                    <span class="badge badge-pill badge-primary"><?php echo $users['num_teachers']; ?></span>
+                </div>
+				 <div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
+                    <div class="">
+                        <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id.'/0/'.USER_STATUS_UNCONFIRMED); ?>">
+                            <p class="font-weight-medium mb-0 ">Pending For Approval</p>
+                            <p class="text-muted mb-0 text-small"></p>
+                        </a>
+                    </div>
+                    <span class="badge badge-pill badge-danger"><?php echo $users['num_pending']; ?></span>
+                </div>
 
-		<!-- // Tests // -->
-		<div class="card mb-3 shadow-sm">
-			<div class="card-header ">
-				<h4 class="d-flex justify-content-between">
-					<span>Tests</span>
-					<span class="badge badge-primary"><?php echo $tests['total']; ?></span>
-				 </h4>
-			</div>
-			<ul class="list-group">
-				<li class="list-group-item media">
-					<div class="media-body"><?php echo anchor ('coaching/tests/index/'.$coaching_id.'/0/'.TEST_STATUS_PUBLISHED, 'Published'); ?></div>
-					<div class="media-right"><?php echo $tests['num_published']; ?></div>
-				</li>
-				<li class="list-group-item media">
-					<div class="media-body"><?php echo anchor ('coaching/tests/index/'.$coaching_id.'/0/'.TEST_STATUS_UNPUBLISHED, 'Un-published'); ?></div>
-					<div class="media-right"><?php echo $tests['num_unpublished']; ?></div>
-				</li>
-			</ul>
-		</div>
-
-	</div>
-
-	<div class="col-md-6">
-
-		<!----// Class //-->
-		<div class="card mb-4 shadow">
-			<div class="card-header">
-				<h4 class="d-flex justify-content-between">
-					<span>Classrooms</span>
-					<span class="badge badge-primary"><?php echo $num_vc; ?></span>
-				 </h4>
-			</div>
-			<div class="list-group">
-			<?php
-			$i = 0;
-			if (! empty($virtual_class)) {
-				foreach ($virtual_class as $vc) {
-					?>
-					<li class="list-group-item media">
-						<div class="media-left">
-							<?php if ($vc['running'] == 'true') { ?>
-								<span class="icon-block half bg-green-500 rounded-circle" title="Meeting is running">
-									<i class="fa fa-video"></i>
-								</span>
-							<?php } else { ?>
-								<span class="icon-block half bg-grey-200 rounded-circle" title="Meeting is not running">
-									<i class="fa fa-video"></i>
-								</span>
-							<?php } ?>
-						</div>
-
-						<div class="media-body">
-							<h4><?php echo anchor ('coaching/virtual_class/create_class/'.$coaching_id.'/'.$vc['class_id'], $vc['class_name']); ?></h4>
-							<p class=""><?php echo character_limiter ($vc['description'], 50); ?></p>
-							<?php
-							if ($vc['running'] == 'true') {
-								echo anchor ('coaching/virtual_class/join_class/'.$coaching_id.'/'.$vc['class_id'].'/'.$member_id, '<i class="fa fa-plus"></i> Start Class', ['class'=>'btn btn-success mr-1']);
-							} else {
-								echo anchor ('coaching/virtual_class/join_class/'.$coaching_id.'/'.$vc['class_id'].'/'.$member_id, '<i class="fa fa-plus"></i> Start Class', ['class'=>'btn btn-default mr-1']);
-							}
-							?>
-						</div>
-					</li>
-					<?php
-					$i++;
-					if ($i >= 3) {
-						break;
-					}
-				}
-			} else {
-				?>
-				<div class="card-body">
-					<div class="alert alert-danger">
-						No class created
-					</div>
-				</div>
-				<?php
-			}
-			?>
 			</div>
 		</div>
-	</div>
-
-	<div class="col-md-3">		
 
 		<!----// Announcements //-->
 		<div class="card mt-3 shadow-sm">
-			<div class="card-header">
-				<h4>Announcements</h4>
+			<div class="card-body">
+				<h4 class="card-title">Announcements</h4>
 			</div>
 			<div class="list-group">
 			<?php if (! empty($announcements)) {
@@ -168,9 +202,16 @@
 		</div>
 
 	</div>
+
+	
+	<div class="col-md-3 d-none">		
+
+		
+
+	</div>
 </div>
 
-<div class="card fixed-bottom">
+<div class="card fixed d-none">
 	<ul class="nav nav-pills nav-fill">
 		<?php
 		if (! empty ($dashboard_menu)) {

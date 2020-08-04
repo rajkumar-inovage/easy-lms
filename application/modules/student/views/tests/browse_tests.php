@@ -26,7 +26,7 @@
                 </div>              
                 <?php 
                 if ($row['attempts'] == 0  || $row['num_attempts'] < $row['attempts'] ) {
-                  echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$row['test_id'], 'Take Test', ['class'=>'btn btn-success']); 
+                  echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$row['test_id'], 'Take Test', ['class'=>'btn btn-success']); 
                 } else {
                   echo '<span class="badge badge-danger">All attempts taken</span>';
                 }
@@ -58,7 +58,7 @@
                     </div>
                     <div class="media-body">
                     <h4 class="">
-                      <?php echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$row['test_id'], $row['title'], ['class'=>'link-text-color']); ?>                      
+                      <?php echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$row['test_id'], $row['title'], ['class'=>'link-text-color']); ?>                      
                     </h4>
                     <div class="">
                         <span class="badge badge-warning">Upcoming Test</span>
@@ -126,7 +126,7 @@
                     </div>
                   </div>
                   <div class="media-body">
-                    <?php echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$row['test_id'], $row['title'], ['class'=>'link-text-color']); ?>
+                    <?php echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$row['test_id'], $row['title'], ['class'=>'link-text-color']); ?>
                     <div>
                       QUESTIONS: <?php echo $row['num_test_questions']; ?><br>
                       MM: <?php echo $row['test_marks']; ?>
@@ -134,7 +134,7 @@
                   </div>
                   <div class="media-right">
                     <?php
-                    echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$row['test_id'], 'Take Test', ['class'=>'btn btn-success']); 
+                    echo anchor ('student/tests/test_instructions/'.$coaching_id.'/'.$member_id.'/'.$course_id.'/'.$row['test_id'], 'Take Test', ['class'=>'btn btn-success']); 
                     ?>
                   </div>
                 </div>

@@ -1,7 +1,12 @@
 <script>
 $(document).ready (function () {
 	/*Hide All Questions on First Load and show only section 1*/
-	$(".pages,nav").hide ();
+	$("body").addClass('menu-sub-hidden main-hidden sub-hidden test-mode');
+	/*$("main").css({
+		'margin-top': `calc(${$("main").css('margin-top')} - ${$('nav').outerHeight()}px)`,
+		'margin-bottom': `calc(${$("main").css('margin-top')} + ${$('.card.fixed-bottom').outerHeight()}px)`
+	});*/
+	$(".pages,nav,.main-menu,.page-footer").hide();
 	$("#page1").show ();
 	const finishTime = Date.now() + (<?php echo $test_duration; ?> * 1000);
 	const fiveMinutesBefore = ((<?php echo $test_duration; ?> - 300) * 1000);
@@ -34,6 +39,7 @@ $(document).ready (function () {
 	setTimeout(() => {
 	  toastr.error('Hurry up, 1 minute remaining');
 	}, oneMinutesBefore);
+
 	$(".next").click(function() {
 		
 		/*Hide/Show question blocks*/

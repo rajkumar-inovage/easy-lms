@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-12 list" >
     	<ul class="list-unstyled ">
-			<li class="list-group-item list-group-header d-flex justify-content-between font-weight-bold">
+			<li class="list-group-item media list-group-header d-flex justify-content-between font-weight-bold">
 				<div class="media-left">
 					<i class="simple-icon-cursor-move "></i>
 				</div>
@@ -11,7 +11,7 @@
 				<div class="media-body ml-3">
 					Type
 				</div>
-				<div class="media-body ml-3">
+				<div class="media-right ml-3">
 					For Demo
 				</div>
 			</li>
@@ -24,7 +24,7 @@
 		if ( ! empty ($contents)) {
 			foreach ($contents as $row) { 
 				?>
-				<li class="list-group-item d-flex justify-content-between" data-id="<?php echo $row['id']; ?>" data-name="<?php echo $row['resource_type']; ?>">
+				<li class="list-group-item d-flex justify-content-between media" data-id="<?php echo $row['id']; ?>" data-name="<?php echo $row['resource_type']; ?>">
 					<div class="media-left">
 						<i class="simple-icon-cursor-move "></i>
 					</div>
@@ -38,12 +38,12 @@
 							<span class="badge badge-pill badge-danger">Test</span>
 						<?php } ?>
 					</div>
-					<div class="media-body ml-3">
+					<div class="media-right ml-3">
 						<div class="form-group row mb-1">
                             <div class="col-12">
-                                <div class="custom-switch custom-switch-primary mb-2 custom-switch-small">
-                                    <input class="custom-switch-input" id="switchS" type="checkbox">
-                                    <label class="custom-switch-btn" for="switchS"></label>
+                                <div class="custom-switch custom-switch-primary-inverse mb-2 custom-switch-small">
+                                    <input class="custom-switch-input switch_demo" id="demo<?php echo $row['row_id']; ?>" data-id="<?php echo $row['row_id']; ?>" type="checkbox" value="1" <?php if ($row['for_demo'] == 1) echo 'checked'; ?> >
+                                    <label class="custom-switch-btn" for="demo<?php echo $row['row_id']; ?>"></label>
                                 </div>
                             </div>
                         </div>	                    

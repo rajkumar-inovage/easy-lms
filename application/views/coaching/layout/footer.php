@@ -38,12 +38,14 @@
 
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/jquery-3.3.1.min.js'); ?>"></script>
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/bootstrap.bundle.min.js'); ?>"></script>
+    <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/Chart.bundle.min.js'); ?>"></script>
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/perfect-scrollbar.min.js'); ?>"></script>
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/progressbar.min.js'); ?>"></script>
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/select2.full.js'); ?>"></script>
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/mousetrap.min.js'); ?>"></script>
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/jquery.contextMenu.min.js'); ?>"></script>
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/bootstrap-datepicker.js'); ?>"></script>
+    <script src="<?php echo base_url(THEME_PATH . 'assets/js/vendor/glide.min.js'); ?>"></script>
     <script src="<?php echo base_url(THEME_PATH . 'assets/js/dore.script.js'); ?>"></script>
 
 	<!-- Default JS (Must be loaded befaore app.js) -->
@@ -52,9 +54,6 @@
 
 	<!-- Toastr JS for notifications -->
 	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/toastr.min.js'); ?>"></script>
-	<!-- ChartJS -->
-	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/chart.bundle.min.js'); ?>"></script>
-
 	<!-- Application JS -->
 	<script type="text/javascript" src="<?php echo base_url (THEME_PATH . 'assets/js/app.js?ver=1.5'); ?>"></script>
 	<!-- Custom JS (Dynamically included) -->

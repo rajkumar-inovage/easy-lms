@@ -11,7 +11,7 @@ class Courses_model extends CI_Model {
 		$sql = $this->db->get('coaching_course_category');
 		return $sql->result_array();
 	}
-	public function courses($coaching_id, $cat_id, $status = CATEGORY_STATUS_ALL){
+	public function courses($coaching_id=0, $cat_id=0, $status = CATEGORY_STATUS_ALL){
 		$this->db->where('coaching_id', $coaching_id);
 		if($cat_id>0){
 			$this->db->where('cat_id', $cat_id);
@@ -247,7 +247,7 @@ class Courses_model extends CI_Model {
 
 		$result = [];
 		// Get lessons
-		$this->db->select ('CL.lesson_id AS id, CL.*, CC.position, CC.resource_type, CC.for_demo');
+		$this->db->select ('CL.lesson_id AS id, CL.*, CC.position, CC.resource_type, CC.for_demo, CC.id AS row_id');
 		$this->db->from ('coaching_course_lessons CL, coaching_course_contents CC');
 		$this->db->where ('CC.resource_id=CL.lesson_id');
 		$this->db->where ('CC.resource_type='.COURSE_CONTENT_CHAPTER);
@@ -260,7 +260,7 @@ class Courses_model extends CI_Model {
 			}
 		}
 		// Get tests
-		$this->db->select ('CT.test_id AS id, CT.*, CC.position, CC.resource_type, CC.for_demo');
+		$this->db->select ('CT.test_id AS id, CT.*, CC.position, CC.resource_type, CC.for_demo, CC.id AS row_id');
 		$this->db->from ('coaching_tests CT, coaching_course_contents CC');
 		$this->db->where ('CC.resource_id=CT.test_id');
 		$this->db->where ('CC.resource_type='.COURSE_CONTENT_TEST);
@@ -275,5 +275,11 @@ class Courses_model extends CI_Model {
 
 		ksort ($result, SORT_NUMERIC);
 		return $result;
+	}
+
+	public function mark_for_demo ($id=0, $data=0) {
+		$this->db->set ('for_demo', $data);
+		$this->db->where ('id', $id);
+		$this->db->update ('coaching_course_contents');
 	}
 }

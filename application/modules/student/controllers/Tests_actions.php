@@ -105,7 +105,7 @@ class Tests_actions extends MX_Controller {
 
 	}
 	
-	public function submit_test ($coaching_id=0, $member_id=0, $test_id=0) { 
+	public function submit_test ($coaching_id=0, $member_id=0, $course_id=0, $test_id=0) { 
 		$questions  = $this->input->post('questions');
 		$attempt_id = $this->input->post('attempt_id');
 		$ans 		= $this->input->post('ans');
@@ -122,7 +122,7 @@ class Tests_actions extends MX_Controller {
 		$this->tests_model->update_submission_time ($coaching_id, $attempt_id, $test_id, $member_id);
 
 		//$this->message->set ('You have successfully completed your test. Now you can review your scores', 'success', true);
-		redirect ('student/tests/test_submitted/'.$coaching_id.'/'.$test_id.'/'.$member_id.'/'.$attempt_id);
+		redirect ('student/tests/test_submitted/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$member_id.'/'.$attempt_id);
 	}
 
 	public function request_reset ($coaching_id=0, $member_id=0, $test_id=0, $attempt_id=0) {

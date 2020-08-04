@@ -303,6 +303,9 @@ class User_actions extends MX_Controller {
 				$this->message->set ('Account disabled. User will not be able to login now.', 'success', TRUE);
 				redirect('coaching/users/index/'.$coaching_id.'/'.$role);
 			}
+		} else {
+			$this->message->set ('You cannot disable your own account', 'danger', TRUE);
+			redirect('coaching/users/index/'.$coaching_id.'/'.$role);			
 		}
 	}
 	

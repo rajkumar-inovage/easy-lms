@@ -482,60 +482,40 @@ class Users_model extends CI_Model {
 		$result = array ();		
 		
 		// current timestamp
-		$today = time ();
-		
-		if ($start_date == 0) {
-			$start_date = $today;
-		}
+		$day = date ('j');
+		$now = time ();
+		$day_before = mktime (0, 0, 0, date('n'), $day, date('Y'));
+		$step_24 = 24 * 60 * 60; 		// Seconds in one day
 
+		if ($start_date == 0) {
+			$start_date = $now;
+		}
 		if ($end_date == 0) {
-			$end_date = $today;
-		}
-
-		$this->db->where ('coaching_id', $coaching_id );
-		$this->db->where ('creation_date <=',  $start_date);
-		$this->db->where ('creation_date >=',  $end_date);
-		$sql = $this->db->get ('members');
-		if ($sql->num_rows () > 0) {
-			return $sql->result_array ();
-		} else {
-			return false;
-		}
-
-
-		// start date
-		/*
-		if ($start_date == 0) {
-			$end_date = time ();
-			// 7 days tests from today
-			for ($i=0; $i<7; $i++) {
-				$count = 0;
-				$today_midnight = mktime (0, 0, 0, date ('m'), date ('d')-$i, date ('Y')); 				
-				$start_date = $today_midnight;
-				
-				$this->db->where ('creation_date >= ', $start_date );
-				$this->db->where ('creation_date < ',  $end_date);
-				//$this->db->group_by ('test_id');
-				$sql = $this->db->get ('members');
-				if ($sql->num_rows () > 0) {
-					$count = $sql->num_rows ();					
-				}
-				$result[$end_date] = $count;
-				$end_date = $start_date - 1;			// minus one second
-			}
-			$result = array_reverse ($result, true);
-			return $result;
-		} else {
-			$end_date = $today;
-			$this->db->where ('creation_date >= ', $start_date );
-			$this->db->where ('creation_date <= ',  $end_date);
-			//$this->db->group_by ('test_id');
-			$sql = $this->db->get ('members');
-			$count = $sql->num_rows ();
-			$result[$end_date] = $count;
-		}
-		*/
+			// seven days from today
+			$num_days = 7 * $step_24;
+			$end_date = $start_date - $num_days;
+		}		
 		
+		// 7 days tests from today
+		$x = 7;
+		for ($i=1; $i<=7; $i++) {
+			$count = 0;
+			$start_date = $now;
+			$end_date = $day_before;
+			
+			$this->db->where ('creation_date >= ', $start_date );
+			$this->db->where ('creation_date < ',  $end_date);
+			$sql = $this->db->get ('members');
+			if ($sql->num_rows () > 0) {
+				$count = $sql->num_rows ();
+			}
+			$result[$end_date] = $count;
+			$now = mktime (0, 0, -1, date('n'), $day, date('Y'));
+			$day_before = mktime (0, 0, 0, date('n'), $day-1, date('Y'));
+			$day--;
+		}	
+		$reversed = array_reverse($result, true);
+		return $reversed;		
 	}
 	
 	/* Reporting Functions */

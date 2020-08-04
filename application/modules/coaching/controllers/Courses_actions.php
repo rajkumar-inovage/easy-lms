@@ -197,4 +197,11 @@ class Courses_actions extends MX_Controller {
 		$this->message->set("Teacher assignment removed from this course successfully", "info", TRUE);
 		redirect("coaching/courses/teachers/".$coaching_id.'/'.$course_id.'/'.TEACHERS_ASSIGNED);
 	}
+
+	public function mark_for_demo ($id=0, $data=0) {
+		$this->courses_model->mark_for_demo ($id, $data);
+        $this->output->set_content_type("application/json");
+        $this->output->set_output(json_encode(array('status'=>true, 'message'=>'marked')));
+	}
+
 }
