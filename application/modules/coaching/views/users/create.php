@@ -138,7 +138,11 @@
 					
 				<div class="card-footer">
 					<?php
-					echo form_submit ( array ('name'=>'submit', 'value'=>'Save ', 'class'=>'btn btn-primary ')); 
+					if ($num_users >= $max_users && $member_id == 0) {
+						echo '<input type="button" class="btn btn-danger" disabled value="User Limit Reached">';
+					} else {						
+						echo form_submit (array('name'=>'submit', 'value'=>'Save ', 'class'=>'btn btn-primary')); 
+					}
 					?>					
 				</div>
 			</form>

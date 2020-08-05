@@ -7,7 +7,7 @@ class Users extends MX_Controller {
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
 	    $config = ['config_coaching'];
-	    $models = ['users_model'];
+	    $models = ['users_model', 'coaching_model', 'subscription_model'];
 	    $this->common_model->autoload_resources ($config, $models);
 	    
         $cid = $this->uri->segment (4);
@@ -78,9 +78,13 @@ class Users extends MX_Controller {
 		$data['member_id'] 	= $member_id;
 
 		// Reference Id
+		$subscription = $this->subscription_model->get_coaching_subscription ($coaching_id);
 		$data['profile_image'] 	= $this->users_model->view_profile_image ($member_id, $coaching_id);
 		$user 				= $this->users_model->get_user ($member_id);
 		$data['result'] 	= $user;
+		$data['num_users']  = $this->coaching_model->num_users ($coaching_id);
+		$data['max_users'] 	= $subscription['max_users'];
+
 
 		$role_lvl 		 	= $this->session->userdata ('role_lvl');
 		$admin 				= FALSE;

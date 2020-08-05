@@ -59,13 +59,6 @@
 
 				<div class="card-footer">					
 						<input type="submit" name="submit" value="<?php echo ('Save'); ?>" class="btn btn-primary " accesskey="s" />
-						<?php 
-                            if (isset ($bc)) {
-                                $bc_link = current ($bc);
-                                $bc_title  = key ($bc);
-                                echo anchor ($bc_link, 'Cancel', array('class'=>'float-right btn btn-info', 'title'=>'Back To '.$bc_title)); 
-                            }
-                        ?>
 					</div>
 				</form>
 			</div>

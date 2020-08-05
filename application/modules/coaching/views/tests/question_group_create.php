@@ -1,4 +1,4 @@
-<div class="row justify-content-center app-row">
+<div class="row justify-content-center ">
 	
 	<div class="col-md-12">
 		<div class="card card-default">			
