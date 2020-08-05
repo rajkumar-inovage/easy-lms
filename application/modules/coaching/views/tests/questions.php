@@ -1,5 +1,5 @@
-<div class="row app-row">
-<?php if ( ! empty ($results) ) { ?>
+<div class="app-row">
+<?php if (  empty ($results) ) { ?>
 	<div class="card mb-4" oncopy="return false;" oncut="return false;" onpaste="return false;" onmousedown="return false;" onselectstart="return false;">
 	  <?php 
 	  echo form_open('coaching/tests_actions/remove_questions/'.$course_id.'/'.$test_id, array('class'=>'form-horizontol', 'id'=>'validate-1') );
@@ -107,7 +107,7 @@
 
 	<div class="alert alert-danger">
 		<h4> <?php echo 'No questions added in test'; ?></h4>
-		<p>You can <?php echo anchor ('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id, 'Create Questions', array ('class'=>'btn btn-sm btn-primary') ); ?>  in this test.
+		<p>You can <?php echo anchor ('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id, 'Create Questions', array ('class'=>'link-text text-primary') ); ?>  in this test.
 		</p>
 	</div>
 

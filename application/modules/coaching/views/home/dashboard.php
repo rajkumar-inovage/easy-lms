@@ -175,14 +175,14 @@
 		<!----// Announcements //-->
 		<div class="card mt-3 shadow-sm">
 			<div class="card-body">
-				<h4 class="card-title">Announcements</h4>
+				<h4 class="card-title mb-0">Announcements</h4>
 			</div>
 			<div class="list-group">
 			<?php if (! empty($announcements)) {
 				foreach ($announcements as $row) {
 					?>
-					<li class="list-group-item media ">
-						<div class="media-left">
+					<li class="list-group-item media d-flex">
+						<div class="media-left pr-2">
 							<?php if ($row['status'] == 1) {
 								echo '<i class="fa fa-circle text-success"></i>';
 							} else {

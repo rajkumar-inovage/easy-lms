@@ -2,7 +2,7 @@
 	<?php if ($course_id > 0) { ?>
 		<div class="row mb-4">
 			<div class="col-12">
-					<input type="submit" name="" value="Add Lesson" class="btn btn-success">
+					<input type="submit" name="" value="Add Lesson" class="btn btn-primary">
 			</div>
 		</div>
 	<?php } ?>
@@ -16,11 +16,26 @@
 					?>
 		            <div class="card mb-3">
 		                <div class="d-flex flex-grow-1 min-width-zero">
+						<span class="align-self-center pl-4">
+		                        <?php echo $i; ?> -
+		                    </span>
 		                    <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
-		                        <div class="list-item-heading mb-0 truncate w-40 w-xs-100">
-		                            <?php echo $row['title']; ?>
+								<div class="list-item-heading mb-0 w-60 w-xs-100">
+									<div class="">
+		                           		 <?php echo $row['title']; ?>
+									</div>
+									<div class="">
+										<?php
+											if (! empty ($courses)) {
+												foreach ($courses as $course) {
+													echo '<span class="badge badge-pill badge-info mr-2 pb-1 mt-2">'.$course['title'].'</span>';
+												}
+											} 
+										?>
+									</div>
 		                        </div>
-		                        <p class="mb-0 text-muted text-small w-15 w-xs-100">
+								
+		                        <p class="mb-0 text-muted text-small w-20 w-xs-100 mt-2 mt-md-0">
 		                        	<?php echo $row['duration'] . ' mins'; ?>
 		                        </p>
 		                        
@@ -30,15 +45,7 @@
 		                        <span class="custom-control-label">&nbsp;</span>
 		                    </label>
 		                </div>
-						<div class="card-body">
-		                    <?php
-								if (! empty ($courses)) {
-									foreach ($courses as $course) {
-										echo '<span class="badge badge-pill badge-primary mr-2 pb-1">'.$course['title'].'</span>';
-									}
-								} 
-							?>
-		                </div>
+						
 		            </div>
 					<?php
 					$i++;
@@ -57,9 +64,9 @@
 	</div>
 
 	<?php if ($course_id > 0) { ?>
-		<div class="row mt-4">
+		<div class="row my-3">
 			<div class="col-12">
-					<input type="submit" name="" value="Add Lesson" class="btn btn-success">
+					<input type="submit" name="" value="Add Lesson" class="btn btn-primary">
 			</div>
 		</div>
 	<?php } ?>
