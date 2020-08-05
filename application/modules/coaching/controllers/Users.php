@@ -222,8 +222,7 @@ class Users extends MX_Controller {
 	}
 	
 	public function import ($coaching_id=0, $role_id=USER_ROLE_STUDENT) { 
-		$data['page_title'] = 'Users';
-		$data['sub_title'] = 'Import Users';
+		$data['page_title'] = 'Import Users';
 		$data['coaching_id'] 	= $coaching_id;
 		$data['role_id'] 	= $role_id;
 		$data['bc'] 		= array ('Users'=>'coaching/users/index/'.$coaching_id.'/'.$role_id);

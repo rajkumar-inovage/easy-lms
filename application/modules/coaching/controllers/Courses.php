@@ -52,6 +52,8 @@ class Courses extends MX_Controller {
 		$data['is_admin'] = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
 		$data['script'] = $this->load->view ('courses/scripts/create', $data, true);
 
+		$data['bc'] = array('Courses' => 'coaching/courses/index/' . $coaching_id);
+
 		if ($course_id > 0) {
 			$data['right_sidebar'] = $this->load->view ('courses/inc/manage_course', $data, true);
 		}		
@@ -93,7 +95,7 @@ class Courses extends MX_Controller {
 		$data['coaching_id'] = $coaching_id;
 		$data['course_id'] = $course_id;
 		$data['is_admin'] = USER_ROLE_COACHING_ADMIN === intval($this->session->userdata('role_id'));
-		$data['bc'] = array('Courses' => 'coaching/courses/index/' . $coaching_id);
+		$data['bc'] = array('Courses' => 'coaching/courses/index/'.$coaching_id);
 
 		$data['right_sidebar'] = $this->load->view ('courses/inc/manage_course', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);

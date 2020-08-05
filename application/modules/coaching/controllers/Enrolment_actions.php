@@ -98,7 +98,10 @@ class Enrolment_actions extends MX_Controller {
 
 
 	public function add_schedule ($coaching_id=0, $course_id=0, $batch_id=0) {
+
 		$this->form_validation->set_rules ('repeat', 'Repeat', 'required');
+		$this->form_validation->set_rules ('instructor', 'Instructor', 'required');
+		$this->form_validation->set_rules ('classroom', 'Classroom', 'required');
 		
 			$message = $this->input->post ('start_time');
 		if ( $this->form_validation->run() == true)  {
