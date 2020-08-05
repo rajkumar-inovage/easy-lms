@@ -24,13 +24,15 @@
 									<div class="">
 										<?php echo $row['title']; ?>
 									</div>
-									<?php
-										if (! empty ($courses)) {
-											foreach ($courses as $course) {
-												echo '<span class="badge badge-pill badge-info mr-2 pb-1 mt-2">'.$course['title'].'</span>';
-											}
-										} 
-									?>
+									<div class="">
+										<?php
+											if (! empty ($courses)) {
+												foreach ($courses as $course) {
+													echo '<span class="badge badge-pill badge-info mr-2 pb-1 mt-2">'.$course['title'].'</span>';
+												}
+											} 
+										?>
+									</div>
 								</div>
 		                        <p class="mb-0 text-muted text-small w-20 w-xs-100 mt-2 mt-md-0">
 		                        	<?php echo $row['time_min'] . ' mins'; ?>

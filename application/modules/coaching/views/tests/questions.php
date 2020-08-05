@@ -91,8 +91,7 @@
 			<p>You can <?php echo anchor ('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id, 'Create Questions', array ('class'=>'btn btn-sm btn-primary') ); ?>  in this test.
 			</p>
 		</div>
-
-		<?php } ?>
+	<?php } ?>
 	</form>
   </div>
 </div>

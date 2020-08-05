@@ -25,7 +25,7 @@
 								$start_date = "";
 							}
 							?>
-							<?php echo form_input ( array('name'=>'start_date', 'class'=>'form-control datepicker', 'value'=>set_value('start_date', $start_date), 'type'=>'date') );?>   
+							<?php echo form_input ( array('name'=>'start_date', 'class'=>'form-control', 'value'=>set_value('start_date', $start_date), 'type'=>'date') );?>   
 					  </div>
 					  <div class="col-md-6">
 						<?php echo form_label('Batch Ending On', '', array('class'=>'control-label')); ?>
@@ -37,7 +37,7 @@
 							}
 							?>
 
-							<?php echo form_input ( array('name'=>'end_date', 'class'=>'form-control datepicker', 'value'=>set_value('end_date', $end_date), 'type'=>'date') );?>
+							<?php echo form_input ( array('name'=>'end_date', 'class'=>'form-control', 'value'=>set_value('end_date', $end_date), 'type'=>'date') );?>
 					  </div>
 					</div>
 				</div>
