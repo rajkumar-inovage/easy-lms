@@ -20,7 +20,7 @@ class Users_model extends CI_Model {
         $this->db->join ('sys_roles SR', 'M.role_id=SR.role_id');
 
 	    if ($batch_id > 0) {
-	        $this->db->join ('coaching_batch_users BU', 'M.member_id=BU.member_id AND BU.batch_id='.$batch_id);
+	        $this->db->join ('coaching_course_batch_users BU', 'M.member_id=BU.member_id AND BU.batch_id='.$batch_id);
 	    }
 	    $this->db->where ('M.coaching_id', $coaching_id);
 	    $this->db->order_by ('M.first_name, M.second_name, M.last_name', 'ASC');
@@ -61,7 +61,7 @@ class Users_model extends CI_Model {
         $this->db->join ('sys_roles SR', 'M.role_id=SR.role_id');
 
 	    if ($batch_id > 0) {
-	        $this->db->join ('coaching_batch_users BU', 'M.member_id=BU.member_id AND BU.batch_id='.$batch_id);
+	        $this->db->join ('coaching_course_batch_users BU', 'M.member_id=BU.member_id AND BU.batch_id='.$batch_id);
 	    }
 	    $this->db->where ('M.coaching_id', $coaching_id);
 
@@ -111,7 +111,7 @@ class Users_model extends CI_Model {
 		// Clear all batches
 		$this->db->where ('coaching_id', $coaching_id);
 		$this->db->where ('member_id', $member_id);
-		$this->db->delete ('coaching_batch_users');
+		$this->db->delete ('coaching_course_batch_users');
 
 		// Insert fresh batch
 		if (! empty ($batches)) {
@@ -119,7 +119,7 @@ class Users_model extends CI_Model {
 				$data['coaching_id'] = $coaching_id;
 				$data['member_id'] = $member_id;
 				$data['batch_id']  = $batch_id;
-				$sql = $this->db->insert ('coaching_batch_users', $data);
+				$sql = $this->db->insert ('coaching_course_batch_users', $data);
 			}
 		}
 	}
@@ -559,7 +559,7 @@ class Users_model extends CI_Model {
 	    $this->db->where ('coaching_id', $coaching_id);
 	    $this->db->where ('member_id', $member_id);
 	    $this->db->where ('batch_id', $batch_id);
-	    $sql = $this->db->get ('coaching_batch_users');
+	    $sql = $this->db->get ('coaching_course_batch_users');
 	    return $sql->row_array ();
 	}
 	
@@ -573,11 +573,11 @@ class Users_model extends CI_Model {
 					
 		$this->db->where ('member_id', $member_id);
 		$this->db->where ('batch_id', $batch_id);
-		$sql = $this->db->get ('coaching_batch_users');
+		$sql = $this->db->get ('coaching_course_batch_users');
 		if ($sql->num_rows () == 0) {
 			// create profile
 			if ($batch_id > 0) {
-				$this->db->insert ('coaching_batch_users', $profile);				
+				$this->db->insert ('coaching_course_batch_users', $profile);				
 			}
 		}
 	}
@@ -587,7 +587,7 @@ class Users_model extends CI_Model {
 		if($member_id > 0){			
 			$this->db->where('member_id', $member_id);
 		}					
-		$sql = $this->db->get ('coaching_batch_users');		
+		$sql = $this->db->get ('coaching_course_batch_users');		
 		if($sql->num_rows() > 0){
 			$result = $sql->result_array ();		
 		}
@@ -658,7 +658,7 @@ class Users_model extends CI_Model {
 
 	public function batch_users ($batch_id=0) {
 		$this->db->select ('M.*, SR.description');
-		$this->db->from ('coaching_batch_users MB, sys_roles SR');
+		$this->db->from ('coaching_course_batch_users MB, sys_roles SR');
 		$this->db->join ('members M', 'MB.member_id=M.member_id');
 		$this->db->where ('MB.batch_id', $batch_id);
 		$this->db->where ('SR.role_id=M.role_id');
@@ -674,7 +674,7 @@ class Users_model extends CI_Model {
 	public function users_not_in_batch ($batch_id=0, $coaching_id=0) {
 		// Get batch users
 		$this->db->where ('batch_id', $batch_id);
-		$sql = $this->db->get ('coaching_batch_users');
+		$sql = $this->db->get ('coaching_course_batch_users');
 		$users = $sql->result_array ();
 		$data = [];
 		if (! empty ($users)) {
@@ -701,11 +701,11 @@ class Users_model extends CI_Model {
 		foreach ($users as $member_id) {
 			$this->db->where ('batch_id', $batch_id);
 			$this->db->where ('member_id', $member_id);
-			$sql = $this->db->get ('coaching_batch_users');
+			$sql = $this->db->get ('coaching_course_batch_users');
 			if  ($sql->num_rows () == 0 ) { 
 				$data['member_id'] = $member_id;
 				$data['batch_id']  = $batch_id;
-				$sql = $this->db->insert ('coaching_batch_users', $data);
+				$sql = $this->db->insert ('coaching_course_batch_users', $data);
 				//echo $this->db->last_query ();
 			}
 		}
@@ -714,7 +714,7 @@ class Users_model extends CI_Model {
 	public function remove_batch_user ($batch_id=0, $member_id=0) {		
 		$this->db->where ('batch_id', $batch_id);
 		$this->db->where ('member_id', $member_id);
-		$sql = $this->db->delete ('coaching_batch_users');
+		$sql = $this->db->delete ('coaching_course_batch_users');
 	}
 
 	public function delete_batch ($batch_id=0) {
@@ -722,7 +722,7 @@ class Users_model extends CI_Model {
 		$sql = $this->db->delete ('coaching_course_batches');
 
 		$this->db->where ('batch_id', $batch_id);
-		$sql = $this->db->delete ('coaching_batch_users');
+		$sql = $this->db->delete ('coaching_course_batch_users');
 	}
 	
 	/*
@@ -750,11 +750,11 @@ class Users_model extends CI_Model {
 		if ($batch_id > 0) {			
 			$this->db->where ('batch_id', $batch_id);
 			$this->db->where ('member_id', $member_id);
-			$sql = $this->db->get ('coaching_batch_users');
+			$sql = $this->db->get ('coaching_course_batch_users');
 			if  ($sql->num_rows () == 0 ) { 
 				$data['member_id'] = $member_id;
 				$data['batch_id']  = $batch_id;
-				$sql = $this->db->insert ('coaching_batch_users', $data);
+				$sql = $this->db->insert ('coaching_course_batch_users', $data);
 			}
 		}
 	}
@@ -823,7 +823,7 @@ class Users_model extends CI_Model {
 	// count members of specific batch
 	public function countMemberByBatch($batch_id){
 		$this->db->where('batch_id', $batch_id);
-		$query = $this->db->get ('coaching_batch_users');		
+		$query = $this->db->get ('coaching_course_batch_users');		
 		if($query->num_rows() > 0){
 			$result = $query->num_rows();
 		}else{

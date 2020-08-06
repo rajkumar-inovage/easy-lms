@@ -1,5 +1,5 @@
 <div class="row ">
-    <div class="col-12 list" data-check-all="checkAll"> 
+    <div class="col-12" data-check-all="checkAll"> 
     <?php 
     $i = 1;
     if ( ! empty ($courses)) { 
@@ -47,9 +47,6 @@
     <?php echo form_open('', array('class' => 'modal-content', 'id' => 'validate-1')); ?>
       <div class="modal-header relative">
         <h5 class="modal-title mx-auto">Edit Course Cetegory</h5>
-        <button type="button" class="close m-0 absolute top right" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <div class="modal-body">
         <div class="form-row">

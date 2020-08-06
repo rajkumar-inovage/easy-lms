@@ -40,9 +40,13 @@
 					</span>
                     <div class="pl-3 flex-grow-1">
                     	<?php if ($att['att_type'] == LESSON_ATT_YOUTUBE) { ?>
-							<iframe width="100" height="80" src="<?php echo $att['att_url']; ?>">
-							</iframe><br>
-							<?php echo $att['title']; ?>
+                    		<h3 class="mb-2 flex-grow-1"><?php echo $att['title']; ?></h3>
+                    		<?php $youtubeURL = getYoutubeEmbedUrl($att['att_url']); ?>
+							<?php if ($youtubeURL !== null): ?>
+							<iframe class="w-100" src="<?php echo $youtubeURL; ?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							<?php else : ?>
+							<div class="alert alert-info">Invalid YouTube URL.</div>
+							<?php endif; ?>
 						<?php } else if ($att['att_type'] == LESSON_ATT_EXTERNAL) { ?>
 	                        <a href="<?php echo $att['att_url']; ?>" target="_blank">
 	                            <?php echo $att['title']; ?>
@@ -52,9 +56,6 @@
 	                            <?php echo $att['title']; ?>
 	                        </a>
 						<?php } ?>
-                    </div>
-                    <div class="comment-likes">
-                        
                     </div>
                 </div>
 				<?php

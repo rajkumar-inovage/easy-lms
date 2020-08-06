@@ -41,11 +41,15 @@ class Attendance extends MX_Controller {
         $data['dt_string']	= $dt_string;
         $role_lvl 		 	= $this->session->userdata('role_lvl');
         $admin 				= false;
-        $data['results'] 	= $this->users_model->get_users($coaching_id, $role_id, $status);
-        $data['roles']	 	=  $this->users_model->get_user_roles($admin, $role_lvl);
+        if($this->session->userdata ('is_admin')==true){
+            $data['role_id'] 	= $role_id;
+        }else{
+            $data['role_id']    = $role_id = USER_ROLE_STUDENT;
+        }
+        $data['results']    = $this->users_model->get_users($coaching_id, $role_id, $status);
+        $data['roles']      =  $this->users_model->get_user_roles($admin, $role_lvl);
         $data['user_status']= $this->common_model->get_sys_parameters(SYS_USER_STATUS);
         $data['coaching_id']= $coaching_id;
-        $data['role_id'] 	= $role_id;
         $data['status'] 	= $status;
         $data['batch_id'] 	= $batch_id;
         $data['page_title'] = 'Attendance';

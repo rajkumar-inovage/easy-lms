@@ -60,11 +60,63 @@
 </div>
 
 <div class="row ">
-	<div class="col-md-9">
+	<!-- // Col-md-6 -->
+	<div class="col-md-6">
+				<!----// Class //-->
+				<div class="card mb-4 shadow">
+					<div class="card-body">
+						<h4 class="card-title d-flex justify-content-between">
+							<span>User Registration This Week</span>
+							<span class="badge badge-primary"><?php //echo $num_courses; ?></span>
+						</h4>
+						<div class="separator mb-5"></div>
+					</div>
+					 <div class="chart-container chart">
+                        <canvas id="user-registered"></canvas>
+                    </div>
+				</div>
+		<!----// Users //-->
+		<div class="card mb-3 ">
+			<div class="card-body ">
+				<h4 class="card-title d-flex justify-content-between">
+					<span><i class="simple-icon-people "></i> Users</span>
+					<span class="badge badge-primary"><?php echo $users['total']; ?></span>
+				</h4>
+				<div class="separator mb-5"></div>
 
-		<div class="row">
+				<div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
+                    <div class="">
+                        <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id.'/'.USER_ROLE_STUDENT); ?>">
+                            <p class="font-weight-medium mb-0 ">Students</p>
+                            <p class="text-muted mb-0 text-small"></p>
+                        </a>
+                    </div>
+                    <span class="badge badge-pill badge-primary"><?php echo $users['num_students']; ?></span>
+                </div>
+				<div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
+                    <div class="">
+                        <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id.'/'.USER_ROLE_TEACHER); ?>">
+                            <p class="font-weight-medium mb-0 ">Teachers</p>
+                            <p class="text-muted mb-0 text-small"></p>
+                        </a>
+                    </div>
+                    <span class="badge badge-pill badge-primary"><?php echo $users['num_teachers']; ?></span>
+                </div>
+				<div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
+                    <div class="">
+                        <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id.'/0/'.USER_STATUS_UNCONFIRMED); ?>">
+                            <p class="font-weight-medium mb-0 ">Pending For Approval</p>
+                            <p class="text-muted mb-0 text-small"></p>
+                        </a>
+                    </div>
+                    <span class="badge badge-pill badge-danger"><?php echo $users['num_pending']; ?></span>
+                </div>
 
-			<div class="col-md-6">
+			</div>
+		</div>
+	</div>
+	<!-- // Col-md-6 -->
+	<div class="col-md-6">
 				<!----// Class //-->
 				<div class="card mb-4 shadow">
 					<div class="card-body">
@@ -110,72 +162,6 @@
 						?>
 					</div>
 				</div>
-			</div>
-			<!-- // Col-md-6 -->
-			<div class="col-md-6">
-				<!----// Class //-->
-				<div class="card mb-4 shadow">
-					<div class="card-body">
-						<h4 class="card-title d-flex justify-content-between">
-							<span>User Registration This Week</span>
-							<span class="badge badge-primary"><?php //echo $num_courses; ?></span>
-						</h4>
-						<div class="separator mb-5"></div>
-					</div>
-					 <div class="chart-container chart">
-                        <canvas id="user-registered"></canvas>
-                    </div>
-				</div>
-			</div>
-			<!-- // Col-md-6 -->
-
-		</div>
-		<!-- // row -->
-	</div>
-	<!-- // Col-md-9 -->
-
-	<div class="col-md-3 col-lg-3">
-		
-		<!----// Users //-->
-		<div class="card mb-3 ">
-			<div class="card-body ">
-				<h4 class="card-title d-flex justify-content-between">
-					<span><i class="simple-icon-people "></i> Users</span>
-					<span class="badge badge-primary"><?php echo $users['total']; ?></span>
-				</h4>
-				<div class="separator mb-5"></div>
-
-				<div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
-                    <div class="">
-                        <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id.'/'.USER_ROLE_STUDENT); ?>">
-                            <p class="font-weight-medium mb-0 ">Students</p>
-                            <p class="text-muted mb-0 text-small"></p>
-                        </a>
-                    </div>
-                    <span class="badge badge-pill badge-primary"><?php echo $users['num_students']; ?></span>
-                </div>
-				<div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
-                    <div class="">
-                        <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id.'/'.USER_ROLE_TEACHER); ?>">
-                            <p class="font-weight-medium mb-0 ">Teachers</p>
-                            <p class="text-muted mb-0 text-small"></p>
-                        </a>
-                    </div>
-                    <span class="badge badge-pill badge-primary"><?php echo $users['num_teachers']; ?></span>
-                </div>
-				<div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
-                    <div class="">
-                        <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id.'/0/'.USER_STATUS_UNCONFIRMED); ?>">
-                            <p class="font-weight-medium mb-0 ">Pending For Approval</p>
-                            <p class="text-muted mb-0 text-small"></p>
-                        </a>
-                    </div>
-                    <span class="badge badge-pill badge-danger"><?php echo $users['num_pending']; ?></span>
-                </div>
-
-			</div>
-		</div>
-
 		<!----// Announcements //-->
 		<div class="card dashboard-progress">
             <div class="position-absolute card-top-buttons">
@@ -201,9 +187,7 @@
 				?>
             </div>
         </div>
-
 	</div>
-	
 </div>
 
 <div class="card fixed d-none">

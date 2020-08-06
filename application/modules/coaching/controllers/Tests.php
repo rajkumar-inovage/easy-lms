@@ -219,7 +219,6 @@ class Tests extends MX_Controller {
 		}
 		$data['results'] = $result;
 		$data['course'] = $this->courses_model->get_course_by_id ($course_id);
-
 		/* --==// Back Link //==-- */
 		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$course_id.'/'.$test_id);
 		
@@ -317,7 +316,7 @@ class Tests extends MX_Controller {
 		$data['question_categories']   = $this->common_model->get_sys_parameters (SYS_QUESTION_CLASSIFICATION);
 		$data['question_difficulties'] = $this->common_model->get_sys_parameters (SYS_QUESTION_DIFFICULTIES);
 
-		//$data['script'] 	= $this->load->view ('tests/scripts/question_create', $data, true);	
+		$data['script'] 	= $this->load->view ('tests/scripts/question_create', $data, true);	
 		$data['right_sidebar'] = $this->load->view('tests/inc/question_create', $data, true);	
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('tests/inc/manage_test', $data);
@@ -359,7 +358,8 @@ class Tests extends MX_Controller {
 			}
 		}
 		$data['results'] = $result;
-		
+		$data['course'] = $this->courses_model->get_course_by_id ($course_id);
+
 		/* --==// Back Link //==-- */
 		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$course_id.'/'.$test_id);
 		
@@ -495,10 +495,6 @@ class Tests extends MX_Controller {
 		$this->load->view('tests/enrolments', $data); 
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
-	
-	
-
-	
 	/* VIEW TEST
 		Function to view test.
 	*/
@@ -533,9 +529,6 @@ class Tests extends MX_Controller {
 		$this->load->view('tests/test_details',$data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
-	
-	
-	
 	public function select_method ($course_id=0, $test_id=0) {
 		
 		$test = $this->tests_model->view_tests ($test_id);
@@ -577,9 +570,6 @@ class Tests extends MX_Controller {
 			}
 		}
 	}
-	
-	
-	
 	// Function to list all question of the selected lessons
 	public function add_test_questions ( $course_id=0, $test_id=0, $lesson_id=0, $cat_ids=0, $diff_ids=0, $exclude=0) {
 		
@@ -648,9 +638,6 @@ class Tests extends MX_Controller {
 		$this->load->view ('tests/add_questions', $data);
 		$this->load->view (INCLUDE_PATH . 'footer', $data);	
 	}
-	
-	
-	
 	/* 
 	// Upload Test Questions
 	*/
@@ -788,8 +775,6 @@ class Tests extends MX_Controller {
 		$this->load->view('tests/print_test', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
 	}
-	
-	
 	public function answer_sheet ($course_id=0, $test_id ) { 
 		$data['course_id'] 	= $course_id;
 		$data['test_id'] 		= $test_id;
@@ -809,8 +794,6 @@ class Tests extends MX_Controller {
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('tests/answer_sheet', $data);
 	}
-	
-	
 	public function coaching_test_plans ($coaching_id=0, $course_id=0) {
 
 		$data['bc'] = array ('Manage'=>'coaching/courses/manage/'.$coaching_id.'/'.$course_id);

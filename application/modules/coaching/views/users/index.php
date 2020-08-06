@@ -4,7 +4,7 @@
 		<?php echo form_open('coaching/user_actions/search_users/'.$coaching_id.'/'.$role_id.'/'.$status.'/'.$batch_id, array('class'=>"mt-3", 'id'=>'search-form')); ?>
 			<div class="form-group row mb-2 d-flex">
 				<div class="col-md-3 mb-2">
-					<select name="search_status" class="custom-select rounded" id="search-status" >
+					<select name="search_status" class="custom-select select2-single" id="search-status" >
 						<option value="-1">All Status</option>
 						<option value="<?php echo USER_STATUS_DISABLED; ?>" <?php if ($status==USER_STATUS_DISABLED) echo 'selected="selected"'; ?> >Disabled</option>
 						<option value="<?php echo USER_STATUS_ENABLED; ?>" <?php if ($status==USER_STATUS_ENABLED) echo 'selected="selected"'; ?> >Enabled</option>
@@ -13,7 +13,7 @@
 				</div>
 
 				<div class="col-md-3 mb-2">
-					<select name="search_role" class="custom-select rounded" id="search-role">
+					<select name="search_role" class="custom-select select2-single" id="search-role">
 						<option value="0">All Roles</option>
 						<?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role['role_id']; ?>" <?php if ($role_id ==$role['role_id']) echo 'selected="selected"'; ?> ><?php echo $role['description']; ?></option>
@@ -22,7 +22,7 @@
 				</div>
 
 				<div class="col-md-3">
-					<select name="filter_sort" class="custom-select rounded" id="filter-sort" >
+					<select name="filter_sort" class="custom-select select2-single" id="filter-sort" >
 						<option value="<?php echo SORT_ALPHA_ASC; ?>" <?php if ($sort==SORT_ALPHA_ASC) echo 'selected="selected"'; ?> >Name: A to Z</option>
 						<option value="<?php echo SORT_ALPHA_DESC; ?>" <?php if ($sort==SORT_ALPHA_DESC) echo 'selected="selected"'; ?> >Name: Z to A</option>
 						<option value="<?php echo SORT_CREATION_ASC; ?>" <?php if ($sort==SORT_CREATION_ASC) echo 'selected="selected"'; ?> >Old to New</option>
@@ -34,9 +34,9 @@
 			<div class="form-group row mb-2">
 				<div class="col-md-6 mb-2">
 					<div class="input-group position-relative">
-						<input name="search_text" class="form-control rounded" type="search" placeholder="Search by name, mobile number, user-id" aria-label="Search Test" aria-describedby="search-button">
-						<div class="input-group-append position-absolute" style="top:1px; right:0; z-index:99;">
-							<button class="btn btn-sm btn-primary " type="submit" id="search-button"><i class="fa fa-search"></i></button>
+						<input name="search_text" class="form-control" type="search" placeholder="Search by name, mobile number, user-id" aria-label="Search Test" aria-describedby="search-button">
+						<div class="input-group-append">
+							<button class="btn btn-sm btn-primary default" type="submit" id="search-button"><i class="fa fa-search"></i></button>
 						</div>
 					</div>
 				</div>

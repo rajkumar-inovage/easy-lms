@@ -141,7 +141,7 @@ class Users extends MX_Controller {
 		$data['role_id']  = $data['result']['role_id'];
 		$data['coaching_id']   = $coaching_id;
 		$data["bc"] = array ( 'Users'=>'coaching/users/index/'.$coaching_id );
-		$data['toolbar_buttons'] = $this->toolbar_buttons;
+		// $data['toolbar_buttons'] = $this->toolbar_buttons;
 
 		$data['data'] = $data;
 		
@@ -174,7 +174,11 @@ class Users extends MX_Controller {
 		$data['rand_str'] 		= time ();
 		
 		/* Breadcrumbs */
-		$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);		
+		if($this->session->userdata ('is_admin')==true){
+			$data['bc'] = array ('Dashboard'=>'coaching/home/dashboard/'.$coaching_id);
+		}else{
+			$data['bc'] = array ('Dashboard'=>'coaching/home/teacher/'.$coaching_id);
+		}
 		$data['data'] = $data;
 		
 		$this->load->view (INCLUDE_PATH . 'header', $data);

@@ -169,7 +169,6 @@ class Enrolments extends MX_Controller {
 		$data['interval'] = $interval;
 		$data['schedule'] = $schedule;
 
-
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view('courses/schedule', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);

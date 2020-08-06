@@ -11,10 +11,22 @@ $(document).ready (function () {
 				tinymce.triggerSave();
 			});
 			editor.on('keydown', function(event) {
-				if (!(event.which == 83 && event.ctrlKey) && !(event.which == 19)) return true;
-			    $('#save').trigger('click');
-				event.preventDefault();
-			    return false;
+				if (event.ctrlKey && !event.shiftKey || event.metaKey) {
+			        switch (String.fromCharCode(event.which).toLowerCase()) {
+			        case 's':
+			            event.preventDefault();
+			            $('#save').trigger('click');
+			            break;
+			        }
+			    }
+			    if (event.ctrlKey && event.shiftKey || event.metaKey) {
+			        switch (String.fromCharCode(event.which).toLowerCase()) {
+			        case 's':
+			            event.preventDefault();
+			            $('#save_new').trigger('click');
+			            break;
+			        }
+			    }
             });
 		},
 		relative_urls: false,

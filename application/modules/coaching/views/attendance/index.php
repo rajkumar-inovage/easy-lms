@@ -4,7 +4,7 @@
 		<?php echo form_open('coaching/attendance_actions/search_users/'.$coaching_id, array('class'=>"", 'id'=>'search-form')); ?>
 			<div class="form-group row mb-2">
 				<div class="col-md-3 mb-2">
-					<select name="search_status" class="form-control" id="search-status" >
+					<select name="search_status" class="form-control select2-single" id="search-status" >
 						<option value="-1">All Status</option>
 						<option value="<?php echo USER_STATUS_DISABLED; ?>" <?php if ($status==USER_STATUS_DISABLED) echo 'selected="selected"'; ?> >Disabled</option>
 						<option value="<?php echo USER_STATUS_ENABLED; ?>" <?php if ($status==USER_STATUS_ENABLED) echo 'selected="selected"'; ?> >Enabled</option>
@@ -13,15 +13,15 @@
 				</div>
 
 				<div class="col-md-3 mb-2">
-					<select name="search_role" class="form-control" id="search-role">
+					<select name="search_role" class="form-control select2-single" id="search-role" <?php echo ($this->session->userdata ('is_admin')==false)? "disabled":""; ?>>
 						<option value="0">All Roles</option>
 						<?php foreach ($roles as $role) { ?>
-							<option value="<?php echo $role['role_id']; ?>" <?php if ($role_id ==$role['role_id']) echo 'selected="selected"'; ?> ><?php echo $role['description']; ?></option>
+							<option value="<?php echo $role['role_id']; ?>" <?php if ($role_id ==$role['role_id']) echo 'selected="selected"'; ?>><?php echo $role['description']; ?></option>
 						<?php } ?>
 					</select>
 				</div>
 				<div class="col-md-3 mb-2">
-					<select name="search_batch" class="form-control" id="search-batch">
+					<select name="search_batch" class="form-control select2-single" id="search-batch">
 						<option value="0">All Batches</option>
 						<?php /*foreach ($batches as $batch) { ?>
 							<option value="<?php echo $batch['id']; ?>"><?php echo $batch['title']; ?></option>
@@ -38,7 +38,7 @@
 				</div>
 				
 				<div class="col-md-3 mb-2">
-					<input type="date" id="search-date" value="<?php echo $date; ?>" max="<?php echo $date;?>" class="form-control"  > 
+					<input type="text" id="search-date" value="<?php echo $date; ?>" data-date-end-date="0d" class="form-control datepicker" data-date-format="yyyy-mm-dd" /> 
 				</div>
 			</div>
 		</form>				

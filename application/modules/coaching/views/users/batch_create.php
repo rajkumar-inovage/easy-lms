@@ -8,10 +8,6 @@
 						<?php echo form_label('Batch Name<span class="required">*</span>', '', array('class'=>'control-label')); ?>
 							<?php echo form_input ( array('name'=>'batch_name', 'class'=>'form-control required', 'value'=>set_value('batch_name', $batch['batch_name'])) );?> 
 					  </div>
-					  <div class="col-md-6">
-						<?php echo form_label('Batch Code<span class="required">*</span>', '', array('class'=>'control-label')); ?>
-							<?php echo form_input ( array('name'=>'batch_code', 'class'=>'form-control required', 'value'=>set_value('batch_code', $batch['batch_code'])) );?>   
-					  </div>
 					</div>	
 
 
@@ -25,7 +21,7 @@
 								$start_date = "";
 							}
 							?>
-							<?php echo form_input ( array('name'=>'start_date', 'class'=>'form-control', 'value'=>set_value('start_date', $start_date), 'type'=>'date') );?>   
+							<?php echo form_input ( array('name'=>'start_date', 'class'=>'form-control datepicker', 'data-date-orientation'=>'bottom', 'placeholder'=>'YYYY-MM-DD', 'data-date-format'=> 'yyyy-mm-dd', 'value'=>set_value('start_date', $start_date), 'type'=>'text') );?>   
 					  </div>
 					  <div class="col-md-6">
 						<?php echo form_label('Batch Ending On', '', array('class'=>'control-label')); ?>
@@ -37,7 +33,7 @@
 							}
 							?>
 
-							<?php echo form_input ( array('name'=>'end_date', 'class'=>'form-control', 'value'=>set_value('end_date', $end_date), 'type'=>'date') );?>
+							<?php echo form_input ( array('name'=>'end_date', 'class'=>'form-control datepicker', 'data-date-orientation'=>'bottom', 'placeholder'=>'YYYY-MM-DD', 'data-date-format'=> 'yyyy-mm-dd', 'value'=>set_value('end_date', $end_date), 'type'=>'text') );?>
 					  </div>
 					</div>
 				</div>
