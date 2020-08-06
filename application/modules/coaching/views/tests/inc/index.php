@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-12 list" data-check-all="checkAll" id="test-lists">  
+	<div class="col-12 list">  
 		<?php 
 			$i = 1;
 			if (! empty ($tests)) { 
@@ -12,13 +12,13 @@
 					<div class="w-5">
 						<strong class="heading-icon" style="font-size:0.8rem;"><?php echo $i; ?> - </strong>
 					</div>
-					<div class=" w-40 w-xs-100 truncate">
-						<a class="list-item-heading mb-0 truncate btn-link" href="<?php echo site_url ('coaching/tests/manage/'.$coaching_id.'/'.$courseId.'/'.$row['test_id']); ?>">
+					<div class=" w-40 w-xs-100">
+						<a class="list-item-heading mb-0 btn-link" href="<?php echo site_url ('coaching/tests/manage/'.$coaching_id.'/'.$courseId.'/'.$row['test_id']); ?>">
 							<?php echo $row['title']; ?>
 						</a>
 						<p class="m-0"> <?php echo $row['unique_test_id']; ?></p>
 					</div>
-					<p class="mb-0 text-muted w-20 w-xs-100">
+					<p class="mb-0 text-muted w-10 w-xs-100">
 					<?php 
 							$param = $this->common_model->sys_parameter_name(SYS_TEST_TYPE, $row['test_type']);
 							echo $param['paramval'];
@@ -36,11 +36,14 @@
 							}
 							?>
 					</div>
+					<div class="w-20 w-xs-100 text-left text-md-right mt-3 mt-md-0">
+						<a class="btn btn-primary" href="<?php echo site_url ('coaching/tests/manage/'.$coaching_id.'/'.$courseId.'/'.$row['test_id']); ?>">
+						<i class="fa fa-cog"></i> Manage
+						</a>
+                  	</div>
+					
 				</div>
-				<label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
-					<input type="checkbox" class="custom-control-input">
-					<span class="custom-control-label">&nbsp;</span>
-				</label>
+				
 			</div>
 			
 		</div>

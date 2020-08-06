@@ -125,9 +125,9 @@
 							?>
 							<div class="d-block">
 								<div class="btn-group-toggle gender-toggle" data-toggle="buttons">
-									<label class="btn position-relative btn-info default p-1 mb-1<?php echo ($status_male)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'m', 'checked'=>$status_male, 'class'=>'')); ?><i class="iconsminds-male pr-2"></i><?php echo ('Male'); ?></label>
-									<label class="btn position-relative btn-info default p-1 mb-1<?php echo ($status_female)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'f', 'checked'=>$status_female, 'class'=>'radio-primary form-check-input')); ?><i class="iconsminds-female pr-2"></i><?php echo ('Female'); ?></label>
-									<label class="btn position-relative btn-info default p-1 mb-1<?php echo ($status_none)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'n', 'checked'=>$status_none, 'class'=>'radio-primary form-check-input')); ?><i class="iconsminds-woman-man pr-2"></i><?php echo ('Not Specified'); ?></label>
+									<label class="btn position-relative btn-light default p-1 mb-1<?php echo ($status_male)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'m', 'checked'=>$status_male, 'class'=>'')); ?><i class="iconsminds-male pr-2"></i><?php echo ('Male'); ?></label>
+									<label class="btn position-relative btn-light default p-1 mb-1<?php echo ($status_female)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'f', 'checked'=>$status_female, 'class'=>'radio-primary form-check-input')); ?><i class="iconsminds-female pr-2"></i><?php echo ('Female'); ?></label>
+									<label class="btn position-relative btn-light default p-1 mb-1<?php echo ($status_none)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'n', 'checked'=>$status_none, 'class'=>'radio-primary form-check-input')); ?><i class="iconsminds-woman-man pr-2"></i><?php echo ('Not Specified'); ?></label>
 								</div>
 							</div>
 						</div>
@@ -138,15 +138,12 @@
 					
 				<div class="card-footer">
 					<?php
-					echo form_submit ( array ('name'=>'submit', 'value'=>'Save ', 'class'=>'btn btn-primary float-left')); 
-					?>
-					<?php 
-                            if (isset ($bc)) {
-                                $bc_link = current ($bc);
-                                $bc_title  = key ($bc);
-                                echo anchor ($bc_link, 'Cancel', array('class'=>'float-right btn btn-info', 'title'=>'Back To '.$bc_title)); 
-                            }
-                        ?>
+					if ($num_users >= $max_users && $member_id == 0) {
+						echo '<input type="button" class="btn btn-danger" disabled value="User Limit Reached">';
+					} else {						
+						echo form_submit (array('name'=>'submit', 'value'=>'Save ', 'class'=>'btn btn-primary')); 
+					}
+					?>					
 				</div>
 			</form>
 		</div>

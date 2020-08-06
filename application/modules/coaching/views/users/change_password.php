@@ -31,25 +31,13 @@
 				
 				<div class="card-footer">
 					<div class="col-12">
-							<input type="submit" name="submit" value="<?php echo ('Save'); ?>" class="btn btn-primary float-left pull-right" />
-							<?php 
-								if (isset ($bc)) {
-									$bc_link = current ($bc);
-									$bc_title  = key ($bc);
-									echo anchor ($bc_link, 'Cancel', array('class'=>'float-right btn btn-info', 'title'=>'Back To '.$bc_title)); 
-								}
-							?>
+						<input type="submit" name="submit" value="<?php echo ('Save'); ?>" class="btn btn-primary " />
+					    <a href="" id="resend_confirmation" class="btn btn-secondary">Send OTP for Login</a>
 					</div>
 				</div>
 			</form>
 		</div>
 
-		<div class="card card-default bg-info mb-4">
-			<div class="card-body text-center">
-				<h5>OR</h5>
-			    <a href="" id="resend_confirmation" class="btn btn-primary">Send OTP for Login</a>
-			</div>
-		</div>
 	</div>
 
 	<?php if ($member_id > 0) { ?>

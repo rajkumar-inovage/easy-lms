@@ -1,9 +1,6 @@
 <div class="row">
 	<div class="col-md-12">
 		<?php echo form_open('coaching/courses_actions/create_edit_action/' . $coaching_id . '/' . $cat_id . '/' . $course_id, array('class' => 'card', 'id' => 'validate-1')); ?>
-			<div class="card-header">
-				<h4 class="card-title text-center mb-0"><?php echo $sub_title; ?></h4>
-			</div>
 			<div class="card-body">
 				<div class="form-group">
 					<label for="title">Title</label>
@@ -16,18 +13,18 @@
 				</div>
 
 				<div class="form-group">
-					<label for="curriculum">Curricullum</label>
+					<label for="curriculum">Curriculum</label>
 					<textarea class="form-control" id="curriculum" name="curriculum" rows="4" placeholder="Curriculum of this course?"><?php echo (isset($course['curriculum'])) ? $course['curriculum'] : ''; ?></textarea>
 				</div>
 				
 				<div class="form-group">
 					<label for="batch-type">Course Type</label>
 					<div class="">
-						<label><input type="radio" name="enrolment_type" value="<?php echo COURSE_ENROLMENT_DIRECT;?>" <?php echo set_radio ('enrolment_type', $course['enrolment_type'], true);?> > Direct Enrolment</label>
+						<label><input type="radio" name="enrolment_type" value="<?php echo COURSE_ENROLMENT_DIRECT;?>" <?php if ($course['enrolment_type'] == COURSE_ENROLMENT_DIRECT) echo 'checked';?> > Direct Enrolment</label>
 						<div class="text-muted">Students can enrol anytime and from anywhere</div>
 					</div>
 					<div class="">
-						<label><input type="radio" name="enrolment_type" value="<?php echo COURSE_ENROLMENT_BATCH;?>" <?php echo set_radio ('enrolment_type', $course['enrolment_type']);?> > Batch Enrolment</label>
+						<label><input type="radio" name="enrolment_type" value="<?php echo COURSE_ENROLMENT_BATCH;?>" <?php if ($course['enrolment_type'] == COURSE_ENROLMENT_BATCH) echo 'checked';?> > Batch Enrolment</label>
 						<div class="text-muted">Students can enrol in available batch </div>
 					</div>
 				</div>

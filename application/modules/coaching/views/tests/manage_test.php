@@ -1,6 +1,6 @@
-<div class="row app-row mb-4">
+<div class="row mb-4">
 	<!-- Prepare -->
-    <div class="col-lg-6 col-md-12 mb-4">
+    <div class="col-md-6 mb-4">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title text-primary">
@@ -14,8 +14,13 @@
 	                </a>
 					<?php if ($test['finalized'] == 0) { ?>
 						<a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>">
-						<i class="simple-icon-plus heading-icon"></i>
-	                    <span class="align-middle d-inline-block">Add Questions</span>
+							<i class="simple-icon-plus heading-icon"></i>
+	        	            <span class="align-middle d-inline-block">Add Questions</span>
+						</a>
+					<?php } else { ?>
+						<a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="<?php echo site_url ('coaching/tests/question_group_create/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>" disabled>
+							<i class="simple-icon-plus heading-icon"></i>
+		                    <span class="align-middle d-inline-block">Add Questions</span>
 						</a>
 					<?php } ?>
                 
@@ -25,7 +30,7 @@
     </div>
     
     <!-- Publish -->
-    <div class="col-lg-6 col-md-12 mb-4">
+    <div class="col-md-6 mb-4">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title text-primary">
@@ -62,7 +67,7 @@
         </div>
     </div>
 	<!-- Submissions -->
-    <div class="col-lg-6 col-md-12 mb-4">
+    <div class="col-md-6 mb-4">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title text-primary">
@@ -85,26 +90,26 @@
 
 	<!-- Delete -->
 
-	<div class="col-lg-6 col-md-12 mb-4">
-	        <div class="card">
-	            <div class="card-body">
-	                <h5 class="card-title text-primary">
-	                	<span><i class="simple-icon-trash pr-3"></i></span>Delete
-	                </h5>
-	                <div class="separator mb-5"></div>
-	                <div class="card-body p-0 align-self-center justify-content-between min-width-zero align-items-md-center">
-		                <a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="javascript:void(0)" onclick="javascript:show_confirm ('This will delete all questions in this test. Continue?', '<?php echo site_url('coaching/tests_actions/reset_test/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>')" title="Reset Test">
-		                    <i class="simple-icon-wrench heading-icon"></i>
-		                    <span class="align-middle d-inline-block">Reset</span>
-		                </a>
-		                <a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="javascript:void(0)" onclick="javascript:show_confirm ('Are you sure you want to delete this test?', '<?php echo site_url('coaching/tests_actions/delete_test/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>')" title="Delete Test">
-		                    <i class="simple-icon-trash heading-icon"></i>
-		                    <span class="align-middle d-inline-block">Delete</span>
-		                </a>
-		            </div>
-	            </div>
-	        </div>
-	    </div>
+	<div class="col-md-6 mb-4">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title text-primary">
+					<span><i class="simple-icon-trash pr-3"></i></span>Delete
+				</h5>
+				<div class="separator mb-5"></div>
+				<div class="card-body p-0 align-self-center justify-content-between min-width-zero align-items-md-center">
+					<a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="javascript:void(0)" onclick="javascript:show_confirm ('This will delete all questions in this test. Continue?', '<?php echo site_url('coaching/tests_actions/reset_test/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>')" title="Reset Test">
+						<i class="simple-icon-wrench heading-icon"></i>
+						<span class="align-middle d-inline-block">Reset</span>
+					</a>
+					<a class="list-item-heading mb-0 truncate w-100 mt-0 d-inline-block" href="javascript:void(0)" onclick="javascript:show_confirm ('Are you sure you want to delete this test?', '<?php echo site_url('coaching/tests_actions/delete_test/'.$coaching_id.'/'.$course_id.'/'.$test_id); ?>')" title="Delete Test">
+						<i class="simple-icon-trash heading-icon"></i>
+						<span class="align-middle d-inline-block">Delete</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 

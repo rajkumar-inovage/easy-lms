@@ -189,7 +189,7 @@ class User_actions extends MX_Controller {
 				$email = $user['email'];
 				$subject = "Password Changed";
 				$message = $this->load->view (EMAIL_TEMPLATE . 'change_password', $data, true);
-				$this->common_model->send_email($send_to, $subject, $message );				
+				$this->common_model->send_email ($email, $subject, $message );				
 			}
 
 			if ($member_id == $this->session->userdata ('member_id')) {
@@ -357,8 +357,8 @@ class User_actions extends MX_Controller {
 	
 	public function create_batch ($coaching_id=0, $batch_id=0) {
 		
-		$this->form_validation->set_rules ('batch_code', 'Batch Code', 'required');
 		$this->form_validation->set_rules ('batch_name', 'Batch Name', 'required');
+		//$this->form_validation->set_rules ('batch_code', 'Batch Code', 'required');
 		
 		if ( $this->form_validation->run() == true)  {
 			if ($batch_id > 0) {
@@ -474,7 +474,6 @@ class User_actions extends MX_Controller {
 			
 			$upload_data = $this->upload->data();
 			$role_id = $this->input->post ('role');
-			$batch_id = $this->input->post ('batch');
 
 			$file = $upload_dir . $upload_data['file_name'];
 			$get_file = read_file ($file);
@@ -515,60 +514,23 @@ class User_actions extends MX_Controller {
 					$users['mobile'] 			=  (trim($row['mobile']));
 					$users['fax'] 				=  (trim($row['fax']));
 					$users['role_id'] 			=  $role_id;
-					if ($users['email'] == '' || $users['first_name'] == '' || $users['last_name'] == '') {
+					if ($users['primary_contact'] == '' || $users['first_name'] == '' ) {
 						$count_error++;
 					} else if ( ($num_users > $free_users) && $member_id == 0) {
-							$this->output->set_content_type("application/json");
-							$this->output->set_output(json_encode(array('status'=>false, 'error'=>'User limit reached. You can create a maximum of '.$free_users.' user accounts in Free Subscription plan. Upgrade your plan to create more users' )));
+						$this->output->set_content_type("application/json");
+						$this->output->set_output(json_encode(array('status'=>false, 'error'=>'User limit reached. You can create a maximum of '.$free_users.' user accounts in Free Subscription plan. Upgrade your plan to create more users' )));
+						break;
 					} else {
 						$this->users_model->upload_users_csv ($coaching_id, $batch_id, $users);
 						$message = ($index + 1) . ' users uploaded successfully. ';
 						if ($count_error > 0) {
-								$message .= $count_error. ' records were skipped due to insufficient data.';
+							$message .= $count_error. ' records were skipped due to insufficient data.';
 						}
 						$this->output->set_content_type("application/json");
 						$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('coaching/users/index/'.$coaching_id.'/'.$role_id) )));
 					}
 			    }
-			    /*
-				while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
-					
-					$users['sr_no'] 			=  (trim($row[0]));
-					$users['email'] 			=  (trim($row[1]));
-					$users['first_name'] 		=  (trim($row[2]));
-					$users['second_name'] 		=  (trim($row[3]));
-					$users['last_name'] 		=  (trim($row[4]));
-					$users['dob'] 				=  (trim($row[5]));
-					$users['gender'] 			=  (trim($row[6]));
-					$users['address'] 			=  (trim($row[7]));
-					$users['postal'] 			=  (trim($row[8]));
-					$users['city'] 				=  (trim($row[9]));
-					$users['province'] 			=  (trim($row[10]));
-					$users['country'] 			=  (trim($row[11]));
-					$users['primary_contact'] 	=  (trim($row[12]));
-					$users['mobile'] 			=  (trim($row[13]));
-					$users['fax'] 				=  (trim($row[14]));
-					$users['role_id'] 			=  $role_id;
-
-					if ($i > 0) {
-						if ($users['email'] == '' || $users['first_name'] == '' || $users['last_name'] == '') {
-							$count_error++;
-						} else if ( ($num_users > $free_users) && $member_id == 0) {
-								$this->output->set_content_type("application/json");
-								$this->output->set_output(json_encode(array('status'=>false, 'error'=>'User limit reached. You can create a maximum of '.$free_users.' user accounts in Free Subscription plan. Upgrade your plan to create more users' )));
-						} else {
-							$this->users_model->upload_users_csv ($coaching_id, $batch_id, $users);
-							$message = $i . ' users uploaded successfully. ';
-							if ($count_error > 0) {
-								$message .= $count_error. ' records were skipped due to insufficient data.';
-							}
-							$this->output->set_content_type("application/json");
-							$this->output->set_output(json_encode(array('status'=>true, 'message'=>$message, 'redirect'=>site_url('coaching/users/index/'.$coaching_id.'/'.$role_id) )));
-						}
-					}
-					$i++;
-				}
-				*/
+			   
 			}
 			// Clean-up
 			$this->users_model->import_cleanup ();

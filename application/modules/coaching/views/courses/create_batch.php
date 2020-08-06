@@ -11,7 +11,7 @@
 					  </div>
 					  <div class="col-md-6">
 						<?php echo form_label('Max Users<span class="required">*</span>', '', array('class'=>'control-label')); ?>
-						<?php echo form_input ( array('name'=>'max_users', 'type'=>'number', 'min'=>0, 'class'=>'form-control required', 'value'=>set_value('max_users', $batch['max_users'])) );?> 
+						<?php echo form_input ( array('name'=>'max_users', 'type'=>'number', 'min'=>0, 'class'=>'form-control required', 'value'=>set_value('max_users', $batch['max_users']), 'placeholder'=>0) );?> 
 						<p class="text-muted">Maximum number of users allowed in this batch. 0 for unlimited</p>
 					  </div>
 					</div>
@@ -26,7 +26,7 @@
 								$start_date = "";
 							}
 							?>
-							<?php echo form_input ( array('name'=>'start_date', 'class'=>'form-control datepicker', 'value'=>set_value('start_date', $start_date), 'type'=>'date') );?>   
+							<?php echo form_input ( array('name'=>'start_date', 'class'=>'form-control ', 'value'=>set_value('start_date', $start_date), 'type'=>'date') );?>   
 					  </div>
 					  <div class="col-md-6">
 						<?php echo form_label('Batch Ending On', '', array('class'=>'control-label')); ?>
@@ -38,7 +38,7 @@
 							}
 							?>
 
-							<?php echo form_input ( array('name'=>'end_date', 'class'=>'form-control datepicker', 'value'=>set_value('end_date', $end_date), 'type'=>'date') );?>
+							<?php echo form_input ( array('name'=>'end_date', 'class'=>'form-control ', 'value'=>set_value('end_date', $end_date), 'type'=>'date') );?>
 					  </div>
 					</div>
 				</div>
