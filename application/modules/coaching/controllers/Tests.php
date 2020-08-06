@@ -7,7 +7,7 @@ class Tests extends MX_Controller {
 	public function __construct () {
 	    // Load Config and Model files required throughout Users sub-module
 	    $config = [ 'coaching/config_coaching'];
-	    $models = ['coaching_model', 'subscription_model', 'tests_model', 'test_plans_model', 'qb_model', 'users_model', 'plans_model'];
+	    $models = ['coaching_model', 'subscription_model', 'courses_model', 'tests_model', 'test_plans_model', 'qb_model', 'users_model', 'plans_model'];
 
 	    $this->common_model->autoload_resources ($config, $models);
 	    $coaching_id = $this->uri->segment (4);
@@ -165,6 +165,7 @@ class Tests extends MX_Controller {
 		$data['bc'] = array ('Tests'=>'coaching/tests/index/'.$coaching_id.'/'.$course_id);
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);
 		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
+		$data['course'] = $this->courses_model->get_course_by_id ($course_id);
 
 		if (!empty($questions)) {
 			$num_test_questions = count ($questions);
@@ -217,6 +218,7 @@ class Tests extends MX_Controller {
 			}
 		}
 		$data['results'] = $result;
+		$data['course'] = $this->courses_model->get_course_by_id ($course_id);
 
 		/* --==// Back Link //==-- */
 		$data['bc'] = array ('Manage Test'=>'coaching/tests/manage/'.$coaching_id.'/'.$course_id.'/'.$test_id);
@@ -229,6 +231,7 @@ class Tests extends MX_Controller {
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 
 		$data['script'] = $this->load->view ('tests/scripts/preview_test', $data, true);
+		$data['right_sidebar'] = $this->load->view('tests/inc/manage_test', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);		
 		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/questions', $data);
@@ -251,6 +254,8 @@ class Tests extends MX_Controller {
 
 		$questions = $this->tests_model->getTestQuestions ($coaching_id, $test_id);		
 		$testMarks = $this->tests_model->getTestQuestionMarks ($coaching_id, $test_id);
+		$data['course'] = $this->courses_model->get_course_by_id ($course_id);
+
 		
 		if (!empty($questions)) {
 			$num_test_questions = count ($questions);
@@ -268,8 +273,8 @@ class Tests extends MX_Controller {
 		$data['toolbar_buttons'] = $this->toolbar_buttons;
 		
 		//$data['script'] 	= $this->load->view ('tests/scripts/question_group_create', $data, true);
+		$data['right_sidebar'] = $this->load->view('tests/inc/manage_test', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
-		$this->load->view('tests/inc/manage_test', $data);
 		$this->load->view('tests/question_group_create', $data);
 		$this->load->view(INCLUDE_PATH . 'footer', $data);
     }

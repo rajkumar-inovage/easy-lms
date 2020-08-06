@@ -20,6 +20,7 @@
             </a>
         </div>
     </div>
+
     <div class="col-lg-4">
         <div class="card mb-4 progress-banner">
             <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id); ?>" class="card-body justify-content-between d-flex flex-row align-items-center">
@@ -70,8 +71,8 @@
 						<h4 class="card-title d-flex justify-content-between">
 							<span><i class="iconsminds-books "></i> Courses</span>
 							<span class="badge badge-primary"><?php echo $num_courses; ?></span>
-						 </h4>
-
+						</h4>
+						<div class="separator mb-5"></div>
 						<?php
 						$i = 0;
 						if (! empty($courses)) {
@@ -118,7 +119,8 @@
 						<h4 class="card-title d-flex justify-content-between">
 							<span>User Registration This Week</span>
 							<span class="badge badge-primary"><?php //echo $num_courses; ?></span>
-						 </h4>
+						</h4>
+						<div class="separator mb-5"></div>
 					</div>
 					 <div class="chart-container chart">
                         <canvas id="user-registered"></canvas>
@@ -140,8 +142,10 @@
 				<h4 class="card-title d-flex justify-content-between">
 					<span><i class="simple-icon-people "></i> Users</span>
 					<span class="badge badge-primary"><?php echo $users['total']; ?></span>
-				 </h4>
-				 <div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
+				</h4>
+				<div class="separator mb-5"></div>
+
+				<div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
                     <div class="">
                         <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id.'/'.USER_ROLE_STUDENT); ?>">
                             <p class="font-weight-medium mb-0 ">Students</p>
@@ -150,7 +154,7 @@
                     </div>
                     <span class="badge badge-pill badge-primary"><?php echo $users['num_students']; ?></span>
                 </div>
-				 <div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
+				<div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
                     <div class="">
                         <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id.'/'.USER_ROLE_TEACHER); ?>">
                             <p class="font-weight-medium mb-0 ">Teachers</p>
@@ -159,7 +163,7 @@
                     </div>
                     <span class="badge badge-pill badge-primary"><?php echo $users['num_teachers']; ?></span>
                 </div>
-				 <div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
+				<div class="d-flex flex-row justify-content-between mb-3 pb-3 border-bottom">                    
                     <div class="">
                         <a href="<?php echo site_url ('coaching/users/index/'.$coaching_id.'/0/'.USER_STATUS_UNCONFIRMED); ?>">
                             <p class="font-weight-medium mb-0 ">Pending For Approval</p>
@@ -173,42 +177,33 @@
 		</div>
 
 		<!----// Announcements //-->
-		<div class="card mt-3 shadow-sm">
-			<div class="card-body">
-				<h4 class="card-title mb-0">Announcements</h4>
-			</div>
-			<div class="list-group">
-			<?php if (! empty($announcements)) {
-				foreach ($announcements as $row) {
-					?>
-					<li class="list-group-item media d-flex">
-						<div class="media-left pr-2">
-							<?php if ($row['status'] == 1) {
-								echo '<i class="fa fa-circle text-success"></i>';
-							} else {
-								echo '<i class="fa fa-circle text-grey-200"></i>';
-							}
-							?>
-						</div>
-						<div class="media-body">
-							<?php echo $row['title']; ?>
-						</div>
-					</li>
-					<?php
+		<div class="card dashboard-progress">
+            <div class="position-absolute card-top-buttons">
+                <button class="btn btn-header-light icon-button">
+                </button>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Announcements</h5>
+				<div class="separator mb-5"></div>
+                <?php 
+                if (! empty($announcements)) {
+					foreach ($announcements as $row) {
+						?>
+		                <div class="mb-4">
+		                    <p class="mb-2">
+		                        <a href="<?php echo site_url ('coaching/announcements/create_announcement/'.$coaching_id.'/'.$row['announcement_id']); ?>"><span><?php echo $row['title']; ?></span></a>
+		                        <span class="float-right text-muted"><?php echo date ('j/M', $row['start_date']); ?></span>
+		                    </p>
+		                </div>
+		                <?php
+					}
 				}
-			}
-			?>
-			</div>
-		</div>
+				?>
+            </div>
+        </div>
 
 	</div>
-
 	
-	<div class="col-md-3 d-none">		
-
-		
-
-	</div>
 </div>
 
 <div class="card fixed d-none">

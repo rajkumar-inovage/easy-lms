@@ -12,7 +12,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 col-sm-6">
-                        <p class="mb-0 text-muted"><?php echo BRANDING_TEXT; ?></p>
+                        <p class="mb-0 text-muted"><a href="https://easycoachingapp.com" target="_blank"><?php echo BRANDING_TEXT; ?></a></p>
                     </div>
                     <div class="col-sm-6 d-none">
                         <ul class="breadcrumb pt-0 pr-0 float-right">

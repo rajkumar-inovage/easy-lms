@@ -8,8 +8,7 @@
                 <?php 
                     if ($course['enrolment_type'] == COURSE_ENROLMENT_DIRECT) echo 'Direct Enrolment';
                     else echo 'Batch Enrolment';
-                ?>
-                
+                ?>                
             </p>
 
             <hr>

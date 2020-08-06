@@ -55,14 +55,14 @@ var briefChart = new Chart(ctx, {
 			xAxes: [{
 				display: true,
 				scaleLabel: {
-					display: true,
+					display: false,
 					labelString: 'Date'
 				}
 			}],
 			yAxes: [{
 				display: true,
 				scaleLabel: {
-					display: true,
+					display: false,
 					labelString: 'Users'
 				},
 				ticks: {
