@@ -1,3 +1,4 @@
+<style>p img{max-width: 100%;height: auto}</style>
 <div class="row">
 	<?php if ($page_id > 0):?>
 	<div class="col-12">
