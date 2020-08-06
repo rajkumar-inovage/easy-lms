@@ -11,25 +11,29 @@
 			?>
 			<div class="card mb-3">
 	            
-	            <div class="card-body">
+	            <div class="w-100 card-body align-self-center border-bottom pb-2 d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
 	            	<div>
 						<span class="badge badge-primary">Section <?php echo $num_parent; ?></span>
-					</div>
-					<div class="d-flex justify-content-between">
-						<div>
+						<div class="text-primary pt-2">
 		            		<?php echo $parent['question']; ?>
 		            	</div>
-		            	<div class="mr-2">
+					</div>
+					<div class="text-right">
+						
+		            	<div class="">
 
 		            		<div class="btn-group">
-                                <div class="btn btn-primary btn-lg pl-4 pr-0 check-button">
+                                <!-- <div class="btn btn-primary btn-lg pl-4 pr-0 check-button">
                                     <label class="custom-control custom-checkbox mb-0 d-inline-block">
 				                    <input type="checkbox" class="custom-control-input checks checkAll" id="checkAll<?php echo $parent_id; ?>" value="<?php echo $parent_id; ?>" onclick="check_all ()">
                                         <span class="custom-control-label">&nbsp;</span>
                                     </label>
-                                </div>
-                                <button type="button" class="btn btn-lg btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                </div> -->
+                                <!-- <button type="button" class="btn btn-lg btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="sr-only">Toggle Dropdown</span>
+                                </button> -->
+								<button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Add New
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right">
 									<?php
@@ -49,8 +53,8 @@
 				if ( ! empty($questions)) {
 					foreach ($questions as $id=>$row) {
 						?>
-			            <div class="d-flex flex-grow-1 min-width-zero min-width-zero align-items-md-center">
-			                <div class="card-body min-width-zero align-items-md-center">
+			            <div class="card-body border-bottom d-flex flex-grow-1 min-width-zero min-width-zero align-items-md-center">
+			                <div class="list-item-heading mb-0 truncate w-90 w-xs-100 mt-0">
 			                    <span class="mr-3 float-left"><?php echo $num_question; ?>.</span>
 			                    <div class="mb-0 w-80" >
 			                    	<?php echo $row['question']; ?>
@@ -63,13 +67,13 @@
 			                    	?>
 			                    </div>
 			                </div>
-			                <div class="w-15 w-xs-100">
-			                    <div class="btn-group">
-									<a href="<?php echo site_url ('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$id); ?>" class="btn btn-info"><i class="simple-icon-edit "></i></a>			                    	
-									<a href="void()" class="btn btn-danger" onclick="show_confirm ('Delete this question?')"><i class="simple-icon-trash "></i></a>
+			                <div class="w-10 w-xs-100 text-right">
+			                    <div class="btn-groudp">
+									<a href="<?php echo site_url ('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$id); ?>" class="btn btn-info d-none"><i class="simple-icon-edit "></i></a>			                    	
+									<a href="void()" class="text-danger" onclick="show_confirm ('Delete this question?')"><i class="simple-icon-trash "></i></a>
 			                    </div>
 			                </div>
-			                <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+			                <label class="custom-control custom-checkbox mb-1 align-self-center pr-0 d-none">
 			                    <input type="checkbox" class="custom-control-input checks checks<?php echo $parent_id; ?>" name="questions[]" id="select<?php echo $id; ?>" type="checkbox" value="<?php echo $id; ?>" >
 			                    <span class="custom-control-label">&nbsp;</span>
 			                </label>

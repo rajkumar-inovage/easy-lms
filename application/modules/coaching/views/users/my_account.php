@@ -75,8 +75,8 @@
 						</div>
 
 						<div class="col-md-6">
-							<?php echo form_label('Gender', '', array('class'=>'')); ?>
-							<p>
+							<?php echo form_label('Gender', '', array('class'=>'mt-2 mt-md-0')); ?>
+							
 							    
 							<?php
 								$status_none = false;
@@ -89,10 +89,16 @@
 								else
 									$status_none = true;
 							?> 
-							<label class="form-check-label ml-3 mr-3"><?php echo form_radio(array('name'=>'gender', 'value'=>'m', 'checked'=>$status_male, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Male'); ?></label>
-							<label class="form-check-label mr-3"><?php echo form_radio(array('name'=>'gender', 'value'=>'f', 'checked'=>$status_female, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Female'); ?></label>
-							<label class="form-check-label mr-3"><?php echo form_radio(array('name'=>'gender', 'value'=>'n', 'checked'=>$status_none, 'class'=>'radio-primary form-check-input')); ?><?php echo ('Not Specified'); ?></label>
-							</p>
+							
+
+							<div class="d-block">
+								<div class="btn-group-toggle gender-toggle" data-toggle="buttons">
+									<label class="btn position-relative btn-light default p-1 mb-1<?php echo ($status_male)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'m', 'checked'=>$status_male, 'class'=>'')); ?><i class="iconsminds-male pr-2"></i><?php echo ('Male'); ?></label>
+									<label class="btn position-relative btn-light default p-1 mb-1<?php echo ($status_female)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'f', 'checked'=>$status_female, 'class'=>'radio-primary form-check-input')); ?><i class="iconsminds-female pr-2"></i><?php echo ('Female'); ?></label>
+									<label class="btn position-relative btn-light default p-1 mb-1<?php echo ($status_none)?" active":""; ?>"><?php echo form_radio(array('name'=>'gender', 'value'=>'n', 'checked'=>$status_none, 'class'=>'radio-primary form-check-input')); ?><i class="iconsminds-woman-man pr-2"></i><?php echo ('Not Specified'); ?></label>
+								</div>
+							</div>
+
 
 						</div>
 					</div>
@@ -104,7 +110,7 @@
 				<div class="card-footer">
 					<div class="btn-toolbar">
 						<?php
-						echo form_submit ( array ('name'=>'submit', 'value'=>'Save ', 'class'=>'btn btn-success pull-right')); 
+						echo form_submit ( array ('name'=>'submit', 'value'=>'Save ', 'class'=>'btn btn-primary pull-right')); 
 						?>
 					</div>	
 				</div>
@@ -112,62 +118,18 @@
 		</div>
 	</div>
 	
-	<div class="col-md-3">
-		
-		<div class="card card-default">
-			<div class="card-body ">
-		        <div class="profile text-center">
-					<img src="<?php echo base_url($profile_image); ?>" alt="Profile Image" class="img-responsive img-thumbnail rounded-circle " width="200"> 
-					<h4><?php echo $result['first_name'].' '.$result['last_name']; ?></h4>
-					<small><a href="#" class="" data-toggle="modal" data-target="#add_image">Edit</a></small>
-				</div>
-			</div>
-		</div>
+	<div class="col-md-3 mb-3 mb-md-0">
+
+		        
+				<?php if ($member_id > 0) { ?>
+					<div class="card-body ">
+						<?php $this->load->view('inc/my_account_menu', $data); ?>
+					</div>
+				<?php } ?>
+	
 
 	</div>
 </div>
 
 
 
-<!-- Add Image -->
-<div class="modal" tabindex="-1" role="dialog" id="add_image">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-	  <?php echo form_open_multipart ('coaching/user_actions/upload_profile_picture/'.$member_id.'/'.$coaching_id, array ('class'=>'form-horizontal row-border', 'id'=>'upload_image')); ?>
-            <div class="modal-header">
-                <h5 class="modal-title">Profile Image</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-			<div class="modal-body">
-				<div class="form-group row"> 
-					<div class="col-md-12">
-						<div id="profile_messages"></div>
-						<div id="image_preview" class="text-center" >
-							<img src="<?php echo base_url ($profile_image); ?>" alt="Profile Image" class="img-responsive img-thumbnail rounded-circle align-center" height="80" >
-						</div>
-						<br>
-						<div class="align-center "><a class="" id="remove_image" href="#" onclick="show_confirm ('Remove this image?', '<?php echo site_url('coaching/user_actions/remove_profile_image/'.$member_id); ?>')">Remove Image</a></div>
-					</div>
-				</div>
-				
-				<div class="form-group row">
-					<div class="col-md-12">
-						<input type="file" name="userfile" class="required" accept="image/*" data-style="fileinput" data-inputsize="medium">
-						<p class="help-block">Images only (image/*)</p>
-					</div>
-				</div>
-
-			</div>
-			
-			<div class="modal-footer">
-				<div class="btn-toolbar">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<input type="submit" name="submit" value="<?php echo ('Upload'); ?>" class="btn btn-primary pull-right" />
-				</div>
-			</div>
-		<?php echo form_close (); ?>
-	</div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
