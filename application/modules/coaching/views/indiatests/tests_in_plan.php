@@ -1,7 +1,7 @@
 <?php echo form_open ('coaching/indiatest_actions/import_tests/'.$coaching_id.'/'.$course_id.'/'.$plan_id, ['id'=>'validate-1']) ;?>
 	<?php if ($course_id > 0) { ?>
 		<div class="row mb-4">
-			<div class="col-12">
+			<div class="col-12 text-right">
 					<input type="submit" name="" value="Add Tests" class="btn btn-primary">
 			</div>
 		</div>
@@ -62,7 +62,7 @@
 
 	<?php if ($course_id > 0) { ?>
 		<div class="row my-3">
-			<div class="col-12">
+			<div class="col-12 text-right">
 					<input type="submit" name="" value="Add Tests" class="btn btn-primary">
 			</div>
 		</div>
