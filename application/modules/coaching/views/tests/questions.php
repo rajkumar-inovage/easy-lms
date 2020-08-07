@@ -52,6 +52,7 @@
 				$num_question = 1;
 				if ( ! empty($questions)) {
 					foreach ($questions as $id=>$row) {
+						$index = $id + 1;
 						?>
 			            <div class="card-body border-bottom d-flex flex-grow-1 min-width-zero min-width-zero align-items-md-center">
 			                <div class="list-item-heading mb-0 truncate w-90 w-xs-100 mt-0">
@@ -67,10 +68,11 @@
 			                    	?>
 			                    </div>
 			                </div>
-			                <div class="w-10 w-xs-100 text-right">
-			                    <div class="btn-groudp">
-									<a href="<?php echo site_url ('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$id); ?>" class="btn btn-info d-none"><i class="simple-icon-edit "></i></a>			                    	
-									<a href="void()" class="text-danger" onclick="show_confirm ('Delete this question?')"><i class="simple-icon-trash "></i></a>
+			                
+			                <div class="w-15 w-xs-100">
+			                    <div class="btn-group">
+                            <a href="<?php echo site_url ('coaching/tests/question_create/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$index); ?>" class="btn btn-info"><i class="simple-icon-pencil "></i></a>			                    	
+                            <a href="javascript:void(0)" class="btn btn-danger" onclick="show_confirm('Delete this question?', '<?php echo site_url ('coaching/tests_actions/remove_question/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$row['parent_id'].'/'.$row['question_id']); ?>')"><i class="simple-icon-trash"></i></a>
 			                    </div>
 			                </div>
 			                <label class="custom-control custom-checkbox mb-1 align-self-center pr-0 d-none">

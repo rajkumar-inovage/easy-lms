@@ -1,8 +1,8 @@
 <div class="app-menu">	
 	<div class="p-4 h-100">
     	<div class="scroll">
-        <div class="card mb-2">
-		  <div class="card-header p-0 heading-icon pb-3">
+        <div class="mb-2">
+		  <div class="heading-icon pb-3">
 		  	Questions
 		  </div>
 		  <div class="separator mb-2"></div>

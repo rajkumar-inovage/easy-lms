@@ -1,3 +1,8 @@
+<style>
+.modal .select2-container{
+	width: 100% !important;
+}
+</style>
 <div class="card">
 	<div class="card-body">
 		<div class="form-group">
@@ -95,10 +100,9 @@
 	                </button>
 	            </div>
 	            <div class="modal-body">					
-
 					<div class="form-group">
 						<label class="form-label">Instructors</label>
-						<select class="form-control" name="instructor">
+						<select class="custom-select select2-single" name="instructor">
 							<?php
 							if (! empty ($instructors)) {
 								foreach ($instructors as $row) {
@@ -114,7 +118,7 @@
 
 					<div class="form-group">
 						<label class="form-label">Classrooms</label>
-						<select class="form-control" name="classroom">
+						<select class="custom-select select2-single" name="classroom">
 							<?php
 							if (! empty ($classrooms)) {
 								foreach ($classrooms as $row) {
@@ -159,7 +163,7 @@
 							<?php 
 							$start_time = "00:00";
 							?>
-							<?php echo form_input ( array('name'=>'start_time', 'class'=>'form-control datepicker', 'value'=>set_value('start_time', $start_time), 'type'=>'time') );?>   
+							<?php echo form_input ( array('name'=>'start_time', 'class'=>'form-control', 'value'=>set_value('start_time', $start_time), 'type'=>'time') );?>   
 					  </div>
 					  <div class="col-md-6">
 						<?php echo form_label('End Time', '', array('class'=>'control-label')); ?>
@@ -172,23 +176,44 @@
 
 					<div class="form-group">
 						<h4>Repeat</h4>
-						<div>
-							<input type="radio" name="repeat" id="repeat-daily" value="1" checked>
-							<label class="form-label" for="repeat-daily">Repeat Daily</label>
+						<div class="custom-control custom-radio">
+							<input type="radio" name="repeat" id="repeat-daily" value="1" class="custom-control-input" checked />
+							<label class="custom-control-label" for="repeat-daily">Repeat Daily</label>
 						</div>
 
-						<div>
-							<input type="radio" name="repeat" id="repeat-weekly" value="2">
-							<label class="form-label" for="repeat-weekly">Repeat Weekly</label>
+						<div class="custom-control custom-radio">
+							<input type="radio" name="repeat" id="repeat-weekly" value="2" class="custom-control-input" />
+							<label class="custom-control-label" for="repeat-weekly">Repeat Weekly</label>
 						</div>
 						<div>
-							<label><input type="checkbox" name="dow[]" value="1"> Monday</label>
-							<label><input type="checkbox" name="dow[]" value="2"> Tuesday</label>
-							<label><input type="checkbox" name="dow[]" value="3"> Wednesday</label>
-							<label><input type="checkbox" name="dow[]" value="4"> Thursday</label>
-							<label><input type="checkbox" name="dow[]" value="5"> Friday</label>
-							<label><input type="checkbox" name="dow[]" value="6"> Saturday</label>
-							<label><input type="checkbox" name="dow[]" value="7"> Sunday</label>
+							<div class="custom-control custom-checkbox custom-control-inline">
+								<input type="checkbox" name="dow[]" value="1" id="monday" class="custom-control-input"/>
+							  <label class="custom-control-label" for="monday">Monday</label>
+							</div>
+							<div class="custom-control custom-checkbox custom-control-inline">
+								<input type="checkbox" name="dow[]" value="2" id="tuesday" class="custom-control-input"/>
+							  <label class="custom-control-label" for="tuesday">Tuesday</label>
+							</div>
+							<div class="custom-control custom-checkbox custom-control-inline">
+								<input type="checkbox" name="dow[]" value="3" id="wednesday" class="custom-control-input"/>
+							  <label class="custom-control-label" for="wednesday">Wednesday</label>
+							</div>
+							<div class="custom-control custom-checkbox custom-control-inline">
+								<input type="checkbox" name="dow[]" value="4" id="thursday" class="custom-control-input"/>
+							  <label class="custom-control-label" for="thursday">Thursday</label>
+							</div>
+							<div class="custom-control custom-checkbox custom-control-inline">
+								<input type="checkbox" name="dow[]" value="5" id="friday" class="custom-control-input"/>
+							  <label class="custom-control-label" for="friday">Friday</label>
+							</div>
+							<div class="custom-control custom-checkbox custom-control-inline">
+								<input type="checkbox" name="dow[]" value="6" id="saturday" class="custom-control-input"/>
+							  <label class="custom-control-label" for="saturday">Saturday</label>
+							</div>
+							<div class="custom-control custom-checkbox custom-control-inline">
+								<input type="checkbox" name="dow[]" value="7" id="sunday" class="custom-control-input"/>
+							  <label class="custom-control-label" for="sunday">Sunday</label>
+							</div>
 						</div>
 					</div>					
 			

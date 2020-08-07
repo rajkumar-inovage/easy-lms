@@ -9,7 +9,7 @@
 					<div class="form-group row">
 						<div class="col-md-6">
 							<?php echo form_label ('Type <span class="required text-danger">*</span>', '', array('class'=>' control-label')); ?>
-							<select name="question_type" class="form-control " id="question-type" <?php if ($question_id > 0) echo 'disabled'; ?> >
+							<select name="question_type" class="custom-select select2-single" id="question-type" <?php if ($question_id > 0) echo 'disabled'; ?> >
 							<?php
 							if (! empty ($question_types)) {
 								foreach ($question_types as $item) {
@@ -40,7 +40,7 @@
 					<div class="form-group row">
 						<div class="col-md-6">
 							<?php echo form_label ('Classification <span class="required text-danger">*</span>', '', array('class'=>' control-label')); ?>
-							<select name="classification" class="browser-default form-control required">
+							<select name="classification" class="custom-select select2-single required">
 								<?php
 								if (is_array($question_categories)) {
 									foreach ($question_categories as $items) { 
@@ -68,7 +68,7 @@
 						
 						<div class="col-md-6">
 							<?php echo form_label ('Difficulty ', '', array('class'=>' control-label')); ?>
-							<select name="difficulty" class="browser-default form-control required"> 
+							<select name="difficulty" class="custom-select select2-single required"> 
 								<?php
 								if (is_array($question_difficulties)) {
 									foreach ($question_difficulties as $items) { ?>                
@@ -126,7 +126,7 @@
 						echo form_button (array ('name'=>'save_new', 'value'=>'save_new', 'type'=>'submit', 'class'=>'btn btn-secondary mr-1', 'accesskey'=>'n', 'content'=>'Save As New', 'id'=>'save_new' )); 
 					?>
 					<?php if ($question_id > 0) { ?>
-						<a href="#" onclick="show_confirm ('Delete this question?', '<?php echo site_url ('coaching/tests_actions/remove_question/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id.'/'.$question_id); ?>')" class="btn btn-danger">Delete</a>
+						<a href="javascript:void(0)" onclick="show_confirm ('Delete this question?', '<?php echo site_url ('coaching/tests_actions/remove_question/'.$coaching_id.'/'.$course_id.'/'.$test_id.'/'.$parent_id.'/'.$question_id); ?>')" class="btn btn-danger">Delete</a>
 						<input type="hidden" name="question_type" value="<?php echo $result['type']; ?>">
 					<?php } ?>
 					<input type="hidden" name="negmarks" value="<?php echo $question_group['negmarks']; ?>">

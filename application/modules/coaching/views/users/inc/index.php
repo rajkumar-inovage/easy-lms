@@ -1,6 +1,6 @@
 <div class="row">
 	
-	<div class="col-12 list" data-check-all="checkAll" id="test-lists"> 
+	<div class="col-12" data-check-all="checkAll" id="test-lists"> 
 	
 	<?php 
 		$i = 1;

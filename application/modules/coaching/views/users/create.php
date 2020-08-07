@@ -23,7 +23,7 @@
 					<div class="form-group row">
 						<div class="col-md-4">
 							<label class="form-label"><?php echo 'User Role'; ?></label>
-							<select data-toggle="select2" class="form-control" name="user_role">
+							<select class="custom-select select2-single" name="user_role">
 								<?php 
 								if ($member_id > 0) {
 									$select_role_id = $result['role_id'];
@@ -52,7 +52,7 @@
 
 						<div class="col-md-4">
 							<label class="form-label"><?php echo 'Status'; ?></label>
-							<select name="status" class="form-control" id="search-status" >
+							<select name="status" class="custom-select select2-single" id="search-status" >
 								<option value="<?php echo USER_STATUS_ENABLED; ?>" <?php if ($row['status']==USER_STATUS_ENABLED) echo 'selected="selected"'; ?> >Enabled</option>
 								<option value="<?php echo USER_STATUS_DISABLED; ?>" <?php if ($row['status']==USER_STATUS_DISABLED) echo 'selected="selected"'; ?> >Disabled</option>
 								<option value="<?php echo USER_STATUS_UNCONFIRMED; ?>" <?php if ($row['status']==USER_STATUS_UNCONFIRMED) echo 'selected="selected"'; ?> >Pending</option>
@@ -106,7 +106,7 @@
 							} else {
 								$dob = '';
 							}
-							echo form_input(array('type'=>'date', 'name'=>'dob', 'max' =>date('Y-m-d', time()), 'class'=>'form-control input-width-small', 'value'=>set_value('dob', $dob)));
+							echo form_input(array('type'=>'text', 'name'=>'dob', 'data-date-end-date'=>'0d', 'data-date-format'=> 'yyyy-mm-dd', 'class'=>'form-control datepicker', 'value'=>set_value('dob', $dob)));
 							?>
 						</div>
 						

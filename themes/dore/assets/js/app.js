@@ -412,6 +412,14 @@ function check_all () {
 /* ===== Tooltips Init ===== */ 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip(); 
+  $('[data-toggle="dropdown"]').click((event) => {
+  	$(event.currentTarget).addClass('active');
+  });
+  $(document).on('click', (event) => {
+  	if ($(event.target).closest('[data-toggle="dropdown"]').length === 0) {
+  		$('.active[data-toggle="dropdown"]').removeClass('active');
+	}
+  });
 });
 
 /* ===== Password  ===== */

@@ -4,34 +4,31 @@
 	if ($all_batches) {
 		foreach ($all_batches as $row) { 
 			?>
-			<li class="list-group-item media">
-				<div class="media-left">
-				</div>
-				<div class="media-body">
-					<a href="<?php echo site_url ('coaching/users/batch_users/'.$coaching_id.'/'.$row['batch_id']); ?>"><?php echo $row["batch_name"];?></a><br>
-					<?php echo $row["batch_code"];?>
-					<p class="text-muted"> 						
-					<?php 
-					if ($row['start_date'] > 0 ) {
-						echo 'Starting On: '. date('d M, Y', $row["start_date"]);
-					} 
-					if ($row['end_date'] > 0 ) {
-						echo 'Ending On: '.date('d M, Y', $row["end_date"]);
-					} 
-					?>
+			<li class="list-group-item d-flex flex-sm-row flex-column">
+				<div class="flex-grow-1 my-auto">
+					<a href="<?php echo site_url ('coaching/users/batch_users/'.$coaching_id.'/'.$row['batch_id']); ?>"><?php echo $row["batch_name"];?></a>
+					<p class="text-muted mb-0"> 						
+					<?php if ($row['start_date'] > 0 ): ?>
+						<span><?php echo ($row["start_date"] > time())? 'Starting On: ':'Started On: '; echo date('d M, Y', $row["start_date"]); ?></span>
+					<?php endif; ?>
+					<?php if ($row['end_date'] > 0 ): ?>
+						<span><?php echo ($row["end_date"] > time())? 'Ending On: ':'Ended On: '; echo date('d M, Y', $row["end_date"]); ?></span>
+					<?php endif; ?>
 					</p>
+				</div>
+				<div class="flex-shrink-1 px-sm-3 my-auto">
 					<?php 
 					$num = 0;
 					$users = $this->users_model->batch_users ($row['batch_id']);
 					if ( ! empty ($users)) {
 						$num = count ($users);
 					}
-						echo '<a href="'.site_url ('coaching/users/batch_users/'.$coaching_id.'/'.$row['batch_id']).'" class="badge badge-success">'.$num.' Users</a>';
+						echo '<h4 class="mb-sm-0"><a href="'.site_url ('coaching/users/batch_users/'.$coaching_id.'/'.$row['batch_id']).'" class="badge badge-success">'.$num.' Users</a></h4>';
 					?>
 				</div>
-				<div class="media-right">
-					<a href="<?php echo site_url('coaching/users/create_batch/'.$coaching_id.'/'.$row["batch_id"]); ?>" class="text-danger"><i class="fa fa-edit"></i> </a>	
-					<a href="javascript:void(0);" onclick="show_confirm ('Are you sure delete this batch?', '<?php echo site_url('coaching/user_actions/delete_batch/'.$coaching_id.'/'.$row["batch_id"]); ?>')" class="text-danger"><i class="fa fa-trash"></i> </a>	
+				<div class="flex-shrink-1 my-auto">
+					<a href="<?php echo site_url('coaching/users/create_batch/'.$coaching_id.'/'.$row["batch_id"]); ?>" class="btn btn-primary"><i class="fa fa-edit"></i><span class="d-none d-lg-inline ml-2">Edit</span></a>	
+					<a href="javascript:void(0);" onclick="show_confirm ('Are you sure delete this batch?', '<?php echo site_url('coaching/user_actions/delete_batch/'.$coaching_id.'/'.$row["batch_id"]); ?>')" class="btn btn-danger"><i class="fa fa-trash"></i><span class="d-none d-lg-inline ml-2">Delete</span></a>
 				</div>
 			</li>
 			<?php } 

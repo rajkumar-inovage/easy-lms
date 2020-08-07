@@ -122,7 +122,7 @@ class Lessons extends MX_Controller {
 		/* --==// Back //==-- */
 		$data['bc'] = ['Pages'=>'coaching/lessons/pages/'.$coaching_id.'/'.$course_id.'/'.$lesson_id];
 
-		$data['script'] = $this->load->view ("lessons/scripts/add_page", $data, true);
+		$data['script'] = $this->load->view ("lessons/scripts/view_page", $data, true);
 		$data['right_sidebar'] = $this->load->view ('courses/inc/manage_course', $data, true);
 		$this->load->view(INCLUDE_PATH . 'header', $data);
 		$this->load->view("lessons/view_page", $data);

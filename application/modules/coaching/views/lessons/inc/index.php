@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-12 list" data-check-all="checkAll">	
+    <div class="col-12" data-check-all="checkAll">	
 		<?php 
 		$i = 1;
 		if ( ! empty ($lessons)) { 

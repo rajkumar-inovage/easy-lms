@@ -134,10 +134,10 @@ class Tests_actions extends MX_Controller {
 	
 	
 	// Remove Individual Questions
-	public function remove_question ($coaching_id=0, $course_id=0, $test_id=0, $parent_id=0, $question_id=0, $cat_ids=0, $diff_ids=0, $exclude=0) {
+	public function remove_question ($coaching_id=0, $course_id=0, $test_id=0, $parent_id=0, $question_id=0) {
 		$result = $this->tests_model->deleteTestQuestion ($test_id, $question_id);
 		$this->message->set('Question removed from this test', 'success', true);
-		redirect ('coaching/tests/preview_test/'.$coaching_id.'/'.$test_id);
+		redirect ('coaching/tests/questions/'.$coaching_id.'/'.$course_id.'/'.$test_id);
 	}	
 	
 	// Remove Individual Questions From Add Questions PAge
